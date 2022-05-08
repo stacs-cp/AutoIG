@@ -1,0 +1,72 @@
+$mario
+$ A generator model for the Mario problem
+$ Written by: Joan Espasa Arxer
+
+$ Mario is a routing problem about the famous italian plumber. 
+$ His objective is to find gold in the plumbing of all the houses in the neighborhood. 
+$ Mario moves using his kart, which has a specific amount of fuel. 
+$ Mario's day always starts in his house and ends in Luigi's house.
+$ The problem aims to find the best path in order to earn the more money with the amount of fuel of his kart. 
+$ 
+$ From a more general point of view, the problem is to find a path in a graph such that:
+$ - Path endpoints are given (from Mario's to Luigi's)
+$ - The sum of weights associated to arcs in the path is restricted (fuel consumption)
+$ - The sum of weights associated to nodes in the path has to be maximized (gold coins)
+$ 
+$ original authors of the minizinc model: Amaury Ollagnier, Jean-Guillaume Fages
+
+$ Parameters in the minizinc model: 
+$ int: nbHouses;        % number of houses
+$ int: MarioHouse;      % index of mario's house (start)
+$ int: LuigiHouse;      % index of luigi's house (end)
+$ int: fuelMax;         % quantity of fuel Mario's kart starts with
+$ int: goldTotalAmount; % upper bound on the maximisation function
+$ % fuel consumption between two houses
+$ array[1..nbHouses,1..nbHouses] of int: conso; 
+$ % gold coins Mario can get in each house (marios and luigis house always 0)
+$ array[1..nbHouses] of int: goldInHouse; 
+
+
+$ TODO: does the ratio between fuel and number of houses affect how hard an instance is?
+
+$ parameters given to us by irace
+given num_houses : int(15..100)
+given total_fuel : int(2000..20000)
+given max_distance: int(1..500)
+given max_gold : int(1..100)
+
+letting houses be domain int(1..num_houses)
+
+find nbHouses : int(num_houses..num_houses) $ passthrough variable
+find fuelMax : int(total_fuel..total_fuel)  $ passthrough variable
+find MarioHouse : houses 
+find LuigiHouse : houses
+find goldTotalAmount : int(1..max_gold)
+
+find conso : matrix indexed by[houses, houses] of int(0..max_distance)
+find goldInHouse: matrix indexed by[houses] of int(0..max_gold)
+
+such that
+
+$ make sure at least we can reach Luigi's house ...
+conso[MarioHouse, LuigiHouse] <= total_fuel,
+
+$ total gold is just the sum of all houses
+goldTotalAmount = sum(goldInHouse),
+
+$ start and end does not have gold in them
+goldInHouse[MarioHouse] = 0,
+goldInHouse[LuigiHouse] = 0,
+$ and they are different, of course
+MarioHouse != LuigiHouse,
+
+$ distances are euclidean
+forAll house1 : houses .
+    forAll house2 : houses .
+        conso[house1,house2] = conso[house2,house1],
+
+$ diagonal is 0
+forAll house : houses .
+    conso[house,house] = 0,
+
+true
