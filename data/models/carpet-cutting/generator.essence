@@ -1,4 +1,7 @@
 $ carpet-cutting
+$ A generator model for the Carpet Cutting problem
+$ Written by: Ian Miguel (ijm@st-andrews.ac.uk)
+
 $$$$ Let the tuner decide the following: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 $ Roll width and maximum roll length
