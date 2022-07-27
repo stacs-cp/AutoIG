@@ -13,7 +13,7 @@ AutoIG receives as input a description of a constraint problem, an instance gene
 .. _Essence: https://constraintmodelling.org/
 .. _irace: https://iridia.ulb.ac.be/irace/
 
-.. image:: _docs/source/static/autoig.png
+.. image:: https://github.com/stacs-cp/AutoIG/blob/main/docs/source/_static/autoig.png
    :height: 300px
    :alt: AutoIG 
    :align: center
