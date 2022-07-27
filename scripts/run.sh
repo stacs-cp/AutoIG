@@ -1,4 +1,14 @@
-cp problem.eprime generator.eprime repair.eprime detailed-output/
+#!/bin/bash
 
-irace --seed <seed> --scenario <scenario> --parameter-file params.irace --train-instances-file instances --exec-dir ./ --max-experiments <maxExperiments> --target-runner <targetRunner>
+# start the instance generation process with irace 
+bash run-irace.sh
 
+# extract output
+pushd detailed-output
+bash $AUTOIG/scripts/read-output-files.sh
+bash $AUTOIG/scripts/extract-md5sum.sh
+popd
+
+# collect results and statistics 
+python $AUTOIG/scripts/collect_results.py ./
+cp detailed-output/detailed-results.json ./

@@ -3,13 +3,16 @@ import json
 import argparse
 
 import sys
+
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
 
 import utils
 
 
-def convert_essence_instance_to_mzn(generatorFile, essenceParamFile, outputMznFile='default'):
+def convert_essence_instance_to_mzn(
+    generatorFile, essenceParamFile, outputMznFile="default"
+):
     """
     convert an essence param file to minizinc format
     inputs:
@@ -17,36 +20,44 @@ def convert_essence_instance_to_mzn(generatorFile, essenceParamFile, outputMznFi
     """
     # TODO: implement this function (this function can be done automatically, at least for minizinc competition's problems)
 
-    if outputMznFile=='default':
+    if outputMznFile == "default":
         # TODO: maybe fix this. what if there is no .param extension?
-        outputMznFile = essenceParamFile.replace('.param','.dzn')
+        outputMznFile = essenceParamFile.replace(".param", ".dzn")
 
     ### this is just a temporary implementation while waiting for Oz to implement the translation in conjure
 
     # get problem name
-    with open(generatorFile, 'rt') as f:
+    with open(generatorFile, "rt") as f:
         ls = [s[:-1] for s in f.readlines()]
-        problem = ls[0].replace('$','').strip()
+        problem = ls[0].replace("$", "").strip()
 
-    assert problem in ['macc','carpet-cutting','racp', 'mario', 'pillars-and-planks', 'lot-sizing']
+    assert problem in [
+        "macc",
+        "carpet-cutting",
+        "racp",
+        "mario",
+        "pillars-and-planks",
+        "lot-sizing",
+    ]
 
-    if problem=='macc':
+    if problem == "macc":
         macc_essence_to_mzn(essenceParamFile, outputMznFile)
 
-    if problem=='carpet-cutting':
+    if problem == "carpet-cutting":
         carpet_cutting_essence_to_mzn(essenceParamFile, outputMznFile)
 
-    if problem=='mario':
+    if problem == "mario":
         mario_essence_to_mzn(essenceParamFile, outputMznFile)
 
-    if problem=='racp':
+    if problem == "racp":
         racp_essence_to_mzn(essenceParamFile, outputMznFile)
 
     if problem == "pillars-and-planks":
         pillars_essence_to_mzn(essenceParamFile, outputMznFile)
 
-    if problem=='lot-sizing':
+    if problem == "lot-sizing":
         lot_sizing_essence_to_mzn(essenceParamFile, outputMznFile)
+
 
 def _dict_to_array(jsondict):
     """
@@ -56,14 +67,15 @@ def _dict_to_array(jsondict):
     assert type(jsondict) is dict
 
     newlist = []
-    
+
     keys = [int(k) for k in jsondict.keys()]
     keys.sort()
 
     for key in keys:
         newlist.append(jsondict[str(key)])
-    
+
     return newlist
+
 
 def lot_sizing_essence_to_mzn(essenceParamFile, outputMznFile):
     """
@@ -71,11 +83,11 @@ def lot_sizing_essence_to_mzn(essenceParamFile, outputMznFile):
     """
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     data = json.loads(s)
     # DEBUG print(json.dumps(data, indent=4))
 
-    with open(outputMznFile, 'wt') as f:
+    with open(outputMznFile, "wt") as f:
         for key, value in data.items():
             # We ignore Auxiliary variables
             if key.startswith("Aux"):
@@ -83,28 +95,31 @@ def lot_sizing_essence_to_mzn(essenceParamFile, outputMznFile):
             # directly output all ints
             elif type(value) is int:
                 print(f"{key} = {value};", file=f)
-                #print(f"{key} = {value};")
+                # print(f"{key} = {value};")
             # conso is a matrix of integers
             elif key == "change_cost":
                 str_contents = ""
                 listofrows = _dict_to_array(value)
                 for row in listofrows:
-                    str_contents += ("| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n")
+                    str_contents += (
+                        "| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n"
+                    )
                 print(f"{key} = array2d(Orders0,Orders0, [{str_contents}|]);", file=f)
-                #print(f"{key} = array2d(Orders0,Orders0, [{str_contents}|]);")
+                # print(f"{key} = array2d(Orders0,Orders0, [{str_contents}|]);")
             # goldInHouse is an array of integers
-            elif key == 'item_type':
+            elif key == "item_type":
                 listofints = _dict_to_array(value)
-                content = ', '.join(str(x) for x in listofints)
+                content = ", ".join(str(x) for x in listofints)
                 print(f"{key} = array1d(Orders0, [{content}]);", file=f)
-                #print(f"{key} = array1d(Orders0, [{content}]);")
-            elif key == "due_period" or key == 'item_type' or key == 'nb_of_orders':
+                # print(f"{key} = array1d(Orders0, [{content}]);")
+            elif key == "due_period" or key == "item_type" or key == "nb_of_orders":
                 listofints = _dict_to_array(value)
-                content = ', '.join(str(x) for x in listofints)
+                content = ", ".join(str(x) for x in listofints)
                 print(f"{key} = [{content}];", file=f)
-                #print(f"{key} = [{content}];")
+                # print(f"{key} = [{content}];")
             else:
                 assert False
+
 
 def mario_essence_to_mzn(essenceParamFile, outputMznFile):
     """
@@ -112,11 +127,11 @@ def mario_essence_to_mzn(essenceParamFile, outputMznFile):
     """
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     data = json.loads(s)
     # DEBUG print(json.dumps(data, indent=4))
 
-    with open(outputMznFile, 'wt') as f:
+    with open(outputMznFile, "wt") as f:
         for key, value in data.items():
             # We ignore Auxiliary variables
             if key.startswith("Aux"):
@@ -124,23 +139,26 @@ def mario_essence_to_mzn(essenceParamFile, outputMznFile):
             # directly output all ints
             elif type(value) is int:
                 print(f"{key} = {value};", file=f)
-                #print(f"{key} = {value};")
+                # print(f"{key} = {value};")
             # conso is a matrix of integers
             elif key == "conso":
                 str_contents = ""
                 listofrows = _dict_to_array(value)
                 for row in listofrows:
-                    str_contents += ("| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n")
+                    str_contents += (
+                        "| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n"
+                    )
                 print(f"{key} = [{str_contents}|];", file=f)
-                #print(f"{key} = [{str_contents}|];")
+                # print(f"{key} = [{str_contents}|];")
             # goldInHouse is an array of integers
             elif key == "goldInHouse":
                 listofints = _dict_to_array(value)
-                content = ', '.join(str(x) for x in listofints)
+                content = ", ".join(str(x) for x in listofints)
                 print(f"{key} = [{content}];", file=f)
-                #print(f"{key} = [{content}];")
+                # print(f"{key} = [{content}];")
             else:
                 assert False
+
 
 def carpet_cutting_essence_to_mzn(essenceParamFile, outputMznFile):
     """
@@ -148,11 +166,11 @@ def carpet_cutting_essence_to_mzn(essenceParamFile, outputMznFile):
     """
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     data = json.loads(s)
     # DEBUG print(json.dumps(data, indent=4))
 
-    with open(outputMznFile, 'wt') as f:
+    with open(outputMznFile, "wt") as f:
         for key, value in data.items():
             # We ignore Auxiliary variables
             if key.startswith("Aux"):
@@ -175,14 +193,17 @@ def carpet_cutting_essence_to_mzn(essenceParamFile, outputMznFile):
                 str_contents = ""
                 listofrows = _dict_to_array(value)
                 for row in listofrows:
-                    str_contents += ("| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n")
+                    str_contents += (
+                        "| " + ", ".join(str(x) for x in _dict_to_array(row)) + "\n"
+                    )
                 print(f"{key} = [{str_contents}|];", file=f)
 
             # now only arrays of ints are left now
             else:
                 listofints = _dict_to_array(value)
-                content = ', '.join(str(x) for x in listofints)
+                content = ", ".join(str(x) for x in listofints)
                 print(f"{key} = [{content}];", file=f)
+
 
 def macc_essence_to_mzn(essenceParamFile, outputMznFile):
     """
@@ -190,22 +211,23 @@ def macc_essence_to_mzn(essenceParamFile, outputMznFile):
     """
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     data = json.loads(s)
     mznContent = []
     for name in data:
-        if name=='building':
+        if name == "building":
             continue
-        mznContent.append(name + ' = ' + str(data[name]) + ";")
+        mznContent.append(name + " = " + str(data[name]) + ";")
     building = "building = array2d(YY,XX,[\n"
-    for x in range(data['X']):
-        r = data['building'][str(x)]
-        building += ','.join([str(r[str(y)]) for y in range(data['Y'])])
-        building += ',\n'
+    for x in range(data["X"]):
+        r = data["building"][str(x)]
+        building += ",".join([str(r[str(y)]) for y in range(data["Y"])])
+        building += ",\n"
     building += "]);"
     mznContent.append(building)
-    with open(outputMznFile, 'wt') as f:
-        f.write('\n'.join(mznContent))
+    with open(outputMznFile, "wt") as f:
+        f.write("\n".join(mznContent))
+
 
 def racp_essence_to_mzn(essenceParamFile, outputMznFile):
     """
@@ -213,66 +235,106 @@ def racp_essence_to_mzn(essenceParamFile, outputMznFile):
     """
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     data = json.loads(s)
     mznContent = []
 
     #  Numerical params
     for name in ["n_res", "t_max", "n_tasks"]:
-        mznContent.append(name+" = "+str(data[name])+";")
+        mznContent.append(name + " = " + str(data[name]) + ";")
 
     # unit cost of resource
-    costarray=[ data["cost"][str(i)] for i in range(1,data["n_res"]+1) ]
-    mznContent.append("cost = "+str(costarray)+";")
+    costarray = [data["cost"][str(i)] for i in range(1, data["n_res"] + 1)]
+    mznContent.append("cost = " + str(costarray) + ";")
 
     # duration
-    dur=[ data["dur"][str(i)] for i in range(1, data["n_tasks"]+1) ]
-    mznContent.append("dur = "+str(dur)+";")
+    dur = [data["dur"][str(i)] for i in range(1, data["n_tasks"] + 1)]
+    mznContent.append("dur = " + str(dur) + ";")
 
     # successors
-    succ=[ (str(set(data["succ_rel"][str(i)])) if len(data["succ_rel"][str(i)])>0 else "{}") for i in range(1, data["n_tasks"]+1)]
-    mznContent.append("succ = ["+(", ".join(succ))+"];")
+    succ = [
+        (
+            str(set(data["succ_rel"][str(i)]))
+            if len(data["succ_rel"][str(i)]) > 0
+            else "{}"
+        )
+        for i in range(1, data["n_tasks"] + 1)
+    ]
+    mznContent.append("succ = [" + (", ".join(succ)) + "];")
 
-    rr=[ [ str(data["rr"][str(i)][str(j)]) for j in range(1, data["n_tasks"]+1) ] for i in range(1, data["n_res"]+1) ]
-    rrjoininner=[ ",".join(rr[i]) for i in range(data["n_res"]) ]
+    rr = [
+        [str(data["rr"][str(i)][str(j)]) for j in range(1, data["n_tasks"] + 1)]
+        for i in range(1, data["n_res"] + 1)
+    ]
+    rrjoininner = [",".join(rr[i]) for i in range(data["n_res"])]
 
-    mznContent.append("rr = [|"+(" | ".join(rrjoininner))+"|];")
+    mznContent.append("rr = [|" + (" | ".join(rrjoininner)) + "|];")
 
-    with open(outputMznFile, 'wt') as f:
-        f.write('\n'.join(mznContent))
+    with open(outputMznFile, "wt") as f:
+        f.write("\n".join(mznContent))
+
 
 def sortEssenceArray(xs):
     # sort by key-as-int
-    xs_sorted = sorted([(int(i), j) for i,j in xs.items() ])
+    xs_sorted = sorted([(int(i), j) for i, j in xs.items()])
     # drop the keys
     return [j for i, j in xs_sorted]
+
 
 def pillars_essence_to_mzn(essenceParamFile, outputMznFile):
     cmd = "conjure pretty --output-format=json " + essenceParamFile
     output, _ = utils.run_cmd(cmd, printOutput=False)
-    s = ''.join(output.split('\n')[1:])
+    s = "".join(output.split("\n")[1:])
     solution = json.loads(s)
 
-    with open(outputMznFile, 'wt') as f:
+    with open(outputMznFile, "wt") as f:
         print("planks = %s;" % solution["planks"], file=f)
-        print("plank_width = %s;" % sortEssenceArray(solution["plank_width"])[:int(solution["planks"])], file=f)
+        print(
+            "plank_width = %s;"
+            % sortEssenceArray(solution["plank_width"])[: int(solution["planks"])],
+            file=f,
+        )
         print("pillars = %s;" % solution["pillars"], file=f)
-        print("pillar_height = %s;" % sortEssenceArray(solution["pillar_height"])[:int(solution["pillars"])], file=f)
-        print("pillar_width = %s;" % sortEssenceArray(solution["pillar_width"])[:int(solution["pillars"])], file=f)
+        print(
+            "pillar_height = %s;"
+            % sortEssenceArray(solution["pillar_height"])[: int(solution["pillars"])],
+            file=f,
+        )
+        print(
+            "pillar_width = %s;"
+            % sortEssenceArray(solution["pillar_width"])[: int(solution["pillars"])],
+            file=f,
+        )
         print("available_width= %s;" % solution["available_width"], file=f)
         print("available_height= %s;" % solution["available_height"], file=f)
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Set up a tuning experiment for automated instance generation')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Set up a tuning experiment for automated instance generation"
+    )
 
     # general settings
-    parser.add_argument('--generatorFile', required=True, type=str, help='Generator File (to read the types)')
-    parser.add_argument('--essenceParamFile', required=True, type=str, help='Essence param file to convert')
-    parser.add_argument('--outDznFile',default='default', type=str, help='Output .dzn file')
+    parser.add_argument(
+        "--generatorFile",
+        required=True,
+        type=str,
+        help="Generator File (to read the types)",
+    )
+    parser.add_argument(
+        "--essenceParamFile",
+        required=True,
+        type=str,
+        help="Essence param file to convert",
+    )
+    parser.add_argument(
+        "--outDznFile", default="default", type=str, help="Output .dzn file"
+    )
 
     # read from command line args
     args = parser.parse_args()
 
-    # run the "main" 
-    convert_essence_instance_to_mzn(args.generatorFile, args.essenceParamFile, args.outDznFile)
+    # run the "main"
+    convert_essence_instance_to_mzn(
+        args.generatorFile, args.essenceParamFile, args.outDznFile
+    )

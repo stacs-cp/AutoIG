@@ -1,5 +1,8 @@
 BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+# AutoIG
+export AUTOIG="$(dirname $BIN_DIR)"
+
 # conjure
 export PATH=$BIN_DIR/conjure/:$PATH
 

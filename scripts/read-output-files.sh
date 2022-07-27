@@ -1,9 +1,10 @@
-d=$1 # path to experiment folder
-
-outFile="$d/detailed-results.json"
+outFile="detailed-results.json"
 echo "">$outFile
 
-for fn in $(ls $d/detailed-output/out-*)
+for fn in $(ls out-*)
 do
     tail -n2 $fn | head -n1 >>$outFile
 done
+
+# replace single quotes with double quotes (look nicer for json files)
+sed -i "s#'#\"#g" $outFile
