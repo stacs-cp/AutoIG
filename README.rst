@@ -1,4 +1,4 @@
-Welcome to AutoIG's documentation!
+**Welcome to AutoIG's documentation!**
 
 .. _`[Github repo]`: https://github.com/stacs-cp/AutoIG
 
@@ -13,7 +13,7 @@ AutoIG receives as input a description of a constraint problem, an instance gene
 .. _Essence: https://constraintmodelling.org/
 .. _irace: https://iridia.ulb.ac.be/irace/
 
-.. image:: _docs/static/autoig.png
+.. image:: docs/static/autoig.png
    :height: 300px
    :alt: AutoIG 
    :align: center
