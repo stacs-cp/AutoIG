@@ -13,15 +13,19 @@ AutoIG receives as input a description of a constraint problem, an instance gene
 .. _Essence: https://constraintmodelling.org/
 .. _irace: https://iridia.ulb.ac.be/irace/
 
-.. image:: docs/static/autoig.png
+.. image:: docs/source/static/autoig.png
    :height: 300px
    :alt: AutoIG 
    :align: center
 
 
-For more information about AutoIG and a case study demonstrating it usefulness in benchmarking solvers in a competition context, please see our paper here__
+For more information about AutoIG and a case study demonstrating it usefulness in benchmarking solvers in a competition context, please see our paper here__.
+
+For details on how to use AutoIG, please see the documentation_, which also include `two quick-start examples`_.
 
 .. __: https://arxiv.org/abs/2205.14753
+.. _documentation: https://autoig.readthedocs.io/en/latest/
+.. _`two quick-start examples`: https://autoig.readthedocs.io/en/latest/quick-examples.html
 
 Citation
 ------------------------------------
