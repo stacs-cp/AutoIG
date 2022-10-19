@@ -1,4 +1,12 @@
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+# get current script's folder
+if [ -n "$ZSH_VERSION" ]; then
+    BIN_DIR="$( cd "$( dirname "${(%):-%x}" )" &> /dev/null && pwd )"
+elif [ -n "$BASH_VERSION" ]; then
+    BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+else
+    echo "Error: only bash and zsh are supported"
+    exit 1
+fi
 
 # AutoIG
 export AUTOIG="$(dirname $BIN_DIR)"
