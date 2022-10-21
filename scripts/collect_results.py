@@ -40,7 +40,8 @@ def read_data(runDir):
 
     # read detailed-results.json
     with open(detailedResultsFile, "rt") as f:
-        lsLines = [s[:-1] for s in f.readlines() if s.startswith('{"totalTime"')]
+        #lsLines = [s[:-1] for s in f.readlines() if s.startswith('{"totalTime"')]
+        lsLines = [s.replace("\n","") for s in f.readlines() if "totalTime" in s]
         r = [ast.literal_eval(s) for s in lsLines]
     tRs = pd.DataFrame(r)
     tRs["score"] = tRs["score"].astype(float)

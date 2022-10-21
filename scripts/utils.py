@@ -42,6 +42,12 @@ def run_cmd(cmd, printOutput=False, outFile=None):
     return output, p.returncode
 
 
+def run_cmd_with_assertion(cmd):
+    output, rc = run_cmd(cmd)
+    assert rc==0, f"ERROR: command '{cmd}' does not run correctly. Output is: \n{output}\n. \nReturn code: {rc}"
+    return output
+
+
 def delete_file(fn):
     if isinstance(fn, list):  # delete a list of files
         for name in fn:
