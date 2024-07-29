@@ -22,7 +22,8 @@ else
 fi
 
 sr="savilerow-${version}-${OS_NAME}"
-url="https://savilerow.cs.st-andrews.ac.uk/${sr}.tgz" 
+#url="https://savilerow.cs.st-andrews.ac.uk/${sr}.tgz" 
+url="https://www-users.york.ac.uk/peter.nightingale/savilerow/${sr}.tgz"
 
 mkdir -p $name 
 
