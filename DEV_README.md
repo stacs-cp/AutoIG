@@ -2,9 +2,9 @@ This is a summary of the commands to run the project in a Docker container.
 
 ## Docker Build And Run Commands
 
-docker build --platform linux/amd64 -t conjure_clone_image .
+docker build --platform linux/amd64/v2 -t conjure_clone_image .
 
-docker run -it --name <my-interactive-conjure-app> conjure_clone_image /bin/bash
+docker run -it conjure_clone_image /bin/bash
 
 ## Commands To Run Inside Docker Container For Quick Start Example
 
