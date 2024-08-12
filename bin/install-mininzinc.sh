@@ -1,5 +1,5 @@
 name="minizinc"
-version="2.5.5"
+version="2.8.5"
 
 
 echo ""
