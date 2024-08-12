@@ -27,6 +27,7 @@ export R_LIBS=$BIN_DIR/:$R_LIBS
 # minizinc
 export PATH=$BIN_DIR/minizinc/bin/:$PATH
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BIN_DIR/minizinc/lib
+export MZN_SOLVER_PATH=$BIN_DIR/minizinc/share/minizinc/solvers
 
 # ortools
 export PATH=$BIN_DIR/ortools/bin/:$PATH
