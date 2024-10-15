@@ -1,0 +1,22 @@
+{
+ "runDir": "/home/tudor/AutoIG/experiments/macc-discriminating",
+ "problemModel": "/home/tudor/AutoIG/data/models/macc/problem.mzn",
+ "generatorModel": "/home/tudor/AutoIG/data/models/macc/generator-small.essence",
+ "seed": 42,
+ "maxEvaluations": 180,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "5",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "discriminating",
+ "instanceValidTypes": "all",
+ "minSolverTime": 1,
+ "maxSolverTime": 3,
+ "nRunsPerInstance": 1,
+ "favouredSolver": "ortools",
+ "favouredSolverFlags": "-f",
+ "baseSolver": "chuffed",
+ "baseSolverFlags": ""
+}

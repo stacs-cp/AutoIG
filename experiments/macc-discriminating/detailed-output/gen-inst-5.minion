@@ -1,0 +1,120 @@
+MINION 3
+**VARIABLES**
+DISCRETE building_00001_00001 #
+{0..2}
+DISCRETE building_00001_00002 #
+{0..2}
+DISCRETE building_00001_00003 #
+{0..2}
+DISCRETE building_00001_00004 #
+{0..2}
+DISCRETE building_00001_00005 #
+{0..2}
+DISCRETE building_00002_00001 #
+{0..2}
+DISCRETE building_00002_00002 #
+{0..2}
+DISCRETE building_00002_00003 #
+{0..2}
+DISCRETE building_00002_00004 #
+{0..2}
+DISCRETE building_00002_00005 #
+{0..2}
+DISCRETE building_00003_00001 #
+{0..2}
+DISCRETE building_00003_00002 #
+{0..2}
+DISCRETE building_00003_00003 #
+{0..2}
+DISCRETE building_00003_00004 #
+{0..2}
+DISCRETE building_00003_00005 #
+{0..2}
+DISCRETE building_00004_00001 #
+{0..2}
+DISCRETE building_00004_00002 #
+{0..2}
+DISCRETE building_00004_00003 #
+{0..2}
+DISCRETE building_00004_00004 #
+{0..2}
+DISCRETE building_00004_00005 #
+{0..2}
+DISCRETE building_00005_00001 #
+{0..2}
+DISCRETE building_00005_00002 #
+{0..2}
+DISCRETE building_00005_00003 #
+{0..2}
+DISCRETE building_00005_00004 #
+{0..2}
+DISCRETE building_00005_00005 #
+{0..2}
+BOOL aux0 #(0<building_00004_00001)
+BOOL aux1 #(0<building_00004_00002)
+BOOL aux2 #(0<building_00004_00003)
+BOOL aux3 #(0<building_00004_00004)
+BOOL aux4 #(0<building_00004_00005)
+BOOL aux5 #(0<building_00005_00001)
+BOOL aux6 #(0<building_00005_00002)
+BOOL aux7 #(0<building_00005_00003)
+BOOL aux8 #(0<building_00005_00004)
+BOOL aux9 #(0<building_00005_00005)
+BOOL aux10 #(0<building_00001_00001)
+BOOL aux11 #(0<building_00001_00002)
+BOOL aux12 #(0<building_00001_00003)
+BOOL aux13 #(0<building_00001_00004)
+BOOL aux14 #(0<building_00001_00005)
+BOOL aux15 #(0<building_00002_00001)
+BOOL aux16 #(0<building_00002_00002)
+BOOL aux17 #(0<building_00002_00003)
+BOOL aux18 #(0<building_00002_00004)
+BOOL aux19 #(0<building_00002_00005)
+BOOL aux20 #(0<building_00003_00001)
+BOOL aux21 #(0<building_00003_00002)
+BOOL aux22 #(0<building_00003_00003)
+BOOL aux23 #(0<building_00003_00004)
+BOOL aux24 #(0<building_00003_00005)
+**SEARCH**
+PRINT[[building_00001_00001],[building_00001_00002],[building_00001_00003],[building_00001_00004],[building_00001_00005],[building_00002_00001],[building_00002_00002],[building_00002_00003],[building_00002_00004],[building_00002_00005],[building_00003_00001],[building_00003_00002],[building_00003_00003],[building_00003_00004],[building_00003_00005],[building_00004_00001],[building_00004_00002],[building_00004_00003],[building_00004_00004],[building_00004_00005],[building_00005_00001],[building_00005_00002],[building_00005_00003],[building_00005_00004],[building_00005_00005]]
+VARORDER STATIC [building_00001_00001, building_00001_00002, building_00001_00003, building_00001_00004, building_00001_00005, building_00002_00001, building_00002_00002, building_00002_00003, building_00002_00004, building_00002_00005, building_00003_00001, building_00003_00002, building_00003_00003, building_00003_00004, building_00003_00005, building_00004_00001, building_00004_00002, building_00004_00003, building_00004_00004, building_00004_00005, building_00005_00001, building_00005_00002, building_00005_00003, building_00005_00004, building_00005_00005]
+**TUPLELIST**
+negativeSol 5 25
+2 1 2 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 1 0 0 2 1 1 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1 2 1 1 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2 2 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0
+2 1 1 2 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+**CONSTRAINTS**
+reify(ineq(0, building_00004_00001, -1), aux0)
+reify(ineq(0, building_00004_00002, -1), aux1)
+reify(ineq(0, building_00004_00003, -1), aux2)
+reify(ineq(0, building_00004_00004, -1), aux3)
+reify(ineq(0, building_00004_00005, -1), aux4)
+reify(ineq(0, building_00005_00001, -1), aux5)
+reify(ineq(0, building_00005_00002, -1), aux6)
+reify(ineq(0, building_00005_00003, -1), aux7)
+reify(ineq(0, building_00005_00004, -1), aux8)
+reify(ineq(0, building_00005_00005, -1), aux9)
+reify(ineq(0, building_00001_00001, -1), aux10)
+reify(ineq(0, building_00001_00002, -1), aux11)
+reify(ineq(0, building_00001_00003, -1), aux12)
+reify(ineq(0, building_00001_00004, -1), aux13)
+reify(ineq(0, building_00001_00005, -1), aux14)
+reify(ineq(0, building_00002_00001, -1), aux15)
+reify(ineq(0, building_00002_00002, -1), aux16)
+reify(ineq(0, building_00002_00003, -1), aux17)
+reify(ineq(0, building_00002_00004, -1), aux18)
+reify(ineq(0, building_00002_00005, -1), aux19)
+reify(ineq(0, building_00003_00001, -1), aux20)
+reify(ineq(0, building_00003_00002, -1), aux21)
+reify(ineq(0, building_00003_00003, -1), aux22)
+reify(ineq(0, building_00003_00004, -1), aux23)
+reify(ineq(0, building_00003_00005, -1), aux24)
+sumleq([aux0,aux1,aux2,aux3,aux4,aux5,aux6,aux7,aux8,aux9,aux10,aux11,aux12,aux13,aux14,aux15,aux16,aux17,aux18,aux19,aux20,aux21,aux22,aux23,aux24],5)
+sumgeq([aux0,aux1,aux2,aux3,aux4,aux5,aux6,aux7,aux8,aux9,aux10,aux11,aux12,aux13,aux14,aux15,aux16,aux17,aux18,aux19,aux20,aux21,aux22,aux23,aux24],5)
+sumleq([building_00004_00001,building_00004_00002,building_00004_00003,building_00004_00004,building_00004_00005,building_00005_00001,building_00005_00002,building_00005_00003,building_00005_00004,building_00005_00005,building_00001_00001,building_00001_00002,building_00001_00003,building_00001_00004,building_00001_00005,building_00002_00001,building_00002_00002,building_00002_00003,building_00002_00004,building_00002_00005,building_00003_00001,building_00003_00002,building_00003_00003,building_00003_00004,building_00003_00005],7)
+sumgeq([building_00004_00001,building_00004_00002,building_00004_00003,building_00004_00004,building_00004_00005,building_00005_00001,building_00005_00002,building_00005_00003,building_00005_00004,building_00005_00005,building_00001_00001,building_00001_00002,building_00001_00003,building_00001_00004,building_00001_00005,building_00002_00001,building_00002_00002,building_00002_00003,building_00002_00004,building_00002_00005,building_00003_00001,building_00003_00002,building_00003_00003,building_00003_00004,building_00003_00005],7)
+negativetable([building_00001_00001,building_00001_00002,building_00001_00003,building_00001_00004,building_00001_00005,building_00002_00001,building_00002_00002,building_00002_00003,building_00002_00004,building_00002_00005,building_00003_00001,building_00003_00002,building_00003_00003,building_00003_00004,building_00003_00005,building_00004_00001,building_00004_00002,building_00004_00003,building_00004_00004,building_00004_00005,building_00005_00001,building_00005_00002,building_00005_00003,building_00005_00004,building_00005_00005
+],negativeSol)
+**EOF**

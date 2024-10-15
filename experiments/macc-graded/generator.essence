@@ -1,0 +1,47 @@
+$macc
+$ A generator model for the MACC problem
+$ Written by: Nguyen Dang (nttd@st-andrews.ac.uk)
+$ This is a copy of the original generator (generator.essence), but with smaller domains for the generator parameters, used for doing small AutoIG experiments (for demonstration purposes).
+
+given Ag: int(1..3)  $ number of agents
+given Tg: int(1..20) $ time horizon
+given Xg: int(3..10) $ width & depth of the map, cells at borders are not used for the building's structure so Xg and Xg must be >2
+given Zg: int(2..3) $ height of the map
+
+find A, T, X, Y, Z: int(1..200)
+such that
+    A=Ag, T=Tg, X=Xg, Y=Xg, Z=Zg
+
+$ percentage of the construct's ground coverage, the larger this value is, the more likely the instance is hard due to possible collisions between agents
+given ground_coverage: int(1..100)
+$ the number of blocks on the ground (we want to have at least one block)
+letting n_ground_blocks be max({1, ground_coverage * (Xg-2) * (Xg-2) / 100}) $ maximum number of ground blocks is (Xg-2)*(Xg-2) because borders must be empty (for agents to enter the map)
+
+$ normalised average height of the structure (ground layer is ignored)
+$ avg_height_ratio = 0: all cells of the structure has a height of 1 (all blocks are on the ground layer)
+$ avg_height_ratio = 1: all cells of the structure has the maximum height (Zg-1) 
+given avg_height_ratio: int(0..100) 
+
+$ we can now calculate the total number of blocks of the structure based on previous parameters
+$ letting n_blocks be n_ground_blocks + avg_height_ratio * n_ground_blocks * (Zg-2) / 100
+
+$ the structure is defined as a matrix, where each element represents the number of blocks located that cell
+letting rows be domain int(0..Xg-1)
+letting cols be domain int(0..Xg-1)
+find building : matrix indexed by [rows, cols] of int(0..Zg-1) $ maximum height of the structure is Zg-1 as specified in the mzn model
+
+such that 
+
+    $ no blocks are located on the border cells
+    and([building[row,0]=0 | row: rows]),
+    and([building[row,Xg-1]=0 | row: rows]),
+    and([building[0,col]=0 | col: cols]),
+    and([building[Xg-1,col]=0 | col: cols]),
+
+    $ constraint on the number of blocks on the ground layer
+    sum([toInt(building[row, col]>0) | row: rows, col: cols]) = n_ground_blocks,
+    
+    $ constraint on the total number of blocks
+    $sum([building[row, col] | row: rows, col: cols]) = n_blocks  $ bug in conjure, use the next one instead
+    sum([building[row, col] | row: rows, col: cols]) = n_ground_blocks + avg_height_ratio * n_ground_blocks * (Zg-2) /
+    100

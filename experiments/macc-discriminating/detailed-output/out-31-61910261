@@ -1,0 +1,31 @@
+2024-10-05 14:35:01: /home/tudor/AutoIG/scripts/wrapper.py 31 1 61910261 dummy -Ag 1 -Tg 9 -Xg 7 -Zg 2 -ground_coverage 17 -avg_height_ratio 91
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:35:01: Creating generator instance: ./detailed-output/gen-inst-31.param
+2024-10-05 14:35:01: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-31.param --eprime-param=./detailed-output/gen-inst-31.eprime-param
+2024-10-05 14:35:02: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-31.eprime-param -out-aux ./detailed-output/gen-inst-31.aux -out-minion ./detailed-output/gen-inst-31.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-05 14:35:02: minion ./detailed-output/gen-inst-31.minion -solsout ./detailed-output/gen-inst-31.solution -randomseed 61910261 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:35:02: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-31.aux -out-solution ./detailed-output/gen-inst-31.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-31.solution
+2024-10-05 14:35:02: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-31.param --eprime-solution=./detailed-output/gen-inst-31.solution.eprime-param --essence-solution ./detailed-output/gen-inst-31.solution.param
+
+
+2024-10-05 14:35:02: 
+Generator results: genInstance=gen-inst-31, genStatus=sat, genSRTime=0.29807019233703613, genSolverTime=0.026643037796020508
+conjure autoig --remove-aux ./detailed-output/inst-31-61910261.param ./detailed-output/inst-31-61910261.auxRemoved.param
+conjure pretty ./detailed-output/inst-31-61910261.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-31-61910261.dzn generated
+
+
+runsolver -w ./detailed-output/inst-31-61910261.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-31-61910261.dzn --output-mode dzn --output-objective -s
+C 1.7170884609222412 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.799266, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-31-61910261.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-31-61910261.dzn --output-mode dzn --output-objective -s
+C 1.7161507606506348 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.77563, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+True
+
+Borda score for base and favoured solvers: 
+{'complete': (0.5001365620353098, 0.49986343796469024), 'incomplete': (0.5001365620353098, 0.49986343796469024)}
+{'totalTime': 4.3859522342681885, 'genResults': {'instance': 'gen-inst-31.param', 'status': 'sat', 'seed': 61910261, 'SRTime': 0.29807019233703613, 'solverTime': 0.026643037796020508}, 'instanceResults': {'instance': './detailed-output/inst-31-61910261.dzn', 'status': 'ok', 'score': -0.9994539010115396, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 1.7161507606506348, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.77563, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 1.7170884609222412, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.799266, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}}}, 'status': 'ok', 'score': -0.9994539010115396}
+-0.9994539010115396 4.39

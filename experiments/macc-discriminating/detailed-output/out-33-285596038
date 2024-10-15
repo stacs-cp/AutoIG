@@ -1,0 +1,15 @@
+2024-10-05 14:38:55: /home/tudor/AutoIG/scripts/wrapper.py 33 1 285596038 dummy -Ag 2 -Tg 9 -Xg 4 -Zg 2 -ground_coverage 49 -avg_height_ratio 61
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:38:55: Creating generator instance: ./detailed-output/gen-inst-33.param
+2024-10-05 14:38:55: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-33.param --eprime-param=./detailed-output/gen-inst-33.eprime-param
+2024-10-05 14:38:55: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-33.eprime-param -out-aux ./detailed-output/gen-inst-33.aux -out-minion ./detailed-output/gen-inst-33.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-05 14:38:56: minion ./detailed-output/gen-inst-33.minion -solsout ./detailed-output/gen-inst-33.solution -randomseed 285596038 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2024-10-05 14:38:56: 
+Generator results: genInstance=gen-inst-33, genStatus=unsat, genSRTime=0.23694109916687012, genSolverTime=0.0013241767883300781
+No instance file generated. Exitting...
+{'totalTime': 0.4521448612213135, 'genResults': {'instance': 'gen-inst-33.param', 'status': 'unsat', 'seed': 285596038, 'SRTime': 0.23694109916687012, 'solverTime': 0.0013241767883300781}, 'instanceResults': {}, 'status': 'genunsat', 'score': 'Inf'}
+Inf 0.45

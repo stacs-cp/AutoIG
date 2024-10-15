@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# Yuck launcher script
+
+declare -r SCRIPT_PATH="$(realpath "$0")"
+declare -r APP_HOME="$(realpath "$(dirname "$SCRIPT_PATH")"/..)"
+declare -r LIB_DIR="$(realpath "$APP_HOME/lib")"
+declare -r YUCK_JAVA_OPTS="-Djava.lang.Integer.IntegerCache.high=10000 -XX:+UseParallelGC"
+declare -r CLASS_PATH="$LIB_DIR/scala-library-2.13.5.jar:$LIB_DIR/rtree-1.0.5.jar:$LIB_DIR/scopt_2.13-3.7.1.jar:$LIB_DIR/spray-json_2.13-1.3.5.jar:$LIB_DIR/jgrapht-core-1.4.0.jar:$LIB_DIR/scala-parser-combinators_2.13-1.1.2.jar:$LIB_DIR/jheaps-0.11.jar:$LIB_DIR/yuck-20210501.jar"
+declare -r MAIN_CLASS="yuck.flatzinc.runner.FlatZincRunner"
+
+java $YUCK_JAVA_OPTS $JAVA_OPTS -cp "$CLASS_PATH" $MAIN_CLASS "$@"

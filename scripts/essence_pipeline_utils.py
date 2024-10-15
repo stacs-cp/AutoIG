@@ -102,11 +102,11 @@ def savilerow_translate(
         + flags
     )
     log(cmd)
-
+    
     start = time.time()
     cmdOutput, returnCode = run_cmd(cmd)
     SRTime = time.time() - start
-
+    
     status = "SRok"
     # if returnCode !=0, check if it is because SR is out of memory or timeout
     if (
@@ -386,10 +386,14 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
         eprimeModelFile,
         instFile,
         solver,
-        setting["SRTimeLimit"],
-        setting["SRFlags"],
-        setting["solverTimeLimit"],
-        setting["solverFlags"],
+        # setting["SRTimeLimit"],
+        # setting["SRFlags"],
+        # setting["solverTimeLimit"],
+        # setting["solverFlags"],
+        3,
+        "",
+        0,
+        "",
         seed,
     )
     lsTempFiles.extend(tempFiles)
@@ -481,7 +485,8 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
 
         # parse SR info file
         infoStatus, SRTime, solverTime = parse_SR_info_file(
-            infoFile, timelimit=setting["solverTimeLimit"]
+            infoFile, timelimit=3
+            #  timelimit=setting["solverTimeLimit"]
         )
         if status != "solverCrash":
             status = infoStatus

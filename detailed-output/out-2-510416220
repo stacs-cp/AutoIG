@@ -1,0 +1,13 @@
+2024-10-03 17:52:05: /home/tudor/AutoIG/scripts/wrapper.py 2 1 510416220 dummy -Ag 1 -Tg 10 -Xg 9 -Zg 3 -ground_coverage 82 -avg_height_ratio 17
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2024-10-03 17:52:05: Creating generator instance: ./detailed-output/gen-inst-2.param
+2024-10-03 17:52:05: minion ./detailed-output/gen-inst-2.minion -solsout ./detailed-output/gen-inst-2.solution -randomseed 510416220 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2024-10-03 17:52:10: 
+Generator results: genInstance=gen-inst-2, genStatus=solverTimeOut, genSRTime=0, genSolverTime=5.025890827178955
+No instance file generated. Exitting...
+{'totalTime': 5.0263447761535645, 'genResults': {'instance': 'gen-inst-2.param', 'status': 'solverTimeOut', 'seed': 510416220, 'SRTime': 0, 'solverTime': 5.025890827178955}, 'instanceResults': {}, 'status': 'gensolverTimeOut', 'score': 2}
+2 5.03

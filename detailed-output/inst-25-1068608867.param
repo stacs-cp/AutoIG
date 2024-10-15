@@ -1,0 +1,15 @@
+language Essence 1.3
+
+letting A be 2
+letting T be 14
+letting X be 4
+letting Y be 4
+letting Z be 3
+letting building be
+        [[0, 0, 0, 0; int(0..3)], [0, 1, 2, 0; int(0..3)], [0, 1, 0, 0; int(0..3)], [0, 0, 0, 0; int(0..3)]; int(0..3)]
+$ Visualisation for building
+$ 0 0 0 0
+$ 0 1 2 0
+$ 0 1 0 0
+$ 0 0 0 0
+

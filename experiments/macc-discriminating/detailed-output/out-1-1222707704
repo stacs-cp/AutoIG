@@ -1,0 +1,45 @@
+2024-10-05 14:32:08: /home/tudor/AutoIG/scripts/wrapper.py 1 1 1222707704 dummy -Ag 2 -Tg 17 -Xg 3 -Zg 3 -ground_coverage 63 -avg_height_ratio 14
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:32:08: Creating generator instance: ./detailed-output/gen-inst-1.param
+2024-10-05 14:32:08: minion ./detailed-output/gen-inst-1.minion -solsout ./detailed-output/gen-inst-1.solution -randomseed 1222707704 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:32:08: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-1.aux -out-solution ./detailed-output/gen-inst-1.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-1.solution
+2024-10-05 14:32:08: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-solution=./detailed-output/gen-inst-1.solution.eprime-param --essence-solution ./detailed-output/gen-inst-1.solution.param
+
+
+2024-10-05 14:32:08: 
+Generator results: genInstance=gen-inst-1, genStatus=sat, genSRTime=0, genSolverTime=0.04173779487609863
+conjure autoig --remove-aux ./detailed-output/inst-1-1222707704.param ./detailed-output/inst-1-1222707704.auxRemoved.param
+conjure pretty ./detailed-output/inst-1-1222707704.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-1-1222707704.dzn generated
+
+
+runsolver -w ./detailed-output/inst-1-1222707704.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-1-1222707704.dzn --output-mode dzn --output-objective -s
+0.98: 22.0
+0.98: 20.0
+0.99: 19.0
+0.99: 18.0
+1.00: 17.0
+1.00: 16.0
+1.00: 15.0
+1.01: 13.0
+1.01: 8.0
+1.02: 7.0
+1.02: 6.0
+1.02: 5.0
+1.07: 4.0
+1.07: 3.0
+1.07: 2.0
+C 1.118211030960083 {'objs': [(0.9759554862976074, 22.0), (0.982600212097168, 20.0), (0.9862668514251709, 19.0), (0.9907698631286621, 18.0), (0.9950528144836426, 17.0), (0.9989781379699707, 16.0), (1.0030391216278076, 15.0), (1.0068585872650146, 13.0), (1.012162446975708, 8.0), (1.0160877704620361, 7.0), (1.020392894744873, 6.0), (1.0245237350463867, 5.0), (1.0650157928466797, 4.0), (1.0686125755310059, 3.0), (1.0725505352020264, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.268995, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-1-1222707704.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-1-1222707704.dzn --output-mode dzn --output-objective -s
+0.45: 3.0
+0.50: 2.0
+C 0.6192200183868408 {'objs': [(0.45180320739746094, 3.0), (0.49778318405151367, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.270411, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+True
+
+Instance is too easy for the base solver. Quitting...
+{'totalTime': 2.1916873455047607, 'genResults': {'instance': 'gen-inst-1.param', 'status': 'sat', 'seed': 1222707704, 'SRTime': 0, 'solverTime': 0.04173779487609863}, 'instanceResults': {'instance': './detailed-output/inst-1-1222707704.dzn', 'status': 'baseTooEasy', 'score': 0, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 0.6192200183868408, 'extra': {'objs': [(0.45180320739746094, 3.0), (0.49778318405151367, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.270411, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 1.118211030960083, 'extra': {'objs': [(0.9759554862976074, 22.0), (0.982600212097168, 20.0), (0.9862668514251709, 19.0), (0.9907698631286621, 18.0), (0.9950528144836426, 17.0), (0.9989781379699707, 16.0), (1.0030391216278076, 15.0), (1.0068585872650146, 13.0), (1.012162446975708, 8.0), (1.0160877704620361, 7.0), (1.020392894744873, 6.0), (1.0245237350463867, 5.0), (1.0650157928466797, 4.0), (1.0686125755310059, 3.0), (1.0725505352020264, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.268995, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}}}, 'status': 'baseTooEasy', 'score': 0}
+0 2.19

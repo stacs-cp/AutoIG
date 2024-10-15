@@ -1,0 +1,23 @@
+2024-10-05 13:19:24: /home/tudor/AutoIG/scripts/wrapper.py 21 1 735527639 dummy -Ag 2 -Tg 17 -Xg 3 -Zg 3 -ground_coverage 59 -avg_height_ratio 21
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-graded'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2024-10-05 13:19:24: Creating generator instance: ./detailed-output/gen-inst-21.param
+2024-10-05 13:19:24: minion ./detailed-output/gen-inst-21.minion -solsout ./detailed-output/gen-inst-21.solution -randomseed 735527639 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 13:19:23: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-21.aux -out-solution ./detailed-output/gen-inst-21.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-21.solution
+2024-10-05 13:19:23: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-21.param --eprime-solution=./detailed-output/gen-inst-21.solution.eprime-param --essence-solution ./detailed-output/gen-inst-21.solution.param
+
+
+2024-10-05 13:19:24: 
+Generator results: genInstance=gen-inst-21, genStatus=sat, genSRTime=0, genSolverTime=-0.6548919677734375
+conjure autoig --remove-aux ./detailed-output/inst-21-735527639.param ./detailed-output/inst-21-735527639.auxRemoved.param
+conjure pretty ./detailed-output/inst-21-735527639.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-21-735527639.dzn generated
+
+
+runsolver -w ./detailed-output/inst-21-735527639.dzn.chuffed.runsolver -d 2 --wall-clock-limit 5 --vsize-limit 8192 minizinc --time-limit 5000 --solver chuffed -i  -f problem.mzn ./detailed-output/inst-21-735527639.dzn --output-mode dzn --output-objective -s
+0.47: 3.0
+0.52: 2.0
+C 0.619774341583252 {'objs': [(0.4745674133300781, 3.0), (0.5215780735015869, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.288199, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+{'totalTime': 0.40337514877319336, 'genResults': {'instance': 'gen-inst-21.param', 'status': 'sat', 'seed': 735527639, 'SRTime': 0, 'solverTime': -0.6548919677734375}, 'instanceResults': {'instance': './detailed-output/inst-21-735527639.dzn', 'status': 'ok', 'score': -1, 'results': {'main': {'runs': [{'seed': None, 'status': 'C', 'time': 0.619774341583252, 'extra': {'objs': [(0.4745674133300781, 3.0), (0.5215780735015869, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.288199, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}, 'oracle': {'runs': []}}}, 'status': 'ok', 'score': -1}
+-1 0.4

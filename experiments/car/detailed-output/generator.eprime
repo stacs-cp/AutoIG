@@ -1,0 +1,512 @@
+language ESSENCE' 1.0
+
+given np_cars_plus: int(1..200)
+given np_classes: int(1..200)
+given np_options: int(1..200)
+letting np_cars be min([200, np_classes + np_cars_plus; int(1..2)])
+find n_cars: int(1..200)
+find n_classes: int(1..200)
+find n_options: int(1..200)
+where np_cars >= np_classes
+given quantity_range_min: int(1..200)
+given quantity_range_delta: int(0..199)
+find quantity_Function1DPartial_Flags: matrix indexed by [int(1..200)] of bool
+find quantity_Function1DPartial_Values: matrix indexed by [int(1..200)] of int(1..200)
+where quantity_range_min * np_classes <= np_cars
+where (quantity_range_min + quantity_range_delta) * np_classes >= np_cars
+given maxcars_range_min: int(1..10)
+given maxcars_range_delta: int(0..9)
+find maxcars_Function1DPartial_Flags: matrix indexed by [int(1..200)] of bool
+find maxcars_Function1DPartial_Values: matrix indexed by [int(1..200)] of int(1..10)
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_delta: int(0..9)
+find blksize_delta_Function1DPartial_Flags: matrix indexed by [int(1..200)] of bool
+find blksize_delta_Function1DPartial_Values: matrix indexed by [int(1..200)] of int(1..10)
+given usage_card_min: int(0..1000)
+given usage_card_delta: int(0..99)
+find usage_RelationAsMatrix: matrix indexed by [int(1..200), int(1..200)] of bool
+where usage_card_min + usage_card_delta <= np_classes * np_options
+where usage_card_min >= np_options
+where usage_card_min >= np_classes
+branching on
+    [n_cars, n_classes, n_options, quantity_Function1DPartial_Flags, quantity_Function1DPartial_Values,
+     maxcars_Function1DPartial_Flags, maxcars_Function1DPartial_Values, blksize_delta_Function1DPartial_Flags,
+     blksize_delta_Function1DPartial_Values, usage_RelationAsMatrix]
+such that
+    allDiff([200, np_classes + np_cars_plus; int(1..2)]),
+    n_cars = np_cars,
+    n_classes = np_classes,
+    n_options = np_options,
+    and([q1 >= 1 /\ q1 <= np_classes <-> quantity_Function1DPartial_Flags[q1] | q1 : int(1..200)]),
+    and([quantity_Function1DPartial_Flags[q28] -> quantity_Function1DPartial_Values[q28] >= quantity_range_min
+             | q28 : int(1..200)]),
+    and([quantity_Function1DPartial_Flags[q29] ->
+         quantity_Function1DPartial_Values[q29] <= quantity_range_min + quantity_range_delta
+             | q29 : int(1..200)]),
+    sum([quantity_Function1DPartial_Values[quant] | quant : int(1..200), quant <= np_classes]) = np_cars,
+    and([quantity_Function1DPartial_Flags[quant] | quant : int(1..200), quant <= np_classes]),
+    and([q2 >= 1 /\ q2 <= np_options <-> maxcars_Function1DPartial_Flags[q2] | q2 : int(1..200)]),
+    and([maxcars_Function1DPartial_Flags[q22] -> maxcars_Function1DPartial_Values[q22] >= maxcars_range_min
+             | q22 : int(1..200)]),
+    and([maxcars_Function1DPartial_Flags[q23] ->
+         maxcars_Function1DPartial_Values[q23] <= maxcars_range_min + maxcars_range_delta
+             | q23 : int(1..200)]),
+    and([q3 >= 1 /\ q3 <= np_options <-> blksize_delta_Function1DPartial_Flags[q3] | q3 : int(1..200)]),
+    and([blksize_delta_Function1DPartial_Flags[q24] ->
+         blksize_delta_Function1DPartial_Values[q24] >= blksize_delta_range_min
+             | q24 : int(1..200)]),
+    and([blksize_delta_Function1DPartial_Flags[q25] ->
+         blksize_delta_Function1DPartial_Values[q25] <= blksize_delta_range_min + blksize_delta_range_delta
+             | q25 : int(1..200)]),
+    sum([toInt(usage_RelationAsMatrix[q31_1, q31_2]) | q31_1 : int(1..200), q31_2 : int(1..200)]) >= usage_card_min,
+    sum([toInt(usage_RelationAsMatrix[q33_1, q33_2]) | q33_1 : int(1..200), q33_2 : int(1..200)]) <=
+    usage_card_min + usage_card_delta,
+    and([usage_RelationAsMatrix[q26_1, q26_2] -> q26_1 <= np_classes | q26_1 : int(1..200), q26_2 : int(1..200)]),
+    and([usage_RelationAsMatrix[q27_1, q27_2] -> q27_2 <= np_options | q27_1 : int(1..200), q27_2 : int(1..200)]),
+    and([sum([toInt(usage_RelationAsMatrix[q18_1, q18_2]) | q18_1 : int(1..200), q18_2 : int(1..200), q18_2 = option])
+         >= 1
+             | option : int(1..200), option <= np_options]),
+    and([sum([toInt(usage_RelationAsMatrix[q21_1, q21_2]) | q21_1 : int(1..200), q21_2 : int(1..200), q21_1 = class]) >=
+         1   | class : int(1..200), class <= np_classes]),
+    and([quantity_Function1DPartial_Flags[q5] = false -> quantity_Function1DPartial_Values[q5] = 1 | q5 : int(1..200)]),
+    and([maxcars_Function1DPartial_Flags[q8] = false -> maxcars_Function1DPartial_Values[q8] = 1 | q8 : int(1..200)]),
+    and([blksize_delta_Function1DPartial_Flags[q11] = false -> blksize_delta_Function1DPartial_Values[q11] = 1
+             | q11 : int(1..200)]),
+    sum([sum([toInt(usage_RelationAsMatrix[q14, q15]) | q15 : int(1..200)]) | q14 : int(1..200)]) <= 40000
+
+$ Conjure's
+$ {"finds":
+$      [{"Name": "n_cars"}, {"Name": "n_classes"}, {"Name": "n_options"}, {"Name": "quantity"}, {"Name": "maxcars"},
+$       {"Name": "blksize_delta"}, {"Name": "usage"}],
+$  "givens":
+$      [{"Name": "np_cars_plus"}, {"Name": "np_classes"}, {"Name": "np_options"}, {"Name": "quantity_range_min"},
+$       {"Name": "quantity_range_delta"}, {"Name": "maxcars_range_min"}, {"Name": "maxcars_range_delta"},
+$       {"Name": "blksize_delta_range_min"}, {"Name": "blksize_delta_range_delta"}, {"Name": "usage_card_min"},
+$       {"Name": "usage_card_delta"}],
+$  "enumGivens": [], "enumLettings": [],
+$  "lettings":
+$      [[{"Name": "np_cars"},
+$        {"Op":
+$             {"MkOpMin":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 200]}},
+$                             {"Op":
+$                                  {"MkOpSum":
+$                                       {"AbstractLiteral":
+$                                            {"AbsLitMatrix":
+$                                                 [{"DomainInt":
+$                                                       [{"TagInt": []},
+$                                                        [{"RangeBounded":
+$                                                              [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                               {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                  [{"Reference":
+$                                                        [{"Name": "np_classes"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "np_classes"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 200]}}]}]]},
+$                                                               {"NoRegion": []}]}]},
+$                                                   {"Reference":
+$                                                        [{"Name": "np_cars_plus"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "np_cars_plus"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 200]}}]}]]},
+$                                                               {"NoRegion": []}]}]}]]}}}}]}}}}]],
+$  "unnameds": [], "strategyQ": {"PickFirst": []}, "strategyA": {"Compact": []},
+$  "trailCompact":
+$      [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 2], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 2], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 2],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+$  "nameGenState": [["q", 34]], "nbExtraGivens": 0,
+$  "representations":
+$      [[{"Name": "np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_cars"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity"},
+$        {"DomainFunction":
+$             [{"Function_1DPartial": []}, [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}],
+$       [{"Name": "quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "maxcars"},
+$        {"DomainFunction":
+$             [{"Function_1DPartial": []}, [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta"},
+$        {"DomainFunction":
+$             [{"Function_1DPartial": []}, [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "usage"},
+$        {"DomainRelation":
+$             [{"Relation_AsMatrix": []},
+$              [{"SizeAttr_MaxSize": {"Constant": {"ConstantInt": [{"TagInt": []}, 40000]}}}, []],
+$              [{"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$               {"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]]}],
+$       [{"Name": "usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}]],
+$  "representationsTree":
+$      [[{"Name": "blksize_delta"},
+$        [{"rootLabel": {"Function_1DPartial": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "blksize_delta_range_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "blksize_delta_range_min"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "maxcars"},
+$        [{"rootLabel": {"Function_1DPartial": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "maxcars_range_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "maxcars_range_min"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "n_cars"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "n_classes"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "n_options"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "np_cars_plus"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "np_classes"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "np_options"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "quantity"},
+$        [{"rootLabel": {"Function_1DPartial": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "quantity_range_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "quantity_range_min"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "usage"},
+$        [{"rootLabel": {"Relation_AsMatrix": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "usage_card_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "usage_card_min"}, [{"rootLabel": null, "subForest": []}]]],
+$  "originalDomains":
+$      [[{"Name": "np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_cars"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "quantity"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}],
+$       [{"Name": "maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Partial", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}],
+$       [{"Name": "usage"},
+$        {"DomainRelation":
+$             [[], [{"SizeAttr_MaxSize": {"Constant": {"ConstantInt": [{"TagInt": []}, 40000]}}}, []],
+$              [{"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$               {"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]]}]],
+$  "trailGeneralised":
+$      [[-5845231454875622958, -5985287022499712760], [8179796071364564764, 7986048153592653184],
+$       [2327804511562706561, -8438055240862190397], [-1519397908274975894, -3032933142638758249],
+$       [3764530410645599828, -5479735700954511055], [3026446721045418231, 424502262855914316],
+$       [3989852633666668269, -7875744263282651960], [-3010301460460470610, 8653330840829170894],
+$       [4679737878446789732, 6939626106196523904], [-3437638097578188820, -956218282269814846],
+$       [-8596260836250118737, -6203495174134066016], [-6140105091011452734, -8438055240862190397],
+$       [8928013178312565621, 8841260852496822807], [8027614164039837115, 4837763430325522529],
+$       [466095698381156148, -3561566788769875860], [-5678174078868406852, 7586663293770030506],
+$       [-7850617325311626529, -2586043888366186754], [5885787115155315663, -5333250486921717030],
+$       [-1917916829668264869, -956218282269814846], [-8469062254278316952, 285763211401439976],
+$       [1337182005592730261, -6743460011895401542], [-5170055253785693852, -1239812576490775130],
+$       [6795486798292948390, 3899555063004702015], [-8015726365638319620, -9185639995438315292],
+$       [4484230411349159778, 928842069021650320], [6041049802678424828, -6290253604435549106],
+$       [1515338707212360950, 3000376988535537904], [4034880571812889827, 4610637555578235671],
+$       [-5319294156165785384, -4328511389935113459], [-1302506119113961710, 2042814615510055991],
+$       [-4163047333968269738, -6799624112942606413], [-5857106722086515874, -4999966547631543041],
+$       [-3383516136217483671, -6878271665161425780], [8632384390623377553, 3746945942811506308],
+$       [-6173902321446160329, -529065349300756042], [3007402248694252990, 1344138131115265194],
+$       [-1683865122966093812, -5070434384638265463], [3009291884836296356, 4366246455475534332],
+$       [-3133372044777194009, -5070434384638265463], [-8202253664546866293, -3655390106678638843],
+$       [-2609552255759510456, -4665299386409247486], [-4617549461558986530, -6803816628398467330],
+$       [-6016669131360885746, 5685246232987057862], [7990467468876167530, -5511666821303114979],
+$       [2242629260542602716, -132587104696200616], [-3800984015601429413, -132587104696200616],
+$       [8269339358779844843, 8723387558668943603], [-5162592802618491140, -337129783894443649],
+$       [6926403340529008646, 3030060468247334083], [-2594146360003453520, -2538452912691721884],
+$       [-7212299646100771279, 4902454652685010326], [-2014041728345683492, -5098606358681221958],
+$       [-7020165986063809822, 5013629968343468437], [2425297363595301284, -6335332849490585060],
+$       [3506308915780214950, -1632734939625696888], [-2334261043909642788, 5719392857543620994],
+$       [7358261788124915618, -1309201265998348530], [1086003791501030447, 5032201493605264811],
+$       [2435086693944310244, -4813866208044429524], [-8273037379923392327, 790538751502349662],
+$       [-4573316198957261768, -3322645938977054890], [-3938612028271680370, 3814476990664977140],
+$       [-5106394728124179428, -5241902067999087840], [954655544626417078, -297063817660478092],
+$       [-70090117288938524, 648343704474251950], [1615563463620712950, -2476503874534980297],
+$       [-2742461275584981093, -1619378368329757425], [7243948955879960144, -5192431223232400489],
+$       [-7354562616665134890, -2947740522690449543], [-171932039004608648, 6806777648103450713],
+$       [-1607351006870838516, 8527937721822282592], [-684544418004189549, -7313105371941546120],
+$       [6377486379893732217, 7117548486692120298], [3758393459216072388, 8910194976825319025],
+$       [7245230958037911797, -440602885986662882], [-2638121226889701546, 6334693642278874495],
+$       [2988712821919822545, 820500983439198998], [-6604551487445290880, 6273736864496595545],
+$       [-5113379925669824681, -1690809011969342944], [135944821489640514, -8438055240862190397],
+$       [3710136164952915397, 7455012002125922213], [-83692828572680424, -334555294514462308],
+$       [3598084171857442268, -5914522633044144231], [2908588981065374484, -8794092897226253319],
+$       [8487800404411740449, -334555294514462308], [-4644577145552590621, 221005344689317274],
+$       [-6754311177801303510, -7617765695946726010], [6782036674763670219, 5667218961037641846],
+$       [8783455111455104930, 164597293112845587], [-3913492016642527600, 4458295487114854347],
+$       [-8396452076028911773, -1697890505873167416], [-4089270813356843646, -8438055240862190397],
+$       [-1001009811349720693, 5529205606242011613], [1893175243822041029, -5217099945111831219],
+$       [5198027117306746735, 8541562085482361151], [8477246682672735425, -5217099945111831219],
+$       [-3049928760383899416, 2816699043884852776], [5770255461239695535, 2488775636796053115],
+$       [4706980068464131192, -1719578005640102326], [893601171487142584, 167205287913056939],
+$       [6554575102551814444, 1328641836587894344], [4169962178081443840, -4792365381539076299],
+$       [331866282907794494, 4116320785688144742], [4407653060122476919, -8287502536827246554],
+$       [-7558951065869735277, -6003869778433181324], [8357081714214962596, 1903371496204083116],
+$       [5253893592666546364, -3638049677979805596], [-3789458209375740634, 1817013358743701518],
+$       [-1190206551625739344, -6896692816987640068], [1203963594618487076, 223649523333453128],
+$       [-2558459505136643204, 8944520740064761352], [6604408225515766806, -1527366369423892686],
+$       [1192882630006024320, -6179914978348871676], [2760493422222842848, 5877643060663877181],
+$       [-7257137020146597797, -2780256247135642029], [-1796460515472372500, -7660772440551895063],
+$       [-1373123812476874121, 8323808257271948399], [6574090821284902491, -5211368519735784350],
+$       [-6268652597449196101, 5563604575403439218], [-1401370313546350181, -732442075292150152],
+$       [-315574407954584200, 3980977052993071452], [-5021008029508510883, -8727780136599227682],
+$       [7206820872625928137, 3938682016136523628], [8451252367754524082, 1793719266840345592],
+$       [377911164456769823, 1332770519790274018], [2534077555790939347, -7139511019309856546],
+$       [8325639919246394544, 2775030573482922794]],
+$  "trailVerbose": [], "trailRewrites": []}

@@ -1,0 +1,35 @@
+2024-10-05 14:33:10: /home/tudor/AutoIG/scripts/wrapper.py 12 1 510416220 dummy -Ag 1 -Tg 10 -Xg 3 -Zg 2 -ground_coverage 20 -avg_height_ratio 65
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:33:10: Creating generator instance: ./detailed-output/gen-inst-12.param
+2024-10-05 14:33:10: minion ./detailed-output/gen-inst-12.minion -solsout ./detailed-output/gen-inst-12.solution -randomseed 510416220 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:33:10: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-12.aux -out-solution ./detailed-output/gen-inst-12.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-12.solution
+2024-10-05 14:33:10: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-12.param --eprime-solution=./detailed-output/gen-inst-12.solution.eprime-param --essence-solution ./detailed-output/gen-inst-12.solution.param
+
+
+2024-10-05 14:33:10: 
+Generator results: genInstance=gen-inst-12, genStatus=sat, genSRTime=0, genSolverTime=0.041727542877197266
+conjure autoig --remove-aux ./detailed-output/inst-12-510416220.param ./detailed-output/inst-12-510416220.auxRemoved.param
+conjure pretty ./detailed-output/inst-12-510416220.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-12-510416220.dzn generated
+
+
+runsolver -w ./detailed-output/inst-12-510416220.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-12-510416220.dzn --output-mode dzn --output-objective -s
+0.61: 6.0
+0.61: 5.0
+0.61: 4.0
+0.61: 3.0
+0.62: 2.0
+C 0.7169554233551025 {'objs': [(0.6057133674621582, 6.0), (0.6082587242126465, 5.0), (0.6110007762908936, 4.0), (0.6133086681365967, 3.0), (0.6156411170959473, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.175034, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-12-510416220.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-12-510416220.dzn --output-mode dzn --output-objective -s
+0.26: 3.0
+0.28: 2.0
+C 0.31847286224365234 {'objs': [(0.26399731636047363, 3.0), (0.277925968170166, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.168242, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+True
+
+Instance is too easy for the base solver. Quitting...
+{'totalTime': 1.4906237125396729, 'genResults': {'instance': 'gen-inst-12.param', 'status': 'sat', 'seed': 510416220, 'SRTime': 0, 'solverTime': 0.041727542877197266}, 'instanceResults': {'instance': './detailed-output/inst-12-510416220.dzn', 'status': 'baseTooEasy', 'score': 0, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 0.31847286224365234, 'extra': {'objs': [(0.26399731636047363, 3.0), (0.277925968170166, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.168242, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 0.7169554233551025, 'extra': {'objs': [(0.6057133674621582, 6.0), (0.6082587242126465, 5.0), (0.6110007762908936, 4.0), (0.6133086681365967, 3.0), (0.6156411170959473, 2.0)], 'flattenStatus': 'ok', 'flattenTime': 0.175034, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}}}, 'status': 'baseTooEasy', 'score': 0}
+0 1.49

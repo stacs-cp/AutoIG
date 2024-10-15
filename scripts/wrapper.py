@@ -159,7 +159,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
 
     # make final score
     if score != None:
-        return score
+        return score, get_results()
     # - otherwise, for each evaluation: if the run is too easy: score=-solverTime, if the run is graded: score=nEvaluations*-solverMinTime
     score = 0
     for i in range(len(lsSolverTime)):
@@ -1028,10 +1028,14 @@ def main():
 
     # evaluate the generated instance
     if modelType == "essence":
+        # MOD
         evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
+        
         score, instanceResults = globals()[evaluationFunctionName](
             instFile, seed, setting["evaluationSettings"]
         )
+    
+        
     else:
         # convert the generated instance into .dzn
         mznInstFile = instFile.replace(".param", ".dzn")

@@ -1,0 +1,36 @@
+2024-10-05 14:34:22: /home/tudor/AutoIG/scripts/wrapper.py 7 1 61910261 dummy -Ag 2 -Tg 9 -Xg 6 -Zg 2 -ground_coverage 14 -avg_height_ratio 83
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:34:22: Creating generator instance: ./detailed-output/gen-inst-7.param
+2024-10-05 14:34:22: minion ./detailed-output/gen-inst-7.minion -solsout ./detailed-output/gen-inst-7.solution -randomseed 61910261 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:34:22: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-7.aux -out-solution ./detailed-output/gen-inst-7.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-7.solution
+2024-10-05 14:34:22: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-7.param --eprime-solution=./detailed-output/gen-inst-7.solution.eprime-param --essence-solution ./detailed-output/gen-inst-7.solution.param
+
+
+2024-10-05 14:34:22: 
+Generator results: genInstance=gen-inst-7, genStatus=sat, genSRTime=0, genSolverTime=0.036012887954711914
+conjure autoig --remove-aux ./detailed-output/inst-7-61910261.param ./detailed-output/inst-7-61910261.auxRemoved.param
+conjure pretty ./detailed-output/inst-7-61910261.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-7-61910261.dzn generated
+
+
+runsolver -w ./detailed-output/inst-7-61910261.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-7-61910261.dzn --output-mode dzn --output-objective -s
+2.47: 9.0
+2.49: 8.0
+2.54: 7.0
+2.56: 6.0
+C 2.916548013687134 {'objs': [(2.4691076278686523, 9.0), (2.4898681640625, 8.0), (2.542121648788452, 7.0), (2.5639965534210205, 6.0)], 'flattenStatus': 'ok', 'flattenTime': 0.562347, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-7-61910261.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-7-61910261.dzn --output-mode dzn --output-objective -s
+1.01: 8.0
+1.75: 7.0
+1.84: 6.0
+S 3.130383253097534 {'objs': [(1.0084915161132812, 8.0), (1.7521710395812988, 7.0), (1.8363614082336426, 6.0)], 'flattenStatus': 'ok', 'flattenTime': 0.571395, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+False
+
+Borda score for base and favoured solvers: 
+{'complete': (0, 1), 'incomplete': (0.5826790856025911, 0.4173209143974089)}
+{'totalTime': 6.499590873718262, 'genResults': {'instance': 'gen-inst-7.param', 'status': 'sat', 'seed': 61910261, 'SRTime': 0, 'solverTime': 0.036012887954711914}, 'instanceResults': {'instance': './detailed-output/inst-7-61910261.dzn', 'status': 'ok', 'score': -99999, 'results': {'base': {'runs': [{'seed': None, 'status': 'S', 'time': 3.130383253097534, 'extra': {'objs': [(1.0084915161132812, 8.0), (1.7521710395812988, 7.0), (1.8363614082336426, 6.0)], 'flattenStatus': 'ok', 'flattenTime': 0.571395, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 2.916548013687134, 'extra': {'objs': [(2.4691076278686523, 9.0), (2.4898681640625, 8.0), (2.542121648788452, 7.0), (2.5639965534210205, 6.0)], 'flattenStatus': 'ok', 'flattenTime': 0.562347, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}}}, 'status': 'ok', 'score': -99999}
+-99999 6.5

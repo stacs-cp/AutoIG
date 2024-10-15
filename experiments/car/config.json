@@ -1,0 +1,20 @@
+{
+ "runDir": "/home/tudor/AutoIG/experiments/car",
+ "problemModel": "/home/tudor/AutoIG/data/models/car/car.essence",
+ "generatorModel": "/home/tudor/AutoIG/data/models/car/car_gen.essence",
+ "seed": 42,
+ "maxEvaluations": 300,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "5",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "graded",
+ "instanceValidTypes": "all",
+ "minSolverTime": 0,
+ "maxSolverTime": 5,
+ "nRunsPerInstance": 1,
+ "solver": "chuffed",
+ "solverFlags": "-f"
+}
