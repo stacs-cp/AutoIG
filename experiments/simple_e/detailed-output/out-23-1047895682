@@ -1,0 +1,21 @@
+2024-10-15 15:50:41: /AutoIG/scripts/wrapper.py 23 1 1047895682 dummy -A 131
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/simple_e/simple.essence', 'generatorFile': '/AutoIG/data/models/simple_e/simple_gen.essence', 'runDir': '/AutoIG/experiments/simple_e'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '.5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2024-10-15 15:50:41: Creating generator instance: ./detailed-output/gen-inst-23.param
+2024-10-15 15:50:41: minion ./detailed-output/gen-inst-23.minion -solsout ./detailed-output/gen-inst-23.solution -randomseed 1047895682 -timelimit .5 -varorder domoverwdeg -valorder random
+Traceback (most recent call last):
+  File "/AutoIG/scripts/wrapper.py", line 1100, in <module>
+    main()
+  File "/AutoIG/scripts/wrapper.py", line 975, in main
+    ) = solve_generator(
+        ^^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/generator.py", line 79, in solve_generator
+    genStatus, genSolverTime = run_minion(
+                               ^^^^^^^^^^^
+  File "/AutoIG/scripts/essence_pipeline_utils.py", line 197, in run_minion
+    raise Exception(cmdOutput)
+Exception: # Minion Version 2
+# Git version: "<unknown>"
+Did not understand the parameter to timelimit:.5
+

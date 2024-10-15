@@ -1,27 +1,27 @@
-2024-10-12 13:00:04: /home/tudor/AutoIG/scripts/wrapper.py 6 1 719061008 dummy -A 337
-{'generalSettings': {'experimentType': 'graded', 'modelFile': '//home/tudor/AutoIG/data/models/simple_e/simple.essence', 'generatorFile': '//home/tudor/AutoIG/data/models/simple_e/simple_gen.essence', 'runDir': '/home/tudor/AutoIG/experiments/simple_e'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+2024-10-15 15:41:18: /AutoIG/scripts/wrapper.py 6 1 719061008 dummy -A 337
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/simple_e/simple.essence', 'generatorFile': '/AutoIG/data/models/simple_e/simple_gen.essence', 'runDir': '/AutoIG/experiments/simple_e'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
 
 
-2024-10-12 13:00:04: Creating generator instance: ./detailed-output/gen-inst-6.param
-2024-10-12 13:00:04: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-6.param --eprime-param=./detailed-output/gen-inst-6.eprime-param
-2024-10-12 13:00:04: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-6.eprime-param -out-aux ./detailed-output/gen-inst-6.aux -out-minion ./detailed-output/gen-inst-6.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
-2024-10-12 13:00:05: minion ./detailed-output/gen-inst-6.minion -solsout ./detailed-output/gen-inst-6.solution -randomseed 719061008 -timelimit 5 -varorder domoverwdeg -valorder random
-2024-10-12 13:00:05: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-6.aux -out-solution ./detailed-output/gen-inst-6.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-6.solution
-2024-10-12 13:00:05: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-6.param --eprime-solution=./detailed-output/gen-inst-6.solution.eprime-param --essence-solution ./detailed-output/gen-inst-6.solution.param
+2024-10-15 15:41:18: Creating generator instance: ./detailed-output/gen-inst-6.param
+2024-10-15 15:41:18: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-6.param --eprime-param=./detailed-output/gen-inst-6.eprime-param
+2024-10-15 15:41:19: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-6.eprime-param -out-aux ./detailed-output/gen-inst-6.aux -out-minion ./detailed-output/gen-inst-6.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-15 15:41:20: minion ./detailed-output/gen-inst-6.minion -solsout ./detailed-output/gen-inst-6.solution -randomseed 719061008 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-15 15:41:20: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-6.aux -out-solution ./detailed-output/gen-inst-6.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-6.solution
+2024-10-15 15:41:20: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-6.param --eprime-solution=./detailed-output/gen-inst-6.solution.eprime-param --essence-solution ./detailed-output/gen-inst-6.solution.param
 
 
-2024-10-12 13:00:05: 
-Generator results: genInstance=gen-inst-6, genStatus=sat, genSRTime=0.20539307594299316, genSolverTime=0.027762889862060547
+2024-10-15 15:41:21: 
+Generator results: genInstance=gen-inst-6, genStatus=sat, genSRTime=0.8272523880004883, genSolverTime=0.08481788635253906
 
 
-2024-10-12 13:00:05: Solving ./detailed-output/inst-6-719061008.param...
+2024-10-15 15:41:21: Solving ./detailed-output/inst-6-719061008.param...
 
 
 ----------- With random seed 0th (719061008)
 
 Calling conjure
-2024-10-12 13:00:05: conjure solve ./problem.essence ./detailed-output/inst-6-719061008.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 3 " --solver-options " --rnd-seed 719061008 " --solver=chuffed
-2024-10-12 13:00:06: Using existing models.
+2024-10-15 15:41:21: conjure solve ./problem.essence ./detailed-output/inst-6-719061008.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 3 " --solver-options " --rnd-seed 719061008 " --solver=chuffed
+2024-10-15 15:41:23: Using existing models.
 Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-6-719061008.param
 Running minion for domain filtering.
 Running solver: chuffed
@@ -29,11 +29,11 @@ No solutions found.
 
 Waiting for ./detailed-output/problem-inst-6-719061008.eprime-info
 Renaming SR info file: ./detailed-output/problem-inst-6-719061008.eprime-info -> ./detailed-output/problem-inst-6-719061008-seed_719061008-chuffed.eprime-info
-2024-10-12 13:00:06: 
-Run results: solverType=chuffed, solver=chuffed, instance=inst-6-719061008, runId=0, runStatus=unsat, SRTime=0.042, solverTime=0.002
+2024-10-15 15:41:23: 
+Run results: solverType=chuffed, solver=chuffed, instance=inst-6-719061008, runId=0, runStatus=unsat, SRTime=0.101, solverTime=0.043
 
 unwanted instance type. Quitting!...
 
 Instance summary: instance=inst-6-719061008, status=unwantedType, meanSolverTime=0
-{'totalTime': 1.3350803852081299, 'genResults': {'instance': 'gen-inst-6.param', 'status': 'sat', 'seed': 719061008, 'SRTime': 0.20539307594299316, 'solverTime': 0.027762889862060547}, 'instanceResults': {'insttance': './detailed-output/inst-6-719061008.param', 'status': 'unwantedType', 'score': 1, 'results': {}}, 'status': 'unwantedType', 'score': 1}
-1 1.34
+{'totalTime': 4.30278754234314, 'genResults': {'instance': 'gen-inst-6.param', 'status': 'sat', 'seed': 719061008, 'SRTime': 0.8272523880004883, 'solverTime': 0.08481788635253906}, 'instanceResults': {'insttance': './detailed-output/inst-6-719061008.param', 'status': 'unwantedType', 'score': 1, 'results': {}}, 'status': 'unwantedType', 'score': 1}
+1 4.3
