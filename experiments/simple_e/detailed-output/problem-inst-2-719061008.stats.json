@@ -1,25 +1,18 @@
-{"computer": "2d781188c2f5",
+{"computer": "DESKTOP-P9AL3SM",
  "conjureVersion": "Conjure v2.5.1 (Repository version 03d6014e5 (2024-09-25 19:47:19 +0100))",
  "essence": "./problem.essence", "essenceParams": ["./detailed-output/inst-2-719061008.param"], "runsolverInfo": {},
  "savilerowInfo":
-<<<<<<< HEAD
-     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.156", "SolverNodes": "0",
-      "SolverSatisfiable": "0", "SolverTimeOut": "0", "SolverTotalTime": "0.01"},
-=======
-     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.106", "SolverNodes": "0",
-      "SolverSatisfiable": "0", "SolverTimeOut": "0", "SolverTotalTime": "0.044"},
->>>>>>> 106876148c99213309f44b1e3132f02caea5b277
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.039", "SolverNodes": "0",
+      "SolverSatisfiable": "0", "SolverTimeOut": "0", "SolverTotalTime": "0.002"},
  "savilerowLogs":
      {"exitCode": 0,
       "stdout":
           ["Created output file for domain filtering ./detailed-output/problem-inst-2-719061008.eprime-minion",
            "Created output file ./detailed-output/problem-inst-2-719061008.eprime-param.fzn",
+           "Solver exited with error code:0 and message:",
+           "[WARNING: the --time-out flag has recently been changed.The time-out is now provided in milliseconds instead of seconds]",
            "Created information file ./detailed-output/problem-inst-2-719061008.eprime-info"]},
  "savilerowOptions": ["-timelimit 1 "],
  "savilerowVersion": "Savile Row 1.9.1 (Repository Version: 2ac988043 (2021-09-10 10:51:58 +0100))",
- "solver": "chuffed", "solverOptions": [" --rnd-seed 719061008 "], "status": "OK",
-<<<<<<< HEAD
- "timestamp": "2024-10-16T14:36:30.859481719Z", "totalTime": 0.17, "useExistingModels": ["problem.eprime"]}
-=======
- "timestamp": "2024-10-15T15:41:03.505605958Z", "totalTime": 0.15, "useExistingModels": ["problem.eprime"]}
->>>>>>> 106876148c99213309f44b1e3132f02caea5b277
+ "solver": "chuffed", "solverOptions": ["-t 1000 --rnd-seed 719061008 -f"], "status": "OK",
+ "timestamp": "2024-10-16T15:17:15.28757572Z", "totalTime": 0.04, "useExistingModels": ["problem.eprime"]}

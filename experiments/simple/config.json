@@ -15,6 +15,9 @@
  "minSolverTime": 0,
  "maxSolverTime": 5,
  "nRunsPerInstance": 1,
- "solver": "chuffed",
- "solverFlags": "-f"
+ "SRTimeLimit": 1,
+ "SRFlags": "",
+ "solverTimeLimit": 1,
+ "solverFlags": "-f",
+ "solver": "chuffed"
 }

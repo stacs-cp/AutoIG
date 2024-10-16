@@ -387,12 +387,9 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
         instFile,
         solver,
         setting["SRTimeLimit"],
-        # setting["SRFlags"],
-        # setting["solverTimeLimit"],
-        # setting["solverFlags"],
-        "",
-        0,
-        "",
+        setting["SRFlags"],
+        setting["solverTimeLimit"],
+        setting["solverFlags"],
         seed,
     )
     lsTempFiles.extend(tempFiles)

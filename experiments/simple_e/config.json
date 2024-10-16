@@ -1,27 +1,23 @@
 {
-<<<<<<< HEAD
  "runDir": "/home/tudor/AutoIG/experiments/simple_e",
  "problemModel": "/home/tudor/AutoIG/data/models/simple_e/simple.essence",
  "generatorModel": "/home/tudor/AutoIG/data/models/simple_e/simple_gen.essence",
-=======
- "runDir": "/AutoIG/experiments/simple_e",
- "problemModel": "/AutoIG/data/models/simple_e/simple.essence",
- "generatorModel": "/AutoIG/data/models/simple_e/simple_gen.essence",
->>>>>>> 106876148c99213309f44b1e3132f02caea5b277
  "seed": 42,
  "maxEvaluations": 180,
  "nCores": 1,
  "genSRTimeLimit": 300,
  "genSRFlags": "-S0 -no-bound-vars",
  "genSolver": "minion",
- "genSolverTimeLimit": ".5",
+ "genSolverTimeLimit": "5",
  "genSolverFlags": "-varorder domoverwdeg -valorder random",
  "instanceSetting": "graded",
  "instanceValidTypes": "all",
  "minSolverTime": 0,
  "maxSolverTime": 5,
  "nRunsPerInstance": 1,
- "SRTimeLimit": 10,
- "solver": "chuffed",
- "solverFlags": "-f"
+ "SRTimeLimit": 1,
+ "SRFlags": "",
+ "solverTimeLimit": 1,
+ "solverFlags": "-f",
+ "solver": "chuffed"
 }
