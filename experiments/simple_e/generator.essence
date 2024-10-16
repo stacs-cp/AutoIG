@@ -1,12 +1,5 @@
-given a : int 
-letting xDomain be domain int(-3..30)
-letting yDomain be domain int(0..6)
-letting zDomain be domain int(-10..100000)
+given A: int(1..1000)
 
-find x : xDomain
-find y : yDomain
-find z : zDomain
-
+find a: int(1..1000)
 such that
-    x = a,
-    z = x*y
+a = A

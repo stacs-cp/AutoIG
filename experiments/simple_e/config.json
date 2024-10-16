@@ -1,7 +1,7 @@
 {
  "runDir": "/home/tudor/AutoIG/experiments/simple_e",
- "problemModel": "/home/tudor/AutoIG/data/models/simple_e/simple_gen.essence",
- "generatorModel": "/home/tudor/AutoIG/data/models/simple_e/simple.essence",
+ "problemModel": "/home/tudor/AutoIG/data/models/simple_e/simple.essence",
+ "generatorModel": "/home/tudor/AutoIG/data/models/simple_e/simple_gen.essence",
  "seed": 42,
  "maxEvaluations": 180,
  "nCores": 1,
@@ -15,6 +15,7 @@
  "minSolverTime": 0,
  "maxSolverTime": 5,
  "nRunsPerInstance": 1,
+ "SRTimeLimit": 10,
  "solver": "chuffed",
  "solverFlags": "-f"
 }
