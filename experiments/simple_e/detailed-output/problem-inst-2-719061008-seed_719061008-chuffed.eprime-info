@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 SolverTotalTime:0.01
 SavileRowClauseOut:0
 SavileRowTotalTime:0.156
+=======
+SolverTotalTime:0.044
+SavileRowClauseOut:0
+SavileRowTotalTime:0.106
+>>>>>>> 106876148c99213309f44b1e3132f02caea5b277
 SolverSatisfiable:0
 SavileRowTimeOut:0
 SolverTimeOut:0
