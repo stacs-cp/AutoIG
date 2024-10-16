@@ -1,9 +1,9 @@
 {
  "runDir": "/home/tudor/AutoIG",
- "problemModel": "/home/tudor/AutoIG/data/models/macc/problem.mzn",
- "generatorModel": "/home/tudor/AutoIG/data/models/macc/generator-small.essence",
+ "problemModel": "/home/tudor/AutoIG/data/models/simple_e/simple_gen.essence",
+ "generatorModel": "/home/tudor/AutoIG/$AUTOIG/data/models/simple_e/simple.essence",
  "seed": 42,
- "maxEvaluations": 180,
+ "maxEvaluations": 300,
  "nCores": 1,
  "genSRTimeLimit": 300,
  "genSRFlags": "-S0 -no-bound-vars",

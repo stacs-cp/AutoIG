@@ -1,10 +1,10 @@
-2024-10-15 15:22:30: /home/tudor/AutoIG/scripts/wrapper.py 1 1 754252698 dummy -np_cars_plus 184 -np_classes 173 -np_options 64 -quantity_range_min 52 -quantity_range_delta 148 -maxcars_range_min 8 -maxcars_range_delta 9 -blksize_delta_range_min 8 -blksize_delta_range_delta 1 -usage_card_min 288 -usage_card_delta 19
-{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/car/car.essence', 'generatorFile': '/home/tudor/AutoIG/data/models/car/car_gen.essence', 'runDir': '/home/tudor/AutoIG/experiments/car'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+2024-10-15 16:57:40: /home/tudor/AutoIG/scripts/wrapper.py 1 1 754252698 dummy -np_cars_plus 184 -np_classes 173 -np_options 64 -quantity_range_min 52 -quantity_range_delta 148 -maxcars_range_min 8 -maxcars_range_delta 9 -blksize_delta_range_min 8 -blksize_delta_range_delta 1 -usage_card_min 288 -usage_card_delta 19
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/car/car_gen.essence', 'generatorFile': '/home/tudor/AutoIG/data/models/car/car.essence', 'runDir': '/home/tudor/AutoIG/experiments/car'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
 
 
-2024-10-15 15:22:30: Creating generator instance: ./detailed-output/gen-inst-1.param
-2024-10-15 15:22:30: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-param=./detailed-output/gen-inst-1.eprime-param
-2024-10-15 15:22:31: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-1.eprime-param -out-aux ./detailed-output/gen-inst-1.aux -out-minion ./detailed-output/gen-inst-1.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-15 16:57:40: Creating generator instance: ./detailed-output/gen-inst-1.param
+2024-10-15 16:57:40: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-param=./detailed-output/gen-inst-1.eprime-param
+2024-10-15 16:57:40: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-1.eprime-param -out-aux ./detailed-output/gen-inst-1.aux -out-minion ./detailed-output/gen-inst-1.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
 Traceback (most recent call last):
   File "/home/tudor/AutoIG/scripts/wrapper.py", line 1100, in <module>
     main()

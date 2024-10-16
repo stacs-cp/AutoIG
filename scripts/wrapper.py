@@ -905,6 +905,7 @@ def read_setting(settingFile):
 
     c["evaluationSettings"]["nEvaluations"] = setting["nRunsPerInstance"]
     c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
+    c["evaluationSettings"]["SRTimeLimit"] = setting["SRTimeLimit"]
     if setting["instanceSetting"] == "graded":
         c["evaluationSettings"]["solver"] = setting["solver"]
         if setting["solver"] in ["yuck"]:

@@ -1,7 +1,7 @@
 {
  "runDir": "/home/tudor/AutoIG/experiments/car",
- "problemModel": "/home/tudor/AutoIG/data/models/car/car.essence",
- "generatorModel": "/home/tudor/AutoIG/data/models/car/car_gen.essence",
+ "problemModel": "/home/tudor/AutoIG/data/models/car/car_gen.essence",
+ "generatorModel": "/home/tudor/AutoIG/data/models/car/car.essence",
  "seed": 42,
  "maxEvaluations": 300,
  "nCores": 1,

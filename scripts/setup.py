@@ -42,6 +42,7 @@ def read_config(args):
         "minSolverTime",
         "maxSolverTime",
         "nRunsPerInstance",
+        "SRTimeLimit",
     ]
 
     # read common settings for both graded/discriminating experiments
@@ -344,6 +345,9 @@ def main():
     )
     parser.add_argument(
         "--nRunsPerInstance", default=1, type=int, help="number of runs per instance"
+    )
+    parser.add_argument(
+        "--SRTimeLimit", default=1, type=int, help="savile row time limit"
     )
 
     # instance setting (for graded experiment only)
