@@ -170,6 +170,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
     return score, get_results()
 
 
+# flagvp: func responsible for discriminating essence problem models
 def evaluate_essence_instance_discriminating(instFile, seed, setting):
     # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
     # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
@@ -213,6 +214,7 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
         status = "ok"
         for solver in ["favouredSolver", "baseSolver"]:
             solverSetting = setting[solver]
+            print("setting SOLVER IS: ", setting[solver])
             print(
                 "\n\n---- With random seed "
                 + str(i)
@@ -224,7 +226,12 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
                 + solver
                 + ")"
             )
+            # flagvp: call_conjure_solve call for discriminating instance
+            # Has same parameters as call for graded instance
 
+            print("THE SETTING IS: ", setting)
+
+            # flagvp: breaks here on first call with the ORTols, which is the favoured solver 
             runStatus, SRTime, solverTime = call_conjure_solve(
                 essenceModelFile, eprimeModelFile, instFile, solverSetting, rndSeed
             )
@@ -922,16 +929,27 @@ def read_setting(settingFile):
         c["evaluationSettings"][
             "scoringMethod"
         ] = "complete"  # NOTE: incomplete scoring method is also supported by the code
+
+        #flagvp: I am not positive that the solverTimeLimit needs to be included here
+        #flagvp: may consider changing this to allow for specific time limits to be set
         baseSolverSettings = {
             "name": setting["baseSolver"],
             "solverMinTime": setting["minSolverTime"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["baseSolverFlags"],
+            #flag vp: changed after here
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
         favouredSolverSettings = {
             "name": setting["favouredSolver"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["favouredSolverFlags"],
+            #flag vp: changed after here
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
 
         c["evaluationSettings"]["baseSolver"] = baseSolverSettings
@@ -1064,6 +1082,7 @@ def main():
                 baseSolverFlags=es["baseSolver"]["solverFlags"],
                 baseMinTime=es["baseSolver"]["solverMinTime"],
                 favouredSolver=es["favouredSolver"]["name"],
+                #flagvp: where the favoured solver flags are added as sub d
                 favouredSolverFlags=es["favouredSolver"]["solverFlags"],
                 totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
                 initSeed=seed,
