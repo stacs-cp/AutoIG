@@ -426,7 +426,7 @@ $avg_height_ratio$`2`
 # 2024-10-23 17:30:20 UTC: Sample 6 configurations from model
 # 2024-10-23 17:30:20 UTC: Computing similarity of configurations .......... DONE
 # 2024-10-23 17:30:20 UTC: Configurations for the race n 2 (elite configurations listed first, then new configurations):
-   .ID. Ag Tg Xg Zg ground_coverage avg_height_ratio .PARENT.
+   .ID. Ag Tg Xg Zg ground_coverage avg_height_ratio .oPARENT.
 1     1  2 17  3  3              63               14       NA
 5     5  3 19  7  3              20               54       NA
 7     7  2  9  6  2              14               83       NA

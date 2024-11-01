@@ -64,6 +64,12 @@ solverInfo["kissat"] = {
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
 }
+solverInfo["ortools"] = {
+    "timelimitUnit": "ms",  # OR Tools time is in MS
+    "timelimitPrefix": "--time-limit ",
+    "randomSeedPrefix": "-r ",
+}
+
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
@@ -422,6 +428,7 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
     ):
         status = "solverCrash"
     elif returnCode != 0:
+        print("GETTING TO HERE")
         raise Exception(cmdOutput)
 
     baseFile = (

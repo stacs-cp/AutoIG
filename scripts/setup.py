@@ -122,6 +122,8 @@ def setup(config):
     # params.irace and repair.essence will be generated automatically by conjure
     generatorModelFile = os.path.join(config["runDir"], "generator.essence")
     repairModelFile = None
+    # this if wont be called because the generator model is already provided by us, it used to be an option a few years ago where we automatically generate the geenerator model 
+    # what we found is that the mechanism is a lot less effective, because automatically generating the generator is a difficult task, its still supported here but
     if "generatorModel" not in config:
         assert (
             problemModelType == "essence"
@@ -153,6 +155,7 @@ def setup(config):
         )
 
         # rename repair spec
+        # flagvp: this is the part where it will create a repair model 
         oldRepairModelFile = problemModelFile.replace(
             ".essence", "-instanceRepair.essence"
         )
