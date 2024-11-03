@@ -160,6 +160,7 @@ def setup(config):
         )
 
         # rename repair spec
+        # flagvp: this is the part where it will create a repair model 
         oldRepairModelFile = problemModelFile.replace(
             ".essence", "-instanceRepair.essence"
         )

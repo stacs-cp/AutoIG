@@ -225,6 +225,7 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
                 + ")"
             )
 
+            #flagvp: current source of the issue for discriminating instances
             runStatus, SRTime, solverTime = call_conjure_solve(
                 essenceModelFile, eprimeModelFile, instFile, solverSetting, rndSeed
             )
@@ -927,11 +928,17 @@ def read_setting(settingFile):
             "solverMinTime": setting["minSolverTime"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["baseSolverFlags"],
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
         favouredSolverSettings = {
             "name": setting["favouredSolver"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["favouredSolverFlags"],
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
 
         c["evaluationSettings"]["baseSolver"] = baseSolverSettings
