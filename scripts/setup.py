@@ -16,16 +16,17 @@ sys.path.append(scriptDir)
 import utils
 from utils import log
 
+
 def read_config(args):
     config = OrderedDict()
 
     generalSettings = [
         "runDir",
+        "problemModel",
         "generatorModel",
         "seed",
         "maxEvaluations",
         "nCores",
-        "problemFile",
     ]
     genSettings = [
         "genMaxInt",
@@ -57,7 +58,7 @@ def read_config(args):
         del config["genMaxInt"]
 
     # convert all paths into absolute paths
-    for name in ["runDir", "problemFile", "generatorModel"]:
+    for name in ["runDir", "problemModel", "generatorModel"]:
         if name in config:
             config[name] = os.path.abspath(config[name])
 
@@ -84,6 +85,7 @@ def read_config(args):
 
     return config
 
+
 def setup(config):
     log("Setting up the tuning: BEGIN")
 
@@ -98,23 +100,17 @@ def setup(config):
     with open(configFile, "wt") as f:
         json.dump(config, f, indent=1)
 
-    #qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
-    problem = config["problemFile"]+"/problem.essence"
-    generator = config["problemFile"]+"/generator.essence"
-    repair = config["problemFile"]+"/repair.essence"
-    print(problem)
-    print(generator)
-
     # get type of problem specification
-    problemModelType = problem.split(".")[-1]
+    problemModelType = os.path.basename(config["problemModel"]).split(".")[-1]
     assert problemModelType in [
         "mzn",
         "essence",
     ], "ERROR: problemModel must end with either .essence or .mzn"
+
     # copy problem model to runDir
     problemModelFile = os.path.join(config["runDir"], "problem." + problemModelType)
-    if os.path.abspath(problemModelFile) != os.path.abspath(problem):
-        copyfile(problem, problemModelFile)
+    if os.path.abspath(problemModelFile) != os.path.abspath(config["problemModel"]):
+        copyfile(config["problemModel"], problemModelFile)
 
     # remove .conjure-checksum file, otherwise error will be thrown if the script is run more than once
     try:
@@ -126,10 +122,7 @@ def setup(config):
     # params.irace and repair.essence will be generated automatically by conjure
     generatorModelFile = os.path.join(config["runDir"], "generator.essence")
     repairModelFile = None
-    # this if wont be called because the generator model is already provided by us, it used to be an option a few years ago where we automatically generate the geenerator model 
-    # what we found is that the mechanism is a lot less effective, because automatically generating the generator is a difficult task, its still supported here but
-    if not os.path.exists(generator):
-
+    if "generatorModel" not in config:
         assert (
             problemModelType == "essence"
         ), "ERROR: automated generator model is only supported if problemModel is written in Essence"
@@ -173,10 +166,9 @@ def setup(config):
 
     # a generator model is already provided
     else:
-
         # copy the generator model to runDir
-        if os.path.abspath(generatorModelFile) != os.path.abspath(generator):
-            copyfile(generator, generatorModelFile)
+        if os.path.abspath(config["generatorModel"]) != os.path.abspath(generatorModelFile):
+            copyfile(config["generatorModel"], generatorModelFile)
 
         # generate irace param files
         iraceParamFile = os.path.join(config["runDir"], "params.irace")
@@ -257,17 +249,12 @@ def setup(config):
     log(f"All settings are saved in {configFile}")
     log("Setting up the tuning: COMPLETED\n\n")
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="Set up a tuning experiment for automated instance generation"
     )
 
-    parser.add_argument(
-        "--problemFile",
-        required=True,
-        type=str,
-        help="path to file which has model and generator (and repair model)",
-    )
     # general settings
     parser.add_argument(
         "--runDir",
@@ -275,7 +262,12 @@ def main():
         type=str,
         help="directory where the experiment will be run",
     )
-
+    parser.add_argument(
+        "--problemModel",
+        required=True,
+        type=str,
+        help="path to a problem specification model in Essence/MiniZinc",
+    )
     parser.add_argument(
         "--generatorModel",
         default=None,
@@ -370,6 +362,7 @@ def main():
     
 
 
+
     # instance setting (for graded experiment only)
     parser.add_argument(
         "--solver",
@@ -413,5 +406,6 @@ def main():
 
     # set up tuning directory
     setup(config)
+
 
 main()
