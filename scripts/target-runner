@@ -34,7 +34,7 @@ fi
 if [ ! -f $outfn ] || [ "${reRun}" = "1" ]; then
     scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
     cmd="python3 -u $scriptDir/wrapper.py $@  > ${outfn} 2>&1"
-    echo $cmd
+    # echo $cmd
     eval $cmd
 fi
 

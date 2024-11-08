@@ -1,7 +1,7 @@
 {
  "runDir": "/home/tudor/AutoIG/experiments/simple_e",
- "problemModel": "/home/tudor/AutoIG/data/models/simple_e/simple.essence",
- "generatorModel": "/home/tudor/AutoIG/data/models/simple_e/simple_gen.essence",
+ "problemModel": "/home/tudor/AutoIG/data/models/car/problem.essence",
+ "generatorModel": "/home/tudor/AutoIG/data/models/car/generator.essence",
  "seed": 42,
  "maxEvaluations": 180,
  "nCores": 1,
