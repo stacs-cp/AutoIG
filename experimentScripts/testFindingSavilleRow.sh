@@ -9,4 +9,4 @@ if [ ! -d "/root/.local/bin/savilerow" ]; then
     exit 1
 fi
 
-echo "installation of minizinc was found :D"
+echo "installation of savillerow was found :D"
