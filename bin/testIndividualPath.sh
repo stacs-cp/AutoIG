@@ -23,5 +23,3 @@ if [ -f "/root/.local/bin/savilerow" ]; then
 else
     echo "Error: SR path '$TEST_PATH' does not exist."
 fi
-
-# savilerow
