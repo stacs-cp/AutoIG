@@ -1,14 +1,35 @@
-name: Bash Script
+name: Pull Request Run Test 
+
+# Made partially using guide: https://www.youtube.com/watch?v=dHuksXTLA2k
+
 on:
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  bash-script:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the codebase
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2 # should this be v3?
 
-      - name: Run Bash script
-        run: bash scripts/testScript/check.sh
+      # Run check script
+      - name: Run validation script
+        run: |
+
+          bash scripts/testScript/check.sh
+
+      # Reject or allow based on exit status
+      - name: Set PR Status
+        if: failure()
+        run: |
+          echo "Check.sh failed. Rejecting PR."
+          exit 1
+
+      - name: Allow PR
+        if: success()
+        run: |
+          echo "Check.sh passed. Allowing PR."
+          exit 0
