@@ -1,0 +1,21 @@
+name: test seeing push requests
+
+on:
+  push:
+    branches:
+      - test/maccGradedCase
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out code
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      # Run the script
+      - name: Testing push request recieved
+        run: |
+          echo "Push request found"
+          
