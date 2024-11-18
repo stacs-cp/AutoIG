@@ -5,6 +5,8 @@ name: Pull Request Run Test
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - test/maccGradedCase
 
 jobs:
   validate:
