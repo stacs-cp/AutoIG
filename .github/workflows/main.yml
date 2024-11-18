@@ -1,4 +1,4 @@
-name: Pull Request Run Test 
+name: Pull Request Run Test
 
 # Made partially using guide: https://www.youtube.com/watch?v=dHuksXTLA2k
 
@@ -13,13 +13,13 @@ jobs:
     steps:
       # Checkout the codebase
       - name: Checkout code
-        uses: actions/checkout@v2 # should this be v3?
+        uses: actions/checkout@v4
 
       # Run check script
       - name: Run validation script
         run: |
-
-          bash scripts/testScript/check.sh
+          bash scripts/testScript/test.sh
+          # bash scripts/testScript/check.sh
 
       # Reject or allow based on exit status
       - name: Set PR Status
