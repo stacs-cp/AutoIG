@@ -12,7 +12,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     container:
-      image: node:18
+      image: vincepick/autoigtemp:latest
       env:
         NODE_ENV: development
       ports:
@@ -26,9 +26,9 @@ jobs:
         uses: actions/checkout@v4
 
       # Pull the Docker image from DockerHub
-      - name: Pull Docker Image
-        run: |
-          docker pull vincepick/autoigtemp:latest
+      # - name: Pull Docker Image
+      #   run: |
+      #     docker pull vincepick/autoigtemp:latest
 
       # Run check script
       - name: Run validation script
