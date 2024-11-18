@@ -12,10 +12,9 @@ jobs:
     steps:
       # Check out code
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Run the script
       - name: Testing push request recieved
         run: |
           echo "Push request found"
-          
