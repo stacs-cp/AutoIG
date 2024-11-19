@@ -42,7 +42,7 @@ done
 # Final results
 if [[ "$testsRun" -eq "$testsPassed" ]]; then
     printf "\e[32mAll tests passed: %d/%d! :D\e[0m\n" "$testsPassed" "$testsRun"
-    exit 1
+    exit 0
 else
     printf "\e[31mSome cases failing, only %d/%d passed.\e[0m\n" "$testsPassed" "$testsRun"
     exit 1
