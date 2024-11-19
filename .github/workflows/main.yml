@@ -47,4 +47,4 @@ jobs:
         if: success()
         run: |
           echo "Check.sh passed. Allowing PR."
-          exit 1
+          exit 0
