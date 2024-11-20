@@ -6,7 +6,7 @@ on:
       - test/maccGradedCase
 
 jobs:
-  run-script:
+  testing push:
     runs-on: ubuntu-latest
 
     steps:
