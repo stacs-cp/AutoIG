@@ -6,7 +6,7 @@ on:
       - test/maccGradedCase
 
 jobs:
-  testing push:
+  testing_push:
     runs-on: ubuntu-latest
 
     steps:
