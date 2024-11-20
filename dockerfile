@@ -33,13 +33,15 @@ WORKDIR /
 # Clone into AutoIG directory
 RUN git clone -b build/update-docker https://github.com/stacs-cp/AutoIG.git
 
+WORKDIR /AutoIG
+
 
 RUN bash bin/install-savilerow.sh 
 RUN bash bin/install-mininzinc.sh
 RUN bash bin/install-runsolver.sh
 
 # Still need to install iRace
-RUN bash AutoIG/bin/install-irace.sh 
+RUN bash bin/install-irace.sh 
 RUN bash bin/install-ortools.sh
 
 
@@ -47,8 +49,6 @@ RUN bash bin/install-yuck.sh
 RUN bash bin/install-picat.sh
 
 
-# Move Conjure into AutoIG bin
-RUN mv conjure AutoIG/bin
 
 # Set the working directory
 WORKDIR /AutoIG
