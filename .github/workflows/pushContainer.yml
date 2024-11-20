@@ -1,0 +1,93 @@
+name: Pull Request Test for test/maccGradedCase
+
+# This is a workflow for building and publishing a dokcer container image to GHCR, is something I can work with later
+# Not what is needed right now
+
+# Taken directly from https://github.com/conjure-cp/conjure/blob/main/.github/workflows/publish-ghcr.yml then built off of
+on:
+  workflow_dispatch: # can be triggered manually
+  workflow_run: # run only when all tests pass
+    branches:
+      - test/maccGradedCase
+    workflows:
+      - Running all tests
+    types:
+      - completed
+  push: # for pushes to release tags (v*)
+    tags:
+      - "v*.*.*"
+  pull_request: # and for PRs that edit the docker files
+    paths:
+      - Dockerfile
+      - .github/workflows/publish-ghcr.yml
+        # other branches that want testing must create a PR
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test-and-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up buildx
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Log into the registry (not for PRs)
+      - name: Log into ghcr.io
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata for Docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Build Docker image locally
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false # Do not push the image for PRs
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Run tests inside the Docker container
+      - name: Run tests
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            ${{ steps.meta.outputs.tags[0] }} \
+            bash scripts/testScript/check.sh
+
+      # Push Docker image (only for non-PR events)
+      - name: Push Docker image
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

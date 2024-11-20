@@ -17,7 +17,7 @@ jobs:
         NODE_ENV: development
       ports:
         - 80
-      volumes: 
+      volumes:
         - my_docker_volume:/vo
 
     steps:
@@ -33,8 +33,8 @@ jobs:
       # Run check script
       - name: Run validation script
         run: |
-          bash scripts/testScript/test.sh
-          # bash scripts/testScript/check.sh
+          # bash scripts/testScript/test.sh
+          bash scripts/testScript/check.sh
 
       # Reject or allow based on exit status
       - name: Set PR Status
