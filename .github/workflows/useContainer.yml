@@ -1,12 +1,33 @@
 name: Run test using container
 
-on: push
+on:
+  push:
+    branches:
+      - test/maccGradedCase
 
 jobs:
   run-tests:
-    name: Run container
+    name: Run container and execute script
     runs-on: ubuntu-latest
-    container:
-      image: composer:latest
-      volumes:
-        - my-app
+
+    steps:
+      # Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # build container based on local dockerfile
+      - name: Build Docker image
+        run: |
+          docker build -t autoig-image:latest ${{ github.workspace }}/AutoIG
+
+      # try to container with volume
+      - name: Run container and execute script
+        run: |
+          docker run --rm \ 
+            --volume ${{ github.workspace }}/AutoIG:/AutoIG \
+            autoig-image:latest \
+            bash -c "
+            cd /AutoIG/scripts &&
+            . bin/set-path.sh &&
+            AUTOIG=\$(pwd) &&
+            ./check.sh"
