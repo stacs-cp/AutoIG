@@ -1,0 +1,84 @@
+MINION 3
+**VARIABLES**
+DISCRETE width_Function1D_00001 #
+{1..2}
+DISCRETE width_Function1D_00002 #
+{1..2}
+DISCRETE width_Function1D_00003 #
+{1..2}
+DISCRETE width_Function1D_00004 #
+{1..2}
+DISCRETE width_Function1D_00005 #
+{1..2}
+DISCRETE width_Function1D_00006 #
+{1..2}
+DISCRETE width_Function1D_00007 #
+{1..2}
+DISCRETE width_Function1D_00008 #
+{1..2}
+DISCRETE length_Function1D_00001 #
+{1..94}
+DISCRETE length_Function1D_00002 #
+{1..94}
+DISCRETE length_Function1D_00003 #
+{1..94}
+DISCRETE length_Function1D_00004 #
+{1..94}
+DISCRETE length_Function1D_00005 #
+{1..94}
+DISCRETE length_Function1D_00006 #
+{1..94}
+DISCRETE length_Function1D_00007 #
+{1..94}
+DISCRETE length_Function1D_00008 #
+{1..94}
+DISCRETE aux0 #Active-CSE: 3 occurrences of this expression or equivalent: ((length_Function1D_00001 * width_Function1D_00001) + (length_Function1D_00002 * width_Function1D_00002) + (length_Function1D_00003 * width_Function1D_00003) + (length_Function1D_00004 * width_Function1D_00004) + (length_Function1D_00005 * width_Function1D_00005) + (length_Function1D_00006 * width_Function1D_00006) + (length_Function1D_00007 * width_Function1D_00007) + (length_Function1D_00008 * width_Function1D_00008))
+{18..146}
+DISCRETE aux1 #(length_Function1D_00001 * width_Function1D_00001)
+{1..138}
+DISCRETE aux2 #(length_Function1D_00002 * width_Function1D_00002)
+{1..138}
+DISCRETE aux3 #(length_Function1D_00003 * width_Function1D_00003)
+{1..138}
+DISCRETE aux4 #(length_Function1D_00004 * width_Function1D_00004)
+{1..138}
+DISCRETE aux5 #(length_Function1D_00005 * width_Function1D_00005)
+{1..138}
+DISCRETE aux6 #(length_Function1D_00006 * width_Function1D_00006)
+{1..138}
+DISCRETE aux7 #(length_Function1D_00007 * width_Function1D_00007)
+{1..138}
+DISCRETE aux8 #(length_Function1D_00008 * width_Function1D_00008)
+{1..138}
+**SEARCH**
+PRINT[[width_Function1D_00001],[width_Function1D_00002],[width_Function1D_00003],[width_Function1D_00004],[width_Function1D_00005],[width_Function1D_00006],[width_Function1D_00007],[width_Function1D_00008],[length_Function1D_00001],[length_Function1D_00002],[length_Function1D_00003],[length_Function1D_00004],[length_Function1D_00005],[length_Function1D_00006],[length_Function1D_00007],[length_Function1D_00008]]
+VARORDER STATIC [width_Function1D_00001, width_Function1D_00002, width_Function1D_00003, width_Function1D_00004, width_Function1D_00005, width_Function1D_00006, width_Function1D_00007, width_Function1D_00008, length_Function1D_00001, length_Function1D_00002, length_Function1D_00003, length_Function1D_00004, length_Function1D_00005, length_Function1D_00006, length_Function1D_00007, length_Function1D_00008]
+**TUPLELIST**
+negativeSol 5 16
+1 1 1 2 1 2 1 1 16 17 18 21 1 25 1 1
+1 2 1 2 2 1 2 2 3 49 7 5 7 1 1 2
+2 1 1 2 1 1 1 2 1 2 5 64 1 1 1 3
+1 1 2 1 1 1 1 2 15 9 39 1 1 1 1 20
+2 1 1 1 2 1 1 2 33 3 2 1 23 1 1 13
+**CONSTRAINTS**
+w-inintervalset(aux1, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux2, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux3, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux4, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux5, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux6, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux7, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+w-inintervalset(aux8, [1,94,96,96,98,98,100,100,102,102,104,104,106,106,108,108,110,110,112,112,114,114,116,116,118,118,120,120,122,122,124,124,126,126,128,128,130,130,132,132,134,134,136,136,138,138])
+product(length_Function1D_00001, width_Function1D_00001, aux1)
+product(length_Function1D_00002, width_Function1D_00002, aux2)
+product(length_Function1D_00003, width_Function1D_00003, aux3)
+product(length_Function1D_00004, width_Function1D_00004, aux4)
+product(length_Function1D_00005, width_Function1D_00005, aux5)
+product(length_Function1D_00006, width_Function1D_00006, aux6)
+product(length_Function1D_00007, width_Function1D_00007, aux7)
+product(length_Function1D_00008, width_Function1D_00008, aux8)
+sumleq([aux1,aux2,aux3,aux4,aux5,aux6,aux7,aux8],aux0)
+sumgeq([aux1,aux2,aux3,aux4,aux5,aux6,aux7,aux8],aux0)
+negativetable([width_Function1D_00001,width_Function1D_00002,width_Function1D_00003,width_Function1D_00004,width_Function1D_00005,width_Function1D_00006,width_Function1D_00007,width_Function1D_00008,length_Function1D_00001,length_Function1D_00002,length_Function1D_00003,length_Function1D_00004,length_Function1D_00005,length_Function1D_00006,length_Function1D_00007,length_Function1D_00008
+],negativeSol)
+**EOF**

@@ -1,0 +1,231 @@
+MINION 3
+**VARIABLES**
+DISCRETE width_Function1D_00001 #
+{1..81}
+DISCRETE width_Function1D_00002 #
+{1..81}
+DISCRETE width_Function1D_00003 #
+{1..81}
+DISCRETE width_Function1D_00004 #
+{1..81}
+DISCRETE width_Function1D_00005 #
+{1..81}
+DISCRETE width_Function1D_00006 #
+{1..81}
+DISCRETE width_Function1D_00007 #
+{1..81}
+DISCRETE width_Function1D_00008 #
+{1..81}
+DISCRETE width_Function1D_00009 #
+{1..81}
+DISCRETE width_Function1D_00010 #
+{1..81}
+DISCRETE width_Function1D_00011 #
+{1..81}
+DISCRETE width_Function1D_00012 #
+{1..81}
+DISCRETE width_Function1D_00013 #
+{1..81}
+DISCRETE width_Function1D_00014 #
+{1..81}
+DISCRETE width_Function1D_00015 #
+{1..81}
+DISCRETE length_Function1D_00001 #
+{1..50}
+DISCRETE length_Function1D_00002 #
+{1..50}
+DISCRETE length_Function1D_00003 #
+{1..50}
+DISCRETE length_Function1D_00004 #
+{1..50}
+DISCRETE length_Function1D_00005 #
+{1..50}
+DISCRETE length_Function1D_00006 #
+{1..50}
+DISCRETE length_Function1D_00007 #
+{1..50}
+DISCRETE length_Function1D_00008 #
+{1..50}
+DISCRETE length_Function1D_00009 #
+{1..50}
+DISCRETE length_Function1D_00010 #
+{1..50}
+DISCRETE length_Function1D_00011 #
+{1..50}
+DISCRETE length_Function1D_00012 #
+{1..50}
+DISCRETE length_Function1D_00013 #
+{1..50}
+DISCRETE length_Function1D_00014 #
+{1..50}
+DISCRETE length_Function1D_00015 #
+{1..50}
+DISCRETE class_Function1D_00001 #
+{1..5}
+DISCRETE class_Function1D_00002 #
+{1..5}
+DISCRETE class_Function1D_00003 #
+{1..5}
+DISCRETE class_Function1D_00004 #
+{1..5}
+DISCRETE class_Function1D_00005 #
+{1..5}
+DISCRETE class_Function1D_00006 #
+{1..5}
+DISCRETE class_Function1D_00007 #
+{1..5}
+DISCRETE class_Function1D_00008 #
+{1..5}
+DISCRETE class_Function1D_00009 #
+{1..5}
+DISCRETE class_Function1D_00010 #
+{1..5}
+DISCRETE class_Function1D_00011 #
+{1..5}
+DISCRETE class_Function1D_00012 #
+{1..5}
+DISCRETE class_Function1D_00013 #
+{1..5}
+DISCRETE class_Function1D_00014 #
+{1..5}
+DISCRETE class_Function1D_00015 #
+{1..5}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker #
+{0..3}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001 #
+{1..4}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002 #
+{1..5}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001 #
+{1..4}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002 #
+{1..5}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001 #
+{1..4}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002 #
+{1..5}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001 #
+{1..81}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002 #
+{1..81}
+DISCRETE separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003 #
+{1..81}
+BOOL aux1 #Active-CSE: 4 occurrences of this expression or equivalent: (1<=separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker)
+BOOL aux2 #Active-CSE: 5 occurrences of this expression or equivalent: (3<=separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker)
+BOOL aux3 #Active-CSE: 5 occurrences of this expression or equivalent: (2<=separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker)
+DISCRETE aux4 #(length_Function1D_00001 * width_Function1D_00001)
+{1..391}
+DISCRETE aux5 #(length_Function1D_00002 * width_Function1D_00002)
+{1..391}
+DISCRETE aux6 #(length_Function1D_00003 * width_Function1D_00003)
+{1..391}
+DISCRETE aux7 #(length_Function1D_00004 * width_Function1D_00004)
+{1..391}
+DISCRETE aux8 #(length_Function1D_00005 * width_Function1D_00005)
+{1..391}
+DISCRETE aux9 #(length_Function1D_00006 * width_Function1D_00006)
+{1..391}
+DISCRETE aux10 #(length_Function1D_00007 * width_Function1D_00007)
+{1..391}
+DISCRETE aux11 #(length_Function1D_00008 * width_Function1D_00008)
+{1..391}
+DISCRETE aux12 #(length_Function1D_00009 * width_Function1D_00009)
+{1..391}
+DISCRETE aux13 #(length_Function1D_00010 * width_Function1D_00010)
+{1..391}
+DISCRETE aux14 #(length_Function1D_00011 * width_Function1D_00011)
+{1..391}
+DISCRETE aux15 #(length_Function1D_00012 * width_Function1D_00012)
+{1..391}
+DISCRETE aux16 #(length_Function1D_00013 * width_Function1D_00013)
+{1..391}
+DISCRETE aux17 #(length_Function1D_00014 * width_Function1D_00014)
+{1..391}
+DISCRETE aux18 #(length_Function1D_00015 * width_Function1D_00015)
+{1..391}
+**SEARCH**
+PRINT[[width_Function1D_00001],[width_Function1D_00002],[width_Function1D_00003],[width_Function1D_00004],[width_Function1D_00005],[width_Function1D_00006],[width_Function1D_00007],[width_Function1D_00008],[width_Function1D_00009],[width_Function1D_00010],[width_Function1D_00011],[width_Function1D_00012],[width_Function1D_00013],[width_Function1D_00014],[width_Function1D_00015],[length_Function1D_00001],[length_Function1D_00002],[length_Function1D_00003],[length_Function1D_00004],[length_Function1D_00005],[length_Function1D_00006],[length_Function1D_00007],[length_Function1D_00008],[length_Function1D_00009],[length_Function1D_00010],[length_Function1D_00011],[length_Function1D_00012],[length_Function1D_00013],[length_Function1D_00014],[length_Function1D_00015],[class_Function1D_00001],[class_Function1D_00002],[class_Function1D_00003],[class_Function1D_00004],[class_Function1D_00005],[class_Function1D_00006],[class_Function1D_00007],[class_Function1D_00008],[class_Function1D_00009],[class_Function1D_00010],[class_Function1D_00011],[class_Function1D_00012],[class_Function1D_00013],[class_Function1D_00014],[class_Function1D_00015],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003]]
+VARORDER STATIC [width_Function1D_00001, width_Function1D_00002, width_Function1D_00003, width_Function1D_00004, width_Function1D_00005, width_Function1D_00006, width_Function1D_00007, width_Function1D_00008, width_Function1D_00009, width_Function1D_00010, width_Function1D_00011, width_Function1D_00012, width_Function1D_00013, width_Function1D_00014, width_Function1D_00015, length_Function1D_00001, length_Function1D_00002, length_Function1D_00003, length_Function1D_00004, length_Function1D_00005, length_Function1D_00006, length_Function1D_00007, length_Function1D_00008, length_Function1D_00009, length_Function1D_00010, length_Function1D_00011, length_Function1D_00012, length_Function1D_00013, length_Function1D_00014, length_Function1D_00015, class_Function1D_00001, class_Function1D_00002, class_Function1D_00003, class_Function1D_00004, class_Function1D_00005, class_Function1D_00006, class_Function1D_00007, class_Function1D_00008, class_Function1D_00009, class_Function1D_00010, class_Function1D_00011, class_Function1D_00012, class_Function1D_00013, class_Function1D_00014, class_Function1D_00015, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003]
+**TUPLELIST**
+negativeSol 5 55
+4 2 46 2 1 1 1 2 1 1 1 1 1 1 1 32 43 1 48 11 28 1 1 1 1 1 1 1 1 1 1 5 1 1 3 3 5 3 4 4 5 5 4 2 2 0 1 1 1 1 1 1 1 1 1
+4 2 1 5 5 1 15 8 1 1 1 1 1 1 1 41 36 33 20 1 1 1 1 1 1 1 1 1 1 1 1 4 2 1 1 3 1 5 3 1 5 2 5 3 3 2 1 2 1 3 1 1 65 29 1
+4 3 1 2 13 19 6 2 1 1 1 1 1 1 1 40 44 28 17 1 1 1 3 1 1 1 1 1 1 1 3 4 4 1 3 5 3 2 1 4 1 1 5 1 5 2 1 5 2 4 1 1 80 72 1
+9 5 2 12 4 2 1 2 1 2 2 1 1 1 1 34 7 9 2 2 1 1 1 1 1 1 1 1 1 1 2 5 1 5 1 1 2 3 2 3 5 1 5 2 4 1 1 3 1 1 1 1 48 1 1
+16 11 2 17 3 1 1 1 1 1 1 1 1 1 1 3 25 26 1 1 1 1 1 1 1 1 1 1 1 1 5 1 4 4 3 5 5 4 2 3 1 1 1 3 5 0 1 1 1 1 1 1 1 1 1
+**CONSTRAINTS**
+w-inintervalset(aux4, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux5, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux6, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux7, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux8, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux9, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux10, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux11, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux12, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux13, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux14, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux15, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux16, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux17, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+w-inintervalset(aux18, [1,82,84,88,90,96,98,100,102,102,104,106,108,108,110,112,114,126,128,130,132,136,138,138,140,148,150,150,152,156,158,162,164,165,168,172,174,177,180,180,182,190,192,192,195,196,198,198,200,201,203,205,207,210,212,213,215,217,219,222,224,225,228,228,230,232,234,238,240,240,242,248,250,250,252,253,255,256,258,261,264,266,268,268,270,270,272,273,275,276,279,280,282,282,284,290,292,292,294,297,299,301,304,306,308,308,310,310,312,312,315,316,318,320,322,325,328,330,333,333,335,336,338,338,340,345,348,348,350,352,354,355,357,357,360,361,363,366,368,372,374,378,380,380,384,385,387,387,390,391])
+product(length_Function1D_00001, width_Function1D_00001, aux4)
+product(length_Function1D_00002, width_Function1D_00002, aux5)
+product(length_Function1D_00003, width_Function1D_00003, aux6)
+product(length_Function1D_00004, width_Function1D_00004, aux7)
+product(length_Function1D_00005, width_Function1D_00005, aux8)
+product(length_Function1D_00006, width_Function1D_00006, aux9)
+product(length_Function1D_00007, width_Function1D_00007, aux10)
+product(length_Function1D_00008, width_Function1D_00008, aux11)
+product(length_Function1D_00009, width_Function1D_00009, aux12)
+product(length_Function1D_00010, width_Function1D_00010, aux13)
+product(length_Function1D_00011, width_Function1D_00011, aux14)
+product(length_Function1D_00012, width_Function1D_00012, aux15)
+product(length_Function1D_00013, width_Function1D_00013, aux16)
+product(length_Function1D_00014, width_Function1D_00014, aux17)
+product(length_Function1D_00015, width_Function1D_00015, aux18)
+reify(ineq(1, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 0), aux1)
+reify(ineq(3, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 0), aux2)
+reify(ineq(2, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 0), aux3)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00001, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00002, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00003, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00004, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00005, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00006, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00007, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00008, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00009, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00010, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00011, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00012, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00013, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00014, 1)
+watchelement_one([1, 1, 1, 1, 1], class_Function1D_00015, 1)
+watched-or({w-literal(class_Function1D_00001,1),w-literal(class_Function1D_00002,1),w-literal(class_Function1D_00003,1),w-literal(class_Function1D_00004,1),w-literal(class_Function1D_00005,1),w-literal(class_Function1D_00006,1),w-literal(class_Function1D_00007,1),w-literal(class_Function1D_00008,1),w-literal(class_Function1D_00009,1),w-literal(class_Function1D_00010,1),w-literal(class_Function1D_00011,1),w-literal(class_Function1D_00012,1),w-literal(class_Function1D_00013,1),w-literal(class_Function1D_00014,1),w-literal(class_Function1D_00015,1)})
+watched-or({w-literal(class_Function1D_00001,2),w-literal(class_Function1D_00002,2),w-literal(class_Function1D_00003,2),w-literal(class_Function1D_00004,2),w-literal(class_Function1D_00005,2),w-literal(class_Function1D_00006,2),w-literal(class_Function1D_00007,2),w-literal(class_Function1D_00008,2),w-literal(class_Function1D_00009,2),w-literal(class_Function1D_00010,2),w-literal(class_Function1D_00011,2),w-literal(class_Function1D_00012,2),w-literal(class_Function1D_00013,2),w-literal(class_Function1D_00014,2),w-literal(class_Function1D_00015,2)})
+watched-or({w-literal(class_Function1D_00001,3),w-literal(class_Function1D_00002,3),w-literal(class_Function1D_00003,3),w-literal(class_Function1D_00004,3),w-literal(class_Function1D_00005,3),w-literal(class_Function1D_00006,3),w-literal(class_Function1D_00007,3),w-literal(class_Function1D_00008,3),w-literal(class_Function1D_00009,3),w-literal(class_Function1D_00010,3),w-literal(class_Function1D_00011,3),w-literal(class_Function1D_00012,3),w-literal(class_Function1D_00013,3),w-literal(class_Function1D_00014,3),w-literal(class_Function1D_00015,3)})
+watched-or({w-literal(class_Function1D_00001,4),w-literal(class_Function1D_00002,4),w-literal(class_Function1D_00003,4),w-literal(class_Function1D_00004,4),w-literal(class_Function1D_00005,4),w-literal(class_Function1D_00006,4),w-literal(class_Function1D_00007,4),w-literal(class_Function1D_00008,4),w-literal(class_Function1D_00009,4),w-literal(class_Function1D_00010,4),w-literal(class_Function1D_00011,4),w-literal(class_Function1D_00012,4),w-literal(class_Function1D_00013,4),w-literal(class_Function1D_00014,4),w-literal(class_Function1D_00015,4)})
+watched-or({w-literal(class_Function1D_00001,5),w-literal(class_Function1D_00002,5),w-literal(class_Function1D_00003,5),w-literal(class_Function1D_00004,5),w-literal(class_Function1D_00005,5),w-literal(class_Function1D_00006,5),w-literal(class_Function1D_00007,5),w-literal(class_Function1D_00008,5),w-literal(class_Function1D_00009,5),w-literal(class_Function1D_00010,5),w-literal(class_Function1D_00011,5),w-literal(class_Function1D_00012,5),w-literal(class_Function1D_00013,5),w-literal(class_Function1D_00014,5),w-literal(class_Function1D_00015,5)})
+reifyimply(lexless([separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002]), aux3)
+reifyimply(lexless([separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002],[separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003]), aux2)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001,1), !aux1)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001,1), !aux1)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002,1), !aux1)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002,1), !aux3)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001,1), !aux3)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002,1), !aux3)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003,1), !aux2)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001,1), !aux2)
+reifyimply(w-literal(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002,1), !aux2)
+reifyimply(ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002, -1), aux1)
+reifyimply(ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002, -1), aux3)
+reifyimply(ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001, separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002, -1), aux2)
+watched-or({ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 1, -1),ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 2, -1),diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001),diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002)})
+watched-or({diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001),diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002),ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 1, -1),ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 3, -1)})
+watched-or({diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001),diseq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002),ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 2, -1),ineq(separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker, 3, -1)})
+sumleq([aux4,aux5,aux6,aux7,aux8,aux9,aux10,aux11,aux12,aux13,aux14,aux15,aux16,aux17,aux18],405)
+sumgeq([aux4,aux5,aux6,aux7,aux8,aux9,aux10,aux11,aux12,aux13,aux14,aux15,aux16,aux17,aux18],405)
+negativetable([width_Function1D_00001,width_Function1D_00002,width_Function1D_00003,width_Function1D_00004,width_Function1D_00005,width_Function1D_00006,width_Function1D_00007,width_Function1D_00008,width_Function1D_00009,width_Function1D_00010,width_Function1D_00011,width_Function1D_00012,width_Function1D_00013,width_Function1D_00014,width_Function1D_00015,length_Function1D_00001,length_Function1D_00002,length_Function1D_00003,length_Function1D_00004,length_Function1D_00005,length_Function1D_00006,length_Function1D_00007,length_Function1D_00008,length_Function1D_00009,length_Function1D_00010,length_Function1D_00011,length_Function1D_00012,length_Function1D_00013,length_Function1D_00014,length_Function1D_00015,class_Function1D_00001,class_Function1D_00002,class_Function1D_00003,class_Function1D_00004,class_Function1D_00005,class_Function1D_00006,class_Function1D_00007,class_Function1D_00008,class_Function1D_00009,class_Function1D_00010,class_Function1D_00011,class_Function1D_00012,class_Function1D_00013,class_Function1D_00014,class_Function1D_00015,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Marker,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00001_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00002_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_1_Explicit_00003_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00001,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00002,separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitVarSizeWithMarkerR3_Values_2_00003
+],negativeSol)
+**EOF**

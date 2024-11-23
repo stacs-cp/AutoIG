@@ -1,0 +1,17 @@
+{"computer": "DESKTOP-P9AL3SM",
+ "conjureVersion": "Conjure v2.5.1 (Repository version 03d6014e5 (2024-09-25 19:47:19 +0100))",
+ "essence": "./problem.essence", "essenceParams": ["./detailed-output/inst-43-64732790.param"], "runsolverInfo": {},
+ "savilerowInfo":
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.502", "SolverNodes": "0",
+      "SolverSatisfiable": "0", "SolverSetupTime": "5.2e-05", "SolverSolutionsFound": "0", "SolverSolveTime": "1.3e-05",
+      "SolverTimeOut": "0", "SolverTotalTime": "0.000553"},
+ "savilerowLogs":
+     {"exitCode": 0,
+      "stdout":
+          ["Created output file for domain filtering ./detailed-output/problem-inst-43-64732790.eprime-minion",
+           "Created output file ./detailed-output/problem-inst-43-64732790.eprime-minion",
+           "Created information file ./detailed-output/problem-inst-43-64732790.eprime-info"]},
+ "savilerowOptions": ["-timelimit 1 "],
+ "savilerowVersion": "Savile Row 1.10.1 (Repository Version: 7c46f329e (2024-10-01 20:22:05 +0100))",
+ "solver": "minion", "solverOptions": ["-timelimit 1 -randomseed 64732790 "], "status": "OK",
+ "timestamp": "2024-11-23T14:58:54.768364974Z", "totalTime": 0.50, "useExistingModels": ["problem.eprime"]}

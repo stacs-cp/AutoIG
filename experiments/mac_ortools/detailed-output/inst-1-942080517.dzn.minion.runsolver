@@ -1,0 +1,65 @@
+runsolver version 3.4.0 (svn: 3018) Copyright (C) 2010-2013 Olivier ROUSSEL
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+command line: runsolver -w ./detailed-output/inst-1-942080517.dzn.minion.runsolver -d 2 --wall-clock-limit 2 --vsize-limit 8192 minizinc --time-limit 2000 --solver minion -i problem.mzn ./detailed-output/inst-1-942080517.dzn --output-mode dzn --output-objective -s 
+
+running on 12 cores: 0-11
+
+Enforcing wall clock limit (soft limit, will send SIGTERM then SIGKILL): 2 seconds
+Enforcing VSIZE limit (soft limit, will send SIGTERM then SIGKILL): 8388608 KiB
+Enforcing VSIZE limit (hard limit, stack expansion will fail with SIGSEGV, brk() and mmap() will return ENOMEM): 8439808 KiB
+Linux 5.15.167.4-microsoft-standard-WSL2
+Current StackSize limit: 8192 KiB
+
+solver pid=184107, runsolver pid=184106
+
+[startup+0.00762996 s]
+# the end of solver process 184107 was just reported to runsolver
+# cumulated CPU time of all completed processes:  user=0.00742 s, system=0 s
+
+Solver just ended.
+??? end of watcher thread
+Dumping a history of the last processes samples
+
+Child status: 1
+Real time (s): 0.0076879
+CPU time (s): 0.00742
+CPU user time (s): 0.00742
+CPU system time (s): 0
+CPU usage (%): 96.5153
+Max. virtual memory (cumulated for all children) (KiB): 0
+Max. memory (cumulated for all children) (KiB): 0
+
+getrusage(RUSAGE_CHILDREN,...) data:
+user time used= 0.00742
+system time used= 0
+maximum resident set size= 7372
+integral shared memory size= 0
+integral unshared data size= 0
+integral unshared stack size= 0
+page reclaims= 327
+page faults= 0
+swaps= 0
+block input operations= 0
+block output operations= 0
+messages sent= 0
+messages received= 0
+signals received= 0
+voluntary context switches= 1
+involuntary context switches= 0
+
+
+# summary of solver processes directly reported to runsolver:
+#   pid: 184107
+#   total CPU time (s): 0.00742
+#   total CPU user time (s): 0.00742
+#   total CPU system time (s): 0
+
+??? end of timestamper thread
+runsolver used 0 second user time and 0.015786 second system time
+
+The end

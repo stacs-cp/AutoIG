@@ -1,0 +1,15 @@
+2024-11-23 15:25:18: /home/tudor/AutoIG/scripts/wrapper.py 4 1 942080517 dummy -Ag 3 -Tg 110 -Xg 26 -Zg 3 -ground_coverage 15 -avg_height_ratio 50
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator.essence', 'runDir': '/home/tudor/AutoIG/experiments/mac_ortools'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '2', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '', 'solver': 'ortools', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 2}}
+
+
+2024-11-23 15:25:18: Creating generator instance: ./detailed-output/gen-inst-4.param
+2024-11-23 15:25:18: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-4.param --eprime-param=./detailed-output/gen-inst-4.eprime-param
+2024-11-23 15:25:19: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-4.eprime-param -out-aux ./detailed-output/gen-inst-4.aux -out-minion ./detailed-output/gen-inst-4.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-11-23 15:25:19: minion ./detailed-output/gen-inst-4.minion -solsout ./detailed-output/gen-inst-4.solution -randomseed 942080517 -timelimit 2 -varorder domoverwdeg -valorder random
+
+
+2024-11-23 15:25:21: 
+Generator results: genInstance=gen-inst-4, genStatus=solverTimeOut, genSRTime=0.7136681079864502, genSolverTime=2.0303571224212646
+No instance file generated. Exitting...
+{'totalTime': 2.973891019821167, 'genResults': {'instance': 'gen-inst-4.param', 'status': 'solverTimeOut', 'seed': 942080517, 'SRTime': 0.7136681079864502, 'solverTime': 2.0303571224212646}, 'instanceResults': {}, 'status': 'gensolverTimeOut', 'score': 2}
+2 2.97

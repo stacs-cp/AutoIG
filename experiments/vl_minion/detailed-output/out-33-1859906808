@@ -1,0 +1,38 @@
+2024-11-23 14:55:34: /home/tudor/AutoIG/scripts/wrapper.py 33 1 1859906808 dummy -deck_width_tuned 56 -deck_length_tuned 28 -n_containers_delta 9 -n_classes_tuned 5 -coverage_max 90
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/home/tudor/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/home/tudor/AutoIG/experiments/vl_minion'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '2', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '', 'solver': 'minion', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 2}}
+
+
+2024-11-23 14:55:34: Creating generator instance: ./detailed-output/gen-inst-33.param
+2024-11-23 14:55:34: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-33.param --eprime-param=./detailed-output/gen-inst-33.eprime-param
+2024-11-23 14:55:35: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-33.eprime-param -out-aux ./detailed-output/gen-inst-33.aux -out-minion ./detailed-output/gen-inst-33.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-11-23 14:55:36: minion ./detailed-output/gen-inst-33.minion -solsout ./detailed-output/gen-inst-33.solution -randomseed 1859906808 -timelimit 2 -varorder domoverwdeg -valorder random
+2024-11-23 14:55:36: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-33.aux -out-solution ./detailed-output/gen-inst-33.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-33.solution
+2024-11-23 14:55:36: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-33.param --eprime-solution=./detailed-output/gen-inst-33.solution.eprime-param --essence-solution ./detailed-output/gen-inst-33.solution.param
+
+
+2024-11-23 14:55:36: 
+Generator results: genInstance=gen-inst-33, genStatus=sat, genSRTime=0.9551019668579102, genSolverTime=0.041400909423828125
+
+
+2024-11-23 14:55:36: Solving ./detailed-output/inst-33-1859906808.param...
+
+
+----------- With random seed 0th (1859906808)
+
+Calling conjure
+2024-11-23 14:55:36: conjure solve ./problem.essence ./detailed-output/inst-33-1859906808.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 1 " --solver-options "-timelimit 1 -randomseed 1859906808 " --solver=minion
+2024-11-23 14:55:39: Error: Savile Row timed out.
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-33-1859906808.param
+Running minion for domain filtering.
+
+Waiting for ./detailed-output/problem-inst-33-1859906808.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-33-1859906808.eprime-info -> ./detailed-output/problem-inst-33-1859906808-seed_1859906808-minion.eprime-info
+2024-11-23 14:55:39: 
+Run results: solverType=minion, solver=minion, instance=inst-33-1859906808, runId=0, runStatus=SRTimeOut, SRTime=1.002, solverTime=0
+
+SR timeout/memout while translating the instance. Quitting!...
+
+Instance summary: instance=inst-33-1859906808, status=SRTimeOut, meanSolverTime=0
+{'totalTime': 4.050620794296265, 'genResults': {'instance': 'gen-inst-33.param', 'status': 'sat', 'seed': 1859906808, 'SRTime': 0.9551019668579102, 'solverTime': 0.041400909423828125}, 'instanceResults': {'insttance': './detailed-output/inst-33-1859906808.param', 'status': 'SRTimeOut', 'score': 1, 'results': {}}, 'status': 'SRTimeOut', 'score': 1}
+1 4.05

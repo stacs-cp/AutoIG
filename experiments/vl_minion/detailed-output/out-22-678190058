@@ -1,0 +1,37 @@
+2024-11-23 14:50:50: /home/tudor/AutoIG/scripts/wrapper.py 22 1 678190058 dummy -deck_width_tuned 21 -deck_length_tuned 20 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 10
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/home/tudor/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/home/tudor/AutoIG/experiments/vl_minion'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '2', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '', 'solver': 'minion', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 2}}
+
+
+2024-11-23 14:50:50: Creating generator instance: ./detailed-output/gen-inst-22.param
+2024-11-23 14:50:50: minion ./detailed-output/gen-inst-22.minion -solsout ./detailed-output/gen-inst-22.solution -randomseed 678190058 -timelimit 2 -varorder domoverwdeg -valorder random
+2024-11-23 14:50:50: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-22.aux -out-solution ./detailed-output/gen-inst-22.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-22.solution
+2024-11-23 14:50:50: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-22.param --eprime-solution=./detailed-output/gen-inst-22.solution.eprime-param --essence-solution ./detailed-output/gen-inst-22.solution.param
+
+
+2024-11-23 14:50:51: 
+Generator results: genInstance=gen-inst-22, genStatus=sat, genSRTime=0, genSolverTime=0.047159671783447266
+
+
+2024-11-23 14:50:51: Solving ./detailed-output/inst-22-678190058.param...
+
+
+----------- With random seed 0th (678190058)
+
+Calling conjure
+2024-11-23 14:50:51: conjure solve ./problem.essence ./detailed-output/inst-22-678190058.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 1 " --solver-options "-timelimit 1 -randomseed 678190058 " --solver=minion
+2024-11-23 14:50:52: Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-22-678190058.param
+Running minion for domain filtering.
+Running solver: minion
+Copying solution to: problem-inst-22-678190058.solution
+
+Waiting for ./detailed-output/problem-inst-22-678190058.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-22-678190058.eprime-info -> ./detailed-output/problem-inst-22-678190058-seed_678190058-minion.eprime-info
+2024-11-23 14:50:52: 
+Run results: solverType=minion, solver=minion, instance=inst-22-678190058, runId=0, runStatus=sat, SRTime=0.475, solverTime=0.233617
+
+unwanted instance type. Quitting!...
+
+Instance summary: instance=inst-22-678190058, status=unwantedType, meanSolverTime=0
+{'totalTime': 2.295567750930786, 'genResults': {'instance': 'gen-inst-22.param', 'status': 'sat', 'seed': 678190058, 'SRTime': 0, 'solverTime': 0.047159671783447266}, 'instanceResults': {'insttance': './detailed-output/inst-22-678190058.param', 'status': 'unwantedType', 'score': 1, 'results': {}}, 'status': 'unwantedType', 'score': 1}
+1 2.3

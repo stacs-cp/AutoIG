@@ -1,0 +1,22 @@
+2024-11-23 15:33:37: /home/tudor/AutoIG/scripts/wrapper.py 3 1 64732790 dummy -Ag 9 -Tg 111 -Xg 23 -Zg 2 -ground_coverage 57 -avg_height_ratio 7
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator.essence', 'runDir': '/home/tudor/AutoIG/experiments/mac_ortools'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '2', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '', 'solver': 'ortools', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 2}}
+
+
+2024-11-23 15:33:37: Creating generator instance: ./detailed-output/gen-inst-3.param
+2024-11-23 15:33:37: minion ./detailed-output/gen-inst-3.minion -solsout ./detailed-output/gen-inst-3.solution -randomseed 64732790 -timelimit 2 -varorder domoverwdeg -valorder random
+2024-11-23 15:33:39: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-3.aux -out-solution ./detailed-output/gen-inst-3.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-3.solution
+2024-11-23 15:33:39: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-3.param --eprime-solution=./detailed-output/gen-inst-3.solution.eprime-param --essence-solution ./detailed-output/gen-inst-3.solution.param
+
+
+2024-11-23 15:33:39: 
+Generator results: genInstance=gen-inst-3, genStatus=sat, genSRTime=0, genSolverTime=1.3380827903747559
+conjure autoig --remove-aux ./detailed-output/inst-3-64732790.param ./detailed-output/inst-3-64732790.auxRemoved.param
+conjure pretty ./detailed-output/inst-3-64732790.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-3-64732790.dzn generated
+
+
+runsolver -w ./detailed-output/inst-3-64732790.dzn.ortools.runsolver -d 2 --wall-clock-limit 2 --vsize-limit 8192 minizinc --time-limit 2000 --solver ortools -i   problem.mzn ./detailed-output/inst-3-64732790.dzn --output-mode dzn --output-objective -s
+UNK 2.1284587383270264 {'objs': [], 'flattenStatus': 'failed', 'flattenTime': -1, 'instanceType': 'unknown', 'answerStatus': 'unknown'}
+Instance too difficult. Quitting...
+{'totalTime': 4.030973196029663, 'genResults': {'instance': 'gen-inst-3.param', 'status': 'sat', 'seed': 64732790, 'SRTime': 0, 'solverTime': 1.3380827903747559}, 'instanceResults': {'instance': './detailed-output/inst-3-64732790.dzn', 'status': 'tooDifficult', 'score': 0, 'results': {'main': {'runs': [{'seed': None, 'status': 'UNK', 'time': 2.1284587383270264, 'extra': {'objs': [], 'flattenStatus': 'failed', 'flattenTime': -1, 'instanceType': 'unknown', 'answerStatus': 'unknown'}}]}, 'oracle': {'runs': []}}}, 'status': 'tooDifficult', 'score': 0}
+0 4.03
