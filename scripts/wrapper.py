@@ -970,6 +970,10 @@ def main():
         # if results['genResults']['status']=='sat':
         #    assert results['instanceResults']!={}
         totalWrapperTime = time.time() - startTime
+        # my pc is a potato so I was getting negaive time.....
+        # remove them when running on a better pc
+        if totalWrapperTime<0:
+            totalWrapperTime*=totalWrapperTime
         results["totalTime"] = totalWrapperTime
         results["status"] = status
         results["score"] = score

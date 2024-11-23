@@ -43,8 +43,9 @@ rs="$(tail -n 1 ${outfn})"
 checkScore "$rs"
 failed="$?"
 if [[ "${failed}" == "1" ]]; then
+    echo "$rs"
     echo "Inf"
-    echo "Error! ${rs}"
+    echo "Error!"
 else
     echo "$rs"
 fi
