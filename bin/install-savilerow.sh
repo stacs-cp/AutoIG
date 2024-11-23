@@ -1,6 +1,6 @@
 # NOTES: minion & chuffed & cadical will also be installed (using binaries provided by savilerow)
 name="savilerow"
-version="1.9.1"  # release version on Sep 11, 2021
+version="1.10.1"  # release version on 17th October 2024
 
 
 echo ""
