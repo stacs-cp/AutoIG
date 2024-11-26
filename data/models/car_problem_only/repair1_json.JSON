@@ -1,0 +1,456 @@
+{"mInfo":
+     {"finds": [], "givens": [], "enumGivens": [], "enumLettings": [], "lettings": [], "unnameds": [],
+      "strategyQ": {"Auto": {"Interactive": []}}, "strategyA": {"Auto": {"Interactive": []}}, "trailCompact": [],
+      "nameGenState": [], "nbExtraGivens": 0, "representations": [], "representationsTree": [], "originalDomains": [],
+      "trailGeneralised": [], "trailVerbose": [], "trailRewrites": []},
+ "mLanguage": {"language": {"Name": "Essence"}, "version": [1, 3]},
+ "mStatements":
+     [{"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_cars_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_cars_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_cars_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_cars_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_n_cars_min"}, null]},
+                       {"Reference": [{"Name": "repaired_n_cars_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_classes_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_classes_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_classes_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_classes_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_n_classes_min"}, null]},
+                       {"Reference": [{"Name": "repaired_n_classes_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_options_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "n_options_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_options_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_n_options_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_n_options_min"}, null]},
+                       {"Reference": [{"Name": "repaired_n_options_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "quantity_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "quantity_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_quantity_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_quantity_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_quantity_range_min"}, null]},
+                       {"Reference": [{"Name": "repaired_quantity_range_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "maxcars_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "maxcars_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_maxcars_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_maxcars_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_maxcars_range_min"}, null]},
+                       {"Reference": [{"Name": "repaired_maxcars_range_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "blksize_delta_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "blksize_delta_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_blksize_delta_range_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_blksize_delta_range_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_blksize_delta_range_min"}, null]},
+                       {"Reference": [{"Name": "repaired_blksize_delta_range_max"}, null]}]}}]},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_cardMin"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10000]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_cardMax"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10000]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_relation1_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_relation1_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_relation2_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Given", {"Name": "usage_relation2_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_cardMin"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10000]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_cardMax"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 10000]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_relation1_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_relation1_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_relation2_min"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"Declaration":
+           {"FindOrGiven":
+                ["Find", {"Name": "repaired_usage_relation2_max"},
+                 {"DomainInt":
+                      [{"TagInt": []},
+                       [{"RangeBounded":
+                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                              {"Constant": {"ConstantInt": [{"TagInt": []}, 100]}}]}]]}]}},
+      {"SuchThat":
+           [{"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_usage_relation1_min"}, null]},
+                       {"Reference": [{"Name": "repaired_usage_relation1_max"}, null]}]}},
+            {"Op":
+                 {"MkOpLeq":
+                      [{"Reference": [{"Name": "repaired_usage_relation2_min"}, null]},
+                       {"Reference": [{"Name": "repaired_usage_relation2_max"}, null]}]}}]},
+      {"Objective":
+           ["Minimising",
+            {"Op":
+                 {"MkOpSum":
+                      {"AbstractLiteral":
+                           {"AbsLitMatrix":
+                                [{"DomainInt":
+                                      [{"TagInt": []},
+                                       [{"RangeBounded":
+                                             [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+                                              {"Constant": {"ConstantInt": [{"TagInt": []}, 18]}}]}]]},
+                                 [{"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_cars_min"}, null]},
+                                                       {"Reference": [{"Name": "n_cars_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_cars_max"}, null]},
+                                                       {"Reference": [{"Name": "n_cars_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_classes_min"}, null]},
+                                                       {"Reference": [{"Name": "n_classes_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_classes_max"}, null]},
+                                                       {"Reference": [{"Name": "n_classes_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_options_min"}, null]},
+                                                       {"Reference": [{"Name": "n_options_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_n_options_max"}, null]},
+                                                       {"Reference": [{"Name": "n_options_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_quantity_range_min"}, null]},
+                                                       {"Reference": [{"Name": "quantity_range_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_quantity_range_max"}, null]},
+                                                       {"Reference": [{"Name": "quantity_range_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_maxcars_range_min"}, null]},
+                                                       {"Reference": [{"Name": "maxcars_range_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_maxcars_range_max"}, null]},
+                                                       {"Reference": [{"Name": "maxcars_range_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference":
+                                                            [{"Name": "repaired_blksize_delta_range_min"}, null]},
+                                                       {"Reference": [{"Name": "blksize_delta_range_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference":
+                                                            [{"Name": "repaired_blksize_delta_range_max"}, null]},
+                                                       {"Reference": [{"Name": "blksize_delta_range_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_cardMin"}, null]},
+                                                       {"Reference": [{"Name": "usage_cardMin"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_cardMax"}, null]},
+                                                       {"Reference": [{"Name": "usage_cardMax"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_relation1_min"}, null]},
+                                                       {"Reference": [{"Name": "usage_relation1_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_relation1_max"}, null]},
+                                                       {"Reference": [{"Name": "usage_relation1_max"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_relation2_min"}, null]},
+                                                       {"Reference": [{"Name": "usage_relation2_min"}, null]}]}}}},
+                                  {"Op":
+                                       {"MkOpTwoBars":
+                                            {"Op":
+                                                 {"MkOpMinus":
+                                                      [{"Reference": [{"Name": "repaired_usage_relation2_max"}, null]},
+                                                       {"Reference":
+                                                            [{"Name": "usage_relation2_max"}, null]}]}}}}]]}}}}]}]}

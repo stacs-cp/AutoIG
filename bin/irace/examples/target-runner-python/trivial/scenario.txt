@@ -1,4 +1,0 @@
-maxExperiments = 500
-trainInstancesDir = ""
-trainInstancesFile = "instances.txt"
-targetRunner = "target-runner.py"
