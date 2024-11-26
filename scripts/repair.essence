@@ -1,0 +1,59 @@
+language Essence 1.3
+
+given n_cars_min: int(1..100)
+given n_cars_max: int(1..100)
+find repaired_n_cars_min: int(1..100)
+find repaired_n_cars_max: int(1..100)
+such that repaired_n_cars_min <= repaired_n_cars_max
+given n_classes_min: int(1..100)
+given n_classes_max: int(1..100)
+find repaired_n_classes_min: int(1..100)
+find repaired_n_classes_max: int(1..100)
+such that repaired_n_classes_min <= repaired_n_classes_max
+given n_options_min: int(1..100)
+given n_options_max: int(1..100)
+find repaired_n_options_min: int(1..100)
+find repaired_n_options_max: int(1..100)
+such that repaired_n_options_min <= repaired_n_options_max
+given quantity_range_min: int(1..100)
+given quantity_range_max: int(1..100)
+find repaired_quantity_range_min: int(1..100)
+find repaired_quantity_range_max: int(1..100)
+such that repaired_quantity_range_min <= repaired_quantity_range_max
+given maxcars_range_min: int(1..10)
+given maxcars_range_max: int(1..10)
+find repaired_maxcars_range_min: int(1..10)
+find repaired_maxcars_range_max: int(1..10)
+such that repaired_maxcars_range_min <= repaired_maxcars_range_max
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_max: int(1..10)
+find repaired_blksize_delta_range_min: int(1..10)
+find repaired_blksize_delta_range_max: int(1..10)
+such that repaired_blksize_delta_range_min <= repaired_blksize_delta_range_max
+given usage_cardMin: int(1..10000)
+given usage_cardMax: int(1..10000)
+given usage_relation1_min: int(1..100)
+given usage_relation1_max: int(1..100)
+given usage_relation2_min: int(1..100)
+given usage_relation2_max: int(1..100)
+find repaired_usage_cardMin: int(1..10000)
+find repaired_usage_cardMax: int(1..10000)
+find repaired_usage_relation1_min: int(1..100)
+find repaired_usage_relation1_max: int(1..100)
+find repaired_usage_relation2_min: int(1..100)
+find repaired_usage_relation2_max: int(1..100)
+such that
+    repaired_usage_relation1_min <= repaired_usage_relation1_max,
+    repaired_usage_relation2_min <= repaired_usage_relation2_max
+minimising
+    sum([|repaired_n_cars_min - n_cars_min|, |repaired_n_cars_max - n_cars_max|,
+         |repaired_n_classes_min - n_classes_min|, |repaired_n_classes_max - n_classes_max|,
+         |repaired_n_options_min - n_options_min|, |repaired_n_options_max - n_options_max|,
+         |repaired_quantity_range_min - quantity_range_min|, |repaired_quantity_range_max - quantity_range_max|,
+         |repaired_maxcars_range_min - maxcars_range_min|, |repaired_maxcars_range_max - maxcars_range_max|,
+         |repaired_blksize_delta_range_min - blksize_delta_range_min|,
+         |repaired_blksize_delta_range_max - blksize_delta_range_max|, |repaired_usage_cardMin - usage_cardMin|,
+         |repaired_usage_cardMax - usage_cardMax|, |repaired_usage_relation1_min - usage_relation1_min|,
+         |repaired_usage_relation1_max - usage_relation1_max|, |repaired_usage_relation2_min - usage_relation2_min|,
+         |repaired_usage_relation2_max - usage_relation2_max|;
+             int(1..18)])

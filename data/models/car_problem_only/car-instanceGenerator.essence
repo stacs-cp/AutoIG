@@ -1,0 +1,61 @@
+language Essence 1.3
+
+given n_cars_min: int(1..100)
+given n_cars_max: int(1..100)
+find n_cars: int(1..100)
+such that
+    n_cars >= n_cars_min,
+    n_cars <= n_cars_max
+given n_classes_min: int(1..100)
+given n_classes_max: int(1..100)
+find n_classes: int(1..100)
+such that
+    n_classes >= n_classes_min,
+    n_classes <= n_classes_max
+given n_options_min: int(1..100)
+given n_options_max: int(1..100)
+find n_options: int(1..100)
+such that
+    n_options >= n_options_min,
+    n_options <= n_options_max
+given quantity_range_min: int(1..100)
+given quantity_range_max: int(1..100)
+find quantity: function int(1..100) --> int(1..100)
+such that
+    and([q1 >= 1 /\ q1 <= n_classes <-> q1 in defined(quantity) | q1 : int(1..100)]),
+    and([q1[2] >= quantity_range_min | q1 <- quantity]),
+    and([q1[2] <= quantity_range_max | q1 <- quantity])
+given maxcars_range_min: int(1..10)
+given maxcars_range_max: int(1..10)
+find maxcars: function int(1..100) --> int(1..10)
+such that
+    and([q2 >= 1 /\ q2 <= n_options <-> q2 in defined(maxcars) | q2 : int(1..100)]),
+    and([q2[2] >= maxcars_range_min | q2 <- maxcars]),
+    and([q2[2] <= maxcars_range_max | q2 <- maxcars])
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_max: int(1..10)
+find blksize_delta: function int(1..100) --> int(1..10)
+such that
+    and([q3 >= 1 /\ q3 <= n_options <-> q3 in defined(blksize_delta) | q3 : int(1..100)]),
+    and([q3[2] >= blksize_delta_range_min | q3 <- blksize_delta]),
+    and([q3[2] <= blksize_delta_range_max | q3 <- blksize_delta])
+given usage_cardMin: int(1..10000)
+given usage_cardMax: int(1..10000)
+given usage_relation1_min: int(1..100)
+given usage_relation1_max: int(1..100)
+given usage_relation2_min: int(1..100)
+given usage_relation2_max: int(1..100)
+find usage: relation (minSize 1, maxSize 10000) of (int(1..100) * int(1..100))
+such that
+    |usage| >= usage_cardMin /\ |usage| <= usage_cardMax,
+    |usage| >= 1,
+    and([q4[1] >= usage_relation1_min | q4 <- usage]),
+    and([q4[1] <= usage_relation1_max | q4 <- usage]),
+    and([q4[1] <= n_classes | q4 <- usage]),
+    and([q4[2] >= usage_relation2_min | q4 <- usage]),
+    and([q4[2] <= usage_relation2_max | q4 <- usage]),
+    and([q4[2] <= n_options | q4 <- usage])
+such that n_cars >= n_classes
+such that sum([image(quantity, quant) | quant : int(1..100), quant <= n_classes]) = n_cars
+such that and([|toSet(usage(_, option))| >= 1 | option : int(1..100), option <= n_options])
+such that and([|toSet(usage(class, _))| >= 1 | class : int(1..100), class <= n_classes])

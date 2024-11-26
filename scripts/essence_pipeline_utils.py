@@ -64,6 +64,12 @@ solverInfo["kissat"] = {
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
 }
+solverInfo["ortools"] = {
+    "timelimitUnit": "ms",  # OR Tools time is in MS
+    "timelimitPrefix": "--time-limit ",
+    "randomSeedPrefix": "-r ",
+}
+
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
@@ -102,11 +108,11 @@ def savilerow_translate(
         + flags
     )
     log(cmd)
-
+    
     start = time.time()
     cmdOutput, returnCode = run_cmd(cmd)
     SRTime = time.time() - start
-
+    
     status = "SRok"
     # if returnCode !=0, check if it is because SR is out of memory or timeout
     if (
@@ -422,6 +428,7 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
     ):
         status = "solverCrash"
     elif returnCode != 0:
+        print("GETTING TO HERE")
         raise Exception(cmdOutput)
 
     baseFile = (
@@ -481,7 +488,8 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
 
         # parse SR info file
         infoStatus, SRTime, solverTime = parse_SR_info_file(
-            infoFile, timelimit=setting["solverTimeLimit"]
+            infoFile, timelimit=3
+            #  timelimit=setting["solverTimeLimit"]
         )
         if status != "solverCrash":
             status = infoStatus

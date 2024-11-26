@@ -1,0 +1,95 @@
+language Essence 1.3
+
+given np_cars_plus: int(1..200)
+given np_classes: int(1..200)
+given np_options: int(1..200)
+given quantity_range_min: int(1..200)
+given quantity_range_delta: int(0..199)
+given quantity_range_max: int(1..1000)
+given maxcars_range_min: int(1..10)
+given maxcars_range_delta: int(0..9)
+given maxcars_range_max: int(1..10)
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_delta: int(0..9)
+given blksize_delta_range_max: int(1..10)
+given usage_card_min: int(0..1000)
+given usage_card_delta: int(0..99)
+given usage_card_max: int(1..1000)
+
+
+
+
+
+
+find repaired_np_cars_plus: int(1..200)
+find repaired_np_classes: int(1..200)
+find repaired_np_options: int(1..200)
+find repaired_quantity_range_min: int(1..200)
+find repaired_quantity_range_delta: int(0..199)
+find repaired_quantity_range_max: int(1..1000)
+find repaired_maxcars_range_min: int(1..10)
+find repaired_maxcars_range_delta: int(0..9)
+find repaired_maxcars_range_max: int(1..10)
+find repaired_blksize_delta_range_min: int(1..10)
+find repaired_blksize_delta_range_delta: int(0..9)
+find repaired_blksize_delta_range_max: int(1..10)
+find repaired_usage_card_min: int(0..1000)
+find repaired_usage_card_delta: int(0..99)
+find repaired_usage_card_max: int(1..1000)
+
+such that min({200, repaired_np_classes+repaired_np_cars_plus}) >= repaired_np_classes
+$first where done -------------------------------------------------
+
+
+such that repaired_quantity_range_min <= repaired_quantity_range_max
+
+such that ((repaired_quantity_range_min*repaired_np_classes) <= min({200, repaired_np_classes+repaired_np_cars_plus}))
+such that (repaired_quantity_range_min+repaired_quantity_range_delta)*repaired_np_classes >= min({200, repaired_np_classes+repaired_np_cars_plus})
+$second and third where's done
+
+
+
+
+
+
+
+
+such that (repaired_usage_card_min+repaired_usage_card_delta)<=(repaired_np_classes*repaired_np_options)
+such that repaired_usage_card_min >= repaired_np_options
+such that repaired_usage_card_min >= repaired_np_classes
+
+
+
+
+
+such that repaired_maxcars_range_min <= repaired_maxcars_range_max
+
+
+such that repaired_blksize_delta_range_min <= repaired_blksize_delta_range_max
+
+
+
+such that repaired_usage_card_min <= repaired_usage_card_max
+
+
+
+
+minimising sum([|repaired_np_cars_plus - np_cars_plus|,
+                |repaired_np_classes - np_classes|,
+                |repaired_np_options - np_options|,
+                |repaired_quantity_range_min - quantity_range_min|,
+                |repaired_quantity_range_delta - quantity_range_delta|,
+                |repaired_quantity_range_max - quantity_range_max|,
+                |repaired_usage_card_min - usage_card_min|,
+                |repaired_usage_card_delta - usage_card_delta|,
+                |repaired_usage_card_max - usage_card_max|,
+                |repaired_maxcars_range_min - maxcars_range_min|,
+                |repaired_maxcars_range_delta - maxcars_range_delta|,
+                |repaired_maxcars_range_max - maxcars_range_max|,
+                |blksize_delta_range_min - repaired_blksize_delta_range_min|,
+                |blksize_delta_range_delta - repaired_blksize_delta_range_delta|,
+                |blksize_delta_range_max - repaired_blksize_delta_range_max|
+                
+                
+                
+                ;int(1..1000)])

@@ -10,6 +10,7 @@ import os
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
 
+# this is for mnz
 from minizinc_utils import calculate_minizinc_borda_scores, get_minizinc_problem_type
 
 pd.options.mode.chained_assignment = None
@@ -38,13 +39,31 @@ def read_data(runDir):
     
     config = read_config(configFile)
 
+    # Read in the file
+    with open(detailedResultsFile, 'r') as file:
+        filedata = file.read()
+
+# Replace the target string
+    filedata = filedata.replace('insttance', 'instance')
+
+# Write the file out again
+    with open(detailedResultsFile, 'w') as file:
+        file.write(filedata)
+
+
     # read detailed-results.json
     with open(detailedResultsFile, "rt") as f:
         #lsLines = [s[:-1] for s in f.readlines() if s.startswith('{"totalTime"')]
         lsLines = [s.replace("\n","") for s in f.readlines() if "totalTime" in s]
+        # lsLines = [s.replace("insttance","instance") for s in f.readlines()]
         r = [ast.literal_eval(s) for s in lsLines]
+
+
     tRs = pd.DataFrame(r)
+    
     tRs["score"] = tRs["score"].astype(float)
+    
+    
 
     # move generator instance names into a separate column
     tRs.loc[:,"genInstance"] = [s["instance"] for s in tRs.genResults]
