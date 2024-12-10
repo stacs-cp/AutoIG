@@ -61,7 +61,8 @@ jobs:
 
           CURRENT_BRANCH="${{ github.ref_name }}"
 
-          git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git          bash bin/install-savilerow.sh 
+          git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git   
+          bash bin/install-savilerow.sh 
           bash bin/install-mininzinc.sh
           bash bin/install-runsolver.sh
 
