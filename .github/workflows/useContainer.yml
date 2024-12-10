@@ -30,7 +30,11 @@ jobs:
       - name: Run container and execute script
         run: |
           echo "Running inside docker container!"
-          echo $0
+
+
+          echo "Script: $0"
+          echo "Shell: $SHELL"
+          ps -p $$
 
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install -y \
