@@ -63,7 +63,8 @@ jobs:
           bash bin/install-yuck.sh
           bash bin/install-picat.sh
 
-          cd /AutoIG
+          ls 
+
           . bin/set-path.sh
 
           AUTOIG=$(pwd)
@@ -76,12 +77,12 @@ jobs:
       - name: Fail
         if: ${{ failure() }}
         run: |
-          echo "This usecontainer failed, rejecting PR."
+          echo "This useContainer failed, rejecting PR."
           exit 1
 
       # if script passes approve PR
       - name: Pass
         if: ${{ success() }}
         run: |
-          echo "This usecontainer passed, allowing PR."
+          echo "This useContainer passed, allowing PR."
           exit 0
