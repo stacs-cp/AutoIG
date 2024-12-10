@@ -9,6 +9,9 @@ jobs:
   run-tests:
     name: Run AutoIG Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     container:
       # using the main instead of the previous version for now
       image: ghcr.io/conjure-cp/conjure:main
@@ -29,6 +32,7 @@ jobs:
       # currently clones a specific branch
       - name: Run container and execute script
         run: |
+
           echo "Running inside docker container!"
 
 
