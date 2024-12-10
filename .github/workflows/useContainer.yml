@@ -10,7 +10,7 @@ jobs:
     name: Run AutoIG Tests
     runs-on: ubuntu-latest
     container:
-      # using a previous version
+      # using the main instead of the previous version for now
       image: ghcr.io/conjure-cp/conjure:main
 
       #previous version
@@ -26,10 +26,51 @@ jobs:
 
       # try to container with volume
       # binding to root directory
+      # currently clones a specific branch
       - name: Run container and execute script
         run: |
           echo "Running inside docker container!"
-          conjure --version
+
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            bash \
+            sudo \
+            wget \
+            curl \
+            gnupg \
+            software-properties-common \
+            unzip
+
+          sudo apt-get install -y python3-pip
+          apt install python3-pandas -y
+          apt install python3-numpy -y
+          sudo apt install python-is-python3
+
+          sudo apt-get install r-base -y
+
+          sudo apt-get install git-all -y
+
+
+          git clone -b build/update-docker https://github.com/stacs-cp/AutoIG.git
+
+          bash bin/install-savilerow.sh 
+          bash bin/install-mininzinc.sh
+          bash bin/install-runsolver.sh
+
+          bash bin/install-irace.sh 
+          bash bin/install-ortools.sh
+
+          bash bin/install-yuck.sh
+          bash bin/install-picat.sh
+
+          cd /AutoIG
+          . bin/set-path.sh
+
+          AUTOIG=$(pwd)
+
+          cd /scripts/testScript
+
+          bash check.sh
 
       # if script fails reject PR
       - name: Fail
