@@ -1,4 +1,6 @@
 # get current script's folder
+
+# Flagvp: this causes some issues with running AutoIG inside the GitHub VM, which uses sh but calls it from a dif script
 if [ -n "$ZSH_VERSION" ]; then
     BIN_DIR="$( cd "$( dirname "${(%):-%x}" )" &> /dev/null && pwd )"
 elif [ -n "$BASH_VERSION" ]; then
