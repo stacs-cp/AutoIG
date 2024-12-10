@@ -65,9 +65,14 @@ jobs:
 
           ls 
 
+          echo "Reached this point"
+
           . bin/set-path.sh
 
           AUTOIG=$(pwd)
+
+          echo "Environment made :D, path:"
+          echo $PATH        
 
           cd /scripts/testScript
 
