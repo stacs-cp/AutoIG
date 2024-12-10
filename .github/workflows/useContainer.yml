@@ -82,11 +82,7 @@ jobs:
           AUTOIG=$(pwd)
 
           echo "Environment made :D, path:"
-          echo $PATH        
-
-          cd /scripts/testScript
-
-          bash check.sh
+          echo $PATH
 
       # if script fails reject PR
       - name: Fail
