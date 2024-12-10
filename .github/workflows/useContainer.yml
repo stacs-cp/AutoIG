@@ -60,7 +60,7 @@ jobs:
           sudo apt-get install git-all -y
 
 
-          git clone -b build/update-docker https://github.com/stacs-cp/AutoIG.git
+          git clone -b test/maccGradedCase https://github.com/stacs-cp/AutoIG.git
 
           bash bin/install-savilerow.sh 
           bash bin/install-mininzinc.sh
