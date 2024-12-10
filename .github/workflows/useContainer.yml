@@ -81,8 +81,8 @@ jobs:
 
           echo "Environment made :D, path:"
           echo $PATH
-          cd scripts
-          bash testScript/check.sh
+          cd scripts/testScript
+          bash check.sh
 
       # cd /scripts/testScript
 
