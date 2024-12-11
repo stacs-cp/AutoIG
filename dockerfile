@@ -8,7 +8,6 @@ RUN apt-get update
 # Doing the default for timezone using frontend=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash \
-    sudo \
     wget \
     curl \
     gnupg \
@@ -16,16 +15,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     unzip
 
 # Installing necessary language dependencies for Python 
-RUN sudo apt-get install -y python3-pip
+RUN apt install -y python3-pip
 RUN apt install python3-pandas -y
 RUN apt install python3-numpy -y
-RUN sudo apt install python-is-python3
+RUN apt install python-is-python3
 
 # Installing R for iRace compatability
-RUN sudo apt-get install r-base -y
+RUN apt install r-base -y
 
 # Installing Git
-RUN sudo apt-get install git-all -y
+RUN apt install git-all -y
 
 # Set working dir to root
 WORKDIR /
