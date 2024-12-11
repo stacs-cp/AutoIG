@@ -38,7 +38,6 @@ RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
 WORKDIR /AutoIG
 
 # Currently redundant installations
-# RUN bash bin/install-savilerow.sh 
 RUN bash bin/install-mininzinc.sh
 RUN bash bin/install-runsolver.sh
 
