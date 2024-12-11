@@ -18,16 +18,15 @@ export AUTOIG="$(dirname $BIN_DIR)"
 export PATH=/root/.local/bin/conjure:$PATH
 
 # savilerow
-export PATH=/root/.local/bin/savilerow:$PATH
+export PATH=$BIN_DIR/savilerow/:$PATH
 
 # minion
-export PATH=/root/.local/bin/minion:$PATH
+export PATH=$BIN_DIR/minion/:$PATH
 
-# irace isn't involved in Conjure, so same import as before
+# irace
 export PATH=$BIN_DIR/irace/bin:$PATH
 export R_LIBS=$BIN_DIR/:$R_LIBS
 
-# Same installations as with conjure
 # minizinc
 export PATH=$BIN_DIR/minizinc/bin/:$PATH
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BIN_DIR/minizinc/lib
