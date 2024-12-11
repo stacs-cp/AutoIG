@@ -14,13 +14,13 @@ jobs:
         shell: bash
     container:
       # using the main instead of the previous version for now
-      # image: ghcr.io/conjure-cp/conjure:main
+      image: ghcr.io/conjure-cp/conjure:main
 
       #previous version
       #ghcr.io/conjure-cp/conjure@sha256:e959c664d83a08b68a5b31409d56ce82eadf0f0b74f8af1809642b73f652c940
 
       # Current version of conjure
-      image: ghcr.io/conjure-cp/conjure@sha256:ebff76918718631f099544eed3a808cd16ce8f2c863c8229c7d2e417ba745c56
+      # image: ghcr.io/conjure-cp/conjure@sha256:ebff76918718631f099544eed3a808cd16ce8f2c863c8229c7d2e417ba745c56
 
     steps:
       # Checkout repo: checks out current repo (so AutoIG current branch)
