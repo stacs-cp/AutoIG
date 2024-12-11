@@ -8,7 +8,6 @@ RUN apt-get update
 # Doing the default for timezone using frontend=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash \
-    sudo \
     wget \
     curl \
     gnupg \
@@ -18,22 +17,23 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 
 # Installing necessary language dependencies for Python 
-RUN apt-get install -y python3-pip
+RUN apt install -y python3-pip
 RUN apt install python3-pandas -y
 RUN apt install python3-numpy -y
 RUN apt install python-is-python3
 
 # Installing R for iRace compatability
-RUN apt-get install r-base -y
+RUN apt install r-base -y
 
 # Installing Git
-RUN apt-get install git-all -y
+RUN apt install git-all -y
 
 # Set working dir to root
 WORKDIR /
 
-# Clone into AutoIG directory
-RUN git clone -b build/update-docker https://github.com/stacs-cp/AutoIG.git
+# Clone into AutoIG directory on Vincent fork
+# Will need to be changed later
+RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
 
 WORKDIR /AutoIG
 

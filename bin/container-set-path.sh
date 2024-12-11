@@ -18,7 +18,7 @@ export AUTOIG="$(dirname $BIN_DIR)"
 export PATH=/root/.local/bin/conjure:$PATH
 
 # savilerow
-export PATH=$BIN_DIR/savilerow/:$PATH
+export PATH=/root/.local/bin/savilerow:$PATH
 
 # minion
 export PATH=$BIN_DIR/minion/:$PATH
