@@ -23,22 +23,15 @@ jobs:
       # ghcr.io/conjure-cp/conjure@sha256:ebff76918718631f099544eed3a808cd16ce8f2c863c8229c7d2e417ba745c56
 
     steps:
-      # Checkout repo: checks out current repo (so AutoIG)
+      # Checkout repo: checks out current repo (so AutoIG current branch)
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # try to container with volume
-      # binding to root directory
-      # currently clones a specific branch
+      # Clones the current branch being pushed from
+      # Run same commands as in Docker file, this needs to be updated if there are major updates to Docker later on
+      # The two should be consistent
       - name: Run container and execute script
         run: |
-
-          echo "Running inside docker container!"
-
-
-          echo "Script: $0"
-          echo "Shell: $SHELL"
-          ps -p $$
 
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -50,6 +43,7 @@ jobs:
             software-properties-common \
             unzip
 
+          # Installing Python Dependencies
           sudo apt-get install -y python3-pip
           apt install python3-pandas -y
           apt install python3-numpy -y
@@ -59,6 +53,8 @@ jobs:
 
           sudo apt-get install git-all -y
 
+
+          # Getting current branch
           CURRENT_BRANCH="${{ github.ref_name }}"
 
           git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git   
@@ -71,33 +67,27 @@ jobs:
 
           bash bin/install-yuck.sh
           bash bin/install-picat.sh
-
           ls 
-
-          echo "Reached this point"
-
           . bin/set-path.sh
-
           AUTOIG=$(pwd)
-
           echo "Environment made :D, path:"
           echo $PATH
           cd scripts/testScript
-          bash check.sh
 
-      # cd /scripts/testScript
+          # Run the actual test script
+          bash check.sh
 
       # bash check.sh
       # if script fails reject PR
       - name: Fail
         if: ${{ failure() }}
         run: |
-          echo "This useContainer failed, rejecting PR."
+          echo "This tests failed, rejecting PR."
           exit 1
 
       # if script passes approve PR
       - name: Pass
         if: ${{ success() }}
         run: |
-          echo "This useContainer passed, allowing PR."
+          echo "This tests passed! allowing PR."
           exit 0
