@@ -18,7 +18,7 @@
 
 At this point, this version of AutoIG is ready for use as normal.
 
-## Example sequence of commands for running an experiment:
+## Example sequence of commands for setting up an experiment:
 
 `mkdir -p experiments/macc-graded/`
 
@@ -32,6 +32,14 @@ bash run.sh
 
 # Considerations for Use of Dockerfile
 
-This Docker image will require a large amount of memory to be built. It is not much more than runni
+The build Docker image allows for the program to be run in a container. It is worth noting though that the container could take up more storage than running AutoIG through Linux directly, as it will download dependencies within the container such as Python and R. If a users system already has these, it could be more efficient to run it directly on the system without a VM. In addition, data does not persist within the container, so it is important to save the results of AutoIG runs, perhaps with a Docker Volume. Instructions for setting up the Docker Volume are below.
 
-TODO can also add instructions for how to add using a volume
+# Use of Docker Volume
+
+Use of a Docker volume allow the container to bind to the user's file system, and get rid of the issue of non persistant storage within the container. The only difference is in the container `run` command, every other part of the process stays the same as described above.
+
+Using this volume also means that a user must first clone into AutoiG on their system, so that they can bind the contents of their container to it.
+
+## To run using a volume:
+
+`docker run --platform linux/amd64 -it -v <volume_name>:/PathToAutoIG <container-name> /bin/bash`
