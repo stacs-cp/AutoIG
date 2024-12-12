@@ -71,8 +71,7 @@ jobs:
           bash bin/install-yuck.sh
           bash bin/install-picat.sh
           ls 
-          . bin/set-path.sh
-          AUTOIG=$(pwd)
+
           echo "Environment made :D, path:"
           echo $PATH
 
@@ -80,7 +79,10 @@ jobs:
       - name: Run Push Tests
         if: github.event_name == 'push'
         run: |
-          cd AutoIG/scripts/testScript
+          cd AutoIG
+          . bin/set-path.sh
+          AUTOIG=$(pwd)
+          cd $AUTOIG/scripts/testScript
           echo "Running basic tests for Push"
           ls
           bash check.sh
@@ -89,8 +91,10 @@ jobs:
       - name: Run Pull Request Tests
         if: github.event_name == 'pull_request'
         run: |
-
-          cd AutoIG/scripts/testScript
+          cd AutoIG
+          . bin/set-path.sh
+          AUTOIG=$(pwd)
+          cd $AUTOIG/scripts/testScript
           echo "Running more thorough tests for Pull Request"
           bash check.sh       
           bash check_pr.sh
