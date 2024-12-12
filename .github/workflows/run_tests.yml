@@ -75,22 +75,37 @@ jobs:
           AUTOIG=$(pwd)
           echo "Environment made :D, path:"
           echo $PATH
-          cd scripts/testScript
 
-          # Run the actual test script
+      - name: Navigate to Test Scripts
+        run: |
+          cd AutoIG/scripts/testScript
+
+      # Run script for Push Events
+      - name: Run Push Tests
+        if: github.event_name == 'push'
+        run: |
+          echo "Running basic tests for Push"
           bash check.sh
+
+      # Run script for Pull Requests
+      - name: Run Pull Request Tests
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Running more thorough tests for Pull Request"
+          bash check.sh       
+          bash check_pr.sh
 
       # bash check.sh
       # if script fails reject PR
       - name: Fail
         if: ${{ failure() }}
         run: |
-          echo "This tests failed, rejecting PR."
+          echo "These tests failed, rejecting PR."
           exit 1
 
       # if script passes approve PR
       - name: Pass
         if: ${{ success() }}
         run: |
-          echo "This tests passed! allowing PR."
+          echo "These tests passed! allowing PR."
           exit 0
