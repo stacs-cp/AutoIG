@@ -76,15 +76,13 @@ jobs:
           echo "Environment made :D, path:"
           echo $PATH
 
-      - name: Navigate to Test Scripts
-        run: |
-          cd scripts/testScript
-
       # Run script for Push Events
       - name: Run Push Tests
         if: github.event_name == 'push'
         run: |
+          cd scripts/testScript
           echo "Running basic tests for Push"
+          ls
           bash check.sh
 
       # Run script for Pull Requests
