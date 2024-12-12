@@ -82,6 +82,8 @@ jobs:
         run: |
           echo "Autoig is"
           echo $AUTOIG
+          ls
+          echo "just printed ls"
           cd $AUTOIG/scripts/testScript
           echo "Running basic tests for Push"
           ls
