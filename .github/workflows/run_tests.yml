@@ -78,7 +78,7 @@ jobs:
 
       - name: Navigate to Test Scripts
         run: |
-          cd AutoIG/scripts/testScript
+          cd scripts/testScript
 
       # Run script for Push Events
       - name: Run Push Tests
