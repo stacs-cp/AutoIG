@@ -5,6 +5,9 @@ on:
     branches:
       - test/maccGradedCase
 
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
 jobs:
   run-tests:
     name: Run AutoIG Tests
