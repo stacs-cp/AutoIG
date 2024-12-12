@@ -84,7 +84,6 @@ jobs:
           AUTOIG=$(pwd)
           cd $AUTOIG/scripts/testScript
           echo "Running basic tests for Push"
-          ls
           bash check.sh
 
       # Run script for Pull Requests
