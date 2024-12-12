@@ -80,11 +80,7 @@ jobs:
       - name: Run Push Tests
         if: github.event_name == 'push'
         run: |
-          echo "Autoig is"
-          echo $AUTOIG
-          ls
-          echo "just printed ls"
-          cd $AUTOIG/scripts/testScript
+          cd AutoIG/scripts/testScript
           echo "Running basic tests for Push"
           ls
           bash check.sh
@@ -93,7 +89,8 @@ jobs:
       - name: Run Pull Request Tests
         if: github.event_name == 'pull_request'
         run: |
-          cd $AUTOIG/scripts/testScript
+
+          cd AutoIG/scripts/testScript
           echo "Running more thorough tests for Pull Request"
           bash check.sh       
           bash check_pr.sh
