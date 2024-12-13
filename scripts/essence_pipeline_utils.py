@@ -65,6 +65,13 @@ solverInfo["kissat"] = {
     "randomSeedPrefix": "--seed=",
 }
 
+# flagvp: trying to add ORtools here again, moving over change from existing branch due to new forking
+solverInfo["or-tools"] = {
+    "timelimitUnit": "ms",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--rnd-seed ",
+}
+
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
     cmd = (
