@@ -1,11 +1,11 @@
 name="ortools"
-version="9.2"
+version="9.8"
 
 echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # minizinc must be installed before ortools
 if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
@@ -26,7 +26,7 @@ else
 fi
 
 rm -rf $name
-mkdir -p $name 
+mkdir -p $name
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR
