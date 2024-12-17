@@ -5,13 +5,22 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # minizinc must be installed before picat
 if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
     echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
     exit 1
 fi
+
+# Check for --containerBuild flag
+contFlag=false
+for arg in "$@"; do
+    if [ "$arg" == "--containerBuild" ]; then
+        contFlag=true
+        break
+    fi
+done
 
 pushd $BIN_DIR
 
@@ -25,7 +34,7 @@ else
     exit 1
 fi
 
-mkdir -p $name 
+mkdir -p $name
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR
@@ -39,7 +48,8 @@ d="Picat"
 cp -r $d/lib $d/picat $BIN_DIR/$name/ # TODO: check the macos version
 
 # download picat flatzinc intepreter
-wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip; unzip main.zip
+wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip
+unzip main.zip
 #wget https://github.com/hakank/fzn_picat/archive/6a12883ace8ab7b4cf94419af5a40139c105a005.zip; unzip 6a12883ace8ab7b4cf94419af5a40139c105a005.zip; mv fzn_picat-6a12883ace8ab7b4cf94419af5a40139c105a005 fzn_picat-main/
 cp -r fzn_picat-main/mznlib $BIN_DIR/minizinc/share/minizinc/$name
 cp fzn_picat-main/*.pi $BIN_DIR/$name/
@@ -47,8 +57,15 @@ popd
 
 rm -rf $SOURCE_DIR
 
-CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
-cp picat.msc $CONFIG_FILE
+if [ "$contFlag" = true ]; then
+    # Case for if this is installed using the container
+    CONFIG_FILE="/root/.local/bin/share/minizinc/solvers/$name.msc"
+    cp picat.msc $CONFIG_FILE
+else
+    # Case for if this installed for AutoIG directly in Linux, not using the
+    CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
+    cp picat.msc $CONFIG_FILE
+fi
 
 if [ "$OS" == "Darwin" ]; then
     #sed -i "" "s/<name>/$name/g" $CONFIG_FILE
