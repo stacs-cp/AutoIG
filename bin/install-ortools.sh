@@ -1,9 +1,19 @@
 name="ortools"
 version="9.8"
+CONTAINER_BIN_DIR="/root/.local/bin"
 
 echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
+
+# Check for --containerBuild flag
+contFlag=false
+for arg in "$@"; do
+    if [ "$arg" == "--containerBuild" ]; then
+        contFlag=true
+        break
+    fi
+done
 
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
@@ -40,11 +50,19 @@ popd
 
 rm -rf $SOURCE_DIR
 
-mv $BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
+if [ "$contFlag" = true ]; then
+    mv $CONTAINER_BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
 
-cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
-CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
-cp solver.msc $CONFIG_FILE
+    cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
+    CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
+    cp solver.msc $CONFIG_FILE
+else
+    mv $BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
+
+    cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
+    CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
+    cp solver.msc $CONFIG_FILE
+fi
 
 if [ "$OS" == "Darwin" ]; then
     sed -i "" "s/<name>/$name/g" $CONFIG_FILE
