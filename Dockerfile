@@ -17,6 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 
 # Installing necessary language dependencies for Python 
+# Python itself is already included in Conjure base image
 RUN apt install -y python3-pip
 RUN apt install python3-pandas -y
 RUN apt install python3-numpy -y
@@ -38,10 +39,13 @@ RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
 WORKDIR /AutoIG
 
 # Currently redundant installations
-# RUN bash bin/install-mininzinc.sh
+# Must be installed before ORTools
+RUN bash bin/install-mininzinc.sh
+
+# This is non-redundant
 RUN bash bin/install-runsolver.sh
 
-# Still need to install iRace
+# Non Redundant 
 RUN bash bin/install-irace.sh 
 
 # Currently redundant installations
