@@ -6,6 +6,7 @@ FILE="$BIN_DIR/minizinc/share/minizinc/solvers/cpsat.msc"
 echo $FILE
 #update name field to ortools
 sed -i 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"
+cat $FILE
 # Verify  change
 if grep -q '"id": "cpsat"' "$FILE"; then
     echo "Sucesfully updated."
