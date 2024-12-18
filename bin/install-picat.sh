@@ -61,7 +61,7 @@ wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip
 unzip main.zip
 #wget https://github.com/hakank/fzn_picat/archive/6a12883ace8ab7b4cf94419af5a40139c105a005.zip; unzip 6a12883ace8ab7b4cf94419af5a40139c105a005.zip; mv fzn_picat-6a12883ace8ab7b4cf94419af5a40139c105a005 fzn_picat-main/
 
-if [ "$contFlag" = true ]; then
+if [ "$contFlag" ]; then
     # Case for if this is installed using the container
     echo "Copying Picat to container inst of minizinc"
     cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name
@@ -78,7 +78,7 @@ popd
 
 rm -rf $SOURCE_DIR
 
-if [ "$contFlag" = true ]; then
+if [ "$contFlag" ]; then
     echo "Copying Picat to container inst of minizinc config file"
 
     # Case for if this is installed using the container
