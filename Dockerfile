@@ -52,15 +52,11 @@ RUN bash bin/install-runsolver.sh
 # Non Redundant 
 RUN bash bin/install-irace.sh 
 
-RUN bash bin/install-ortools.sh
+# RUN bash bin/install-ortools.sh
 RUN bash bin/install-yuck.sh
 RUN bash bin/install-picat.sh
 
 
-# Seperate solver installations: with flags for the updated install files
-# RUN bash bin/install-ortools.sh --containerBuild
-# RUN bash bin/install-yuck.sh --containerBuild
-# RUN bash bin/install-picat.sh --containerBuild
 
 
 # For use during development
