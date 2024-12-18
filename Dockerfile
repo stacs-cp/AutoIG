@@ -4,7 +4,6 @@ FROM --platform=linux/amd64 ghcr.io/conjure-cp/conjure:main
 # Update atp-get
 RUN apt-get update
 
-
 # Doing the default for timezone using frontend=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash \
@@ -53,6 +52,11 @@ RUN bash bin/install-runsolver.sh
 
 # Non Redundant 
 RUN bash bin/install-irace.sh 
+
+RUN bash bin/install-ortools.sh
+RUN bash bin/install-yuck.sh
+RUN bash bin/install-picat.sh
+
 
 # Seperate solver installations: with flags for the updated install files
 # RUN bash bin/install-ortools.sh --containerBuild
