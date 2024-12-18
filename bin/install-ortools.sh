@@ -1,31 +1,15 @@
 #!/bin/bash
 name="ortools"
-version="9.8"
-CONTAINER_BIN_DIR="/root/.local/bin"
+version="9.2"
 
 echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-# Check for --containerBuild flag
-contFlag=false
-for arg in "$@"; do
-    if [ "$arg" == "--containerBuild" ]; then
-        contFlag=true
-        break
-    fi
-done
-
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-CONTAINER_BIN_DIR="/root/.local/bin"
 
 # minizinc must be installed before ortools
-if [ $contFlag ]; then
-    if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
-        echo "ERROR: Container Minizinc not setup correctly"
-        exit 1
-    fi
-elif [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
+if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
     echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
     exit 1
 fi
@@ -57,16 +41,11 @@ popd
 
 rm -rf $SOURCE_DIR
 
-if [ "$contFlag" = true ]; then
-    echo "using ortools setup for container"
-    cp -r $BIN_DIR/$name/share/minizinc $CONTAINER_BIN_DIR/share/minizinc/$name
-    CONFIG_FILE="$CONTAINER_BIN_DIR/share/minizinc/solvers/$name.msc"
-    cp solver.msc $CONFIG_FILE
-else
-    cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
-    CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
-    cp solver.msc $CONFIG_FILE
-fi
+mv $BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
+
+cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
+CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
+cp solver.msc $CONFIG_FILE
 
 if [ "$OS" == "Darwin" ]; then
     sed -i "" "s/<name>/$name/g" $CONFIG_FILE
