@@ -64,8 +64,8 @@ unzip main.zip
 if [ "$contFlag" ]; then
     # Case for if this is installed using the container
     echo "Copying Picat to container inst of minizinc"
-    cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name
-    cp fzn_picat-main/*.pi $CONTAINER_BIN_DIR/$name/
+    cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name # flagvp: this command works
+    cp fzn_picat-main/*.pi $BIN_DIR/$name/                              # flagvp: this command doesnt work
 else
     echo "Copying Picat to bin inst of minizinc"
 
