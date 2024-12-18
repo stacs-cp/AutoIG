@@ -55,6 +55,7 @@ RUN bash bin/install-irace.sh
 # RUN bash bin/install-ortools.sh
 RUN bash bin/install-yuck.sh
 RUN bash bin/install-picat.sh
+RUN bash bin/update-or-path.sh
 
 
 
