@@ -43,9 +43,8 @@ RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
 
 WORKDIR /AutoIG
 
-# Currently redundant installations
 # Must be installed before ORTools
-# RUN bash bin/install-mininzinc.sh
+RUN bash bin/install-mininzinc.sh
 
 # This is non-redundant
 RUN bash bin/install-runsolver.sh
