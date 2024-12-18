@@ -37,6 +37,12 @@ for file in tests/*; do
             ((testsPassed++))
         fi
     fi
+    # Record end time and calculate elapsed time
+    end=$(date +%s)
+    elapsedTime=$((end - start))
+
+    # Display time elapsed
+    echo "Time elapsed: $elapsedTime seconds"
 done
 
 # Final results
@@ -47,10 +53,3 @@ else
     printf "\e[31mSome cases failing, only %d/%d passed.\e[0m\n" "$testsPassed" "$testsRun"
     exit 1
 fi
-
-# Record end time and calculate elapsed time
-end=$(date +%s)
-elapsedTime=$((end - start))
-
-# Display time elapsed
-echo "Time elapsed: $elapsedTime seconds"
