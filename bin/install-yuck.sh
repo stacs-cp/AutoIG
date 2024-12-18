@@ -53,6 +53,8 @@ if [ "$OS" == "Darwin" ]; then
     sed -i "" "s#.*mznlib.*#    \"mznlib\": \"../$name\",#g" mzn/yuck.msc
 elif [ "$OS" == "Linux" ]; then
     if [ "$contFlag" = true ]; then #Case for setting up in the container
+        echo "Using sed for Yuck with container"
+
         sed -i "s#../bin/yuck#../../../../$name/bin/yuck#g" mzn/yuck.msc
         # Replacing the paths in the mzn/yuck.msc file
         sed -i "s#.*mznlib.*#    \"mznlib\": \"$CONTAINER_BIN_DIR/share/minizinc/$name\",#g" mzn/yuck.msc

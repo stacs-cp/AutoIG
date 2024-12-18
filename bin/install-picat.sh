@@ -23,6 +23,8 @@ if [ $contFlag ]; then
     if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
         echo "ERROR: Container Minizinc not setup correctly"
         exit 1
+    else
+        echo "MiniZinc in .local/bin found correctly. "
     fi
 elif [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
     echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
@@ -61,6 +63,7 @@ unzip main.zip
 
 if [ "$contFlag" = true ]; then
     # Case for if this is installed using the container
+    echo "Copying Picat to container"
     cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name
     cp fzn_picat-main/*.pi $CONTAINER_BIN_DIR/$name/
 else

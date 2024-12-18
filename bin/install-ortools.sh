@@ -21,7 +21,6 @@ CONTAINER_BIN_DIR="/root/.local/bin"
 
 # minizinc must be installed before ortools
 if [ $contFlag ]; then
-    echo "using setup for container"
     if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
         echo "ERROR: Container Minizinc not setup correctly"
         exit 1
@@ -59,6 +58,7 @@ popd
 rm -rf $SOURCE_DIR
 
 if [ "$contFlag" = true ]; then
+    echo "using ortools setup for container"
     cp -r $BIN_DIR/$name/share/minizinc $CONTAINER_BIN_DIR/share/minizinc/$name
     CONFIG_FILE="$CONTAINER_BIN_DIR/share/minizinc/solvers/$name.msc"
     cp solver.msc $CONFIG_FILE
