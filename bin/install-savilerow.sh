@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # NOTES: minion & chuffed & cadical will also be installed (using binaries provided by savilerow)
 name="savilerow"
 version="1.9.1" # release version on Sep 11, 2021

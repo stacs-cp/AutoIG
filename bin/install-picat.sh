@@ -58,8 +58,17 @@ cp -r $d/lib $d/picat $BIN_DIR/$name/ # TODO: check the macos version
 wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip
 unzip main.zip
 #wget https://github.com/hakank/fzn_picat/archive/6a12883ace8ab7b4cf94419af5a40139c105a005.zip; unzip 6a12883ace8ab7b4cf94419af5a40139c105a005.zip; mv fzn_picat-6a12883ace8ab7b4cf94419af5a40139c105a005 fzn_picat-main/
-cp -r fzn_picat-main/mznlib $BIN_DIR/minizinc/share/minizinc/$name
-cp fzn_picat-main/*.pi $BIN_DIR/$name/
+
+if [ "$contFlag" = true ]; then
+    # Case for if this is installed using the container
+    cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name
+    cp fzn_picat-main/*.pi $CONTAINER_BIN_DIR/$name/
+else
+    # Case for if this installed for AutoIG directly in Linux, not using the container
+    cp -r fzn_picat-main/mznlib $BIN_DIR/minizinc/share/minizinc/$name
+    cp fzn_picat-main/*.pi $BIN_DIR/$name/
+fi
+
 popd
 
 rm -rf $SOURCE_DIR
@@ -74,6 +83,7 @@ else
     cp picat.msc $CONFIG_FILE
 fi
 
+# No different conditions for where MZN or solver is located
 if [ "$OS" == "Darwin" ]; then
     #sed -i "" "s/<name>/$name/g" $CONFIG_FILE
     echo "TODO"

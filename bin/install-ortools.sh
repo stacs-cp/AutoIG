@@ -17,8 +17,9 @@ for arg in "$@"; do
 done
 
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+CONTAINER_BIN_DIR="/root/.local/bin"
 
-# minizinc must be installed before picat
+# minizinc must be installed before ortools
 if [ $contFlag ]; then
     echo "using setup for container"
     if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
@@ -58,14 +59,10 @@ popd
 rm -rf $SOURCE_DIR
 
 if [ "$contFlag" = true ]; then
-    mv $CONTAINER_BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
-
-    cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
-    CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
+    cp -r $BIN_DIR/$name/share/minizinc $CONTAINER_BIN_DIR/share/minizinc/$name
+    CONFIG_FILE="$CONTAINER_BIN_DIR/share/minizinc/solvers/$name.msc"
     cp solver.msc $CONFIG_FILE
 else
-    mv $BIN_DIR/$name/bin/fzn-or-tools $BIN_DIR/$name/bin/fzn-ortools
-
     cp -r $BIN_DIR/$name/share/minizinc $BIN_DIR/minizinc/share/minizinc/$name
     CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
     cp solver.msc $CONFIG_FILE
