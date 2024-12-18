@@ -63,10 +63,12 @@ unzip main.zip
 
 if [ "$contFlag" = true ]; then
     # Case for if this is installed using the container
-    echo "Copying Picat to container"
+    echo "Copying Picat to container inst of minizinc"
     cp -r fzn_picat-main/mznlib $CONTAINER_BIN_DIR/share/minizinc/$name
     cp fzn_picat-main/*.pi $CONTAINER_BIN_DIR/$name/
 else
+    echo "Copying Picat to bin inst of minizinc"
+
     # Case for if this installed for AutoIG directly in Linux, not using the container
     cp -r fzn_picat-main/mznlib $BIN_DIR/minizinc/share/minizinc/$name
     cp fzn_picat-main/*.pi $BIN_DIR/$name/
@@ -77,10 +79,14 @@ popd
 rm -rf $SOURCE_DIR
 
 if [ "$contFlag" = true ]; then
+    echo "Copying Picat to container inst of minizinc config file"
+
     # Case for if this is installed using the container
     CONFIG_FILE="$CONTAINER_BIN_DIR/share/minizinc/solvers/$name.msc"
     cp picat.msc $CONFIG_FILE
 else
+    echo "Copying Picat to bin inst of minizinc config file"
+
     # Case for if this installed for AutoIG directly in Linux, not using the container
     CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
     cp picat.msc $CONFIG_FILE
