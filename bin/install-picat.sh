@@ -1,3 +1,4 @@
+#!/bin/bash
 name="picat"
 version="9.2"
 
@@ -6,13 +7,7 @@ echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-
-# minizinc must be installed before picat
-if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
-    echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
-    exit 1
-fi
-
+CONTAINER_BIN_DIR="/root/.local/bin"
 # Check for --containerBuild flag
 contFlag=false
 for arg in "$@"; do
@@ -21,6 +16,18 @@ for arg in "$@"; do
         break
     fi
 done
+
+# minizinc must be installed before picat
+if [ $contFlag ]; then
+    echo "using setup for container"
+    if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
+        echo "ERROR: Container Minizinc not setup correctly"
+        exit 1
+    fi
+elif [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
+    echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
+    exit 1
+fi
 
 pushd $BIN_DIR
 
@@ -59,10 +66,10 @@ rm -rf $SOURCE_DIR
 
 if [ "$contFlag" = true ]; then
     # Case for if this is installed using the container
-    CONFIG_FILE="/root/.local/bin/share/minizinc/solvers/$name.msc"
+    CONFIG_FILE="$CONTAINER_BIN_DIR/share/minizinc/solvers/$name.msc"
     cp picat.msc $CONFIG_FILE
 else
-    # Case for if this installed for AutoIG directly in Linux, not using the
+    # Case for if this installed for AutoIG directly in Linux, not using the container
     CONFIG_FILE="$BIN_DIR/minizinc/share/minizinc/solvers/$name.msc"
     cp picat.msc $CONFIG_FILE
 fi

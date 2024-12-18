@@ -1,3 +1,4 @@
+#!/bin/bash
 name="ortools"
 version="9.8"
 CONTAINER_BIN_DIR="/root/.local/bin"
@@ -17,8 +18,14 @@ done
 
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-# minizinc must be installed before ortools
-if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
+# minizinc must be installed before picat
+if [ $contFlag ]; then
+    echo "using setup for container"
+    if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
+        echo "ERROR: Container Minizinc not setup correctly"
+        exit 1
+    fi
+elif [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
     echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
     exit 1
 fi

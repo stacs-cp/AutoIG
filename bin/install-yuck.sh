@@ -1,3 +1,4 @@
+#!/bin/bash
 name="yuck"
 version="20210501"
 
@@ -5,10 +6,25 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-# minizinc must be installed before ortools
-if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
+# Check for --containerBuild flag
+contFlag=false
+for arg in "$@"; do
+    if [ "$arg" == "--containerBuild" ]; then
+        contFlag=true
+        break
+    fi
+done
+
+# minizinc must be installed before picat
+if [ $contFlag ]; then
+    echo "using setup for container"
+    if [ ! -d "$CONTAINER_BIN_DIR/share/minizinc" ]; then
+        echo "ERROR: Container Minizinc not setup correctly"
+        exit 1
+    fi
+elif [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
     echo "ERROR: minizinc must be installed in $BIN_DIR first. You can use the install-minizinc.sh script for the installation."
     exit 1
 fi
@@ -17,7 +33,7 @@ pushd $BIN_DIR
 
 url="https://github.com/informarte/yuck/releases/download/20210501/yuck-${version}.zip"
 
-mkdir -p $name 
+mkdir -p $name
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR

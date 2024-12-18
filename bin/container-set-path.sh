@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # get current script's folder
 if [ -n "$ZSH_VERSION" ]; then
@@ -43,6 +42,7 @@ export MZN_STDLIB_DIR=$CONTAINER_BIN_DIR/share/minizinc/
 
 
 # ortools - installed as fzn-cp-sat in the Conjure installation. 
+
 export PATH=$CONTAINER_BIN_DIR/fzn-cp-sat/:$PATH
 
 

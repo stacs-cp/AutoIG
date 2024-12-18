@@ -1,12 +1,12 @@
+#!/bin/bash
 name="minizinc"
 version="2.8.5"
-
 
 echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 pushd $BIN_DIR
 
@@ -21,7 +21,7 @@ else
     exit 1
 fi
 
-mkdir -p $name 
+mkdir -p $name
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR
