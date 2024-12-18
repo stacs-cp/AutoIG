@@ -8,7 +8,7 @@ The script will automatically scan the standard output, then output weather the 
 
 After all tests are run, the script also outputs the number of passed tests / the number of failed tests, as well as time taken to run all of them.
 
-This is one of the same test script which will eventuall be integrated into the automated CI pipeline in GitHub, but is used manually for now.
+This is one of the same test script which will eventuall be integrated into the automated CI pipeline in GitHub, but can also be used manually.
 
 An example contents of a test may look like:
 
