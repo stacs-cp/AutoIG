@@ -59,4 +59,5 @@ export PATH=$BIN_DIR/picat/:$PATH
 # runsolver
 export PATH=$BIN_DIR/runsolver/src/:$PATH
 
-$BIN_DIR"/setMznSolvers.sh" 
+# Not currently used
+# $BIN_DIR"/setMznSolvers.sh" 
