@@ -2,7 +2,9 @@
 
 ### Builds an image of <container-name> using Docker
 
-`docker build -t <container-name> .`
+Cache bust argument is a workaround to ensure that a fresh version of the repo is always the one cloned.
+
+`docker build --build-arg CACHE_BUST=$(date +%s) -t <container-name> .`
 
 ### Runs the container of provided name specifying running with bash
 

@@ -33,14 +33,14 @@ RUN apt install git-all -y
 WORKDIR /
 
 
-# Dummy argument (force from this point onward to not be able to be cached for the docker build proces)
+# Dummy argument (force from this point onward to not be able to be cached for the Docker build proces)
 # This way, there will always be a fresh pull of the repo which is essential 
-ARG CACHEBUST=$(date +%s)
-RUN echo $CACHEBUST
+ARG CACHE_BUST
+RUN echo "$CACHEBUST"
 
 # Clone into AutoIG directory on Vincent fork
 # Not incorrect, but will need to be changed later
-RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
+RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git 
 
 WORKDIR /AutoIG
 
