@@ -32,8 +32,13 @@ RUN apt install git-all -y
 # Set working dir to root
 WORKDIR /
 
+
+# Dummy argument (force from this point onward to not be able to be cached for the docker build proces)
+# This way, there will always be a fresh pull of the repo which is essential 
+ARG dummyArg=1
+
 # Clone into AutoIG directory on Vincent fork
-# Will need to be changed later
+# Not incorrect, but will need to be changed later
 RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git
 
 WORKDIR /AutoIG
