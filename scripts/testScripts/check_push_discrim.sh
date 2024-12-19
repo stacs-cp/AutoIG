@@ -8,8 +8,8 @@
 
 # Lines being checked for
 lines=(
-    "#instances where the base solver wins"
-    "#too easy instances for the base solver"
+    "instances where the base solver wins"
+    "too easy instances for the base solver"
     "Info of discriminating instances is saved to"
 )
 
