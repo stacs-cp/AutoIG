@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Runs all scripts put in ./tests and makes sure that the run at some point contains a provided line:
+# Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines.
+
+# This script runs more intensive tests, intended for PRs to main.
 
 # Lines being checked for
 lines=(
