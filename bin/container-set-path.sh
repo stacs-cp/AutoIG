@@ -51,7 +51,6 @@ export PATH=$BIN_DIR/picat/:$PATH
 export PATH=$BIN_DIR/runsolver/src/:$PATH
 
 
-# ortools - installed as fzn-cp-sat in the Conjure installation. 
 
 # export PATH=$CONTAINER_BIN_DIR/fzn-cp-sat/:$PATH
 

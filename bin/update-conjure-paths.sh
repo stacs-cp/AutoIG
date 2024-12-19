@@ -7,6 +7,4 @@ rm ~/.local/bin/fzn-chuffed
 # Remove minizinc from container, use mzn one
 rm ~/.local/bin/minizinc
 
-export PATH="/AutoIG/bin/minizinc/bin:$PATH"
-
-echo "Paths updated for Conjure"
+echo "Undeeded paths updated for Conjure"
