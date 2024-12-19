@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Tests for graded instance generation
+
 # Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines
 
 # This script runs less intensive tests, intended for push requests rather than a PR
@@ -16,7 +18,7 @@ testsRun=0
 start=$(date +%s)
 
 # Loop through each script in the tests directory
-for file in tests/*; do
+for file in push_graded_tests/*; do
     ((testsRun++))
     # Check if file
     if [[ -f "$file" ]]; then
