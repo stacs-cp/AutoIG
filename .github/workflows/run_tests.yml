@@ -103,6 +103,7 @@ jobs:
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Push"
           bash check_push.sh
+          bash check_push_discrim.sh
 
       # Run script for Conjure tsts
       - name: Run Conjure Tests
@@ -123,8 +124,8 @@ jobs:
           AUTOIG=$(pwd)
           cd $AUTOIG/scripts/testScripts
           echo "Running more thorough tests for Pull Request"
-          bash check_push.sh       
           bash check_pr.sh
+          bash check_pr_discrim.sh
 
       # If fail, reject
       - name: Fail
