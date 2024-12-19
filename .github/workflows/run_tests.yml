@@ -1,13 +1,15 @@
+---
 name: Run test using container
-
 on:
   push:
     branches:
       - test/maccGradedCase
-
   pull_request:
-    types: [opened, synchronize, reopened, closed]
-
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
 jobs:
   run-tests:
     name: Run AutoIG Tests
@@ -16,27 +18,15 @@ jobs:
       run:
         shell: bash
     container:
-      # using the main instead of the previous version for now
       image: ghcr.io/conjure-cp/conjure:main
-
-      #previous version
-      #ghcr.io/conjure-cp/conjure@sha256:e959c664d83a08b68a5b31409d56ce82eadf0f0b74f8af1809642b73f652c940
-
-      # Current version of conjure
-      # image: ghcr.io/conjure-cp/conjure@sha256:ebff76918718631f099544eed3a808cd16ce8f2c863c8229c7d2e417ba745c56
-
     steps:
-      # Checkout repo: checks out current repo (so AutoIG current branch)
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # Clones the current branch being pushed from
-      # Run same commands as in Docker file, this needs to be updated if there are major updates to Docker later on
-      # The two should be consistent
       - name: Run container and execute script
-        run: |
+        run: >
 
           apt-get update
+
           DEBIAN_FRONTEND=noninteractive apt-get install -y \
             bash \
             sudo \
@@ -47,35 +37,52 @@ jobs:
             unzip
 
           # Installing Python Dependencies
+
           sudo apt-get install -y python3-pip
+
           apt install python3-pandas -y
+
           apt install python3-numpy -y
+
           sudo apt install python-is-python3
 
+
           sudo apt-get install r-base -y
+
 
           sudo apt-get install git-all -y
 
 
+
           # Getting current branch
+
           CURRENT_BRANCH="${{ github.ref_name }}"
 
+
           git clone -b "$CURRENT_BRANCH" https://github.com/vincepick/AutoIG.git   
+
           bash bin/install-savilerow.sh 
+
           bash bin/install-mininzinc.sh
+
           bash bin/install-runsolver.sh
 
+
           bash bin/install-irace.sh 
+
           bash bin/install-ortools.sh
 
+
           bash bin/install-yuck.sh
+
           bash bin/install-picat.sh
+
           ls 
 
-          echo "Environment made :D, path:"
-          echo $PATH
 
-      # Run script for Push Events
+          echo "Environment made :D, path:"
+
+          echo $PATH
       - name: Run Push Tests
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -85,20 +92,16 @@ jobs:
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Push"
           bash check_push.sh
-
-       - name: Run Conjure Tests
-         if: ${{ github.event_name == 'push' }}
-         run: |
+      - name: Run Conjure Tests
+        if: ${{ github.event_name == 'push' }}
+        run: |
           cd AutoIG
           . bin/set-path.sh
           AUTOIG=$(pwd)
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Conjure Usage"
           bash check_conjure.sh
-
-      # Run script for Pull Requests
       - name: Run Pull Request Tests
-      
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           cd AutoIG
@@ -108,16 +111,11 @@ jobs:
           echo "Running more thorough tests for Pull Request"
           bash check_push.sh       
           bash check_pr.sh
-
-      # bash check.sh
-      # if script fails reject PR
       - name: Fail
         if: ${{ failure() }}
         run: |
           echo "These tests failed, rejecting PR."
           exit 1
-
-      # if script passes approve PR
       - name: Pass
         if: ${{ success() }}
         run: |
