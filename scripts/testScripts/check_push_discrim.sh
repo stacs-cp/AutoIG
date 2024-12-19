@@ -1,15 +1,16 @@
 #!/bin/bash
 
-# Tests for Graded Instance Generation
+# Tests for discriminating instance generation
 
-# Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines.
+# Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines
 
-# This script runs more intensive tests, intended for PRs to main.
+# This script runs less intensive tests, intended for push requests rather than a PR
 
 # Lines being checked for
 lines=(
-    "# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):"
-    "# Best configurations as commandlines (first number is the configuration ID; same order as above):"
+    "instances where the base solver wins"
+    "too easy instances for the base solver"
+    "Info of discriminating instances is saved to"
 )
 
 testsPassed=0
@@ -18,7 +19,7 @@ testsRun=0
 start=$(date +%s)
 
 # Loop through each script in the tests directory
-for file in pr_graded_tests/*; do
+for file in push_discrim_tests/*; do
     ((testsRun++))
     # Check if file
     if [[ -f "$file" ]]; then
@@ -41,6 +42,12 @@ for file in pr_graded_tests/*; do
             ((testsPassed++))
         fi
     fi
+    # Record end time and calculate elapsed time
+    end=$(date +%s)
+    elapsedTime=$((end - start))
+
+    # Display time elapsed
+    echo "Time elapsed: $elapsedTime seconds"
 done
 
 # Final results
@@ -51,10 +58,3 @@ else
     printf "\e[31mSome cases failing, only %d/%d passed.\e[0m\n" "$testsPassed" "$testsRun"
     exit 1
 fi
-
-# Record end time and calculate elapsed time
-end=$(date +%s)
-elapsedTime=$((end - start))
-
-# Display time elapsed
-echo "Time elapsed: $elapsedTime seconds"
