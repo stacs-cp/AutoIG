@@ -82,7 +82,7 @@ jobs:
           cd AutoIG
           . bin/set-path.sh
           AUTOIG=$(pwd)
-          cd $AUTOIG/scripts/testScript
+          cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Push"
           bash check.sh
 
