@@ -77,7 +77,7 @@ jobs:
 
       # Run script for Push Events
       - name: Run Push Tests
-        if: github.event_name == 'push'
+        if: ${{ github.event_name == 'push' }}
         run: |
           cd AutoIG
           . bin/set-path.sh
@@ -86,19 +86,20 @@ jobs:
           echo "Running basic tests for Push"
           bash check_push.sh
 
-       - name: Run Push Tests
-        if: github.event_name == 'push'
-        run: |
-          cd AutoIG
-          . bin/set-path.sh
-          AUTOIG=$(pwd)
-          cd $AUTOIG/scripts/testScripts
-          echo "Running basic tests for Conjure Usage"
-          bash check_conjure.sh
+       - name: Run Conjure Tests
+         if: ${{ github.event_name == 'push' }}
+         run: |
+           cd AutoIG
+           . bin/set-path.sh
+           AUTOIG=$(pwd)
+           cd $AUTOIG/scripts/testScripts
+           echo "Running basic tests for Conjure Usage"
+           bash check_conjure.sh
 
       # Run script for Pull Requests
       - name: Run Pull Request Tests
-        if: github.event_name == 'pull_request'
+      
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           cd AutoIG
           . bin/set-path.sh
