@@ -16,7 +16,7 @@ echo "$name version: $version"
 
 BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-url="https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.4.0.tar.bz2"
+url="https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.4.1.tar.bz2"
 
 pushd $BIN_DIR
 wget $url
