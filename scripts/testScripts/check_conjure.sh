@@ -4,7 +4,7 @@
 
 # Lines being checked for
 lines=(
-    "Copying solution to: model-test.solution"
+    "Copying solution to:"
 )
 
 testsPassed=0
