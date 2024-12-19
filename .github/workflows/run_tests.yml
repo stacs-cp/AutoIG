@@ -89,12 +89,12 @@ jobs:
        - name: Run Conjure Tests
          if: ${{ github.event_name == 'push' }}
          run: |
-           cd AutoIG
-           . bin/set-path.sh
-           AUTOIG=$(pwd)
-           cd $AUTOIG/scripts/testScripts
-           echo "Running basic tests for Conjure Usage"
-           bash check_conjure.sh
+          cd AutoIG
+          . bin/set-path.sh
+          AUTOIG=$(pwd)
+          cd $AUTOIG/scripts/testScripts
+          echo "Running basic tests for Conjure Usage"
+          bash check_conjure.sh
 
       # Run script for Pull Requests
       - name: Run Pull Request Tests
@@ -104,7 +104,7 @@ jobs:
           cd AutoIG
           . bin/set-path.sh
           AUTOIG=$(pwd)
-          cd $AUTOIG/scripts/testScript
+          cd $AUTOIG/scripts/testScripts
           echo "Running more thorough tests for Pull Request"
           bash check_push.sh       
           bash check_pr.sh
