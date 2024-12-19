@@ -7,4 +7,7 @@ rm ~/.local/bin/fzn-chuffed
 # Remove minizinc from container, use mzn one
 rm ~/.local/bin/minizinc
 
+# Remove ortools from container, use mzn one
+rm ~/.local/bin/fzn-cp-sat
+
 echo "Undeeded paths updated for Conjure"
