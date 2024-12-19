@@ -18,10 +18,20 @@ jobs:
       run:
         shell: bash
     container:
+      #previous version
+      #ghcr.io/conjure-cp/conjure@sha256:e959c664d83a08b68a5b31409d56ce82eadf0f0b74f8af1809642b73f652c940
+
+      # Current version of conjure
+      # image: ghcr.io/conjure-cp/conjure@sha256:ebff76918718631f099544eed3a808cd16ce8f2c863c8229c7d2e417ba745c56
       image: ghcr.io/conjure-cp/conjure:main
     steps:
       - name: Checkout code
+        # Checkout repo: checks out current repo (so AutoIG current branch)
+
         uses: actions/checkout@v4
+      # Clones the current branch being pushed from
+      # Run same commands as in Docker file, this needs to be updated if there are major updates to Docker later on
+      # The two should be consistent
       - name: Run container and execute script
         run: >
 
@@ -83,6 +93,7 @@ jobs:
           echo "Environment made :D, path:"
 
           echo $PATH
+      # Run script for Push Events
       - name: Run Push Tests
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -92,6 +103,8 @@ jobs:
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Push"
           bash check_push.sh
+
+      # Run script for Conjure tsts
       - name: Run Conjure Tests
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -101,6 +114,7 @@ jobs:
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Conjure Usage"
           bash check_conjure.sh
+      # Run script for pull request Events
       - name: Run Pull Request Tests
         if: ${{ github.event_name == 'pull_request' }}
         run: |
@@ -111,11 +125,15 @@ jobs:
           echo "Running more thorough tests for Pull Request"
           bash check_push.sh       
           bash check_pr.sh
+
+      # If fail, reject
       - name: Fail
         if: ${{ failure() }}
         run: |
           echo "These tests failed, rejecting PR."
           exit 1
+
+      # If pass approve
       - name: Pass
         if: ${{ success() }}
         run: |
