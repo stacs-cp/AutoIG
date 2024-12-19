@@ -907,8 +907,9 @@ def read_setting(settingFile):
     c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
     if setting["instanceSetting"] == "graded":
         c["evaluationSettings"]["solver"] = setting["solver"]
+        print(setting)
         if setting["solver"] in ["yuck"]:
-            c["evaluationSettings"]["solverType"] = setting["incomplete"]
+            c["evaluationSettings"]["solverType"] = "incomplete"
         else:
             c["evaluationSettings"]["solverType"] = "complete"
         c["evaluationSettings"]["minTime"] = setting["minSolverTime"]
