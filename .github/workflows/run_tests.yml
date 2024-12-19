@@ -84,7 +84,7 @@ jobs:
           AUTOIG=$(pwd)
           cd $AUTOIG/scripts/testScripts
           echo "Running basic tests for Push"
-          bash check.sh
+          bash check_push.sh
 
        - name: Run Push Tests
         if: github.event_name == 'push'
@@ -105,7 +105,7 @@ jobs:
           AUTOIG=$(pwd)
           cd $AUTOIG/scripts/testScript
           echo "Running more thorough tests for Pull Request"
-          bash check.sh       
+          bash check_push.sh       
           bash check_pr.sh
 
       # bash check.sh
