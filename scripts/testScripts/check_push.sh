@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Tests for graded instance generation
+: <<'COMMENT'
+ Tests for Graded Instance Generation
 
-# Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines
+ Runs all scripts put in ./push_graded_tests and makes sure that the run contains provided lines.
 
-# This script runs less intensive tests, intended for push requests rather than a PR
+ This script runs less intensive tests, intended for pushes to any branch.
+COMMENT
 
 # Lines being checked for
 lines=(

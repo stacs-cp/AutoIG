@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# Runs all scripts put in ./tests and makes sure that the run at some point contains a provided line:
+. <<'COMMENT'
+ Tests for calls to conjure_solve()
+
+ Runs all scripts in the conjure_solve-tests directory
+
+ Ensure that conjure is able to recognize the paths to solver binaries inside container environment. 
+COMMENT
 
 # Lines being checked for
 lines=(
