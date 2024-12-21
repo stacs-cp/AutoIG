@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Tests for Graded Instance Generation
+: <<'COMMENT'
+ Tests for Graded Instance Generation
 
-# Runs all scripts put in ./tests and makes sure that the run at some point contains provided lines.
+ Runs all scripts put in ./tests and makes sure that the run contains provided lines.
 
-# This script runs more intensive tests, intended for PRs to main.
+ This script runs more intensive tests, intended for PRs to main.
+COMMENT
 
 # Lines being checked for
 lines=(
