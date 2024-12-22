@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Tests discriminating instance generation with Macc problem,  using full generator, and the Chuffed solver.
 echo $AUTOIG
 mkdir -p "$AUTOIG/experiments/macc-discrim-small-gen"
 cd "$AUTOIG/experiments/macc-discrim-small-gen"

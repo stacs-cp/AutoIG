@@ -3,9 +3,13 @@
 : <<'COMMENT'
  Tests for Discriminating Instance Generation
 
- Runs all scripts put in ./pr_discrim_tests and makes sure that the run contains provided lines.
+ Runs all scripts put in ./pr_discrim_tests and makes sure that the runs contains provided lines.
+ 
+ Each script involves a full run of the macc problem, and each one uses a different solver. 
 
- This script runs more intensive tests, intended for PRs to main.
+ Solvers tested with include chuffed, cpsat, gecode, picat, and yuck. 
+
+ This script runs more intensive tests (macc runs with the full generator), and is intended for PRs to main.
 COMMENT
 
 # Lines being checked for

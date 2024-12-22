@@ -5,7 +5,11 @@
 
  Runs all scripts put in ./push_discrim_tests and makes sure that the run contains provided lines.
 
- This script runs less intensive tests, intended for pushes to any branch.
+ Each script involves a full run of the macc problem, and each one uses a different solver. 
+
+ Solvers tested with include chuffed, cpsat, gecode, picat, and yuck. 
+
+ This script runs less intensive tests (macc runs with the small generator), and is intended for pushes to any branch.
 COMMENT
 
 # Lines being checked for
