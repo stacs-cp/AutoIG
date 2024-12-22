@@ -50,23 +50,3 @@ export PATH=$BIN_DIR/picat/:$PATH
 # runsolver
 export PATH=$BIN_DIR/runsolver/src/:$PATH
 
-
-
-# export PATH=$CONTAINER_BIN_DIR/fzn-cp-sat/:$PATH
-
-
-# # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BIN_DIR/ortools/lib
-# # This installation could be wrong, needs further testing as there are numerous options
-# export LD_LIBRARY_PATH=$CONTAINER_BIN_DIR/lib/libortools.so.9.8.9999:$LD_LIBRARY_PATH
-
-# # yuck
-# export PATH=$BIN_DIR/yuck/bin/:$PATH
-
-# # picat
-# export PATH=$BIN_DIR/picat/:$PATH
-
-# # runsolver
-# export PATH=$BIN_DIR/runsolver/src/:$PATH
-
-# # Not currently used
-# # $BIN_DIR"/setMznSolvers.sh" 
