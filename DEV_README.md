@@ -28,7 +28,7 @@ Using this volume also means that a user must first clone into AutoiG on their s
 
 `AUTOIG=$(pwd)`
 
-At this point, this version of AutoIG is ready for use as normal.
+At this point, AutoIG is fully configured and ready for use as normal.
 
 ## Example sequence of commands for setting up an experiment:
 
