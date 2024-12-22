@@ -3,6 +3,7 @@
 ### Builds an image of <container-name> using Docker
 
 Cache bust argument is a workaround to ensure that a fresh version of the repo is always the one cloned.
+This approach still allows the steps prior to cloning in to AutoIG to be cached, saving a lot of processing power.
 
 `docker build --build-arg CACHE_BUST=$(date +%s) -t <container-name> .`
 

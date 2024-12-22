@@ -33,7 +33,7 @@ WORKDIR /
 
 
 # Dummy argument (force from this point onward to not be able to be cached for the Docker build proces)
-# This way, there will always be a fresh pull of the repo which is essential 
+# This way, there will always be a fresh pull of the repo which is essential, while still ensuring the steps before this can be cached. 
 ARG CACHE_BUST
 RUN echo "$CACHEBUST"
 
