@@ -8,4 +8,4 @@ BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 FILE="$BIN_DIR/minizinc/share/minizinc/solvers/cpsat.msc"
 
 # Update name field to ortools
-sed -i 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"
+sed -i '' 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"

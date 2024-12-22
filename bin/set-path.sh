@@ -43,5 +43,5 @@ export PATH=$BIN_DIR/picat/:$PATH
 # runsolver
 export PATH=$BIN_DIR/runsolver/src/:$PATH
 
-# Setting ortools path
-update-or-path.sh
+# Setting ortools path using path set script
+$BIN_DIR/update-or-path.sh
