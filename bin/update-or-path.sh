@@ -7,5 +7,12 @@ BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Location of file to update:
 FILE="$BIN_DIR/minizinc/share/minizinc/solvers/cpsat.msc"
 
-# Update name field to ortools
-sed -i '' 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"
+OS=$(uname)
+if [ "$OS" == "Darwin" ]; then
+    sed -i '' 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"
+elif [ "$OS" == "Linux" ]; then
+    sed -i 's/"name": "OR Tools CP-SAT"/"name": "ortools"/' "$FILE"
+else
+    echo "Cannot determine your OS, uname reports: ${OS}"
+    exit 1
+fi
