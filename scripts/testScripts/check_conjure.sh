@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. <<'COMMENT'
+: <<'COMMENT'
  Tests for calls to conjure_solve()
 
  Runs all scripts in the conjure_solve-tests directory, to ensure that Conjure is able to find binaries for solvers: chuffed, kissat, and or-tools 
