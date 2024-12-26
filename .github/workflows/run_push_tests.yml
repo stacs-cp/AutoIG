@@ -70,7 +70,7 @@ jobs:
           AUTOIG=$(pwd)
 
           # Navigate to test directory
-          cd scripts/testScript
+          cd scripts/testScripts
 
           # Run the two test scripts associated with pushes
           bash check_push.sh
