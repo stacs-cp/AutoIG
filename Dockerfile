@@ -1,4 +1,5 @@
 # Use the Conjure base image
+
 FROM --platform=linux/amd64 ghcr.io/conjure-cp/conjure:main
 
 # Update atp-get
@@ -12,7 +13,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     gnupg \
     software-properties-common \
     unzip
-
 
 
 # Installing necessary language dependencies for Python 
@@ -62,3 +62,4 @@ RUN bash bin/update-conjure-paths.sh
 RUN apt-get install -y \
     vim \
     file
+

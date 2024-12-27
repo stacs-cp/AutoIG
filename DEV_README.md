@@ -46,3 +46,4 @@ bash run.sh
 # Considerations for Use of Dockerfile
 
 The build Docker image allows for the program to be run in a container. It is worth noting though that the container could take up more storage than running AutoIG through Linux directly, as it will download dependencies within the container such as Python and R. If a users system already has these, it could be more efficient to run it directly on the system without a VM. In addition, data does not persist within the container, so it is important to save the results of AutoIG runs, perhaps with a Docker Volume. Instructions for setting up the Docker Volume are below.
+
