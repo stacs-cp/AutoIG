@@ -1,0 +1,15 @@
+2024-10-05 14:34:57: /home/tudor/AutoIG/scripts/wrapper.py 29 1 61910261 dummy -Ag 2 -Tg 7 -Xg 6 -Zg 2 -ground_coverage 7 -avg_height_ratio 99
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:34:57: Creating generator instance: ./detailed-output/gen-inst-29.param
+2024-10-05 14:34:57: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-29.param --eprime-param=./detailed-output/gen-inst-29.eprime-param
+2024-10-05 14:34:57: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-29.eprime-param -out-aux ./detailed-output/gen-inst-29.aux -out-minion ./detailed-output/gen-inst-29.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-05 14:34:57: minion ./detailed-output/gen-inst-29.minion -solsout ./detailed-output/gen-inst-29.solution -randomseed 61910261 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2024-10-05 14:34:57: 
+Generator results: genInstance=gen-inst-29, genStatus=unsat, genSRTime=0.2695143222808838, genSolverTime=0.0013566017150878906
+No instance file generated. Exitting...
+{'totalTime': 0.4950127601623535, 'genResults': {'instance': 'gen-inst-29.param', 'status': 'unsat', 'seed': 61910261, 'SRTime': 0.2695143222808838, 'solverTime': 0.0013566017150878906}, 'instanceResults': {}, 'status': 'genunsat', 'score': 'Inf'}
+Inf 0.5

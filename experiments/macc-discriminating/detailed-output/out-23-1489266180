@@ -1,0 +1,30 @@
+2024-10-05 14:36:21: /home/tudor/AutoIG/scripts/wrapper.py 23 1 1489266180 dummy -Ag 3 -Tg 9 -Xg 6 -Zg 2 -ground_coverage 15 -avg_height_ratio 81
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:36:21: Creating generator instance: ./detailed-output/gen-inst-23.param
+2024-10-05 14:36:21: minion ./detailed-output/gen-inst-23.minion -solsout ./detailed-output/gen-inst-23.solution -randomseed 1489266180 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:36:21: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-23.aux -out-solution ./detailed-output/gen-inst-23.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-23.solution
+2024-10-05 14:36:21: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-23.param --eprime-solution=./detailed-output/gen-inst-23.solution.eprime-param --essence-solution ./detailed-output/gen-inst-23.solution.param
+
+
+2024-10-05 14:36:21: 
+Generator results: genInstance=gen-inst-23, genStatus=sat, genSRTime=0, genSolverTime=0.04162406921386719
+conjure autoig --remove-aux ./detailed-output/inst-23-1489266180.param ./detailed-output/inst-23-1489266180.auxRemoved.param
+conjure pretty ./detailed-output/inst-23-1489266180.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-23-1489266180.dzn generated
+
+
+runsolver -w ./detailed-output/inst-23-1489266180.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-23-1489266180.dzn --output-mode dzn --output-objective -s
+2.58: 18.0
+2.60: 16.0
+2.62: 15.0
+2.64: 14.0
+2.67: 12.0
+2.69: 11.0
+2.71: 10.0
+UNK 3.1231422424316406 {'objs': [(2.5847182273864746, 18.0), (2.598327398300171, 16.0), (2.6236655712127686, 15.0), (2.6360762119293213, 14.0), (2.67204213142395, 12.0), (2.688882827758789, 11.0), (2.7059597969055176, 10.0)], 'flattenStatus': 'ok', 'flattenTime': 0.569105, 'instanceType': 'unknown', 'answerStatus': 'unknown'}
+
+Cannot be solved by favoured solver. Quitting...
+{'totalTime': 3.5841245651245117, 'genResults': {'instance': 'gen-inst-23.param', 'status': 'sat', 'seed': 1489266180, 'SRTime': 0, 'solverTime': 0.04162406921386719}, 'instanceResults': {'instance': './detailed-output/inst-23-1489266180.dzn', 'status': 'favouredTooDifficult', 'score': 0, 'results': {'base': {'runs': []}, 'favoured': {'runs': [{'seed': None, 'status': 'UNK', 'time': 3.1231422424316406, 'extra': {'objs': [(2.5847182273864746, 18.0), (2.598327398300171, 16.0), (2.6236655712127686, 15.0), (2.6360762119293213, 14.0), (2.67204213142395, 12.0), (2.688882827758789, 11.0), (2.7059597969055176, 10.0)], 'flattenStatus': 'ok', 'flattenTime': 0.569105, 'instanceType': 'unknown', 'answerStatus': 'unknown'}}]}}}, 'status': 'favouredTooDifficult', 'score': 0}
+0 3.58

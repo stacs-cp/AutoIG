@@ -1,0 +1,70 @@
+language Essence 1.3
+
+given np_cars_plus: int(1..200)
+given np_classes: int(1..200)
+given np_options: int(1..200)
+
+letting np_cars be min({200, np_classes+np_cars_plus})
+
+find n_cars, n_classes, n_options: int(1..200)
+such that
+    n_cars = np_cars,
+    n_classes = np_classes,
+    n_options = np_options
+
+where np_cars>=np_classes
+
+given quantity_range_min: int(1..200)
+given quantity_range_delta: int(0..199)
+find quantity: function int(1..200) --> int(1..200)
+
+such that
+    and([q1 >= 1 /\ q1 <= np_classes <-> q1 in defined(quantity) | q1 : int(1..200)]),
+    and([q1[2] >= quantity_range_min | q1 <- quantity]),
+    and([q1[2] <= quantity_range_min + quantity_range_delta | q1 <- quantity])
+
+$ The sum of the cars in the quantity function should equal np_cars
+such that sum([quantity(quant) | quant : int(1..200), quant <= np_classes]) = np_cars
+
+$ irace (negated) forbidden constraint
+where ((quantity_range_min*np_classes) <= np_cars)
+where (quantity_range_min+quantity_range_delta)*np_classes>=np_cars
+
+given maxcars_range_min: int(1..10)
+given maxcars_range_delta: int(0..9)
+find maxcars: function int(1..200) --> int(1..10)
+such that
+    and([q2 >= 1 /\ q2 <= np_options <-> q2 in defined(maxcars) | q2 : int(1..200)]),
+    and([q2[2] >= maxcars_range_min | q2 <- maxcars]),
+    and([q2[2] <= maxcars_range_min + maxcars_range_delta | q2 <- maxcars])
+
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_delta: int(0..9)
+find blksize_delta: function int(1..200) --> int(1..10)
+such that
+    and([q3 >= 1 /\ q3 <= np_options <-> q3 in defined(blksize_delta) | q3 : int(1..200)]),
+    and([q3[2] >= blksize_delta_range_min | q3 <- blksize_delta]),
+    and([q3[2] <= blksize_delta_range_min + blksize_delta_range_delta | q3 <- blksize_delta])
+
+given usage_card_min: int(0..1000)
+given usage_card_delta: int(0..99)
+find usage: relation (maxSize 40000) of (int(1..200) * int(1..200))
+such that
+    |usage| >= usage_card_min /\ |usage| <= usage_card_min + usage_card_delta,
+    and([q4[1] <= np_classes | q4 <- usage]),
+    and([q4[2] <= np_options | q4 <- usage])
+
+$ irace (negated) forbidden constraint for the validity of cardinality of usage
+where (usage_card_min+usage_card_delta)<=(np_classes*np_options)
+
+$ Make sure that all options are used at least once
+such that and([|toSet(usage(_, option))| >= 1 | option : int(1..200), option <= np_options])
+
+$ irace (negated) forbidden constraint for the above constraint
+where usage_card_min>=np_options
+
+$ Make sure that all classes have at least one option
+such that and([|toSet(usage(class, _))| >= 1 | class : int(1..200), class <= np_classes])
+
+$ irace (negated) forbidden constraint for the above constraint
+where usage_card_min>=np_classes

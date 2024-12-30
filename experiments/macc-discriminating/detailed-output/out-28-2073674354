@@ -1,0 +1,37 @@
+2024-10-05 14:38:26: /home/tudor/AutoIG/scripts/wrapper.py 28 1 2073674354 dummy -Ag 2 -Tg 8 -Xg 5 -Zg 2 -ground_coverage 30 -avg_height_ratio 64
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:38:26: Creating generator instance: ./detailed-output/gen-inst-28.param
+2024-10-05 14:38:26: minion ./detailed-output/gen-inst-28.minion -solsout ./detailed-output/gen-inst-28.solution -randomseed 2073674354 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:38:27: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-28.aux -out-solution ./detailed-output/gen-inst-28.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-28.solution
+2024-10-05 14:38:27: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-28.param --eprime-solution=./detailed-output/gen-inst-28.solution.eprime-param --essence-solution ./detailed-output/gen-inst-28.solution.param
+
+
+2024-10-05 14:38:27: 
+Generator results: genInstance=gen-inst-28, genStatus=sat, genSRTime=0, genSolverTime=0.04131436347961426
+conjure autoig --remove-aux ./detailed-output/inst-28-2073674354.param ./detailed-output/inst-28-2073674354.auxRemoved.param
+conjure pretty ./detailed-output/inst-28-2073674354.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-28-2073674354.dzn generated
+
+
+runsolver -w ./detailed-output/inst-28-2073674354.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-28-2073674354.dzn --output-mode dzn --output-objective -s
+1.24: 10.0
+1.24: 9.0
+1.29: 8.0
+1.29: 7.0
+1.29: 6.0
+1.30: 5.0
+1.30: 4.0
+C 1.4176499843597412 {'objs': [(1.236173152923584, 10.0), (1.240546464920044, 9.0), (1.2853069305419922, 8.0), (1.289806604385376, 7.0), (1.2941644191741943, 6.0), (1.2986366748809814, 5.0), (1.3032152652740479, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.319928, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-28-2073674354.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-28-2073674354.dzn --output-mode dzn --output-objective -s
+0.54: 5.0
+0.69: 4.0
+C 0.9170565605163574 {'objs': [(0.5444943904876709, 5.0), (0.6858458518981934, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.320124, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+True
+
+Instance is too easy for the base solver. Quitting...
+{'totalTime': 2.788222312927246, 'genResults': {'instance': 'gen-inst-28.param', 'status': 'sat', 'seed': 2073674354, 'SRTime': 0, 'solverTime': 0.04131436347961426}, 'instanceResults': {'instance': './detailed-output/inst-28-2073674354.dzn', 'status': 'baseTooEasy', 'score': 0, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 0.9170565605163574, 'extra': {'objs': [(0.5444943904876709, 5.0), (0.6858458518981934, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.320124, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 1.4176499843597412, 'extra': {'objs': [(1.236173152923584, 10.0), (1.240546464920044, 9.0), (1.2853069305419922, 8.0), (1.289806604385376, 7.0), (1.2941644191741943, 6.0), (1.2986366748809814, 5.0), (1.3032152652740479, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.319928, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}}}, 'status': 'baseTooEasy', 'score': 0}
+0 2.79

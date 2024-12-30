@@ -1,0 +1,30 @@
+2024-10-05 14:33:36: /home/tudor/AutoIG/scripts/wrapper.py 18 1 735527639 dummy -Ag 2 -Tg 2 -Xg 5 -Zg 2 -ground_coverage 6 -avg_height_ratio 88
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:33:36: Creating generator instance: ./detailed-output/gen-inst-18.param
+2024-10-05 14:33:36: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-18.param --eprime-param=./detailed-output/gen-inst-18.eprime-param
+2024-10-05 14:33:36: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-18.eprime-param -out-aux ./detailed-output/gen-inst-18.aux -out-minion ./detailed-output/gen-inst-18.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-05 14:33:36: minion ./detailed-output/gen-inst-18.minion -solsout ./detailed-output/gen-inst-18.solution -randomseed 735527639 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:33:36: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-18.aux -out-solution ./detailed-output/gen-inst-18.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-18.solution
+2024-10-05 14:33:36: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-18.param --eprime-solution=./detailed-output/gen-inst-18.solution.eprime-param --essence-solution ./detailed-output/gen-inst-18.solution.param
+
+
+2024-10-05 14:33:37: 
+Generator results: genInstance=gen-inst-18, genStatus=sat, genSRTime=0.2618696689605713, genSolverTime=0.026549339294433594
+conjure autoig --remove-aux ./detailed-output/inst-18-735527639.param ./detailed-output/inst-18-735527639.auxRemoved.param
+conjure pretty ./detailed-output/inst-18-735527639.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-18-735527639.dzn generated
+
+
+runsolver -w ./detailed-output/inst-18-735527639.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-18-735527639.dzn --output-mode dzn --output-objective -s
+C 0.11707305908203125 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.0409098, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-18-735527639.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-18-735527639.dzn --output-mode dzn --output-objective -s
+C 0.11652660369873047 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.0405818, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+True
+
+Instance is too easy for the base solver. Quitting...
+{'totalTime': 1.166297435760498, 'genResults': {'instance': 'gen-inst-18.param', 'status': 'sat', 'seed': 735527639, 'SRTime': 0.2618696689605713, 'solverTime': 0.026549339294433594}, 'instanceResults': {'instance': './detailed-output/inst-18-735527639.dzn', 'status': 'baseTooEasy', 'score': 0, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 0.11652660369873047, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.0405818, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 0.11707305908203125, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.0409098, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}}}, 'status': 'baseTooEasy', 'score': 0}
+0 1.17
