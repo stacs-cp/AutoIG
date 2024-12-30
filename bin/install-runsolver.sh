@@ -14,7 +14,7 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 url="https://www.cril.univ-artois.fr/~roussel/runsolver/runsolver-3.4.1.tar.bz2"
 
