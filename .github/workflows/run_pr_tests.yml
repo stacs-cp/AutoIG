@@ -56,17 +56,15 @@ jobs:
           git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git   
 
           # Install Necessary Dependencies into AutoIG Bin
-          bash bin/install-savilerow.sh 
           bash bin/install-mininzinc.sh
           bash bin/install-runsolver.sh
           bash bin/install-irace.sh 
-          bash bin/install-ortools.sh
           bash bin/install-yuck.sh
           bash bin/install-picat.sh
 
           # Set Paths
-          . bin/set-path.sh
-          AUTOIG=$(pwd)
+          . bin/container-set-path.sh
+          export AUTOIG=$(pwd)
 
           # Navigate to test directory
           cd scripts/testScripts
