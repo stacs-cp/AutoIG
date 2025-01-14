@@ -39,7 +39,7 @@ RUN echo "$CACHEBUST"
 
 # Clone into AutoIG directory on Vincent fork
 # Not incorrect, but will need to be changed later to clone from stacs-cp/AutoIG instead
-RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git 
+RUN git clone --depth 1 -b dev https://github.com/stacs-cp/AutoIG.git 
 
 WORKDIR /AutoIG
 
