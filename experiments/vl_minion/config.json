@@ -1,0 +1,23 @@
+{
+ "runDir": "/home/qwe/AutoIG/experiments/vl_minion",
+ "problemModel": "/home/qwe/AutoIG/data/models/vessel-loading/problem.essence",
+ "generatorModel": "/home/qwe/AutoIG/data/models/vessel-loading/generator.essence",
+ "seed": 42,
+ "maxEvaluations": 180,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "1",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "graded",
+ "instanceValidTypes": "all",
+ "minSolverTime": 0,
+ "maxSolverTime": 5,
+ "nRunsPerInstance": 1,
+ "SRTimeLimit": 1,
+ "SRFlags": "",
+ "solverTimeLimit": 1,
+ "solverFlags": "-f",
+ "solver": "minion"
+}

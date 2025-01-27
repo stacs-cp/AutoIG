@@ -111,7 +111,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
         # make score
         # inst unwanted type: score=1
         if (
-            (setting["gradedTypes"] != "both")
+            (setting["gradedTypes"] != "all")
             and (runStatus in ["sat", "unsat"])
             and (runStatus != setting["gradedTypes"])
         ):
@@ -143,7 +143,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
     meanSolverTime = 0
     if status == "ok":
         meanSolverTime = sum(lsSolverTime) / len(lsSolverTime)
-        if meanSolverTime < setting["solverMinTime"]:
+        if meanSolverTime < setting["minTime"]:
             status = "tooEasy"
         else:
             status = "graded"
@@ -159,14 +159,14 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
 
     # make final score
     if score != None:
-        return score
+        return score, get_results()
     # - otherwise, for each evaluation: if the run is too easy: score=-solverTime, if the run is graded: score=nEvaluations*-solverMinTime
     score = 0
     for i in range(len(lsSolverTime)):
-        if lsSolverTime[i] < setting["solverMinTime"]:
+        if lsSolverTime[i] < setting["minTime"]:
             score -= lsSolverTime[i]
         else:
-            score -= setting["nEvaluations"] * setting["solverMinTime"]
+            score -= setting["nEvaluations"] * setting["minTime"]
     return score, get_results()
 
 
@@ -225,6 +225,7 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
                 + ")"
             )
 
+            #flagvp: current source of the issue for discriminating instances
             runStatus, SRTime, solverTime = call_conjure_solve(
                 essenceModelFile, eprimeModelFile, instFile, solverSetting, rndSeed
             )
@@ -252,7 +253,7 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
             # ------------ update score
             # inst unwanted type: score=1
             if (
-                (setting["gradedTypes"] != "both")
+                (setting["gradedTypes"] != "all")
                 and (runStatus in ["sat", "unsat"])
                 and (runStatus != setting["gradedTypes"])
             ):
@@ -905,6 +906,10 @@ def read_setting(settingFile):
 
     c["evaluationSettings"]["nEvaluations"] = setting["nRunsPerInstance"]
     c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
+    c["evaluationSettings"]["SRTimeLimit"] = setting["SRTimeLimit"]
+    c["evaluationSettings"]["SRFlags"] = setting["SRFlags"]
+    c["evaluationSettings"]["solverTimeLimit"] = setting["solverTimeLimit"]
+    c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
     if setting["instanceSetting"] == "graded":
         c["evaluationSettings"]["solver"] = setting["solver"]
         if setting["solver"] in ["yuck"]:
@@ -923,11 +928,17 @@ def read_setting(settingFile):
             "solverMinTime": setting["minSolverTime"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["baseSolverFlags"],
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
         favouredSolverSettings = {
             "name": setting["favouredSolver"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["favouredSolverFlags"],
+            "SRTimeLimit": setting["SRTimeLimit"],
+            "SRFlags": setting["SRFlags"],
+            "solverTimeLimit": setting["solverTimeLimit"],
         }
 
         c["evaluationSettings"]["baseSolver"] = baseSolverSettings
@@ -959,6 +970,10 @@ def main():
         # if results['genResults']['status']=='sat':
         #    assert results['instanceResults']!={}
         totalWrapperTime = time.time() - startTime
+        # my pc is a potato so I was getting negaive time.....
+        # remove them when running on a better pc
+        if totalWrapperTime<0:
+            totalWrapperTime*=totalWrapperTime
         results["totalTime"] = totalWrapperTime
         results["status"] = status
         results["score"] = score
@@ -1028,10 +1043,14 @@ def main():
 
     # evaluate the generated instance
     if modelType == "essence":
+        # MOD
         evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
+        
         score, instanceResults = globals()[evaluationFunctionName](
             instFile, seed, setting["evaluationSettings"]
         )
+    
+        
     else:
         # convert the generated instance into .dzn
         mznInstFile = instFile.replace(".param", ".dzn")

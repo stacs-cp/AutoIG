@@ -1,0 +1,85 @@
+2025-01-27 11:48:33: /home/qwe/AutoIG/scripts/wrapper.py 1 1 1965286212 dummy -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/qwe/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/home/qwe/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/home/qwe/AutoIG/experiments/vl_minion'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '1', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '-f', 'solver': 'minion', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 5}}
+
+
+2025-01-27 11:48:33: Creating generator instance: ./detailed-output/gen-inst-1.param
+2025-01-27 11:48:33: minion ./detailed-output/gen-inst-1.minion -solsout ./detailed-output/gen-inst-1.solution -randomseed 1965286212 -timelimit 1 -varorder domoverwdeg -valorder random
+2025-01-27 11:48:33: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-1.aux -out-solution ./detailed-output/gen-inst-1.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-1.solution
+2025-01-27 11:48:33: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-solution=./detailed-output/gen-inst-1.solution.eprime-param --essence-solution ./detailed-output/gen-inst-1.solution.param
+
+
+2025-01-27 11:48:34: 
+Generator results: genInstance=gen-inst-1, genStatus=sat, genSRTime=0, genSolverTime=0.04633903503417969
+
+
+2025-01-27 11:48:34: Solving ./detailed-output/inst-1-1965286212.param...
+
+
+----------- With random seed 0th (1965286212)
+
+Calling conjure
+2025-01-27 11:48:34: conjure solve ./problem.essence ./detailed-output/inst-1-1965286212.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 1 " --solver-options "-timelimit 1 -randomseed 1965286212 -f" --solver=minion
+2025-01-27 11:48:36: Error:
+    Savile Row stdout: WARNING: Index domains do not match for the matrix separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitR3_1_Explicit
+WARNING: This could be a mismatch between the matrix given in the parameter file
+WARNING: and its matrix domain in the given statement in the model file.
+Created output file for domain filtering ./detailed-output/problem-inst-1-1965286212.eprime-minion
+Created output file ./detailed-output/problem-inst-1-1965286212.eprime-minion
+Sub-process exited with error code:1 and error message:
+[]
+Created information file ./detailed-output/problem-inst-1-1965286212.eprime-info
+
+    Savile Row stderr: WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+
+    Savile Row exit-code: 0
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-1-1965286212.param
+Running minion for domain filtering.
+Running solver: minion
+
+GETTING TO HERE
+Traceback (most recent call last):
+  File "/home/qwe/AutoIG/scripts/wrapper.py", line 1115, in <module>
+    main()
+  File "/home/qwe/AutoIG/scripts/wrapper.py", line 1049, in main
+    score, instanceResults = globals()[evaluationFunctionName](
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/qwe/AutoIG/scripts/wrapper.py", line 87, in evaluate_essence_instance_graded
+    runStatus, SRTime, solverTime = call_conjure_solve(
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/home/qwe/AutoIG/scripts/essence_pipeline_utils.py", line 432, in call_conjure_solve
+    raise Exception(cmdOutput)
+Exception: Error:
+    Savile Row stdout: WARNING: Index domains do not match for the matrix separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitR3_1_Explicit
+WARNING: This could be a mismatch between the matrix given in the parameter file
+WARNING: and its matrix domain in the given statement in the model file.
+Created output file for domain filtering ./detailed-output/problem-inst-1-1965286212.eprime-minion
+Created output file ./detailed-output/problem-inst-1-1965286212.eprime-minion
+Sub-process exited with error code:1 and error message:
+[]
+Created information file ./detailed-output/problem-inst-1-1965286212.eprime-info
+
+    Savile Row stderr: WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+WARNING: interval 1..0 is out of order. Rewriting to empty interval.
+
+    Savile Row exit-code: 0
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-1-1965286212.param
+Running minion for domain filtering.
+Running solver: minion
+

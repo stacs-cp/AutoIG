@@ -1,0 +1,15 @@
+{
+ "id": "ortools",
+ "name": "ortools",
+ "version": "9.2",
+ "description": "ortools FlatZinc executable",
+ "mznlib": "../ortools",
+ "executable": "../../../../ortools/bin/fzn-ortools",
+ "stdFlags": ["-a", "-n", "-p", "-f", "-r", "-v", "-l", "-s"],
+ "supportsMzn": false,
+ "supportsFzn": true,
+ "needsSolns2Out": true,
+ "needsMznExecutable": false,
+ "needsStdlibDir": false,
+ "isGUIApplication": false
+}

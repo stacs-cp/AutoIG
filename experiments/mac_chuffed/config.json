@@ -1,0 +1,23 @@
+{
+ "runDir": "/home/tudor/AutoIG/experiments/mac_chuffed",
+ "problemModel": "/home/tudor/AutoIG/data/models/macc/problem.mzn",
+ "generatorModel": "/home/tudor/AutoIG/data/models/macc/generator.essence",
+ "seed": 42,
+ "maxEvaluations": 300,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "2",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "graded",
+ "instanceValidTypes": "all",
+ "minSolverTime": 0,
+ "maxSolverTime": 2,
+ "nRunsPerInstance": 1,
+ "SRTimeLimit": 1,
+ "SRFlags": "",
+ "solverTimeLimit": 1,
+ "solverFlags": "",
+ "solver": "chuffed"
+}

@@ -1,7 +1,7 @@
 outFile="instance-md5sum.csv"
 echo "instance,hashValue">$outFile
 
-for fn in $(ls inst-*.dzn)
+for fn in $(ls inst-*.param)
 do
     if [ "$(uname)" == "Darwin" ]; then
         val=$(md5 $fn| cut -d"=" -f2 |xargs)

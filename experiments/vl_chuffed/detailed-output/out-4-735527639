@@ -1,0 +1,37 @@
+2025-01-26 16:33:56: /home/qwe/AutoIG/scripts/wrapper.py 4 1 735527639 dummy -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '//home/qwe/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '//home/qwe/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/home/qwe/AutoIG/experiments/vl_chuffed'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '-f', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 5}}
+
+
+2025-01-26 16:33:56: Creating generator instance: ./detailed-output/gen-inst-4.param
+2025-01-26 16:33:56: minion ./detailed-output/gen-inst-4.minion -solsout ./detailed-output/gen-inst-4.solution -randomseed 735527639 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-01-26 16:33:56: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-4.aux -out-solution ./detailed-output/gen-inst-4.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-4.solution
+2025-01-26 16:33:56: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-4.param --eprime-solution=./detailed-output/gen-inst-4.solution.eprime-param --essence-solution ./detailed-output/gen-inst-4.solution.param
+
+
+2025-01-26 16:33:56: 
+Generator results: genInstance=gen-inst-4, genStatus=sat, genSRTime=0, genSolverTime=0.07558393478393555
+
+
+2025-01-26 16:33:56: Solving ./detailed-output/inst-4-735527639.param...
+
+
+----------- With random seed 0th (735527639)
+
+Calling conjure
+2025-01-26 16:33:56: conjure solve ./problem.essence ./detailed-output/inst-4-735527639.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options "-timelimit 1 " --solver-options "-t 1000 --rnd-seed 735527639 -f" --solver=chuffed
+2025-01-26 16:33:59: Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-4-735527639.param
+Running minion for domain filtering.
+Running solver: chuffed
+No solutions found.
+
+Waiting for ./detailed-output/problem-inst-4-735527639.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-4-735527639.eprime-info -> ./detailed-output/problem-inst-4-735527639-seed_735527639-chuffed.eprime-info
+2025-01-26 16:33:59: 
+Run results: solverType=chuffed, solver=chuffed, instance=inst-4-735527639, runId=0, runStatus=solverTimeOut, SRTime=0.979, solverTime=1.06
+
+solver timeout or out of memory. Quitting!...
+
+Instance summary: instance=inst-4-735527639, status=solverTimeOut, meanSolverTime=0
+{'totalTime': 3.165318250656128, 'genResults': {'instance': 'gen-inst-4.param', 'status': 'sat', 'seed': 735527639, 'SRTime': 0, 'solverTime': 0.07558393478393555}, 'instanceResults': {'insttance': './detailed-output/inst-4-735527639.param', 'status': 'solverTimeOut', 'score': 0, 'results': {}}, 'status': 'solverTimeOut', 'score': 0}
+0 3.17
