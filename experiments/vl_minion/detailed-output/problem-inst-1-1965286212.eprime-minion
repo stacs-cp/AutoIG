@@ -1,0 +1,1175 @@
+MINION 3
+# CSETopLevel_number = 0
+# CSETopLevel_eliminated_expressions = 0
+# CSETopLevel_total_size = 0
+# CSE_active_number = 122
+# CSE_active_eliminated_expressions = 244
+# CSE_active_total_size = 586
+**VARIABLES**
+DISCRETE west_Function1D_00001 #
+{0..3}
+DISCRETE west_Function1D_00002 #
+{0..57}
+DISCRETE west_Function1D_00003 #
+{0..57}
+DISCRETE west_Function1D_00004 #
+{0..56}
+DISCRETE west_Function1D_00005 #
+{0..57}
+DISCRETE west_Function1D_00006 #
+{0..57}
+DISCRETE west_Function1D_00007 #
+{0..57}
+DISCRETE west_Function1D_00008 #
+{0..57}
+DISCRETE west_Function1D_00009 #
+{0..57}
+DISCRETE west_Function1D_00010 #
+{0..57}
+DISCRETE west_Function1D_00011 #
+{0..57}
+DISCRETE east_Function1D_00001 #
+{55..58}
+DISCRETE east_Function1D_00002 #
+{1..58}
+DISCRETE east_Function1D_00003 #
+{1..58}
+DISCRETE east_Function1D_00004 #
+{2..58}
+DISCRETE east_Function1D_00005 #
+{1..58}
+DISCRETE east_Function1D_00006 #
+{1..58}
+DISCRETE east_Function1D_00007 #
+{1..58}
+DISCRETE east_Function1D_00008 #
+{1..58}
+DISCRETE east_Function1D_00009 #
+{1..58}
+DISCRETE east_Function1D_00010 #
+{1..58}
+DISCRETE east_Function1D_00011 #
+{1..58}
+DISCRETE north_Function1D_00001 #
+{0..28}
+DISCRETE north_Function1D_00002 #
+{0..82}
+DISCRETE north_Function1D_00003 #
+{0..82}
+DISCRETE north_Function1D_00004 #
+{0..81}
+DISCRETE north_Function1D_00005 #
+{0..82}
+DISCRETE north_Function1D_00006 #
+{0..82}
+DISCRETE north_Function1D_00007 #
+{0..82}
+DISCRETE north_Function1D_00008 #
+{0..82}
+DISCRETE north_Function1D_00009 #
+{0..82}
+DISCRETE north_Function1D_00010 #
+{0..82}
+DISCRETE north_Function1D_00011 #
+{0..82}
+DISCRETE south_Function1D_00001 #
+{55..83}
+DISCRETE south_Function1D_00002 #
+{1..83}
+DISCRETE south_Function1D_00003 #
+{1..83}
+DISCRETE south_Function1D_00004 #
+{2..83}
+DISCRETE south_Function1D_00005 #
+{1..83}
+DISCRETE south_Function1D_00006 #
+{1..83}
+DISCRETE south_Function1D_00007 #
+{1..83}
+DISCRETE south_Function1D_00008 #
+{1..83}
+DISCRETE south_Function1D_00009 #
+{1..83}
+DISCRETE south_Function1D_00010 #
+{1..83}
+DISCRETE south_Function1D_00011 #
+{1..83}
+BOOL aux1 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00010 != west_Function1D_00011)
+BOOL aux2 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00004)
+BOOL aux3 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00006)
+BOOL aux4 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00005)
+BOOL aux5 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00010)
+BOOL aux6 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00011)
+BOOL aux7 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00008)
+BOOL aux8 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00007)
+BOOL aux9 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00009)
+BOOL aux10 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00006)
+BOOL aux11 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00007)
+BOOL aux12 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00005)
+BOOL aux13 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00010)
+BOOL aux14 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00003 != west_Function1D_00011)
+BOOL aux15 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00008)
+BOOL aux16 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00009)
+BOOL aux17 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00004)
+BOOL aux18 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00003)
+BOOL aux19 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00002)
+BOOL aux20 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00008)
+BOOL aux21 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00007)
+BOOL aux22 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00006)
+BOOL aux23 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00005)
+BOOL aux24 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00009)
+BOOL aux25 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00003)
+BOOL aux26 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00004)
+BOOL aux27 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00005)
+BOOL aux28 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00010)
+BOOL aux29 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00001 != west_Function1D_00011)
+BOOL aux30 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00006)
+BOOL aux31 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00007)
+BOOL aux32 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00008)
+BOOL aux33 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00002 != west_Function1D_00009)
+BOOL aux34 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00007 != west_Function1D_00008)
+BOOL aux35 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00007 != west_Function1D_00009)
+BOOL aux36 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00006 != west_Function1D_00010)
+BOOL aux37 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00006 != west_Function1D_00011)
+BOOL aux38 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00008 != west_Function1D_00009)
+BOOL aux39 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00007 != west_Function1D_00010)
+BOOL aux40 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00007 != west_Function1D_00011)
+BOOL aux41 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00010)
+BOOL aux42 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00008)
+BOOL aux43 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00007)
+BOOL aux44 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00006)
+BOOL aux45 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00004 != west_Function1D_00011)
+BOOL aux46 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00009)
+BOOL aux47 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00006 != west_Function1D_00007)
+BOOL aux48 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00006 != west_Function1D_00008)
+BOOL aux49 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00006 != west_Function1D_00009)
+BOOL aux50 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00010)
+BOOL aux51 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00005 != west_Function1D_00011)
+BOOL aux52 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00008 != west_Function1D_00010)
+BOOL aux53 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00008 != west_Function1D_00011)
+BOOL aux54 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00009 != west_Function1D_00010)
+BOOL aux55 #Active-CSE: 2 occurrences of this expression or equivalent: (west_Function1D_00009 != west_Function1D_00011)
+BOOL aux56 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00010 != north_Function1D_00011)
+BOOL aux57 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00004)
+BOOL aux58 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00005)
+BOOL aux59 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00003)
+BOOL aux60 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00010)
+BOOL aux61 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00011)
+BOOL aux62 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00008)
+BOOL aux63 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00009)
+BOOL aux64 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00006)
+BOOL aux65 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00007)
+BOOL aux66 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00002)
+BOOL aux67 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00004)
+BOOL aux68 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00003)
+BOOL aux69 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00009)
+BOOL aux70 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00006)
+BOOL aux71 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00005)
+BOOL aux72 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00008)
+BOOL aux73 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00001 != north_Function1D_00007)
+BOOL aux74 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00007 != north_Function1D_00010)
+BOOL aux75 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00007 != north_Function1D_00011)
+BOOL aux76 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00008 != north_Function1D_00009)
+BOOL aux77 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00006 != north_Function1D_00011)
+BOOL aux78 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00006 != north_Function1D_00010)
+BOOL aux79 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00007 != north_Function1D_00009)
+BOOL aux80 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00007 != north_Function1D_00008)
+BOOL aux81 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00009 != north_Function1D_00010)
+BOOL aux82 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00009 != north_Function1D_00011)
+BOOL aux83 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00008 != north_Function1D_00011)
+BOOL aux84 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00008 != north_Function1D_00010)
+BOOL aux85 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00008)
+BOOL aux86 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00009)
+BOOL aux87 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00010)
+BOOL aux88 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00011)
+BOOL aux89 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00005)
+BOOL aux90 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00006)
+BOOL aux91 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00007)
+BOOL aux92 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00006)
+BOOL aux93 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00005)
+BOOL aux94 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00004)
+BOOL aux95 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00011)
+BOOL aux96 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00002 != north_Function1D_00010)
+BOOL aux97 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00009)
+BOOL aux98 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00008)
+BOOL aux99 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00003 != north_Function1D_00007)
+BOOL aux100 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00010)
+BOOL aux101 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00011)
+BOOL aux102 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00006 != north_Function1D_00008)
+BOOL aux103 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00006 != north_Function1D_00009)
+BOOL aux104 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00006 != north_Function1D_00007)
+BOOL aux105 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00009)
+BOOL aux106 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00010)
+BOOL aux107 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00004 != north_Function1D_00011)
+BOOL aux108 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00006)
+BOOL aux109 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00008)
+BOOL aux110 #Active-CSE: 2 occurrences of this expression or equivalent: (north_Function1D_00005 != north_Function1D_00007)
+DISCRETE aux111 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00005 - west_Function1D_00005)
+{1..2}
+DISCRETE aux112 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00004 - west_Function1D_00004)
+{2..4}
+DISCRETE aux113 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00006 - west_Function1D_00006)
+{1..2}
+DISCRETE aux114 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00001 - west_Function1D_00001)
+{55..57}
+DISCRETE aux115 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00003 - west_Function1D_00003)
+{1..5}
+DISCRETE aux116 #Active-CSE: 2 occurrences of this expression or equivalent: (east_Function1D_00002 - west_Function1D_00002)
+{1..20}
+DISCRETE aux117 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00001 - north_Function1D_00001)
+{55..57}
+DISCRETE aux118 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00006 - north_Function1D_00006)
+{1..2}
+DISCRETE aux119 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00004 - north_Function1D_00004)
+{2..4}
+DISCRETE aux120 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00005 - north_Function1D_00005)
+{1..2}
+DISCRETE aux121 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00002 - north_Function1D_00002)
+{1..20}
+DISCRETE aux122 #Active-CSE: 2 occurrences of this expression or equivalent: (south_Function1D_00003 - north_Function1D_00003)
+{1..5}
+DISCRETE aux123 #max(north_Function1D_00001, north_Function1D_00002)
+{0..82}
+DISCRETE aux124 #min(south_Function1D_00001, south_Function1D_00002)
+{1..83}
+DISCRETE aux125 #min(east_Function1D_00001, east_Function1D_00002)
+{1..58}
+DISCRETE aux126 #max(west_Function1D_00001, west_Function1D_00002)
+{0..57}
+DISCRETE aux127 #max(north_Function1D_00001, north_Function1D_00003)
+{0..82}
+DISCRETE aux128 #min(south_Function1D_00001, south_Function1D_00003)
+{1..83}
+DISCRETE aux129 #min(east_Function1D_00001, east_Function1D_00003)
+{1..58}
+DISCRETE aux130 #max(west_Function1D_00001, west_Function1D_00003)
+{0..57}
+DISCRETE aux131 #max(north_Function1D_00001, north_Function1D_00004)
+{0..81}
+DISCRETE aux132 #min(south_Function1D_00001, south_Function1D_00004)
+{2..83}
+DISCRETE aux133 #min(east_Function1D_00001, east_Function1D_00004)
+{2..58}
+DISCRETE aux134 #max(west_Function1D_00001, west_Function1D_00004)
+{0..56}
+DISCRETE aux135 #max(north_Function1D_00001, north_Function1D_00005)
+{0..82}
+DISCRETE aux136 #min(south_Function1D_00001, south_Function1D_00005)
+{1..83}
+DISCRETE aux137 #min(east_Function1D_00001, east_Function1D_00005)
+{1..58}
+DISCRETE aux138 #max(west_Function1D_00001, west_Function1D_00005)
+{0..57}
+DISCRETE aux139 #max(north_Function1D_00001, north_Function1D_00006)
+{0..82}
+DISCRETE aux140 #min(south_Function1D_00001, south_Function1D_00006)
+{1..83}
+DISCRETE aux141 #min(east_Function1D_00001, east_Function1D_00006)
+{1..58}
+DISCRETE aux142 #max(west_Function1D_00001, west_Function1D_00006)
+{0..57}
+DISCRETE aux143 #max(north_Function1D_00001, north_Function1D_00007)
+{0..82}
+DISCRETE aux144 #min(south_Function1D_00001, south_Function1D_00007)
+{1..83}
+DISCRETE aux145 #min(east_Function1D_00001, east_Function1D_00007)
+{1..58}
+DISCRETE aux146 #max(west_Function1D_00001, west_Function1D_00007)
+{0..57}
+DISCRETE aux147 #max(north_Function1D_00001, north_Function1D_00008)
+{0..82}
+DISCRETE aux148 #min(south_Function1D_00001, south_Function1D_00008)
+{1..83}
+DISCRETE aux149 #min(east_Function1D_00001, east_Function1D_00008)
+{1..58}
+DISCRETE aux150 #max(west_Function1D_00001, west_Function1D_00008)
+{0..57}
+DISCRETE aux151 #max(north_Function1D_00001, north_Function1D_00009)
+{0..82}
+DISCRETE aux152 #min(south_Function1D_00001, south_Function1D_00009)
+{1..83}
+DISCRETE aux153 #min(east_Function1D_00001, east_Function1D_00009)
+{1..58}
+DISCRETE aux154 #max(west_Function1D_00001, west_Function1D_00009)
+{0..57}
+DISCRETE aux155 #max(north_Function1D_00001, north_Function1D_00010)
+{0..82}
+DISCRETE aux156 #min(south_Function1D_00001, south_Function1D_00010)
+{1..83}
+DISCRETE aux157 #min(east_Function1D_00001, east_Function1D_00010)
+{1..58}
+DISCRETE aux158 #max(west_Function1D_00001, west_Function1D_00010)
+{0..57}
+DISCRETE aux159 #max(north_Function1D_00001, north_Function1D_00011)
+{0..82}
+DISCRETE aux160 #min(south_Function1D_00001, south_Function1D_00011)
+{1..83}
+DISCRETE aux161 #min(east_Function1D_00001, east_Function1D_00011)
+{1..58}
+DISCRETE aux162 #max(west_Function1D_00001, west_Function1D_00011)
+{0..57}
+DISCRETE aux163 #max(north_Function1D_00002, north_Function1D_00003)
+{0..82}
+DISCRETE aux164 #min(south_Function1D_00002, south_Function1D_00003)
+{1..83}
+DISCRETE aux165 #min(east_Function1D_00002, east_Function1D_00003)
+{1..58}
+DISCRETE aux166 #max(west_Function1D_00002, west_Function1D_00003)
+{0..57}
+DISCRETE aux167 #max(north_Function1D_00002, north_Function1D_00004)
+{0..82}
+DISCRETE aux168 #min(south_Function1D_00002, south_Function1D_00004)
+{1..83}
+DISCRETE aux169 #min(east_Function1D_00002, east_Function1D_00004)
+{1..58}
+DISCRETE aux170 #max(west_Function1D_00002, west_Function1D_00004)
+{0..57}
+DISCRETE aux171 #max(north_Function1D_00002, north_Function1D_00005)
+{0..82}
+DISCRETE aux172 #min(south_Function1D_00002, south_Function1D_00005)
+{1..83}
+DISCRETE aux173 #min(east_Function1D_00002, east_Function1D_00005)
+{1..58}
+DISCRETE aux174 #max(west_Function1D_00002, west_Function1D_00005)
+{0..57}
+DISCRETE aux175 #max(north_Function1D_00002, north_Function1D_00006)
+{0..82}
+DISCRETE aux176 #min(south_Function1D_00002, south_Function1D_00006)
+{1..83}
+DISCRETE aux177 #min(east_Function1D_00002, east_Function1D_00006)
+{1..58}
+DISCRETE aux178 #max(west_Function1D_00002, west_Function1D_00006)
+{0..57}
+DISCRETE aux179 #max(north_Function1D_00002, north_Function1D_00007)
+{0..82}
+DISCRETE aux180 #min(south_Function1D_00002, south_Function1D_00007)
+{1..83}
+DISCRETE aux181 #min(east_Function1D_00002, east_Function1D_00007)
+{1..58}
+DISCRETE aux182 #max(west_Function1D_00002, west_Function1D_00007)
+{0..57}
+DISCRETE aux183 #max(north_Function1D_00002, north_Function1D_00008)
+{0..82}
+DISCRETE aux184 #min(south_Function1D_00002, south_Function1D_00008)
+{1..83}
+DISCRETE aux185 #min(east_Function1D_00002, east_Function1D_00008)
+{1..58}
+DISCRETE aux186 #max(west_Function1D_00002, west_Function1D_00008)
+{0..57}
+DISCRETE aux187 #max(north_Function1D_00002, north_Function1D_00009)
+{0..82}
+DISCRETE aux188 #min(south_Function1D_00002, south_Function1D_00009)
+{1..83}
+DISCRETE aux189 #min(east_Function1D_00002, east_Function1D_00009)
+{1..58}
+DISCRETE aux190 #max(west_Function1D_00002, west_Function1D_00009)
+{0..57}
+DISCRETE aux191 #max(north_Function1D_00002, north_Function1D_00010)
+{0..82}
+DISCRETE aux192 #min(south_Function1D_00002, south_Function1D_00010)
+{1..83}
+DISCRETE aux193 #min(east_Function1D_00002, east_Function1D_00010)
+{1..58}
+DISCRETE aux194 #max(west_Function1D_00002, west_Function1D_00010)
+{0..57}
+DISCRETE aux195 #max(north_Function1D_00002, north_Function1D_00011)
+{0..82}
+DISCRETE aux196 #min(south_Function1D_00002, south_Function1D_00011)
+{1..83}
+DISCRETE aux197 #min(east_Function1D_00002, east_Function1D_00011)
+{1..58}
+DISCRETE aux198 #max(west_Function1D_00002, west_Function1D_00011)
+{0..57}
+DISCRETE aux199 #max(north_Function1D_00003, north_Function1D_00004)
+{0..82}
+DISCRETE aux200 #min(south_Function1D_00003, south_Function1D_00004)
+{1..83}
+DISCRETE aux201 #min(east_Function1D_00003, east_Function1D_00004)
+{1..58}
+DISCRETE aux202 #max(west_Function1D_00003, west_Function1D_00004)
+{0..57}
+DISCRETE aux203 #max(north_Function1D_00003, north_Function1D_00005)
+{0..82}
+DISCRETE aux204 #min(south_Function1D_00003, south_Function1D_00005)
+{1..83}
+DISCRETE aux205 #min(east_Function1D_00003, east_Function1D_00005)
+{1..58}
+DISCRETE aux206 #max(west_Function1D_00003, west_Function1D_00005)
+{0..57}
+DISCRETE aux207 #max(north_Function1D_00003, north_Function1D_00006)
+{0..82}
+DISCRETE aux208 #min(south_Function1D_00003, south_Function1D_00006)
+{1..83}
+DISCRETE aux209 #min(east_Function1D_00003, east_Function1D_00006)
+{1..58}
+DISCRETE aux210 #max(west_Function1D_00003, west_Function1D_00006)
+{0..57}
+DISCRETE aux211 #max(north_Function1D_00003, north_Function1D_00007)
+{0..82}
+DISCRETE aux212 #min(south_Function1D_00003, south_Function1D_00007)
+{1..83}
+DISCRETE aux213 #min(east_Function1D_00003, east_Function1D_00007)
+{1..58}
+DISCRETE aux214 #max(west_Function1D_00003, west_Function1D_00007)
+{0..57}
+DISCRETE aux215 #max(north_Function1D_00003, north_Function1D_00008)
+{0..82}
+DISCRETE aux216 #min(south_Function1D_00003, south_Function1D_00008)
+{1..83}
+DISCRETE aux217 #min(east_Function1D_00003, east_Function1D_00008)
+{1..58}
+DISCRETE aux218 #max(west_Function1D_00003, west_Function1D_00008)
+{0..57}
+DISCRETE aux219 #max(north_Function1D_00003, north_Function1D_00009)
+{0..82}
+DISCRETE aux220 #min(south_Function1D_00003, south_Function1D_00009)
+{1..83}
+DISCRETE aux221 #min(east_Function1D_00003, east_Function1D_00009)
+{1..58}
+DISCRETE aux222 #max(west_Function1D_00003, west_Function1D_00009)
+{0..57}
+DISCRETE aux223 #max(north_Function1D_00003, north_Function1D_00010)
+{0..82}
+DISCRETE aux224 #min(south_Function1D_00003, south_Function1D_00010)
+{1..83}
+DISCRETE aux225 #min(east_Function1D_00003, east_Function1D_00010)
+{1..58}
+DISCRETE aux226 #max(west_Function1D_00003, west_Function1D_00010)
+{0..57}
+DISCRETE aux227 #max(north_Function1D_00003, north_Function1D_00011)
+{0..82}
+DISCRETE aux228 #min(south_Function1D_00003, south_Function1D_00011)
+{1..83}
+DISCRETE aux229 #min(east_Function1D_00003, east_Function1D_00011)
+{1..58}
+DISCRETE aux230 #max(west_Function1D_00003, west_Function1D_00011)
+{0..57}
+DISCRETE aux231 #max(north_Function1D_00004, north_Function1D_00005)
+{0..82}
+DISCRETE aux232 #min(south_Function1D_00004, south_Function1D_00005)
+{1..83}
+DISCRETE aux233 #min(east_Function1D_00004, east_Function1D_00005)
+{1..58}
+DISCRETE aux234 #max(west_Function1D_00004, west_Function1D_00005)
+{0..57}
+DISCRETE aux235 #max(north_Function1D_00004, north_Function1D_00006)
+{0..82}
+DISCRETE aux236 #min(south_Function1D_00004, south_Function1D_00006)
+{1..83}
+DISCRETE aux237 #min(east_Function1D_00004, east_Function1D_00006)
+{1..58}
+DISCRETE aux238 #max(west_Function1D_00004, west_Function1D_00006)
+{0..57}
+DISCRETE aux239 #max(north_Function1D_00004, north_Function1D_00007)
+{0..82}
+DISCRETE aux240 #min(south_Function1D_00004, south_Function1D_00007)
+{1..83}
+DISCRETE aux241 #min(east_Function1D_00004, east_Function1D_00007)
+{1..58}
+DISCRETE aux242 #max(west_Function1D_00004, west_Function1D_00007)
+{0..57}
+DISCRETE aux243 #max(north_Function1D_00004, north_Function1D_00008)
+{0..82}
+DISCRETE aux244 #min(south_Function1D_00004, south_Function1D_00008)
+{1..83}
+DISCRETE aux245 #min(east_Function1D_00004, east_Function1D_00008)
+{1..58}
+DISCRETE aux246 #max(west_Function1D_00004, west_Function1D_00008)
+{0..57}
+DISCRETE aux247 #max(north_Function1D_00004, north_Function1D_00009)
+{0..82}
+DISCRETE aux248 #min(south_Function1D_00004, south_Function1D_00009)
+{1..83}
+DISCRETE aux249 #min(east_Function1D_00004, east_Function1D_00009)
+{1..58}
+DISCRETE aux250 #max(west_Function1D_00004, west_Function1D_00009)
+{0..57}
+DISCRETE aux251 #max(north_Function1D_00004, north_Function1D_00010)
+{0..82}
+DISCRETE aux252 #min(south_Function1D_00004, south_Function1D_00010)
+{1..83}
+DISCRETE aux253 #min(east_Function1D_00004, east_Function1D_00010)
+{1..58}
+DISCRETE aux254 #max(west_Function1D_00004, west_Function1D_00010)
+{0..57}
+DISCRETE aux255 #max(north_Function1D_00004, north_Function1D_00011)
+{0..82}
+DISCRETE aux256 #min(south_Function1D_00004, south_Function1D_00011)
+{1..83}
+DISCRETE aux257 #min(east_Function1D_00004, east_Function1D_00011)
+{1..58}
+DISCRETE aux258 #max(west_Function1D_00004, west_Function1D_00011)
+{0..57}
+DISCRETE aux259 #max(north_Function1D_00005, north_Function1D_00006)
+{0..82}
+DISCRETE aux260 #min(south_Function1D_00005, south_Function1D_00006)
+{1..83}
+DISCRETE aux261 #min(east_Function1D_00005, east_Function1D_00006)
+{1..58}
+DISCRETE aux262 #max(west_Function1D_00005, west_Function1D_00006)
+{0..57}
+DISCRETE aux263 #max(north_Function1D_00005, north_Function1D_00007)
+{0..82}
+DISCRETE aux264 #min(south_Function1D_00005, south_Function1D_00007)
+{1..83}
+DISCRETE aux265 #min(east_Function1D_00005, east_Function1D_00007)
+{1..58}
+DISCRETE aux266 #max(west_Function1D_00005, west_Function1D_00007)
+{0..57}
+DISCRETE aux267 #max(north_Function1D_00005, north_Function1D_00008)
+{0..82}
+DISCRETE aux268 #min(south_Function1D_00005, south_Function1D_00008)
+{1..83}
+DISCRETE aux269 #min(east_Function1D_00005, east_Function1D_00008)
+{1..58}
+DISCRETE aux270 #max(west_Function1D_00005, west_Function1D_00008)
+{0..57}
+DISCRETE aux271 #max(north_Function1D_00005, north_Function1D_00009)
+{0..82}
+DISCRETE aux272 #min(south_Function1D_00005, south_Function1D_00009)
+{1..83}
+DISCRETE aux273 #min(east_Function1D_00005, east_Function1D_00009)
+{1..58}
+DISCRETE aux274 #max(west_Function1D_00005, west_Function1D_00009)
+{0..57}
+DISCRETE aux275 #max(north_Function1D_00005, north_Function1D_00010)
+{0..82}
+DISCRETE aux276 #min(south_Function1D_00005, south_Function1D_00010)
+{1..83}
+DISCRETE aux277 #min(east_Function1D_00005, east_Function1D_00010)
+{1..58}
+DISCRETE aux278 #max(west_Function1D_00005, west_Function1D_00010)
+{0..57}
+DISCRETE aux279 #max(north_Function1D_00005, north_Function1D_00011)
+{0..82}
+DISCRETE aux280 #min(south_Function1D_00005, south_Function1D_00011)
+{1..83}
+DISCRETE aux281 #min(east_Function1D_00005, east_Function1D_00011)
+{1..58}
+DISCRETE aux282 #max(west_Function1D_00005, west_Function1D_00011)
+{0..57}
+DISCRETE aux283 #max(north_Function1D_00006, north_Function1D_00007)
+{0..82}
+DISCRETE aux284 #min(south_Function1D_00006, south_Function1D_00007)
+{1..83}
+DISCRETE aux285 #min(east_Function1D_00006, east_Function1D_00007)
+{1..58}
+DISCRETE aux286 #max(west_Function1D_00006, west_Function1D_00007)
+{0..57}
+DISCRETE aux287 #max(north_Function1D_00006, north_Function1D_00008)
+{0..82}
+DISCRETE aux288 #min(south_Function1D_00006, south_Function1D_00008)
+{1..83}
+DISCRETE aux289 #min(east_Function1D_00006, east_Function1D_00008)
+{1..58}
+DISCRETE aux290 #max(west_Function1D_00006, west_Function1D_00008)
+{0..57}
+DISCRETE aux291 #max(north_Function1D_00006, north_Function1D_00009)
+{0..82}
+DISCRETE aux292 #min(south_Function1D_00006, south_Function1D_00009)
+{1..83}
+DISCRETE aux293 #min(east_Function1D_00006, east_Function1D_00009)
+{1..58}
+DISCRETE aux294 #max(west_Function1D_00006, west_Function1D_00009)
+{0..57}
+DISCRETE aux295 #max(north_Function1D_00006, north_Function1D_00010)
+{0..82}
+DISCRETE aux296 #min(south_Function1D_00006, south_Function1D_00010)
+{1..83}
+DISCRETE aux297 #min(east_Function1D_00006, east_Function1D_00010)
+{1..58}
+DISCRETE aux298 #max(west_Function1D_00006, west_Function1D_00010)
+{0..57}
+DISCRETE aux299 #max(north_Function1D_00006, north_Function1D_00011)
+{0..82}
+DISCRETE aux300 #min(south_Function1D_00006, south_Function1D_00011)
+{1..83}
+DISCRETE aux301 #min(east_Function1D_00006, east_Function1D_00011)
+{1..58}
+DISCRETE aux302 #max(west_Function1D_00006, west_Function1D_00011)
+{0..57}
+DISCRETE aux303 #max(north_Function1D_00007, north_Function1D_00008)
+{0..82}
+DISCRETE aux304 #min(south_Function1D_00007, south_Function1D_00008)
+{1..83}
+DISCRETE aux305 #min(east_Function1D_00007, east_Function1D_00008)
+{1..58}
+DISCRETE aux306 #max(west_Function1D_00007, west_Function1D_00008)
+{0..57}
+DISCRETE aux307 #max(north_Function1D_00007, north_Function1D_00009)
+{0..82}
+DISCRETE aux308 #min(south_Function1D_00007, south_Function1D_00009)
+{1..83}
+DISCRETE aux309 #min(east_Function1D_00007, east_Function1D_00009)
+{1..58}
+DISCRETE aux310 #max(west_Function1D_00007, west_Function1D_00009)
+{0..57}
+DISCRETE aux311 #max(north_Function1D_00007, north_Function1D_00010)
+{0..82}
+DISCRETE aux312 #min(south_Function1D_00007, south_Function1D_00010)
+{1..83}
+DISCRETE aux313 #min(east_Function1D_00007, east_Function1D_00010)
+{1..58}
+DISCRETE aux314 #max(west_Function1D_00007, west_Function1D_00010)
+{0..57}
+DISCRETE aux315 #max(north_Function1D_00007, north_Function1D_00011)
+{0..82}
+DISCRETE aux316 #min(south_Function1D_00007, south_Function1D_00011)
+{1..83}
+DISCRETE aux317 #min(east_Function1D_00007, east_Function1D_00011)
+{1..58}
+DISCRETE aux318 #max(west_Function1D_00007, west_Function1D_00011)
+{0..57}
+DISCRETE aux319 #max(north_Function1D_00008, north_Function1D_00009)
+{0..82}
+DISCRETE aux320 #min(south_Function1D_00008, south_Function1D_00009)
+{1..83}
+DISCRETE aux321 #min(east_Function1D_00008, east_Function1D_00009)
+{1..58}
+DISCRETE aux322 #max(west_Function1D_00008, west_Function1D_00009)
+{0..57}
+DISCRETE aux323 #max(north_Function1D_00008, north_Function1D_00010)
+{0..82}
+DISCRETE aux324 #min(south_Function1D_00008, south_Function1D_00010)
+{1..83}
+DISCRETE aux325 #min(east_Function1D_00008, east_Function1D_00010)
+{1..58}
+DISCRETE aux326 #max(west_Function1D_00008, west_Function1D_00010)
+{0..57}
+DISCRETE aux327 #max(north_Function1D_00008, north_Function1D_00011)
+{0..82}
+DISCRETE aux328 #min(south_Function1D_00008, south_Function1D_00011)
+{1..83}
+DISCRETE aux329 #min(east_Function1D_00008, east_Function1D_00011)
+{1..58}
+DISCRETE aux330 #max(west_Function1D_00008, west_Function1D_00011)
+{0..57}
+DISCRETE aux331 #max(north_Function1D_00009, north_Function1D_00010)
+{0..82}
+DISCRETE aux332 #min(south_Function1D_00009, south_Function1D_00010)
+{1..83}
+DISCRETE aux333 #min(east_Function1D_00009, east_Function1D_00010)
+{1..58}
+DISCRETE aux334 #max(west_Function1D_00009, west_Function1D_00010)
+{0..57}
+DISCRETE aux335 #max(north_Function1D_00009, north_Function1D_00011)
+{0..82}
+DISCRETE aux336 #min(south_Function1D_00009, south_Function1D_00011)
+{1..83}
+DISCRETE aux337 #min(east_Function1D_00009, east_Function1D_00011)
+{1..58}
+DISCRETE aux338 #max(west_Function1D_00009, west_Function1D_00011)
+{0..57}
+DISCRETE aux339 #max(north_Function1D_00010, north_Function1D_00011)
+{0..82}
+DISCRETE aux340 #min(south_Function1D_00010, south_Function1D_00011)
+{1..83}
+DISCRETE aux341 #min(east_Function1D_00010, east_Function1D_00011)
+{1..58}
+DISCRETE aux342 #max(west_Function1D_00010, west_Function1D_00011)
+{0..57}
+**VARIABLES**
+ALIAS aux0[11]=[3135, 20, 5, 8, 2, 2, 1, 1, 1, 1, 1]
+**VARIABLES**
+ALIAS length_Function1D[11]=[55, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1]
+**VARIABLES**
+ALIAS class_Function1D[11]=[3, 2, 1, 5, 8, 4, 6, 3, 3, 2, 7]
+**TUPLELIST**
+separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitR3_1_Explicit 0 2
+**VARIABLES**
+ALIAS width_Function1D[11]=[57, 20, 5, 4, 2, 2, 1, 1, 1, 1, 1]
+**SEARCH**
+PRINT[[west_Function1D_00001],[west_Function1D_00002],[west_Function1D_00003],[west_Function1D_00004],[west_Function1D_00005],[west_Function1D_00006],[west_Function1D_00007],[west_Function1D_00008],[west_Function1D_00009],[west_Function1D_00010],[west_Function1D_00011],[east_Function1D_00001],[east_Function1D_00002],[east_Function1D_00003],[east_Function1D_00004],[east_Function1D_00005],[east_Function1D_00006],[east_Function1D_00007],[east_Function1D_00008],[east_Function1D_00009],[east_Function1D_00010],[east_Function1D_00011],[north_Function1D_00001],[north_Function1D_00002],[north_Function1D_00003],[north_Function1D_00004],[north_Function1D_00005],[north_Function1D_00006],[north_Function1D_00007],[north_Function1D_00008],[north_Function1D_00009],[north_Function1D_00010],[north_Function1D_00011],[south_Function1D_00001],[south_Function1D_00002],[south_Function1D_00003],[south_Function1D_00004],[south_Function1D_00005],[south_Function1D_00006],[south_Function1D_00007],[south_Function1D_00008],[south_Function1D_00009],[south_Function1D_00010],[south_Function1D_00011]]
+VARORDER STATIC [west_Function1D_00001, west_Function1D_00002, west_Function1D_00003, west_Function1D_00004, west_Function1D_00005, west_Function1D_00006, west_Function1D_00007, west_Function1D_00008, west_Function1D_00009, west_Function1D_00010, west_Function1D_00011, east_Function1D_00001, east_Function1D_00002, east_Function1D_00003, east_Function1D_00004, east_Function1D_00005, east_Function1D_00006, east_Function1D_00007, east_Function1D_00008, east_Function1D_00009, east_Function1D_00010, east_Function1D_00011, north_Function1D_00001, north_Function1D_00002, north_Function1D_00003, north_Function1D_00004, north_Function1D_00005, north_Function1D_00006, north_Function1D_00007, north_Function1D_00008, north_Function1D_00009, north_Function1D_00010, north_Function1D_00011, south_Function1D_00001, south_Function1D_00002, south_Function1D_00003, south_Function1D_00004, south_Function1D_00005, south_Function1D_00006, south_Function1D_00007, south_Function1D_00008, south_Function1D_00009, south_Function1D_00010, south_Function1D_00011]
+**CONSTRAINTS**
+max([north_Function1D_00001,north_Function1D_00002],aux123)
+min([south_Function1D_00001,south_Function1D_00002],aux124)
+min([east_Function1D_00001,east_Function1D_00002],aux125)
+max([west_Function1D_00001,west_Function1D_00002],aux126)
+max([north_Function1D_00001,north_Function1D_00003],aux127)
+min([south_Function1D_00001,south_Function1D_00003],aux128)
+min([east_Function1D_00001,east_Function1D_00003],aux129)
+max([west_Function1D_00001,west_Function1D_00003],aux130)
+max([north_Function1D_00001,north_Function1D_00004],aux131)
+min([south_Function1D_00001,south_Function1D_00004],aux132)
+min([east_Function1D_00001,east_Function1D_00004],aux133)
+max([west_Function1D_00001,west_Function1D_00004],aux134)
+max([north_Function1D_00001,north_Function1D_00005],aux135)
+min([south_Function1D_00001,south_Function1D_00005],aux136)
+min([east_Function1D_00001,east_Function1D_00005],aux137)
+max([west_Function1D_00001,west_Function1D_00005],aux138)
+max([north_Function1D_00001,north_Function1D_00006],aux139)
+min([south_Function1D_00001,south_Function1D_00006],aux140)
+min([east_Function1D_00001,east_Function1D_00006],aux141)
+max([west_Function1D_00001,west_Function1D_00006],aux142)
+max([north_Function1D_00001,north_Function1D_00007],aux143)
+min([south_Function1D_00001,south_Function1D_00007],aux144)
+min([east_Function1D_00001,east_Function1D_00007],aux145)
+max([west_Function1D_00001,west_Function1D_00007],aux146)
+max([north_Function1D_00001,north_Function1D_00008],aux147)
+min([south_Function1D_00001,south_Function1D_00008],aux148)
+min([east_Function1D_00001,east_Function1D_00008],aux149)
+max([west_Function1D_00001,west_Function1D_00008],aux150)
+max([north_Function1D_00001,north_Function1D_00009],aux151)
+min([south_Function1D_00001,south_Function1D_00009],aux152)
+min([east_Function1D_00001,east_Function1D_00009],aux153)
+max([west_Function1D_00001,west_Function1D_00009],aux154)
+max([north_Function1D_00001,north_Function1D_00010],aux155)
+min([south_Function1D_00001,south_Function1D_00010],aux156)
+min([east_Function1D_00001,east_Function1D_00010],aux157)
+max([west_Function1D_00001,west_Function1D_00010],aux158)
+max([north_Function1D_00001,north_Function1D_00011],aux159)
+min([south_Function1D_00001,south_Function1D_00011],aux160)
+min([east_Function1D_00001,east_Function1D_00011],aux161)
+max([west_Function1D_00001,west_Function1D_00011],aux162)
+max([north_Function1D_00002,north_Function1D_00003],aux163)
+min([south_Function1D_00002,south_Function1D_00003],aux164)
+min([east_Function1D_00002,east_Function1D_00003],aux165)
+max([west_Function1D_00002,west_Function1D_00003],aux166)
+max([north_Function1D_00002,north_Function1D_00004],aux167)
+min([south_Function1D_00002,south_Function1D_00004],aux168)
+min([east_Function1D_00002,east_Function1D_00004],aux169)
+max([west_Function1D_00002,west_Function1D_00004],aux170)
+max([north_Function1D_00002,north_Function1D_00005],aux171)
+min([south_Function1D_00002,south_Function1D_00005],aux172)
+min([east_Function1D_00002,east_Function1D_00005],aux173)
+max([west_Function1D_00002,west_Function1D_00005],aux174)
+max([north_Function1D_00002,north_Function1D_00006],aux175)
+min([south_Function1D_00002,south_Function1D_00006],aux176)
+min([east_Function1D_00002,east_Function1D_00006],aux177)
+max([west_Function1D_00002,west_Function1D_00006],aux178)
+max([north_Function1D_00002,north_Function1D_00007],aux179)
+min([south_Function1D_00002,south_Function1D_00007],aux180)
+min([east_Function1D_00002,east_Function1D_00007],aux181)
+max([west_Function1D_00002,west_Function1D_00007],aux182)
+max([north_Function1D_00002,north_Function1D_00008],aux183)
+min([south_Function1D_00002,south_Function1D_00008],aux184)
+min([east_Function1D_00002,east_Function1D_00008],aux185)
+max([west_Function1D_00002,west_Function1D_00008],aux186)
+max([north_Function1D_00002,north_Function1D_00009],aux187)
+min([south_Function1D_00002,south_Function1D_00009],aux188)
+min([east_Function1D_00002,east_Function1D_00009],aux189)
+max([west_Function1D_00002,west_Function1D_00009],aux190)
+max([north_Function1D_00002,north_Function1D_00010],aux191)
+min([south_Function1D_00002,south_Function1D_00010],aux192)
+min([east_Function1D_00002,east_Function1D_00010],aux193)
+max([west_Function1D_00002,west_Function1D_00010],aux194)
+max([north_Function1D_00002,north_Function1D_00011],aux195)
+min([south_Function1D_00002,south_Function1D_00011],aux196)
+min([east_Function1D_00002,east_Function1D_00011],aux197)
+max([west_Function1D_00002,west_Function1D_00011],aux198)
+max([north_Function1D_00003,north_Function1D_00004],aux199)
+min([south_Function1D_00003,south_Function1D_00004],aux200)
+min([east_Function1D_00003,east_Function1D_00004],aux201)
+max([west_Function1D_00003,west_Function1D_00004],aux202)
+max([north_Function1D_00003,north_Function1D_00005],aux203)
+min([south_Function1D_00003,south_Function1D_00005],aux204)
+min([east_Function1D_00003,east_Function1D_00005],aux205)
+max([west_Function1D_00003,west_Function1D_00005],aux206)
+max([north_Function1D_00003,north_Function1D_00006],aux207)
+min([south_Function1D_00003,south_Function1D_00006],aux208)
+min([east_Function1D_00003,east_Function1D_00006],aux209)
+max([west_Function1D_00003,west_Function1D_00006],aux210)
+max([north_Function1D_00003,north_Function1D_00007],aux211)
+min([south_Function1D_00003,south_Function1D_00007],aux212)
+min([east_Function1D_00003,east_Function1D_00007],aux213)
+max([west_Function1D_00003,west_Function1D_00007],aux214)
+max([north_Function1D_00003,north_Function1D_00008],aux215)
+min([south_Function1D_00003,south_Function1D_00008],aux216)
+min([east_Function1D_00003,east_Function1D_00008],aux217)
+max([west_Function1D_00003,west_Function1D_00008],aux218)
+max([north_Function1D_00003,north_Function1D_00009],aux219)
+min([south_Function1D_00003,south_Function1D_00009],aux220)
+min([east_Function1D_00003,east_Function1D_00009],aux221)
+max([west_Function1D_00003,west_Function1D_00009],aux222)
+max([north_Function1D_00003,north_Function1D_00010],aux223)
+min([south_Function1D_00003,south_Function1D_00010],aux224)
+min([east_Function1D_00003,east_Function1D_00010],aux225)
+max([west_Function1D_00003,west_Function1D_00010],aux226)
+max([north_Function1D_00003,north_Function1D_00011],aux227)
+min([south_Function1D_00003,south_Function1D_00011],aux228)
+min([east_Function1D_00003,east_Function1D_00011],aux229)
+max([west_Function1D_00003,west_Function1D_00011],aux230)
+max([north_Function1D_00004,north_Function1D_00005],aux231)
+min([south_Function1D_00004,south_Function1D_00005],aux232)
+min([east_Function1D_00004,east_Function1D_00005],aux233)
+max([west_Function1D_00004,west_Function1D_00005],aux234)
+max([north_Function1D_00004,north_Function1D_00006],aux235)
+min([south_Function1D_00004,south_Function1D_00006],aux236)
+min([east_Function1D_00004,east_Function1D_00006],aux237)
+max([west_Function1D_00004,west_Function1D_00006],aux238)
+max([north_Function1D_00004,north_Function1D_00007],aux239)
+min([south_Function1D_00004,south_Function1D_00007],aux240)
+min([east_Function1D_00004,east_Function1D_00007],aux241)
+max([west_Function1D_00004,west_Function1D_00007],aux242)
+max([north_Function1D_00004,north_Function1D_00008],aux243)
+min([south_Function1D_00004,south_Function1D_00008],aux244)
+min([east_Function1D_00004,east_Function1D_00008],aux245)
+max([west_Function1D_00004,west_Function1D_00008],aux246)
+max([north_Function1D_00004,north_Function1D_00009],aux247)
+min([south_Function1D_00004,south_Function1D_00009],aux248)
+min([east_Function1D_00004,east_Function1D_00009],aux249)
+max([west_Function1D_00004,west_Function1D_00009],aux250)
+max([north_Function1D_00004,north_Function1D_00010],aux251)
+min([south_Function1D_00004,south_Function1D_00010],aux252)
+min([east_Function1D_00004,east_Function1D_00010],aux253)
+max([west_Function1D_00004,west_Function1D_00010],aux254)
+max([north_Function1D_00004,north_Function1D_00011],aux255)
+min([south_Function1D_00004,south_Function1D_00011],aux256)
+min([east_Function1D_00004,east_Function1D_00011],aux257)
+max([west_Function1D_00004,west_Function1D_00011],aux258)
+max([north_Function1D_00005,north_Function1D_00006],aux259)
+min([south_Function1D_00005,south_Function1D_00006],aux260)
+min([east_Function1D_00005,east_Function1D_00006],aux261)
+max([west_Function1D_00005,west_Function1D_00006],aux262)
+max([north_Function1D_00005,north_Function1D_00007],aux263)
+min([south_Function1D_00005,south_Function1D_00007],aux264)
+min([east_Function1D_00005,east_Function1D_00007],aux265)
+max([west_Function1D_00005,west_Function1D_00007],aux266)
+max([north_Function1D_00005,north_Function1D_00008],aux267)
+min([south_Function1D_00005,south_Function1D_00008],aux268)
+min([east_Function1D_00005,east_Function1D_00008],aux269)
+max([west_Function1D_00005,west_Function1D_00008],aux270)
+max([north_Function1D_00005,north_Function1D_00009],aux271)
+min([south_Function1D_00005,south_Function1D_00009],aux272)
+min([east_Function1D_00005,east_Function1D_00009],aux273)
+max([west_Function1D_00005,west_Function1D_00009],aux274)
+max([north_Function1D_00005,north_Function1D_00010],aux275)
+min([south_Function1D_00005,south_Function1D_00010],aux276)
+min([east_Function1D_00005,east_Function1D_00010],aux277)
+max([west_Function1D_00005,west_Function1D_00010],aux278)
+max([north_Function1D_00005,north_Function1D_00011],aux279)
+min([south_Function1D_00005,south_Function1D_00011],aux280)
+min([east_Function1D_00005,east_Function1D_00011],aux281)
+max([west_Function1D_00005,west_Function1D_00011],aux282)
+max([north_Function1D_00006,north_Function1D_00007],aux283)
+min([south_Function1D_00006,south_Function1D_00007],aux284)
+min([east_Function1D_00006,east_Function1D_00007],aux285)
+max([west_Function1D_00006,west_Function1D_00007],aux286)
+max([north_Function1D_00006,north_Function1D_00008],aux287)
+min([south_Function1D_00006,south_Function1D_00008],aux288)
+min([east_Function1D_00006,east_Function1D_00008],aux289)
+max([west_Function1D_00006,west_Function1D_00008],aux290)
+max([north_Function1D_00006,north_Function1D_00009],aux291)
+min([south_Function1D_00006,south_Function1D_00009],aux292)
+min([east_Function1D_00006,east_Function1D_00009],aux293)
+max([west_Function1D_00006,west_Function1D_00009],aux294)
+max([north_Function1D_00006,north_Function1D_00010],aux295)
+min([south_Function1D_00006,south_Function1D_00010],aux296)
+min([east_Function1D_00006,east_Function1D_00010],aux297)
+max([west_Function1D_00006,west_Function1D_00010],aux298)
+max([north_Function1D_00006,north_Function1D_00011],aux299)
+min([south_Function1D_00006,south_Function1D_00011],aux300)
+min([east_Function1D_00006,east_Function1D_00011],aux301)
+max([west_Function1D_00006,west_Function1D_00011],aux302)
+max([north_Function1D_00007,north_Function1D_00008],aux303)
+min([south_Function1D_00007,south_Function1D_00008],aux304)
+min([east_Function1D_00007,east_Function1D_00008],aux305)
+max([west_Function1D_00007,west_Function1D_00008],aux306)
+max([north_Function1D_00007,north_Function1D_00009],aux307)
+min([south_Function1D_00007,south_Function1D_00009],aux308)
+min([east_Function1D_00007,east_Function1D_00009],aux309)
+max([west_Function1D_00007,west_Function1D_00009],aux310)
+max([north_Function1D_00007,north_Function1D_00010],aux311)
+min([south_Function1D_00007,south_Function1D_00010],aux312)
+min([east_Function1D_00007,east_Function1D_00010],aux313)
+max([west_Function1D_00007,west_Function1D_00010],aux314)
+max([north_Function1D_00007,north_Function1D_00011],aux315)
+min([south_Function1D_00007,south_Function1D_00011],aux316)
+min([east_Function1D_00007,east_Function1D_00011],aux317)
+max([west_Function1D_00007,west_Function1D_00011],aux318)
+max([north_Function1D_00008,north_Function1D_00009],aux319)
+min([south_Function1D_00008,south_Function1D_00009],aux320)
+min([east_Function1D_00008,east_Function1D_00009],aux321)
+max([west_Function1D_00008,west_Function1D_00009],aux322)
+max([north_Function1D_00008,north_Function1D_00010],aux323)
+min([south_Function1D_00008,south_Function1D_00010],aux324)
+min([east_Function1D_00008,east_Function1D_00010],aux325)
+max([west_Function1D_00008,west_Function1D_00010],aux326)
+max([north_Function1D_00008,north_Function1D_00011],aux327)
+min([south_Function1D_00008,south_Function1D_00011],aux328)
+min([east_Function1D_00008,east_Function1D_00011],aux329)
+max([west_Function1D_00008,west_Function1D_00011],aux330)
+max([north_Function1D_00009,north_Function1D_00010],aux331)
+min([south_Function1D_00009,south_Function1D_00010],aux332)
+min([east_Function1D_00009,east_Function1D_00010],aux333)
+max([west_Function1D_00009,west_Function1D_00010],aux334)
+max([north_Function1D_00009,north_Function1D_00011],aux335)
+min([south_Function1D_00009,south_Function1D_00011],aux336)
+min([east_Function1D_00009,east_Function1D_00011],aux337)
+max([west_Function1D_00009,west_Function1D_00011],aux338)
+max([north_Function1D_00010,north_Function1D_00011],aux339)
+min([south_Function1D_00010,south_Function1D_00011],aux340)
+min([east_Function1D_00010,east_Function1D_00011],aux341)
+max([west_Function1D_00010,west_Function1D_00011],aux342)
+reify(diseq(west_Function1D_00010,west_Function1D_00011), aux1)
+reify(diseq(west_Function1D_00003,west_Function1D_00004), aux2)
+reify(diseq(west_Function1D_00003,west_Function1D_00006), aux3)
+reify(diseq(west_Function1D_00003,west_Function1D_00005), aux4)
+reify(diseq(west_Function1D_00002,west_Function1D_00010), aux5)
+reify(diseq(west_Function1D_00002,west_Function1D_00011), aux6)
+reify(diseq(west_Function1D_00003,west_Function1D_00008), aux7)
+reify(diseq(west_Function1D_00003,west_Function1D_00007), aux8)
+reify(diseq(west_Function1D_00003,west_Function1D_00009), aux9)
+reify(diseq(west_Function1D_00004,west_Function1D_00006), aux10)
+reify(diseq(west_Function1D_00004,west_Function1D_00007), aux11)
+reify(diseq(west_Function1D_00004,west_Function1D_00005), aux12)
+reify(diseq(west_Function1D_00003,west_Function1D_00010), aux13)
+reify(diseq(west_Function1D_00003,west_Function1D_00011), aux14)
+reify(diseq(west_Function1D_00004,west_Function1D_00008), aux15)
+reify(diseq(west_Function1D_00004,west_Function1D_00009), aux16)
+reify(diseq(west_Function1D_00001,west_Function1D_00004), aux17)
+reify(diseq(west_Function1D_00001,west_Function1D_00003), aux18)
+reify(diseq(west_Function1D_00001,west_Function1D_00002), aux19)
+reify(diseq(west_Function1D_00001,west_Function1D_00008), aux20)
+reify(diseq(west_Function1D_00001,west_Function1D_00007), aux21)
+reify(diseq(west_Function1D_00001,west_Function1D_00006), aux22)
+reify(diseq(west_Function1D_00001,west_Function1D_00005), aux23)
+reify(diseq(west_Function1D_00001,west_Function1D_00009), aux24)
+reify(diseq(west_Function1D_00002,west_Function1D_00003), aux25)
+reify(diseq(west_Function1D_00002,west_Function1D_00004), aux26)
+reify(diseq(west_Function1D_00002,west_Function1D_00005), aux27)
+reify(diseq(west_Function1D_00001,west_Function1D_00010), aux28)
+reify(diseq(west_Function1D_00001,west_Function1D_00011), aux29)
+reify(diseq(west_Function1D_00002,west_Function1D_00006), aux30)
+reify(diseq(west_Function1D_00002,west_Function1D_00007), aux31)
+reify(diseq(west_Function1D_00002,west_Function1D_00008), aux32)
+reify(diseq(west_Function1D_00002,west_Function1D_00009), aux33)
+reify(diseq(west_Function1D_00007,west_Function1D_00008), aux34)
+reify(diseq(west_Function1D_00007,west_Function1D_00009), aux35)
+reify(diseq(west_Function1D_00006,west_Function1D_00010), aux36)
+reify(diseq(west_Function1D_00006,west_Function1D_00011), aux37)
+reify(diseq(west_Function1D_00008,west_Function1D_00009), aux38)
+reify(diseq(west_Function1D_00007,west_Function1D_00010), aux39)
+reify(diseq(west_Function1D_00007,west_Function1D_00011), aux40)
+reify(diseq(west_Function1D_00004,west_Function1D_00010), aux41)
+reify(diseq(west_Function1D_00005,west_Function1D_00008), aux42)
+reify(diseq(west_Function1D_00005,west_Function1D_00007), aux43)
+reify(diseq(west_Function1D_00005,west_Function1D_00006), aux44)
+reify(diseq(west_Function1D_00004,west_Function1D_00011), aux45)
+reify(diseq(west_Function1D_00005,west_Function1D_00009), aux46)
+reify(diseq(west_Function1D_00006,west_Function1D_00007), aux47)
+reify(diseq(west_Function1D_00006,west_Function1D_00008), aux48)
+reify(diseq(west_Function1D_00006,west_Function1D_00009), aux49)
+reify(diseq(west_Function1D_00005,west_Function1D_00010), aux50)
+reify(diseq(west_Function1D_00005,west_Function1D_00011), aux51)
+reify(diseq(west_Function1D_00008,west_Function1D_00010), aux52)
+reify(diseq(west_Function1D_00008,west_Function1D_00011), aux53)
+reify(diseq(west_Function1D_00009,west_Function1D_00010), aux54)
+reify(diseq(west_Function1D_00009,west_Function1D_00011), aux55)
+reify(diseq(north_Function1D_00010,north_Function1D_00011), aux56)
+reify(diseq(north_Function1D_00002,north_Function1D_00004), aux57)
+reify(diseq(north_Function1D_00002,north_Function1D_00005), aux58)
+reify(diseq(north_Function1D_00002,north_Function1D_00003), aux59)
+reify(diseq(north_Function1D_00001,north_Function1D_00010), aux60)
+reify(diseq(north_Function1D_00001,north_Function1D_00011), aux61)
+reify(diseq(north_Function1D_00002,north_Function1D_00008), aux62)
+reify(diseq(north_Function1D_00002,north_Function1D_00009), aux63)
+reify(diseq(north_Function1D_00002,north_Function1D_00006), aux64)
+reify(diseq(north_Function1D_00002,north_Function1D_00007), aux65)
+reify(diseq(north_Function1D_00001,north_Function1D_00002), aux66)
+reify(diseq(north_Function1D_00001,north_Function1D_00004), aux67)
+reify(diseq(north_Function1D_00001,north_Function1D_00003), aux68)
+reify(diseq(north_Function1D_00001,north_Function1D_00009), aux69)
+reify(diseq(north_Function1D_00001,north_Function1D_00006), aux70)
+reify(diseq(north_Function1D_00001,north_Function1D_00005), aux71)
+reify(diseq(north_Function1D_00001,north_Function1D_00008), aux72)
+reify(diseq(north_Function1D_00001,north_Function1D_00007), aux73)
+reify(diseq(north_Function1D_00007,north_Function1D_00010), aux74)
+reify(diseq(north_Function1D_00007,north_Function1D_00011), aux75)
+reify(diseq(north_Function1D_00008,north_Function1D_00009), aux76)
+reify(diseq(north_Function1D_00006,north_Function1D_00011), aux77)
+reify(diseq(north_Function1D_00006,north_Function1D_00010), aux78)
+reify(diseq(north_Function1D_00007,north_Function1D_00009), aux79)
+reify(diseq(north_Function1D_00007,north_Function1D_00008), aux80)
+reify(diseq(north_Function1D_00009,north_Function1D_00010), aux81)
+reify(diseq(north_Function1D_00009,north_Function1D_00011), aux82)
+reify(diseq(north_Function1D_00008,north_Function1D_00011), aux83)
+reify(diseq(north_Function1D_00008,north_Function1D_00010), aux84)
+reify(diseq(north_Function1D_00004,north_Function1D_00008), aux85)
+reify(diseq(north_Function1D_00004,north_Function1D_00009), aux86)
+reify(diseq(north_Function1D_00003,north_Function1D_00010), aux87)
+reify(diseq(north_Function1D_00003,north_Function1D_00011), aux88)
+reify(diseq(north_Function1D_00004,north_Function1D_00005), aux89)
+reify(diseq(north_Function1D_00004,north_Function1D_00006), aux90)
+reify(diseq(north_Function1D_00004,north_Function1D_00007), aux91)
+reify(diseq(north_Function1D_00003,north_Function1D_00006), aux92)
+reify(diseq(north_Function1D_00003,north_Function1D_00005), aux93)
+reify(diseq(north_Function1D_00003,north_Function1D_00004), aux94)
+reify(diseq(north_Function1D_00002,north_Function1D_00011), aux95)
+reify(diseq(north_Function1D_00002,north_Function1D_00010), aux96)
+reify(diseq(north_Function1D_00003,north_Function1D_00009), aux97)
+reify(diseq(north_Function1D_00003,north_Function1D_00008), aux98)
+reify(diseq(north_Function1D_00003,north_Function1D_00007), aux99)
+reify(diseq(north_Function1D_00005,north_Function1D_00010), aux100)
+reify(diseq(north_Function1D_00005,north_Function1D_00011), aux101)
+reify(diseq(north_Function1D_00006,north_Function1D_00008), aux102)
+reify(diseq(north_Function1D_00006,north_Function1D_00009), aux103)
+reify(diseq(north_Function1D_00006,north_Function1D_00007), aux104)
+reify(diseq(north_Function1D_00005,north_Function1D_00009), aux105)
+reify(diseq(north_Function1D_00004,north_Function1D_00010), aux106)
+reify(diseq(north_Function1D_00004,north_Function1D_00011), aux107)
+reify(diseq(north_Function1D_00005,north_Function1D_00006), aux108)
+reify(diseq(north_Function1D_00005,north_Function1D_00008), aux109)
+reify(diseq(north_Function1D_00005,north_Function1D_00007), aux110)
+watched-or({watched-and({w-literal(aux117,55),w-literal(aux114,57)}),watched-and({w-literal(aux117,57),w-literal(aux114,55)})})
+watched-or({watched-and({w-literal(aux121,1),w-literal(aux116,20)}),watched-and({w-literal(aux121,20),w-literal(aux116,1)})})
+watched-or({watched-and({w-literal(aux122,1),w-literal(aux115,5)}),watched-and({w-literal(aux122,5),w-literal(aux115,1)})})
+watched-or({watched-and({w-literal(aux119,2),w-literal(aux112,4)}),watched-and({w-literal(aux119,4),w-literal(aux112,2)})})
+watched-or({watched-and({w-literal(aux120,1),w-literal(aux111,2)}),watched-and({w-literal(aux120,2),w-literal(aux111,1)})})
+watched-or({watched-and({w-literal(aux118,1),w-literal(aux113,2)}),watched-and({w-literal(aux118,2),w-literal(aux113,1)})})
+watched-or({w-literal(aux66,1),w-literal(aux19,1)})
+watched-or({w-literal(aux68,1),w-literal(aux18,1)})
+watched-or({w-literal(aux67,1),w-literal(aux17,1)})
+watched-or({w-literal(aux71,1),w-literal(aux23,1)})
+watched-or({w-literal(aux70,1),w-literal(aux22,1)})
+watched-or({w-literal(aux73,1),w-literal(aux21,1)})
+watched-or({w-literal(aux72,1),w-literal(aux20,1)})
+watched-or({w-literal(aux69,1),w-literal(aux24,1)})
+watched-or({w-literal(aux60,1),w-literal(aux28,1)})
+watched-or({w-literal(aux61,1),w-literal(aux29,1)})
+watched-or({w-literal(aux59,1),w-literal(aux25,1)})
+watched-or({w-literal(aux57,1),w-literal(aux26,1)})
+watched-or({w-literal(aux58,1),w-literal(aux27,1)})
+watched-or({w-literal(aux64,1),w-literal(aux30,1)})
+watched-or({w-literal(aux65,1),w-literal(aux31,1)})
+watched-or({w-literal(aux62,1),w-literal(aux32,1)})
+watched-or({w-literal(aux63,1),w-literal(aux33,1)})
+watched-or({w-literal(aux96,1),w-literal(aux5,1)})
+watched-or({w-literal(aux95,1),w-literal(aux6,1)})
+watched-or({w-literal(aux94,1),w-literal(aux2,1)})
+watched-or({w-literal(aux93,1),w-literal(aux4,1)})
+watched-or({w-literal(aux92,1),w-literal(aux3,1)})
+watched-or({w-literal(aux99,1),w-literal(aux8,1)})
+watched-or({w-literal(aux98,1),w-literal(aux7,1)})
+watched-or({w-literal(aux97,1),w-literal(aux9,1)})
+watched-or({w-literal(aux87,1),w-literal(aux13,1)})
+watched-or({w-literal(aux88,1),w-literal(aux14,1)})
+watched-or({w-literal(aux89,1),w-literal(aux12,1)})
+watched-or({w-literal(aux90,1),w-literal(aux10,1)})
+watched-or({w-literal(aux91,1),w-literal(aux11,1)})
+watched-or({w-literal(aux85,1),w-literal(aux15,1)})
+watched-or({w-literal(aux86,1),w-literal(aux16,1)})
+watched-or({w-literal(aux106,1),w-literal(aux41,1)})
+watched-or({w-literal(aux107,1),w-literal(aux45,1)})
+watched-or({w-literal(aux108,1),w-literal(aux44,1)})
+watched-or({w-literal(aux110,1),w-literal(aux43,1)})
+watched-or({w-literal(aux109,1),w-literal(aux42,1)})
+watched-or({w-literal(aux105,1),w-literal(aux46,1)})
+watched-or({w-literal(aux100,1),w-literal(aux50,1)})
+watched-or({w-literal(aux101,1),w-literal(aux51,1)})
+watched-or({w-literal(aux104,1),w-literal(aux47,1)})
+watched-or({w-literal(aux102,1),w-literal(aux48,1)})
+watched-or({w-literal(aux103,1),w-literal(aux49,1)})
+watched-or({w-literal(aux78,1),w-literal(aux36,1)})
+watched-or({w-literal(aux77,1),w-literal(aux37,1)})
+watched-or({w-literal(aux80,1),w-literal(aux34,1)})
+watched-or({w-literal(aux79,1),w-literal(aux35,1)})
+watched-or({w-literal(aux74,1),w-literal(aux39,1)})
+watched-or({w-literal(aux75,1),w-literal(aux40,1)})
+watched-or({w-literal(aux76,1),w-literal(aux38,1)})
+watched-or({w-literal(aux84,1),w-literal(aux52,1)})
+watched-or({w-literal(aux83,1),w-literal(aux53,1)})
+watched-or({w-literal(aux81,1),w-literal(aux54,1)})
+watched-or({w-literal(aux82,1),w-literal(aux55,1)})
+watched-or({w-literal(aux56,1),w-literal(aux1,1)})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00002),w-literal(aux66,1),weightedsumgeq([1,-1],[aux123,aux124],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00002),w-literal(aux19,1),weightedsumgeq([-1,1],[aux125,aux126],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00003),w-literal(aux68,1),weightedsumgeq([1,-1],[aux127,aux128],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00003),w-literal(aux18,1),weightedsumgeq([-1,1],[aux129,aux130],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00004),w-literal(aux67,1),weightedsumgeq([1,-1],[aux131,aux132],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00004),w-literal(aux17,1),weightedsumgeq([-1,1],[aux133,aux134],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00005),w-literal(aux71,1),weightedsumgeq([1,-1],[aux135,aux136],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00005),w-literal(aux23,1),weightedsumgeq([-1,1],[aux137,aux138],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00006),w-literal(aux70,1),weightedsumgeq([1,-1],[aux139,aux140],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00006),w-literal(aux22,1),weightedsumgeq([-1,1],[aux141,aux142],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00007),w-literal(aux73,1),weightedsumgeq([1,-1],[aux143,aux144],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00007),w-literal(aux21,1),weightedsumgeq([-1,1],[aux145,aux146],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00008),w-literal(aux72,1),weightedsumgeq([1,-1],[aux147,aux148],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00008),w-literal(aux20,1),weightedsumgeq([-1,1],[aux149,aux150],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00009),w-literal(aux69,1),weightedsumgeq([1,-1],[aux151,aux152],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00009),w-literal(aux24,1),weightedsumgeq([-1,1],[aux153,aux154],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00010),w-literal(aux60,1),weightedsumgeq([1,-1],[aux155,aux156],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00010),w-literal(aux28,1),weightedsumgeq([-1,1],[aux157,aux158],0)})})
+watched-or({watched-and({diseq(south_Function1D_00001,south_Function1D_00011),w-literal(aux61,1),weightedsumgeq([1,-1],[aux159,aux160],0)}),watched-and({diseq(east_Function1D_00001,east_Function1D_00011),w-literal(aux29,1),weightedsumgeq([-1,1],[aux161,aux162],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00003),w-literal(aux59,1),weightedsumgeq([1,-1],[aux163,aux164],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00003),w-literal(aux25,1),weightedsumgeq([-1,1],[aux165,aux166],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00004),w-literal(aux57,1),weightedsumgeq([1,-1],[aux167,aux168],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00004),w-literal(aux26,1),weightedsumgeq([-1,1],[aux169,aux170],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00005),w-literal(aux58,1),weightedsumgeq([1,-1],[aux171,aux172],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00005),w-literal(aux27,1),weightedsumgeq([-1,1],[aux173,aux174],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00006),w-literal(aux64,1),weightedsumgeq([1,-1],[aux175,aux176],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00006),w-literal(aux30,1),weightedsumgeq([-1,1],[aux177,aux178],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00007),w-literal(aux65,1),weightedsumgeq([1,-1],[aux179,aux180],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00007),w-literal(aux31,1),weightedsumgeq([-1,1],[aux181,aux182],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00008),w-literal(aux62,1),weightedsumgeq([1,-1],[aux183,aux184],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00008),w-literal(aux32,1),weightedsumgeq([-1,1],[aux185,aux186],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00009),w-literal(aux63,1),weightedsumgeq([1,-1],[aux187,aux188],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00009),w-literal(aux33,1),weightedsumgeq([-1,1],[aux189,aux190],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00010),w-literal(aux96,1),weightedsumgeq([1,-1],[aux191,aux192],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00010),w-literal(aux5,1),weightedsumgeq([-1,1],[aux193,aux194],0)})})
+watched-or({watched-and({diseq(south_Function1D_00002,south_Function1D_00011),w-literal(aux95,1),weightedsumgeq([1,-1],[aux195,aux196],0)}),watched-and({diseq(east_Function1D_00002,east_Function1D_00011),w-literal(aux6,1),weightedsumgeq([-1,1],[aux197,aux198],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00004),w-literal(aux94,1),weightedsumgeq([1,-1],[aux199,aux200],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00004),w-literal(aux2,1),weightedsumgeq([-1,1],[aux201,aux202],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00005),w-literal(aux93,1),weightedsumgeq([1,-1],[aux203,aux204],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00005),w-literal(aux4,1),weightedsumgeq([-1,1],[aux205,aux206],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00006),w-literal(aux92,1),weightedsumgeq([1,-1],[aux207,aux208],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00006),w-literal(aux3,1),weightedsumgeq([-1,1],[aux209,aux210],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00007),w-literal(aux99,1),weightedsumgeq([1,-1],[aux211,aux212],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00007),w-literal(aux8,1),weightedsumgeq([-1,1],[aux213,aux214],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00008),w-literal(aux98,1),weightedsumgeq([1,-1],[aux215,aux216],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00008),w-literal(aux7,1),weightedsumgeq([-1,1],[aux217,aux218],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00009),w-literal(aux97,1),weightedsumgeq([1,-1],[aux219,aux220],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00009),w-literal(aux9,1),weightedsumgeq([-1,1],[aux221,aux222],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00010),w-literal(aux87,1),weightedsumgeq([1,-1],[aux223,aux224],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00010),w-literal(aux13,1),weightedsumgeq([-1,1],[aux225,aux226],0)})})
+watched-or({watched-and({diseq(south_Function1D_00003,south_Function1D_00011),w-literal(aux88,1),weightedsumgeq([1,-1],[aux227,aux228],0)}),watched-and({diseq(east_Function1D_00003,east_Function1D_00011),w-literal(aux14,1),weightedsumgeq([-1,1],[aux229,aux230],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00005),w-literal(aux89,1),weightedsumgeq([1,-1],[aux231,aux232],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00005),w-literal(aux12,1),weightedsumgeq([-1,1],[aux233,aux234],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00006),w-literal(aux90,1),weightedsumgeq([1,-1],[aux235,aux236],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00006),w-literal(aux10,1),weightedsumgeq([-1,1],[aux237,aux238],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00007),w-literal(aux91,1),weightedsumgeq([1,-1],[aux239,aux240],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00007),w-literal(aux11,1),weightedsumgeq([-1,1],[aux241,aux242],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00008),w-literal(aux85,1),weightedsumgeq([1,-1],[aux243,aux244],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00008),w-literal(aux15,1),weightedsumgeq([-1,1],[aux245,aux246],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00009),w-literal(aux86,1),weightedsumgeq([1,-1],[aux247,aux248],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00009),w-literal(aux16,1),weightedsumgeq([-1,1],[aux249,aux250],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00010),w-literal(aux106,1),weightedsumgeq([1,-1],[aux251,aux252],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00010),w-literal(aux41,1),weightedsumgeq([-1,1],[aux253,aux254],0)})})
+watched-or({watched-and({diseq(south_Function1D_00004,south_Function1D_00011),w-literal(aux107,1),weightedsumgeq([1,-1],[aux255,aux256],0)}),watched-and({diseq(east_Function1D_00004,east_Function1D_00011),w-literal(aux45,1),weightedsumgeq([-1,1],[aux257,aux258],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00006),w-literal(aux108,1),weightedsumgeq([1,-1],[aux259,aux260],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00006),w-literal(aux44,1),weightedsumgeq([-1,1],[aux261,aux262],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00007),w-literal(aux110,1),weightedsumgeq([1,-1],[aux263,aux264],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00007),w-literal(aux43,1),weightedsumgeq([-1,1],[aux265,aux266],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00008),w-literal(aux109,1),weightedsumgeq([1,-1],[aux267,aux268],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00008),w-literal(aux42,1),weightedsumgeq([-1,1],[aux269,aux270],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00009),w-literal(aux105,1),weightedsumgeq([1,-1],[aux271,aux272],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00009),w-literal(aux46,1),weightedsumgeq([-1,1],[aux273,aux274],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00010),w-literal(aux100,1),weightedsumgeq([1,-1],[aux275,aux276],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00010),w-literal(aux50,1),weightedsumgeq([-1,1],[aux277,aux278],0)})})
+watched-or({watched-and({diseq(south_Function1D_00005,south_Function1D_00011),w-literal(aux101,1),weightedsumgeq([1,-1],[aux279,aux280],0)}),watched-and({diseq(east_Function1D_00005,east_Function1D_00011),w-literal(aux51,1),weightedsumgeq([-1,1],[aux281,aux282],0)})})
+watched-or({watched-and({diseq(south_Function1D_00006,south_Function1D_00007),w-literal(aux104,1),weightedsumgeq([1,-1],[aux283,aux284],0)}),watched-and({diseq(east_Function1D_00006,east_Function1D_00007),w-literal(aux47,1),weightedsumgeq([-1,1],[aux285,aux286],0)})})
+watched-or({watched-and({diseq(south_Function1D_00006,south_Function1D_00008),w-literal(aux102,1),weightedsumgeq([1,-1],[aux287,aux288],0)}),watched-and({diseq(east_Function1D_00006,east_Function1D_00008),w-literal(aux48,1),weightedsumgeq([-1,1],[aux289,aux290],0)})})
+watched-or({watched-and({diseq(south_Function1D_00006,south_Function1D_00009),w-literal(aux103,1),weightedsumgeq([1,-1],[aux291,aux292],0)}),watched-and({diseq(east_Function1D_00006,east_Function1D_00009),w-literal(aux49,1),weightedsumgeq([-1,1],[aux293,aux294],0)})})
+watched-or({watched-and({diseq(south_Function1D_00006,south_Function1D_00010),w-literal(aux78,1),weightedsumgeq([1,-1],[aux295,aux296],0)}),watched-and({diseq(east_Function1D_00006,east_Function1D_00010),w-literal(aux36,1),weightedsumgeq([-1,1],[aux297,aux298],0)})})
+watched-or({watched-and({diseq(south_Function1D_00006,south_Function1D_00011),w-literal(aux77,1),weightedsumgeq([1,-1],[aux299,aux300],0)}),watched-and({diseq(east_Function1D_00006,east_Function1D_00011),w-literal(aux37,1),weightedsumgeq([-1,1],[aux301,aux302],0)})})
+watched-or({watched-and({diseq(south_Function1D_00007,south_Function1D_00008),w-literal(aux80,1),weightedsumgeq([1,-1],[aux303,aux304],0)}),watched-and({diseq(east_Function1D_00007,east_Function1D_00008),w-literal(aux34,1),weightedsumgeq([-1,1],[aux305,aux306],0)})})
+watched-or({watched-and({diseq(south_Function1D_00007,south_Function1D_00009),w-literal(aux79,1),weightedsumgeq([1,-1],[aux307,aux308],0)}),watched-and({diseq(east_Function1D_00007,east_Function1D_00009),w-literal(aux35,1),weightedsumgeq([-1,1],[aux309,aux310],0)})})
+watched-or({watched-and({diseq(south_Function1D_00007,south_Function1D_00010),w-literal(aux74,1),weightedsumgeq([1,-1],[aux311,aux312],0)}),watched-and({diseq(east_Function1D_00007,east_Function1D_00010),w-literal(aux39,1),weightedsumgeq([-1,1],[aux313,aux314],0)})})
+watched-or({watched-and({diseq(south_Function1D_00007,south_Function1D_00011),w-literal(aux75,1),weightedsumgeq([1,-1],[aux315,aux316],0)}),watched-and({diseq(east_Function1D_00007,east_Function1D_00011),w-literal(aux40,1),weightedsumgeq([-1,1],[aux317,aux318],0)})})
+watched-or({watched-and({diseq(south_Function1D_00008,south_Function1D_00009),w-literal(aux76,1),weightedsumgeq([1,-1],[aux319,aux320],0)}),watched-and({diseq(east_Function1D_00008,east_Function1D_00009),w-literal(aux38,1),weightedsumgeq([-1,1],[aux321,aux322],0)})})
+watched-or({watched-and({diseq(south_Function1D_00008,south_Function1D_00010),w-literal(aux84,1),weightedsumgeq([1,-1],[aux323,aux324],0)}),watched-and({diseq(east_Function1D_00008,east_Function1D_00010),w-literal(aux52,1),weightedsumgeq([-1,1],[aux325,aux326],0)})})
+watched-or({watched-and({diseq(south_Function1D_00008,south_Function1D_00011),w-literal(aux83,1),weightedsumgeq([1,-1],[aux327,aux328],0)}),watched-and({diseq(east_Function1D_00008,east_Function1D_00011),w-literal(aux53,1),weightedsumgeq([-1,1],[aux329,aux330],0)})})
+watched-or({watched-and({diseq(south_Function1D_00009,south_Function1D_00010),w-literal(aux81,1),weightedsumgeq([1,-1],[aux331,aux332],0)}),watched-and({diseq(east_Function1D_00009,east_Function1D_00010),w-literal(aux54,1),weightedsumgeq([-1,1],[aux333,aux334],0)})})
+watched-or({watched-and({diseq(south_Function1D_00009,south_Function1D_00011),w-literal(aux82,1),weightedsumgeq([1,-1],[aux335,aux336],0)}),watched-and({diseq(east_Function1D_00009,east_Function1D_00011),w-literal(aux55,1),weightedsumgeq([-1,1],[aux337,aux338],0)})})
+watched-or({watched-and({diseq(south_Function1D_00010,south_Function1D_00011),w-literal(aux56,1),weightedsumgeq([1,-1],[aux339,aux340],0)}),watched-and({diseq(east_Function1D_00010,east_Function1D_00011),w-literal(aux1,1),weightedsumgeq([-1,1],[aux341,aux342],0)})})
+weightedsumleq([1,-1],[east_Function1D_00005,west_Function1D_00005],aux111)
+weightedsumgeq([1,-1],[east_Function1D_00005,west_Function1D_00005],aux111)
+weightedsumleq([1,-1],[east_Function1D_00004,west_Function1D_00004],aux112)
+weightedsumgeq([1,-1],[east_Function1D_00004,west_Function1D_00004],aux112)
+weightedsumleq([1,-1],[east_Function1D_00006,west_Function1D_00006],aux113)
+weightedsumgeq([1,-1],[east_Function1D_00006,west_Function1D_00006],aux113)
+weightedsumleq([1,-1],[east_Function1D_00001,west_Function1D_00001],aux114)
+weightedsumgeq([1,-1],[east_Function1D_00001,west_Function1D_00001],aux114)
+weightedsumleq([1,-1],[east_Function1D_00003,west_Function1D_00003],aux115)
+weightedsumgeq([1,-1],[east_Function1D_00003,west_Function1D_00003],aux115)
+weightedsumleq([1,-1],[east_Function1D_00002,west_Function1D_00002],aux116)
+weightedsumgeq([1,-1],[east_Function1D_00002,west_Function1D_00002],aux116)
+weightedsumleq([1,-1],[south_Function1D_00001,north_Function1D_00001],aux117)
+weightedsumgeq([1,-1],[south_Function1D_00001,north_Function1D_00001],aux117)
+weightedsumleq([1,-1],[south_Function1D_00006,north_Function1D_00006],aux118)
+weightedsumgeq([1,-1],[south_Function1D_00006,north_Function1D_00006],aux118)
+weightedsumleq([1,-1],[south_Function1D_00004,north_Function1D_00004],aux119)
+weightedsumgeq([1,-1],[south_Function1D_00004,north_Function1D_00004],aux119)
+weightedsumleq([1,-1],[south_Function1D_00005,north_Function1D_00005],aux120)
+weightedsumgeq([1,-1],[south_Function1D_00005,north_Function1D_00005],aux120)
+weightedsumleq([1,-1],[south_Function1D_00002,north_Function1D_00002],aux121)
+weightedsumgeq([1,-1],[south_Function1D_00002,north_Function1D_00002],aux121)
+weightedsumleq([1,-1],[south_Function1D_00003,north_Function1D_00003],aux122)
+weightedsumgeq([1,-1],[south_Function1D_00003,north_Function1D_00003],aux122)
+weightedsumleq([1,-1],[east_Function1D_00007,west_Function1D_00007],1)
+weightedsumgeq([1,-1],[east_Function1D_00007,west_Function1D_00007],1)
+weightedsumleq([1,-1],[south_Function1D_00007,north_Function1D_00007],1)
+weightedsumgeq([1,-1],[south_Function1D_00007,north_Function1D_00007],1)
+weightedsumleq([1,-1],[east_Function1D_00008,west_Function1D_00008],1)
+weightedsumgeq([1,-1],[east_Function1D_00008,west_Function1D_00008],1)
+weightedsumleq([1,-1],[south_Function1D_00008,north_Function1D_00008],1)
+weightedsumgeq([1,-1],[south_Function1D_00008,north_Function1D_00008],1)
+weightedsumleq([1,-1],[east_Function1D_00009,west_Function1D_00009],1)
+weightedsumgeq([1,-1],[east_Function1D_00009,west_Function1D_00009],1)
+weightedsumleq([1,-1],[south_Function1D_00009,north_Function1D_00009],1)
+weightedsumgeq([1,-1],[south_Function1D_00009,north_Function1D_00009],1)
+weightedsumleq([1,-1],[east_Function1D_00010,west_Function1D_00010],1)
+weightedsumgeq([1,-1],[east_Function1D_00010,west_Function1D_00010],1)
+weightedsumleq([1,-1],[south_Function1D_00010,north_Function1D_00010],1)
+weightedsumgeq([1,-1],[south_Function1D_00010,north_Function1D_00010],1)
+weightedsumleq([1,-1],[east_Function1D_00011,west_Function1D_00011],1)
+weightedsumgeq([1,-1],[east_Function1D_00011,west_Function1D_00011],1)
+weightedsumleq([1,-1],[south_Function1D_00011,north_Function1D_00011],1)
+weightedsumgeq([1,-1],[south_Function1D_00011,north_Function1D_00011],1)
+**EOF**

@@ -111,7 +111,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
         # make score
         # inst unwanted type: score=1
         if (
-            (setting["gradedTypes"] != "both")
+            (setting["gradedTypes"] != "all")
             and (runStatus in ["sat", "unsat"])
             and (runStatus != setting["gradedTypes"])
         ):
@@ -143,7 +143,7 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
     meanSolverTime = 0
     if status == "ok":
         meanSolverTime = sum(lsSolverTime) / len(lsSolverTime)
-        if meanSolverTime < setting["solverMinTime"]:
+        if meanSolverTime < setting["minTime"]:
             status = "tooEasy"
         else:
             status = "graded"
@@ -163,10 +163,10 @@ def evaluate_essence_instance_graded(instFile, seed, setting):
     # - otherwise, for each evaluation: if the run is too easy: score=-solverTime, if the run is graded: score=nEvaluations*-solverMinTime
     score = 0
     for i in range(len(lsSolverTime)):
-        if lsSolverTime[i] < setting["solverMinTime"]:
+        if lsSolverTime[i] < setting["minTime"]:
             score -= lsSolverTime[i]
         else:
-            score -= setting["nEvaluations"] * setting["solverMinTime"]
+            score -= setting["nEvaluations"] * setting["minTime"]
     return score, get_results()
 
 
@@ -253,7 +253,7 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
             # ------------ update score
             # inst unwanted type: score=1
             if (
-                (setting["gradedTypes"] != "both")
+                (setting["gradedTypes"] != "all")
                 and (runStatus in ["sat", "unsat"])
                 and (runStatus != setting["gradedTypes"])
             ):
