@@ -1,6 +1,0 @@
-Ag "-Ag " i (1, 10)
-Tg "-Tg " i (1, 200)
-Xg "-Xg " i (3, 50)
-Zg "-Zg " i (2, 10)
-ground_coverage "-ground_coverage " i (1, 100)
-avg_height_ratio "-avg_height_ratio " i (0, 100)
