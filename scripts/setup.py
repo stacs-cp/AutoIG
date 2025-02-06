@@ -298,6 +298,7 @@ def main():
     parser.add_argument(
         "--genSRTimeLimit",
         default=300,
+        type=int,
         help="Savile Row time limit on each generator instance (in seconds)",
     )
     parser.add_argument(
@@ -314,6 +315,7 @@ def main():
     parser.add_argument(
         "--genSolverTimeLimit",
         default=300,
+        type=int,
         help="time limit for solving each generator instance (in seconds)",
     )
     parser.add_argument(
