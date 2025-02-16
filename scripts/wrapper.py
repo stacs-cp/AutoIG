@@ -38,13 +38,43 @@ from minizinc_utils import (
 from generator import solve_generator
 from convert import convert_essence_instance_to_mzn
 
+
+# define constants for scores
+SCORE_UNWANTED_TYPE = 0
+SCORE_TOO_EASY = 0
+SCORE_TOO_DIFFICULT = 0
+SCORE_INCORRECT_ANSWER = 0
+SCORE_GRADED = -1
+
 detailedOutputDir = "./detailed-output"
 
 # for minizinc experiments only: solvers where -r doesn't work when being called via minizinc
 deterministicSolvers = ["ortools"]
 
 
-def evaluate_essence_instance_graded(instFile, seed, setting):
+def evaluate_essence_instance_graded(    
+        
+    
+    modelFile: str,
+    instFile: str,
+    unwantedTypes: list = [],
+    nEvaluations: int = 1,
+    solver: str = "ortools",
+    solverFlags: str = "-f",
+    solverType: str = "complete",
+    minTime: int = 10,
+    timeLimit: int = 1200,
+    initSeed: int = None,
+    oracleSolver: str = None,
+    oracleSolverFlags: str = "-f",
+    oracleSolverTimeLimit: int = 3600,
+    memLimit=8192,
+):
+    
+    # previously
+    # instFile, seed, setting
+    
+# previously
     # TODO: we need a similar function for minizinc instance (or we can modify this function to make it support minizinc instances)
     # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
     # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
@@ -635,12 +665,7 @@ def evaluate_mzn_instance_graded(
     """
     Evaluate a mzn instance under the gradedness criteria
     """
-    # define constants for scores
-    SCORE_UNWANTED_TYPE = 0
-    SCORE_TOO_EASY = 0
-    SCORE_TOO_DIFFICULT = 0
-    SCORE_INCORRECT_ANSWER = 0
-    SCORE_GRADED = -1
+    
 
     # check validity of input
     if len(unwantedTypes) > 0:
@@ -960,10 +985,14 @@ def main():
 
     # evaluate the generated instance
     if modelType == "essence":
-        evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
-        score, instanceResults = globals()[evaluationFunctionName](
-            instFile, seed, setting["evaluationSettings"]
-        )
+        # evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
+        # score, instanceResults = globals()[evaluationFunctionName](
+        #     instFile, seed, setting["evaluationSettings"]
+        # )
+        score, instanceResults = evaluate_essence_instance_graded(instFile, seed,
+            setting["evaluationSettings"],
+            # modelFile = "problem.essence",
+            )
     else:
         # convert the generated instance into .dzn
         mznInstFile = instFile.replace(".param", ".dzn")
