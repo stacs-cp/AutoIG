@@ -21,7 +21,7 @@ import math
 import conf
 import sys
 
-from wrapper_helpers import read_setting
+from wrapper_helpers import read_setting, read_args
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -865,22 +865,6 @@ def evaluate_mzn_instance_graded(
     score = SCORE_GRADED
     return score, get_results()
 
-
-def read_args(args):
-    #### read arguments (following irace's wrapper input format) ###
-    k = 1
-    configurationId = int(args[k])
-    k = k + 2  # skip second argument (<1>)
-    seed = int(args[k])
-    k = k + 2  # skip 4th argument (dummy instance name)
-    params = args[k:]
-    paramDict = {}  # generator parameter values suggested by irace
-    for i in range(0, len(params), 2):
-        paramDict[params[i][1:]] = params[i + 1]
-
-    log(" ".join(args))
-
-    return configurationId, seed, paramDict
 
 
 
