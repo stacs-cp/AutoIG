@@ -19,8 +19,9 @@ from functools import cmp_to_key
 import pprint
 import math
 import conf
-
 import sys
+
+from wrapper_helpers import read_setting
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -881,60 +882,6 @@ def read_args(args):
 
     return configurationId, seed, paramDict
 
-
-def read_setting(settingFile):
-    if os.path.isfile(settingFile) is False:
-        print("ERROR: setting file " + settingFile + " is missing.")
-        sys.exit(1)
-    with open(settingFile) as f:
-        setting = json.load(f)
-
-    # split setting options into groups
-    c = {"generalSettings": {}, "generatorSettings": {}, "evaluationSettings": {}}
-
-    c["generalSettings"]["experimentType"] = setting["instanceSetting"]
-    c["generalSettings"]["modelFile"] = setting["problemModel"]
-    c["generalSettings"]["generatorFile"] = setting["generatorModel"]
-    c["generalSettings"]["runDir"] = setting["runDir"]
-
-    c["generatorSettings"]["genSRTimeLimit"] = setting["genSRTimeLimit"]
-    c["generatorSettings"]["genSRFlags"] = setting["genSRFlags"]
-    c["generatorSettings"]["genSolver"] = setting["genSolver"]
-    c["generatorSettings"]["genSolverTimeLimit"] = setting["genSolverTimeLimit"]
-    c["generatorSettings"]["genSolverFlags"] = setting["genSolverFlags"]
-
-    c["evaluationSettings"]["nEvaluations"] = setting["nRunsPerInstance"]
-    c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
-    if setting["instanceSetting"] == "graded":
-        c["evaluationSettings"]["solver"] = setting["solver"]
-        print(setting)
-        if setting["solver"] in ["yuck"]:
-            c["evaluationSettings"]["solverType"] = "incomplete"
-        else:
-            c["evaluationSettings"]["solverType"] = "complete"
-        c["evaluationSettings"]["minTime"] = setting["minSolverTime"]
-        c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
-        c["evaluationSettings"]["totalTimeLimit"] = setting["maxSolverTime"]
-    else:
-        c["evaluationSettings"][
-            "scoringMethod"
-        ] = "complete"  # NOTE: incomplete scoring method is also supported by the code
-        baseSolverSettings = {
-            "name": setting["baseSolver"],
-            "solverMinTime": setting["minSolverTime"],
-            "totalTimeLimit": setting["maxSolverTime"],
-            "solverFlags": setting["baseSolverFlags"],
-        }
-        favouredSolverSettings = {
-            "name": setting["favouredSolver"],
-            "totalTimeLimit": setting["maxSolverTime"],
-            "solverFlags": setting["favouredSolverFlags"],
-        }
-
-        c["evaluationSettings"]["baseSolver"] = baseSolverSettings
-        c["evaluationSettings"]["favouredSolver"] = favouredSolverSettings
-
-    return c
 
 
 def main():
