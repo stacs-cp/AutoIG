@@ -1053,7 +1053,7 @@ def main():
     # print out score and exit
     print_results()
 
-
+print("test print statement at start of wrapper call")
 main()
 
 # scoring for graded instances (single solver)
