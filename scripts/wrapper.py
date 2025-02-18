@@ -53,8 +53,6 @@ deterministicSolvers = ["ortools"]
 
 
 def evaluate_essence_instance_graded(    
-        
-    
     modelFile: str,
     instFile: str,
     unwantedTypes: list = [],
@@ -390,10 +388,7 @@ def evaluate_mzn_instance_discriminating(
     """
     Evaluate a mzn instance under the solver-discriminating criteria
     """
-    # define constants for scores
-    SCORE_UNWANTED_TYPE = 0
-    SCORE_FAVOURED_TOO_DIFFICULT = 0
-    SCORE_BASE_TOO_EASY = 0
+    # Scores moved to be global variables so can be used elsewhere
 
     # check validity of input
     assert scoringMethod in ["complete", "incomplete"], (
