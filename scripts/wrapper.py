@@ -986,7 +986,24 @@ def main():
         # )
         score, instanceResults = evaluate_essence_instance_graded(instFile, seed,
             setting["evaluationSettings"],
-            # modelFile = "problem.essence",
+
+            # Direct copy of the MZN method parameters
+            # Essence method should take in direct paramters rather than the settings dictionary, which makes things too tightly coupled
+            modelFile: str,
+            instFile: str,
+            unwantedTypes: list = [],
+            nEvaluations: int = 1,
+            solver: str = "ortools",
+            solverFlags: str = "-f",
+            solverType: str = "complete",
+            minTime: int = 10,
+            timeLimit: int = 1200,
+            initSeed: int = None,
+            oracleSolver: str = None,
+            oracleSolverFlags: str = "-f",
+            oracleSolverTimeLimit: int = 3600,
+            memLimit=8192,
+
             )
     else:
         # convert the generated instance into .dzn
