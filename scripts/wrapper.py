@@ -984,9 +984,9 @@ def main():
         # score, instanceResults = globals()[evaluationFunctionName](
         #     instFile, seed, setting["evaluationSettings"]
         # )
-        score, instanceResults = evaluate_essence_instance_graded(instFile, seed,
-            setting["evaluationSettings"],
-
+        score, instanceResults = evaluate_essence_instance_graded(
+            instFile, 
+            seed,
             # Direct copy of the MZN method parameters
             # Essence method should take in direct paramters rather than the settings dictionary, which makes things too tightly coupled
             modelFile: str,
