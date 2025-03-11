@@ -113,6 +113,8 @@ def evaluate_essence_instance_graded(
         print(
             "\n\n----------- With random seed " + str(i) + "th (" + str(rndSeed) + ")"
         )
+        # Printing setting for use in development
+        print(setting)
         runStatus, SRTime, solverTime = call_conjure_solve(
             essenceModelFile, eprimeModelFile, instFile, setting, rndSeed
         )
