@@ -19,15 +19,14 @@ from functools import cmp_to_key
 import pprint
 import math
 import conf
-import sys
 
-from wrapper_helpers import read_setting, read_args
+import sys
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
 
 from utils import log, read_file, search_string, run_cmd, delete_file
-from essence_pipeline_utils import call_conjure_solve, encode_negative_table, get_essence_problem_type
+from essence_pipeline_utils import call_conjure_solve, encode_negative_table
 from minizinc_utils import (
     minizinc_solve,
     calculate_minizinc_borda_scores,
@@ -38,157 +37,57 @@ from minizinc_utils import (
 from generator import solve_generator
 from convert import convert_essence_instance_to_mzn
 
-
-# Define constants for scores
-SCORE_UNWANTED_TYPE = 0
-SCORE_TOO_EASY = 0
-SCORE_TOO_DIFFICULT = 0
-SCORE_INCORRECT_ANSWER = 0
-SCORE_GRADED = -1
-
-# Define constants for outputs
 detailedOutputDir = "./detailed-output"
 
 # for minizinc experiments only: solvers where -r doesn't work when being called via minizinc
 deterministicSolvers = ["ortools"]
 
 
-def evaluate_essence_instance_graded(    
-    modelFile: str,
-    instFile: str,
-    unwantedTypes: list = [],
-    nEvaluations: int = 1,
-    solver: str = "ortools",
-    solverFlags: str = "-f",
-    solverType: str = "complete",
-    minTime: int = 10,
-    timeLimit: int = 1200,
-    initSeed: int = None,
-    oracleSolver: str = None,
-    oracleSolverFlags: str = "-f",
-    oracleSolverTimeLimit: int = 3600,
-    memLimit=8192,
-):
-    
-    
+def evaluate_essence_instance_graded(instFile, seed, setting):
+    # TODO: we need a similar function for minizinc instance (or we can modify this function to make it support minizinc instances)
+    # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
+    # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
     """
     evaluate an Essence instance with a single solver (goal: find graded instance for the given solver)
     """
-    # using the new parameters passed in:
-    essenceModelFile = "./" + modelFile # Model file has sting "problem.essence" passed in
+    essenceModelFile = "./problem.essence"
     eprimeModelFile = detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
-
-    # got rid of some usage of existing parameters, such as solver 
+    solver = setting["solver"]
 
     score = None
     results = {}
     status = "ok"
 
-    # check validity of input: identical to how it was done for MZN implementation
-    if len(unwantedTypes) > 0:
-        for s in unwantedTypes:
-            assert s in [
-                "sat",
-                "unsat",
-            ], "ERROR: elements of unwantedTypes must be in {'sat','unsat'}"
-    assert nEvaluations > 0
-    assert solverType in [
-        "complete",
-        "incomplete",
-    ], "ERROR: solver type must be either complete or incomplete"
-    if solverType == "incomplete":
-        assert (
-            oracleSolver != None
-        ), "ERROR: for incomplete solver, an oracle solver must be used"
-    assert (
-        minTime < timeLimit
-    ), "ERROR: min solving time must be less than total time limit"
-
-    # Not sure if this is necessary
-    problemType = get_essence_problem_type(modelFile)   # FIXME: need to implement the get_essence_problem_type
-    conf.problemType = problemType
-
-    # initialise results
-    results = {"main": {}, "oracle": {}}
-    for st in ["main", "oracle"]:
-        results[st]["runs"] = []
-    score = status = None
-    instanceType = None
-
-    # NOTE: updated get results from the minizinc pipeline
-    # concerning because existing essence pipeline had two simultaneous versions of the function
+# this dual function implementation, second implementation ovverrides the first one 
     def get_results():
-        assert (score is not None) and (
-            status is not None
-        ), "ERROR: score/status is missing"
+        results["score"] = score
+        results["status"] = status
+
+    def get_results():
+        assert (score is not None) and (status is not None)
         rs = {
-            "instance": instFile,
+            "insttance": instFile,
             "status": status,
             "score": score,
             "results": results,
         }
-        # print("\n",rs)
         return rs
-    
-    """ 
-    THIS IS WHERE THE ORACLE SHOULD BE HANDLED, EVERYTHING BEFOREHAND WAS JUST PARAMETER HANDLING
-    """
-    
-    # FIXME: this is initial run stff for the oracle, currently unsupported by the essence implementation
-    # am ignoring for now 
-    # if (solverType == "incomplete") and ("unsat" in unwantedTypes):
-    #     smallTimeLimit = 120
-    #     oracleRunStatus, oracleRunTotalTime, oracleExtra = minizinc_solve( #FIXME: this is a call to minizinc solve
-    #         modelFile,
-    #         instFile,
-    #         oracleSolver,
-    #         oracleSolverFlags,
-    #         seed,
-    #         smallTimeLimit,
-    #         memLimit,
-    #     )
-    #     if oracleExtra["instanceType"] == "unsat":
-    #         print("Unwanted instance type (checked by oracle). Quitting...")
-    #         score = SCORE_UNWANTED_TYPE
-    #         status = "unwantedType"
-    #         # TODO: in this context, we don't really need to run the oracle to check correctness of instance type, since return scores for unwanted type and incorrect results are the same. But if we decide to have the two scores being different, we may need to use the oracle here
-    #         return score, get_results()
 
+    # TODO: add values for variable "results" (see evaluate_mzn_instance_discriminating for example)
 
-    """ 
-    THIS IS WHERE THE ACTUAL ESSENCE INSTANCE GENERATION STARTS
-    """
-    # run the main solver
-    instanceType = None
-    optimalObj = None
+    print("\n")
+    log("Solving " + instFile + "...")
 
-    lsSolverTime = []   # FIXME: NOT SURE IF THIS SHOULD BE HERE, IS LEFTOVER FROM OLD ESSENCE IMPLEMENTATION 
-    for i in range(nEvaluations):
-        # FIXME: be careful about the way seed was handled, used to be rndseed
-        if initSeed:
-            seed = initSeed + i
-        else:
-            seed = None
-
+    lsSolverTime = []
+    for i in range(setting["nEvaluations"]):
+        rndSeed = seed + i
         print(
-            "\n\n----------- With seed " + str(i) + "th (" + str(seed) + ")"
+            "\n\n----------- With random seed " + str(i) + "th (" + str(rndSeed) + ")"
         )
-
-        # existing essence implementation 
-        #FIXME: need to track down how the setting is used in call_conjure_solve
-        # since we are no longer using that dictionary, am going to have to individually pass the needed parts
         runStatus, SRTime, solverTime = call_conjure_solve(
-            essenceModelFile, eprimeModelFile, instFile, setting, seed
+            essenceModelFile, eprimeModelFile, instFile, setting, rndSeed
         )
-
-        # new minizinc implementation
-        # runStatus, runTotalTime, extra = minizinc_solve(
-        #     modelFile, instFile, solver, solverFlags, seed, timeLimit, memLimit
-        # )
-        # results["main"]["runs"].append(
-        #     {"seed": seed, "status": runStatus, "time": runTotalTime, "extra": extra}
-        # )
 
         # print out results
         localVars = locals()
@@ -461,7 +360,10 @@ def evaluate_mzn_instance_discriminating(
     """
     Evaluate a mzn instance under the solver-discriminating criteria
     """
-    # Scores moved to be global variables so can be used elsewhere
+    # define constants for scores
+    SCORE_UNWANTED_TYPE = 0
+    SCORE_FAVOURED_TOO_DIFFICULT = 0
+    SCORE_BASE_TOO_EASY = 0
 
     # check validity of input
     assert scoringMethod in ["complete", "incomplete"], (
@@ -733,7 +635,12 @@ def evaluate_mzn_instance_graded(
     """
     Evaluate a mzn instance under the gradedness criteria
     """
-    
+    # define constants for scores
+    SCORE_UNWANTED_TYPE = 0
+    SCORE_TOO_EASY = 0
+    SCORE_TOO_DIFFICULT = 0
+    SCORE_INCORRECT_ANSWER = 0
+    SCORE_GRADED = -1
 
     # check validity of input
     if len(unwantedTypes) > 0:
@@ -959,6 +866,75 @@ def evaluate_mzn_instance_graded(
     return score, get_results()
 
 
+def read_args(args):
+    #### read arguments (following irace's wrapper input format) ###
+    k = 1
+    configurationId = int(args[k])
+    k = k + 2  # skip second argument (<1>)
+    seed = int(args[k])
+    k = k + 2  # skip 4th argument (dummy instance name)
+    params = args[k:]
+    paramDict = {}  # generator parameter values suggested by irace
+    for i in range(0, len(params), 2):
+        paramDict[params[i][1:]] = params[i + 1]
+
+    log(" ".join(args))
+
+    return configurationId, seed, paramDict
+
+
+def read_setting(settingFile):
+    if os.path.isfile(settingFile) is False:
+        print("ERROR: setting file " + settingFile + " is missing.")
+        sys.exit(1)
+    with open(settingFile) as f:
+        setting = json.load(f)
+
+    # split setting options into groups
+    c = {"generalSettings": {}, "generatorSettings": {}, "evaluationSettings": {}}
+
+    c["generalSettings"]["experimentType"] = setting["instanceSetting"]
+    c["generalSettings"]["modelFile"] = setting["problemModel"]
+    c["generalSettings"]["generatorFile"] = setting["generatorModel"]
+    c["generalSettings"]["runDir"] = setting["runDir"]
+
+    c["generatorSettings"]["genSRTimeLimit"] = setting["genSRTimeLimit"]
+    c["generatorSettings"]["genSRFlags"] = setting["genSRFlags"]
+    c["generatorSettings"]["genSolver"] = setting["genSolver"]
+    c["generatorSettings"]["genSolverTimeLimit"] = setting["genSolverTimeLimit"]
+    c["generatorSettings"]["genSolverFlags"] = setting["genSolverFlags"]
+
+    c["evaluationSettings"]["nEvaluations"] = setting["nRunsPerInstance"]
+    c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
+    if setting["instanceSetting"] == "graded":
+        c["evaluationSettings"]["solver"] = setting["solver"]
+        if setting["solver"] in ["yuck"]:
+            c["evaluationSettings"]["solverType"] = setting["incomplete"]
+        else:
+            c["evaluationSettings"]["solverType"] = "complete"
+        c["evaluationSettings"]["minTime"] = setting["minSolverTime"]
+        c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
+        c["evaluationSettings"]["totalTimeLimit"] = setting["maxSolverTime"]
+    else:
+        c["evaluationSettings"][
+            "scoringMethod"
+        ] = "complete"  # NOTE: incomplete scoring method is also supported by the code
+        baseSolverSettings = {
+            "name": setting["baseSolver"],
+            "solverMinTime": setting["minSolverTime"],
+            "totalTimeLimit": setting["maxSolverTime"],
+            "solverFlags": setting["baseSolverFlags"],
+        }
+        favouredSolverSettings = {
+            "name": setting["favouredSolver"],
+            "totalTimeLimit": setting["maxSolverTime"],
+            "solverFlags": setting["favouredSolverFlags"],
+        }
+
+        c["evaluationSettings"]["baseSolver"] = baseSolverSettings
+        c["evaluationSettings"]["favouredSolver"] = favouredSolverSettings
+
+    return c
 
 
 def main():
@@ -1053,31 +1029,9 @@ def main():
 
     # evaluate the generated instance
     if modelType == "essence":
-        
-        # I dont think I need to do this, because.param are used in conjure
-        # essenceInstFile = instFile.replace(".param",".dzn") # FIXME: this is a direct take from the MZN implementation, unclear if it will work 
-            # the line above replaces the filename sting
-            # .param files are used in essence
-            # .dzn files are used in minizinc 
-        oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
-        if es["solverType"] == "incomplete":
-            oracleSolver = "ortools"
-            oracleSolverFlags = "-f"
-            oracleSolverTimeLimit = 3600
-        score, instanceResults = evaluate_essence_instance_graded(
-            modelFile="problem.essence",            # 
-            instFile=instFile,                      # FIXME: not sure if i have to chagne or not 
-            unwantedTypes=get_unwanted_types(),     # 
-            nEvaluations=es["nEvaluations"],        # 
-            solver=es["solver"],                    #
-            solverFlags=es["solverFlags"],          #
-            solverType=es["solverType"],            #
-            minTime=es["minTime"],                  #
-            timeLimit=es["totalTimeLimit"],         #
-            initSeed=seed,                          #
-            oracleSolver=oracleSolver,              #
-            oracleSolverFlags=oracleSolverFlags,    #
-            oracleSolverTimeLimit=oracleSolverTimeLimit,  #
+        evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
+        score, instanceResults = globals()[evaluationFunctionName](
+            instFile, seed, setting["evaluationSettings"]
         )
     else:
         # convert the generated instance into .dzn
@@ -1139,7 +1093,7 @@ def main():
     # print out score and exit
     print_results()
 
-print("test print statement at start of wrapper call")
+
 main()
 
 # scoring for graded instances (single solver)

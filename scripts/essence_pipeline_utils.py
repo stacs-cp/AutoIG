@@ -66,6 +66,32 @@ solverInfo["kissat"] = {
 }
 
 
+def get_essence_problem_type(modelFile: str):
+    # TODO: this function should definitely be improved
+    """
+    Read an Essence model and return its type (MIN/MAX/SAT)
+    """
+    with open(modelFile, "rt") as f:
+        lines = f.readlines()
+
+    # remove comment lines
+    lines = [l for l in lines if len(l.strip()) > 0 and (l.strip()[0] != "%")]
+
+    def find_str(s):
+        return len(list(filter(lambda x: s in x, lines))) > 0
+
+    if find_str("minimize"):
+        return "MIN"
+    if find_str("maximize"):
+        return "MAX"
+    if find_str("satisfy"):
+        return "SAT"
+    print("ERROR: cannot determine problem type of " + modelFile)
+    sys.exit(1)
+    return None
+
+
+
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
     cmd = (
         "conjure translate-parameter "
