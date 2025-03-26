@@ -1006,6 +1006,7 @@ def main():
             # the line above replaces the filename sting
             # .param files are used in essence
             # .dzn files are used in minizinc 
+        es = setting["evaluationSettings"]
         if experimentType == "graded":
             oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
             # only called for incomplete solvers, which aren't actually allowed yet
