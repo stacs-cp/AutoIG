@@ -1,5 +1,7 @@
-$ satisfaction problem
+$ optimisation
 given x: int(1..10)
 find y: int(1..10)
 such that
         y > x
+
+maximizing y * x
