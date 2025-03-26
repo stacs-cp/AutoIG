@@ -451,7 +451,7 @@ def call_conjure_solve(
     ):
         status = "solverMemOut"
     elif ("Sub-process exited with error code:139" in cmdOutput) and (
-        setting["abortIfSolverCrash"] is False
+        setting["abortIfSolverCrash"] is False  # TODO This is deprecated, but not sure what to replace with
     ):
         status = "solverCrash"
     elif returnCode != 0:
@@ -514,7 +514,7 @@ def call_conjure_solve(
 
         # parse SR info file
         infoStatus, SRTime, solverTime = parse_SR_info_file(
-            infoFile, timelimit=setting["solverTimeLimit"]
+            infoFile, timelimit=solverTimeLimit
         )
         if status != "solverCrash":
             status = infoStatus
