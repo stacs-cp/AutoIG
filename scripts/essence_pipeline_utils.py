@@ -400,7 +400,16 @@ def make_conjure_solve_command(
 
 # Changed to take in the paramters directly, rather than through a provided settings dictionary
 # TODO where does essenceModelFile and eprimeModelFile come from 
-def call_conjure_solve(essenceModelFile: str, eprimeModelFile: str, instFile: str, solver: str, totalTimeLimit, seed):
+def call_conjure_solve(
+        essenceModelFile: str, 
+        eprimeModelFile: str, 
+        instFile: str, 
+        solver: str, 
+        SRTimeLimit, 
+        SRFlags, 
+        solverTimeLimit, 
+        solverFlags, 
+        seed):
 
     lsTempFiles = []
 
@@ -410,10 +419,10 @@ def call_conjure_solve(essenceModelFile: str, eprimeModelFile: str, instFile: st
         eprimeModelFile,
         instFile,
         solver,
-        setting["SRTimeLimit"],
-        setting["SRFlags"],
-        setting["solverTimeLimit"],
-        setting["solverFlags"],
+        SRTimeLimit,
+        SRFlags,
+        solverTimeLimit,
+        solverFlags,
         seed,
     )
     lsTempFiles.extend(tempFiles)
