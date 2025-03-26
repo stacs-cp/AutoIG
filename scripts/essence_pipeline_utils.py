@@ -325,7 +325,7 @@ def make_conjure_solve_command(
     SRFlags="",
     solverTimeLimit=0,
     solverFlags="",
-    seed=None,
+    seed=None, # no seed as default
 ):
     # temporary files that will be removed
     lsTempFiles = []
@@ -398,12 +398,10 @@ def make_conjure_solve_command(
 
     return conjureCmd, lsTempFiles
 
+# Changed to take in the paramters directly, rather than through a provided settings dictionary
+# TODO where does essenceModelFile and eprimeModelFile come from 
+def call_conjure_solve(essenceModelFile: str, eprimeModelFile: str, instFile: str, solver: str, totalTimeLimit, seed):
 
-def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, seed):
-    if "name" in setting:
-        solver = setting["name"]
-    elif "solver" in setting:
-        solver = setting["solver"]
     lsTempFiles = []
 
     # make conjure solve command line

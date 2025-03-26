@@ -1028,6 +1028,7 @@ def main():
         return ["sat"]
 
     # evaluate the generated instance
+    # evaluate_essence_instance_graded
     if modelType == "essence":
         evaluationFunctionName = "evaluate_" + modelType + "_instance_" + experimentType
         score, instanceResults = globals()[evaluationFunctionName](

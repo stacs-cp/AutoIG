@@ -54,16 +54,19 @@ deterministicSolvers = ["ortools"]
 
 
 def evaluate_essence_instance_graded(    
-    modelFile: str,
-    instFile: str,
-    unwantedTypes: list = [],
-    nEvaluations: int = 1,
-    solver: str = "ortools",
-    solverFlags: str = "-f",
-    solverType: str = "complete",
-    minTime: int = 10,
-    timeLimit: int = 1200,
-    initSeed: int = None,
+    modelFile: str, # present for MZN
+    instFile: str, # present for mzn 
+    unwantedTypes: list = [], # present for mzn
+    nEvaluations: int = 1,  # present for MZN, 
+    solver: str = "ortools", #present for mzn 
+    solverFlags: str = "-f", # present for mzn 
+    solverType: str = "complete", # present for mzn
+    minTime: int = 10, # present for mzn 
+    timeLimit: int = 1200, # present for mzn 
+    initSeed: int = None, # present for mzn 
+    SRTimeLimit: int = 0, # same default as provided in make_conjure_solve_command previously 
+    SRFlags: str = "",  # same default as povideed in make_conjure_solve command previously
+    solverTimeLimit: int = 0, # same default as provided in the make_conjure_solve command previously
     oracleSolver: str = None,
     oracleSolverFlags: str = "-f",
     oracleSolverTimeLimit: int = 3600,
@@ -74,6 +77,7 @@ def evaluate_essence_instance_graded(
     """
     evaluate an Essence instance with a single solver (goal: find graded instance for the given solver)
     """
+    # same implementation used as in the existing Essence pipeline
     # using the new parameters passed in:
     essenceModelFile = "./" + modelFile # Model file has sting "problem.essence" passed in
     eprimeModelFile = detailedOutputDir + "/problem.eprime"
@@ -105,8 +109,8 @@ def evaluate_essence_instance_graded(
         minTime < timeLimit
     ), "ERROR: min solving time must be less than total time limit"
 
-    # Not sure if this is necessary
-    problemType = get_essence_problem_type(modelFile)   # FIXME: need to implement the get_essence_problem_type
+    # TODO may need to change implementation of get_essence_problem_type
+    problemType = get_essence_problem_type(modelFile)   
     conf.problemType = problemType
 
     # initialise results
@@ -114,10 +118,10 @@ def evaluate_essence_instance_graded(
     for st in ["main", "oracle"]:
         results[st]["runs"] = []
     score = status = None
-    instanceType = None
 
     # NOTE: updated get results from the minizinc pipeline
     # concerning because existing essence pipeline had two simultaneous versions of the function
+    # was the same implementation as previously, should be fine
     def get_results():
         assert (score is not None) and (
             status is not None
@@ -134,31 +138,13 @@ def evaluate_essence_instance_graded(
     """ 
     THIS IS WHERE THE ORACLE SHOULD BE HANDLED, EVERYTHING BEFOREHAND WAS JUST PARAMETER HANDLING
     """
-    
-    # FIXME: this is initial run stff for the oracle, currently unsupported by the essence implementation
-    # am ignoring for now 
-    # if (solverType == "incomplete") and ("unsat" in unwantedTypes):
-    #     smallTimeLimit = 120
-    #     oracleRunStatus, oracleRunTotalTime, oracleExtra = minizinc_solve( #FIXME: this is a call to minizinc solve
-    #         modelFile,
-    #         instFile,
-    #         oracleSolver,
-    #         oracleSolverFlags,
-    #         seed,
-    #         smallTimeLimit,
-    #         memLimit,
-    #     )
-    #     if oracleExtra["instanceType"] == "unsat":
-    #         print("Unwanted instance type (checked by oracle). Quitting...")
-    #         score = SCORE_UNWANTED_TYPE
-    #         status = "unwantedType"
-    #         # TODO: in this context, we don't really need to run the oracle to check correctness of instance type, since return scores for unwanted type and incorrect results are the same. But if we decide to have the two scores being different, we may need to use the oracle here
-    #         return score, get_results()
-
 
     """ 
     THIS IS WHERE THE ACTUAL ESSENCE INSTANCE GENERATION STARTS
     """
+
+    print("\n")
+    log("Solving " + instFile + "...")
     # run the main solver
     instanceType = None
     optimalObj = None
@@ -175,100 +161,58 @@ def evaluate_essence_instance_graded(
             "\n\n----------- With seed " + str(i) + "th (" + str(seed) + ")"
         )
 
-        # existing essence implementation 
-        #FIXME: need to track down how the setting is used in call_conjure_solve
-        # since we are no longer using that dictionary, am going to have to individually pass the needed parts
+        #TODO did same implementatino for call_conjure_solve but need to check
+        # this has both essenceModelFile, and eprimeModelFile, rather than just modelFile like minizinc
+        # there is also two time limits, theres SRTimeLimit and solverTimeLimit
         runStatus, SRTime, solverTime = call_conjure_solve(
-            essenceModelFile, eprimeModelFile, instFile, setting, seed
+            essenceModelFile, eprimeModelFile, instFile, solver, SRTimeLimit, SRFlags, solverTimeLimit, solverFlags, seed
         )
 
-        # new minizinc implementation
-        # runStatus, runTotalTime, extra = minizinc_solve(
-        #     modelFile, instFile, solver, solverFlags, seed, timeLimit, memLimit
-        # )
-        # results["main"]["runs"].append(
-        #     {"seed": seed, "status": runStatus, "time": runTotalTime, "extra": extra}
-        # )
-
-        # print out results
-        localVars = locals()
-        log(
-            "\nRun results: solverType="
-            + solver
-            + ", solver="
-            + solver
-            + ", instance="
-            + instance
-            + ", runId="
-            + str(i)
-            + ", "
-            + ", ".join(
-                [
-                    s + "=" + str(localVars[s])
-                    for s in ["runStatus", "SRTime", "solverTime"]
-                ]
-            )
+        results["main"]["runs"].append(
+            {"seed": seed, "status": runStatus, "solverTime": solverTime,"SRTime": SRTime } # there is no extra attribute to print
         )
 
-        # make score
-        # inst unwanted type: score=1
-        if (
-            (setting["gradedTypes"] != "both")
-            and (runStatus in ["sat", "unsat"])
-            and (runStatus != setting["gradedTypes"])
-        ):
-            print("\nunwanted instance type. Quitting!...")
-            score = 1
-            stop = True
+        # Minizinc had a check here for if the instance type was the same as the previous command
+        # checked for inconsistencies but isn't possible here, no "EXTRA" field returned
+            
+        # there was a check here based on the optimal objective, but not possible
+
+        # there was a check for instance of an wanted type
+        # doing this because runStatus returns sat or nsat
+        if len(unwantedTypes) > 0 and runStatus and (runStatus in unwantedTypes):
+            print("Unwanted instance type. Quitting...")
+            score = SCORE_UNWANTED_TYPE
             status = "unwantedType"
-            break
-        # SR timeout or SR memout: score=1
-        if runStatus in ["SRTimeOut", "SRMemOut"]:
-            print("\nSR timeout/memout while translating the instance. Quitting!...")
-            score = 1
-            status = runStatus
-            break
-        # solverTimeout or solverMemOut: score=0
-        if runStatus in ["solverTimeOut", "solverMemOut"]:
-            print("\nsolver timeout or out of memory. Quitting!...")
-            score = 0
-            status = runStatus
-            break
-        if runStatus == "solverCrash":
-            print("\nsolver crashes. Quitting!...")
-            score = 1
-            status = runStatus
-            break
-        lsSolverTime.append(solverTime)
-
-    # summary of results
-    meanSolverTime = 0
-    if status == "ok":
-        meanSolverTime = sum(lsSolverTime) / len(lsSolverTime)
-        if meanSolverTime < setting["solverMinTime"]:
-            status = "tooEasy"
-        else:
-            status = "graded"
-    s = (
-        "\nInstance summary: instance="
-        + instance
-        + ", status="
-        + status
-        + ", meanSolverTime="
-        + str(meanSolverTime)
+            # TODO: in this context, we don't really need to run the oracle to check correctness of instance type, since return scores for unwanted type and incorrect results are the same. But if we decide to have the two scores being different, we may need to use the oracle here
+            return score, get_results()
+        
+    # cant do this because don't have objective function
+    # function to get the median run, and uses it to determine weather the instance is too easy 
+    # I just took the median of the times used to solve it
+    # just trying to take the mean based on solvertime alone
+    results["main"]["runs"] = sorted(
+        results["main"]["runs"], key=lambda run: run["solverTime"]
     )
-    print(s)
+    nRuns = len(results["main"]["runs"])
+    medianRun = results["main"]["runs"][int(nRuns / 2)]
 
-    # make final score
-    if score != None:
-        return score
-    # - otherwise, for each evaluation: if the run is too easy: score=-solverTime, if the run is graded: score=nEvaluations*-solverMinTime
-    score = 0
-    for i in range(len(lsSolverTime)):
-        if lsSolverTime[i] < setting["solverMinTime"]:
-            score -= lsSolverTime[i]
-        else:
-            score -= setting["nEvaluations"] * setting["solverMinTime"]
+
+    # if the instance is too easy by the main solver, can just return now, no need to run the oracle
+    if (medianRun["status"] == "sat") and (medianRun["time"] < minTime):
+        print("Instance too easy. Quitting...")
+        score = SCORE_TOO_EASY
+        status = "tooEasy"  #TODO maybe change based on how I implement the returns of this function
+        return score, get_results()
+    
+        # if the instance is unsolvable by the main solver, there's no need to run the oracle
+    if medianRun["status"] not in ["sat"]:
+        print("Instance not satisfiable or timeout occurred. Quitting...")
+        score = SCORE_TOO_DIFFICULT
+        status = "tooDifficult"
+        return score, get_results()
+
+    status = "ok"
+    score = SCORE_GRADED
     return score, get_results()
 
 
@@ -764,7 +708,6 @@ def evaluate_mzn_instance_graded(
     for st in ["main", "oracle"]:
         results[st]["runs"] = []
     score = status = None
-    instanceType = None
 
     def get_results():
         assert (score is not None) and (
@@ -1054,31 +997,40 @@ def main():
     # evaluate the generated instance
     if modelType == "essence":
         
+        
         # I dont think I need to do this, because.param are used in conjure
-        # essenceInstFile = instFile.replace(".param",".dzn") # FIXME: this is a direct take from the MZN implementation, unclear if it will work 
+        # essenceInstFile = instFile.replace(".param",".dzn") 
+        # # FIXME: this is a nearly direct take from the MZN implementation, 
+        # I have double checked all the resulting entries in the settings and the minizinc inputs, 
+        # but still not positive it will work
             # the line above replaces the filename sting
             # .param files are used in essence
             # .dzn files are used in minizinc 
-        oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
-        if es["solverType"] == "incomplete":
-            oracleSolver = "ortools"
-            oracleSolverFlags = "-f"
-            oracleSolverTimeLimit = 3600
-        score, instanceResults = evaluate_essence_instance_graded(
-            modelFile="problem.essence",            # 
-            instFile=instFile,                      # FIXME: not sure if i have to chagne or not 
-            unwantedTypes=get_unwanted_types(),     # 
-            nEvaluations=es["nEvaluations"],        # 
-            solver=es["solver"],                    #
-            solverFlags=es["solverFlags"],          #
-            solverType=es["solverType"],            #
-            minTime=es["minTime"],                  #
-            timeLimit=es["totalTimeLimit"],         #
-            initSeed=seed,                          #
-            oracleSolver=oracleSolver,              #
-            oracleSolverFlags=oracleSolverFlags,    #
-            oracleSolverTimeLimit=oracleSolverTimeLimit,  #
-        )
+        if experimentType == "graded":
+            oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
+            # only called for incomplete solvers, which aren't actually allowed yet
+            if es["solverType"] == "incomplete":
+                oracleSolver = "ortools"
+                oracleSolverFlags = "-f"
+                oracleSolverTimeLimit = 3600
+            score, instanceResults = evaluate_essence_instance_graded(
+                modelFile="problem.essence",            # 
+                instFile=instFile,                      # TODO: this is how the instfile was originaly passed, in think this is correct
+                unwantedTypes=get_unwanted_types(),     # TODO: this is also different from essence, will have to be handled differently but is correct
+                nEvaluations=es["nEvaluations"],        # correct
+                solver=es["solver"],                    # correct
+                solverFlags=es["solverFlags"],          # correct
+                solverType=es["solverType"],            # correct
+                minTime=es["minTime"],                  # correct
+                timeLimit=es["totalTimeLimit"],         # correct
+                initSeed=seed,                          # correct
+                oracleSolver=oracleSolver,              # oracle isnt implemented yet, so ignoring
+                oracleSolverFlags=oracleSolverFlags,    #
+                oracleSolverTimeLimit=oracleSolverTimeLimit,  #
+            )
+        else: 
+            #TODO implement for discriminating
+            evaluate_essence_instance_discriminating()
     else:
         # convert the generated instance into .dzn
         mznInstFile = instFile.replace(".param", ".dzn")
@@ -1139,7 +1091,6 @@ def main():
     # print out score and exit
     print_results()
 
-print("test print statement at start of wrapper call")
 main()
 
 # scoring for graded instances (single solver)
