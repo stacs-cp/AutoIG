@@ -71,24 +71,41 @@ def get_essence_problem_type(modelFile: str):
     """
     Read an Essence model and return its type (MIN/MAX/SAT)
     """
-    with open(modelFile, "rt") as f:
-        lines = f.readlines()
+    cmd = f"conjure pretty {modelFile} --output-format=astjson"
+    results_dict = run_cmd(cmd)
 
-    # remove comment lines
-    lines = [l for l in lines if len(l.strip()) > 0 and (l.strip()[0] != "%")]
+    return results_dict
+    # print(results_dict)
 
-    def find_str(s):
-        return len(list(filter(lambda x: s in x, lines))) > 0
+    
+    # with open(modelFile, "rt") as f:
+    #     lines = f.readlines()
 
-    if find_str("minimize"):
-        return "MIN"
-    if find_str("maximize"):
-        return "MAX"
-    if find_str("satisfy"):
-        return "SAT"
-    print("ERROR: cannot determine problem type of " + modelFile)
-    sys.exit(1)
-    return None
+    # # remove comment lines
+    # lines = [l for l in lines if len(l.strip()) > 0 and (l.strip()[0] != "%")]
+
+    # def find_str(s):
+    #     return len(list(filter(lambda x: s in x, lines))) > 0
+
+# can parse it using conjure, can do conjure pretty AST format using json
+# that gives us a json document, which gives us a parse tree, 
+# then i can see if i have an objective statement at the top level 
+# The AST json 
+# can look at the oxide repository for an example
+# Lea is implementing a parser 
+# can complain on Github 
+
+
+# look at conjure_oxide/src/utils/conjure.rs prase essence file function 
+    # if find_str("minimising"):
+    #     return "MIN"
+    # if find_str("maximising"):
+    #     return "MAX"
+    # if find_str("satisfy"):
+    #     return "SAT"
+    # print("ERROR: cannot determine problem type of " + modelFile)
+    # sys.exit(1)
+    # return None
 
 
 
