@@ -67,25 +67,38 @@ solverInfo["kissat"] = {
 
 
 def get_essence_problem_type(modelFile: str):
-    # TODO: this function should definitely be improved
     """
     Read an Essence model and return its type (MIN/MAX/SAT)
+    Uses the conjure pretty print feature, then interprets the generated JSON
     """
     cmd = f"conjure pretty {modelFile} --output-format=astjson"
     results_dict = run_cmd(cmd)
+    try:
+        parsed_json = json.loads(results_dict[0])
+    except json.JSONDecodeError as e:
+        print("Failed to parse JSON:", e)
+        exit()
 
-    return results_dict
-    # print(results_dict)
+    # Now check for the Maximising objective recursively
+    def check_type(data):
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key == "Objective" and isinstance(value, list):
+                    if value[0] == "Maximising":
+                        return "MAX"
+                    elif value[0] == "Minimising":
+                        return "MIN"
+                result = check_type(value)
+                if result in ("MAX", "MIN"):
+                    return result
+        elif isinstance(data, list):
+            for item in data:
+                result = check_type(item)
+                if result in ("MAX", "MIN"):
+                    return result
+        return "SAT"
 
-    
-    # with open(modelFile, "rt") as f:
-    #     lines = f.readlines()
-
-    # # remove comment lines
-    # lines = [l for l in lines if len(l.strip()) > 0 and (l.strip()[0] != "%")]
-
-    # def find_str(s):
-    #     return len(list(filter(lambda x: s in x, lines))) > 0
+    return check_type(parsed_json)
 
 # can parse it using conjure, can do conjure pretty AST format using json
 # that gives us a json document, which gives us a parse tree, 
