@@ -1,0 +1,98 @@
+2025-04-09 07:44:01: /AutoIG/scripts/wrapper.py 16 1 61910261 dummy -deck_width_tuned 57 -deck_length_tuned 5 -n_containers_delta 13 -n_classes_tuned 6 -coverage_max 32
+{'runDir': '/AutoIG/experiments/testing_vessel', 'problemModel': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorModel': '/AutoIG/data/models/vessel-loading/generator.essence', 'seed': 42, 'maxEvaluations': 180, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 5, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/testing_vessel'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 5, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-04-09 07:44:01: Creating generator instance: ./detailed-output/gen-inst-16.param
+2025-04-09 07:44:01: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-16.param --eprime-param=./detailed-output/gen-inst-16.eprime-param
+2025-04-09 07:44:01: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-16.eprime-param -out-aux ./detailed-output/gen-inst-16.aux -out-minion ./detailed-output/gen-inst-16.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2025-04-09 07:44:03: minion ./detailed-output/gen-inst-16.minion -solsout ./detailed-output/gen-inst-16.solution -randomseed 61910261 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-04-09 07:44:04: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-16.aux -out-solution ./detailed-output/gen-inst-16.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-16.solution
+2025-04-09 07:44:04: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-16.param --eprime-solution=./detailed-output/gen-inst-16.solution.eprime-param --essence-solution ./detailed-output/gen-inst-16.solution.param
+
+
+2025-04-09 07:44:04: 
+Generator results: genInstance=gen-inst-16, genStatus=sat, genSRTime=1.455674171447754, genSolverTime=0.07854437828063965
+
+
+2025-04-09 07:44:04: Solving ./detailed-output/inst-16-61910261.param...
+
+
+----------- With seed 0th (61910261)
+
+Calling conjure
+2025-04-09 07:44:04: conjure solve ./problem.essence ./detailed-output/inst-16-61910261.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 61910261 -f" --solver=chuffed
+2025-04-09 07:44:08: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-61910261.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-61910261.solution
+
+Waiting for ./detailed-output/problem-inst-16-61910261.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-61910261.eprime-info -> ./detailed-output/problem-inst-16-61910261-seed_61910261-chuffed.eprime-info
+
+
+----------- With seed 1th (61910262)
+
+Calling conjure
+2025-04-09 07:44:08: conjure solve ./problem.essence ./detailed-output/inst-16-61910261.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 61910262 -f" --solver=chuffed
+2025-04-09 07:44:12: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-61910261.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-61910261.solution
+
+Waiting for ./detailed-output/problem-inst-16-61910261.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-61910261.eprime-info -> ./detailed-output/problem-inst-16-61910261-seed_61910262-chuffed.eprime-info
+
+
+----------- With seed 2th (61910263)
+
+Calling conjure
+2025-04-09 07:44:12: conjure solve ./problem.essence ./detailed-output/inst-16-61910261.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 61910263 -f" --solver=chuffed
+2025-04-09 07:44:16: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-61910261.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-61910261.solution
+
+Waiting for ./detailed-output/problem-inst-16-61910261.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-61910261.eprime-info -> ./detailed-output/problem-inst-16-61910261-seed_61910263-chuffed.eprime-info
+
+
+----------- With seed 3th (61910264)
+
+Calling conjure
+2025-04-09 07:44:16: conjure solve ./problem.essence ./detailed-output/inst-16-61910261.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 61910264 -f" --solver=chuffed
+2025-04-09 07:44:20: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-61910261.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-61910261.solution
+
+Waiting for ./detailed-output/problem-inst-16-61910261.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-61910261.eprime-info -> ./detailed-output/problem-inst-16-61910261-seed_61910264-chuffed.eprime-info
+
+
+----------- With seed 4th (61910265)
+
+Calling conjure
+2025-04-09 07:44:20: conjure solve ./problem.essence ./detailed-output/inst-16-61910261.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 61910265 -f" --solver=chuffed
+2025-04-09 07:44:24: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-61910261.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-61910261.solution
+
+Waiting for ./detailed-output/problem-inst-16-61910261.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-61910261.eprime-info -> ./detailed-output/problem-inst-16-61910261-seed_61910265-chuffed.eprime-info
+{'totalTime': 22.446916341781616, 'genResults': {'instance': 'gen-inst-16.param', 'status': 'sat', 'seed': 61910261, 'SRTime': 1.455674171447754, 'solverTime': 0.07854437828063965}, 'instanceResults': {'instance': './detailed-output/inst-16-61910261.param', 'status': 'ok', 'score': -1, 'results': {'main': {'runs': [{'seed': 61910264, 'status': 'sat', 'solverTime': 0.305, 'SRTime': 1.591}, {'seed': 61910265, 'status': 'sat', 'solverTime': 0.306, 'SRTime': 1.636}, {'seed': 61910263, 'status': 'sat', 'solverTime': 0.309, 'SRTime': 1.676}, {'seed': 61910261, 'status': 'sat', 'solverTime': 0.315, 'SRTime': 1.62}, {'seed': 61910262, 'status': 'sat', 'solverTime': 0.34, 'SRTime': 1.578}]}, 'oracle': {'runs': []}}}, 'status': 'ok', 'score': -1}
+-1 22.45
