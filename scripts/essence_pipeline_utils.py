@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import glob
+import json
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -63,6 +64,11 @@ solverInfo["kissat"] = {
     "timelimitUnit": "s",
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
+}
+solverInfo["or-tools"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--fz_seed=",
 }
 
 
