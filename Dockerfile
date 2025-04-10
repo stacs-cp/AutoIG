@@ -1,65 +1,67 @@
 # Use the Conjure base image
-FROM ghcr.io/conjure-cp/conjure:main
 
-#Update the package list
+FROM --platform=linux/amd64 ghcr.io/conjure-cp/conjure:main
+
+# Update atp-get
 RUN apt-get update
 
-#Install necessary packages with frontend=noninteractive to avoid interactive prompts
+# Doing the default for timezone using frontend=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash \
-    sudo \
     wget \
     curl \
     gnupg \
     software-properties-common \
     unzip
 
-#Install necessary python packages
-RUN sudo apt-get install -y python3-pip
+
+# Installing necessary language dependencies for Python 
+# Python itself is already included in Conjure base image
+RUN apt install -y python3-pip
 RUN apt install python3-pandas -y
 RUN apt install python3-numpy -y
+RUN apt install python-is-python3
 
-#Ensure 'python' command points to Python 3
-RUN sudo apt install python-is-python3
+# Installing R for iRace compatability
+RUN apt install r-base -y
 
-#Install R base package for irace
-RUN sudo apt-get install r-base -y
+# Installing Git
+RUN apt install git-all -y
 
-#Install Git
-RUN sudo apt-get install git-all -y
-
-#Set working directory to root
+# Set working dir to root
 WORKDIR /
 
-#Clone the AutoIG repository from GitHub
-RUN git clone https://github.com/stacs-cp/AutoIG.git
 
-#Move conjure into the AUtoIG bin directory
-RUN mv conjure AutoIG/bin
+# Dummy argument (force from this point onward to not be able to be cached for the Docker build proces)
+# This way, there will always be a fresh pull of the repo which is essential, while still ensuring the steps before this can be cached. 
+ARG CACHE_BUST
+RUN echo "$CACHEBUST"
 
-#Set the working directory
+# Clone into AutoIG directory on Vincent fork
+# Not incorrect, but will need to be changed later to clone from stacs-cp/AutoIG instead
+RUN git clone --depth 1 -b dev https://github.com/vincepick/AutoIG.git 
+
 WORKDIR /AutoIG
 
-#Run installation scripts for tools used by AutoIG
+# Must be installed before ORTools
+RUN bash bin/install-mininzinc.sh
 
-# Install Savile Row
-RUN bash bin/install-savilerow.sh 
-# Install Minizinc
-RUN bash bin/install-mininzinc.sh 
-# Install irace
+# This is non-redundant
+RUN bash bin/install-runsolver.sh
+
+# Non Redundant 
 RUN bash bin/install-irace.sh 
-# Install RunSolver
-RUN bash bin/install-runsolver.sh 
-# Install OR-Tools
-RUN bash bin/install-ortools.sh 
-# Install Yuck
-RUN bash bin/install-yuck.sh
-# Install Picat
-RUN bash bin/install-picat.sh
 
-# remove minizinc in the base conjure image
-RUN rm /root/.local/bin/minizinc
-RUN rm /root/.local/bin/fzn-chuffed
-RUN rm /root/.local/bin/fzn-cp-sat
-RUN rm -rf /root/.local/bin/share
+# RUN bash bin/install-ortools.sh
+RUN bash bin/install-yuck.sh
+RUN bash bin/install-picat.sh
+RUN bash bin/update-or-path.sh
+RUN bash bin/update-conjure-paths.sh
+
+# For use during development
+
+RUN apt-get update
+RUN apt-get install -y \
+    vim \
+    file
 

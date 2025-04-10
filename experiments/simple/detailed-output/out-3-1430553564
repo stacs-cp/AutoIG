@@ -1,0 +1,35 @@
+2025-03-26 00:58:57: /AutoIG/scripts/wrapper.py 3 1 1430553564 dummy -A 454
+{'runDir': '/AutoIG/experiments/simple', 'problemModel': '/AutoIG/data/models/simple/problem.essence', 'generatorModel': '/AutoIG/data/models/simple/generator.essence', 'seed': 42, 'maxEvaluations': 180, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/simple/problem.essence', 'generatorFile': '/AutoIG/data/models/simple/generator.essence', 'runDir': '/AutoIG/experiments/simple'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-03-26 00:58:57: Creating generator instance: ./detailed-output/gen-inst-3.param
+2025-03-26 00:58:57: minion ./detailed-output/gen-inst-3.minion -solsout ./detailed-output/gen-inst-3.solution -randomseed 1430553564 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-03-26 00:58:58: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-3.aux -out-solution ./detailed-output/gen-inst-3.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-3.solution
+2025-03-26 00:58:58: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-3.param --eprime-solution=./detailed-output/gen-inst-3.solution.eprime-param --essence-solution ./detailed-output/gen-inst-3.solution.param
+
+
+2025-03-26 00:58:58: 
+Generator results: genInstance=gen-inst-3, genStatus=sat, genSRTime=0, genSolverTime=0.06623435020446777
+
+
+2025-03-26 00:58:58: Solving ./detailed-output/inst-3-1430553564.param...
+
+
+----------- With seed 0th (1430553564)
+
+Calling conjure
+2025-03-26 00:58:58: conjure solve ./problem.essence ./detailed-output/inst-3-1430553564.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 1430553564 -f" --solver=chuffed
+2025-03-26 00:59:00: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-3-1430553564.param
+Running minion for domain filtering.
+Running solver: chuffed
+No solutions found.
+
+Waiting for ./detailed-output/problem-inst-3-1430553564.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-3-1430553564.eprime-info -> ./detailed-output/problem-inst-3-1430553564-seed_1430553564-chuffed.eprime-info
+Instance not satisfiable or timeout occurred. Quitting...
+{'totalTime': 2.6514523029327393, 'genResults': {'instance': 'gen-inst-3.param', 'status': 'sat', 'seed': 1430553564, 'SRTime': 0, 'solverTime': 0.06623435020446777}, 'instanceResults': {'instance': './detailed-output/inst-3-1430553564.param', 'status': 'tooDifficult', 'score': 0, 'results': {'main': {'runs': [{'seed': 1430553564, 'status': 'unsat', 'solverTime': 0.036, 'SRTime': 0.093}]}, 'oracle': {'runs': []}}}, 'status': 'tooDifficult', 'score': 0}
+0 2.65

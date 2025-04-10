@@ -1,0 +1,36 @@
+2025-03-26 01:07:22: /AutoIG/scripts/wrapper.py 3 1 1965286212 dummy -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+{'runDir': '/AutoIG/experiments/vessel_loading', 'problemModel': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorModel': '/AutoIG/data/models/vessel-loading/generator.essence', 'seed': 42, 'maxEvaluations': 180, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/vessel_loading'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-03-26 01:07:22: Creating generator instance: ./detailed-output/gen-inst-3.param
+2025-03-26 01:07:22: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-3.param --eprime-param=./detailed-output/gen-inst-3.eprime-param
+2025-03-26 01:07:22: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-3.eprime-param -out-aux ./detailed-output/gen-inst-3.aux -out-minion ./detailed-output/gen-inst-3.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2025-03-26 01:07:24: minion ./detailed-output/gen-inst-3.minion -solsout ./detailed-output/gen-inst-3.solution -randomseed 1965286212 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-03-26 01:07:25: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-3.aux -out-solution ./detailed-output/gen-inst-3.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-3.solution
+2025-03-26 01:07:25: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-3.param --eprime-solution=./detailed-output/gen-inst-3.solution.eprime-param --essence-solution ./detailed-output/gen-inst-3.solution.param
+
+
+2025-03-26 01:07:25: 
+Generator results: genInstance=gen-inst-3, genStatus=sat, genSRTime=1.6782984733581543, genSolverTime=0.07930278778076172
+
+
+2025-03-26 01:07:25: Solving ./detailed-output/inst-3-1965286212.param...
+
+
+----------- With seed 0th (1965286212)
+
+Calling conjure
+2025-03-26 01:07:25: conjure solve ./problem.essence ./detailed-output/inst-3-1965286212.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 1965286212 -f" --solver=chuffed
+2025-03-26 01:07:29: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-3-1965286212.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-3-1965286212.solution
+
+Waiting for ./detailed-output/problem-inst-3-1965286212.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-3-1965286212.eprime-info -> ./detailed-output/problem-inst-3-1965286212-seed_1965286212-chuffed.eprime-info
+{'totalTime': 6.978345632553101, 'genResults': {'instance': 'gen-inst-3.param', 'status': 'sat', 'seed': 1965286212, 'SRTime': 1.6782984733581543, 'solverTime': 0.07930278778076172}, 'instanceResults': {'instance': './detailed-output/inst-3-1965286212.param', 'status': 'ok', 'score': -1, 'results': {'main': {'runs': [{'seed': 1965286212, 'status': 'sat', 'solverTime': 0.282, 'SRTime': 1.762}]}, 'oracle': {'runs': []}}}, 'status': 'ok', 'score': -1}
+-1 6.98
