@@ -1,24 +1,44 @@
-2025-04-10 13:46:21: /AutoIG/scripts/wrapper.py 5 1 754252698 dummy -np_cars_plus 63 -np_classes 17 -np_options 17 -quantity_range_min 4 -quantity_range_delta 9 -maxcars_range_min 3 -maxcars_range_delta 3 -blksize_delta_range_min 2 -blksize_delta_range_delta 3 -usage_card_min 17 -usage_card_delta 99
-{'runDir': '/AutoIG/experiments/car_with_repair', 'problemModel': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorModel': '/AutoIG/data/models/car-sequencing/generator.essence', 'seed': 42, 'maxEvaluations': 300, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
-{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorFile': '/AutoIG/data/models/car-sequencing/generator.essence', 'runDir': '/AutoIG/experiments/car_with_repair'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+2025-04-10 17:19:54: /AutoIG/scripts/wrapper.py 5 1 754252698 dummy -np_cars_plus 63 -np_classes 17 -np_options 17 -quantity_range_min 4 -quantity_range_delta 9 -maxcars_range_min 3 -maxcars_range_delta 3 -blksize_delta_range_min 2 -blksize_delta_range_delta 3 -usage_card_min 17 -usage_card_delta 99
+{'runDir': '/AutoIG/experiments/car_with_repair', 'problemModel': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorModel': '/AutoIG/data/models/car-sequencing/generator.essence', 'seed': 42, 'maxEvaluations': 300, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '20', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 1, 'maxSolverTime': 20, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorFile': '/AutoIG/data/models/car-sequencing/generator.essence', 'runDir': '/AutoIG/experiments/car_with_repair'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '20', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 1, 'solverFlags': '-f', 'totalTimeLimit': 20}}
 
 
-2025-04-10 13:46:22: Creating generator instance: ./detailed-output/gen-inst-5.param
-2025-04-10 13:46:22: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-5.param --eprime-param=./detailed-output/gen-inst-5.eprime-param
-2025-04-10 13:46:22: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-5.eprime-param -out-aux ./detailed-output/gen-inst-5.aux -out-minion ./detailed-output/gen-inst-5.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
-2025-04-10 13:46:29: minion ./detailed-output/gen-inst-5.minion -solsout ./detailed-output/gen-inst-5.solution -randomseed 754252698 -timelimit 5 -varorder domoverwdeg -valorder random
-2025-04-10 13:46:32: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-5.aux -out-solution ./detailed-output/gen-inst-5.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-5.solution
-2025-04-10 13:46:32: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-5.param --eprime-solution=./detailed-output/gen-inst-5.solution.eprime-param --essence-solution ./detailed-output/gen-inst-5.solution.param
+2025-04-10 17:19:54: Creating generator instance: ./detailed-output/gen-inst-5.param
+2025-04-10 17:19:54: minion ./detailed-output/gen-inst-5.minion -solsout ./detailed-output/gen-inst-5.solution -randomseed 754252698 -timelimit 20 -varorder domoverwdeg -valorder random
+2025-04-10 17:19:56: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-5.aux -out-solution ./detailed-output/gen-inst-5.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-5.solution
+2025-04-10 17:19:57: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-5.param --eprime-solution=./detailed-output/gen-inst-5.solution.eprime-param --essence-solution ./detailed-output/gen-inst-5.solution.param
 
 
-2025-04-10 13:46:36: 
-Generator results: genInstance=gen-inst-5, genStatus=sat, genSRTime=7.456921100616455, genSolverTime=0.09877634048461914
+2025-04-10 17:20:00: 
+Generator results: genInstance=gen-inst-5, genStatus=sat, genSRTime=0, genSolverTime=0.08618903160095215
 
 
-2025-04-10 13:46:36: Solving ./detailed-output/inst-5-754252698.param...
+2025-04-10 17:20:00: Solving ./detailed-output/inst-5-754252698.param...
 
 
 ----------- With seed 0th (754252698)
 
 Calling conjure
-2025-04-10 13:46:36: conjure solve ./problem.essence ./detailed-output/inst-5-754252698.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 754252698 -f" --solver=chuffed
+2025-04-10 17:20:00: conjure solve ./problem.essence ./detailed-output/inst-5-754252698.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options " --rnd-seed 754252698 -f" --solver=chuffed
+Traceback (most recent call last):
+  File "/AutoIG/scripts/wrapper.py", line 1096, in <module>
+    main()
+  File "/AutoIG/scripts/wrapper.py", line 1018, in main
+    score, instanceResults = evaluate_essence_instance_graded(
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/wrapper.py", line 167, in evaluate_essence_instance_graded
+    runStatus, SRTime, solverTime = call_conjure_solve(
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/essence_pipeline_utils.py", line 473, in call_conjure_solve
+    cmdOutput, returnCode = run_cmd(conjureCmd)
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/utils.py", line 35, in run_cmd
+    p = subprocess.run(lsCmds, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1196, in communicate
+    stdout = self.stdout.read()
+             ^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

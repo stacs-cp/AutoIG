@@ -2,9 +2,9 @@
  "conjureVersion": "Conjure v2.5.1 (Repository version b988be2 (2025-03-24 22:07:42 +0000))",
  "essence": "repair.essence", "essenceParams": ["./detailed-output//repair-4.param"], "runsolverInfo": {},
  "savilerowInfo":
-     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.253", "SolverNodes": "693",
-      "SolverSatisfiable": "1", "SolverSetupTime": "0.010505", "SolverSolutionsFound": "302",
-      "SolverSolveTime": "0.006082", "SolverTimeOut": "0", "SolverTotalTime": "0.031805"},
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.274", "SolverNodes": "693",
+      "SolverSatisfiable": "1", "SolverSetupTime": "0.011197", "SolverSolutionsFound": "302",
+      "SolverSolveTime": "0.006383", "SolverTimeOut": "0", "SolverTotalTime": "0.034186"},
  "savilerowLogs":
      {"exitCode": 0,
       "stdout":
@@ -14,5 +14,5 @@
  "savilerowOptions": [],
  "savilerowVersion": "Savile Row 1.10.0 (Repository Version: 1aded299f (2024-03-10 10:56:22 +0000))",
  "solver": "minion", "solverOptions": ["-timelimit 120 -varorder domoverwdeg -randomiseorder -randomseed 4 "],
- "status": "OK", "timestamp": "2025-04-10T12:02:16.273687424Z", "totalTime": 0.28,
+ "status": "OK", "timestamp": "2025-04-10T15:07:00.053053584Z", "totalTime": 0.31,
  "useExistingModels": ["repair.eprime"]}
