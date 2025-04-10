@@ -168,6 +168,7 @@ def evaluate_essence_instance_graded(
             essenceModelFile, eprimeModelFile, instFile, solver, SRTimeLimit, SRFlags, solverTimeLimit, solverFlags, seed
         )
 
+        # Append each iteration to the runs directory
         results["main"]["runs"].append(
             {"seed": seed, "status": runStatus, "solverTime": solverTime,"SRTime": SRTime } # there is no extra attribute to print
         )

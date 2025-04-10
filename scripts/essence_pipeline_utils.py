@@ -163,6 +163,10 @@ def savilerow_translate(
         + " "
         + flags
     )
+    # print("THE COMMAND IS RIGHT HERE ***************")
+    # print(cmd)
+    # print("THE COMMAND IS RIGHT HERE ***************")
+
     log(cmd)
 
     start = time.time()
