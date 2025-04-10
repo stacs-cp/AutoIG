@@ -3,6 +3,9 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     outputDir <- './detailed-output/'
     configuration <- allConfigurations[id-nConfsPreviousRaces,]
 
+
+    cat("Called scenario.r!********\n")
+
     require(data.table)
 
     # if there is no repairing model, just return the current configuration
