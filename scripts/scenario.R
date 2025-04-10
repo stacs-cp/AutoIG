@@ -3,38 +3,11 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     outputDir <- './detailed-output/'
     configuration <- allConfigurations[id-nConfsPreviousRaces,]
 
-    cat("\n")
-    cat("Called scenario.r!********\n")
-
-    # .libPaths(c("/AutoIG/bin", .libPaths()))
-
-    # if (!require("data.table", lib.loc = "/AutoIG/bin", character.only = TRUE)) {
-    #     install.packages("/AutoIG/bin/data.table_1.14.2.tar.gz", 
-    #                     repos = NULL, 
-    #                     type = "source", 
-    #                     lib = "/AutoIG/bin")
-    #     library("data.table", lib.loc = "/AutoIG/bin", character.only = TRUE)
-    # }
-    cat(" paths:\n")
-    print(.libPaths())
-    cat(" in /AutoIG/bin:\n")
-    print(installed.packages(lib.loc="/AutoIG/bin")[, "Package"])
-        
-
-    # require(data.table)
-    #library(data.table)
-    # cat("Call after require(data.table)")
-
     # if there is no repairing model, just return the current configuration
     repairModel <- paste(outputDir,'/repair.eprime',sep='')
     if (!file.exists(repairModel)){
-        cat("No Repair Provided.r!********\n")
         return (configuration)
     }
-
-
-
-    cat("Repair was provided.r!********\n")
 
     # just for debug
     start_time <- Sys.time()
