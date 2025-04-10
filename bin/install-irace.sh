@@ -29,8 +29,9 @@ cp $BIN_DIR/irace-source.zip ./
 unzip irace-source.zip
 #wget https://cran.r-project.org/src/contrib/R6_2.5.1.tar.gz
 #tar zxf R6_2.5.1.tar.gz
-#wget https://cran.r-project.org/src/contrib/data.table_1.14.2.tar.gz
-#tar zxf data.table_1.14.2.tar.gz
+# This was previously commented out, leaving uncommented because it should be handled by R-packages.R
+# wget https://cran.r-project.org/src/contrib/data.table_1.14.2.tar.gz
+# tar zxf data.table_1.14.2.tar.gz
 #R CMD INSTALL -l $BIN_DIR/ R6
 cp $BIN_DIR/R-packages.R ./
 OS=$(uname)
