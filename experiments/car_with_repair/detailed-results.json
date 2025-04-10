@@ -1,2 +1,2 @@
 
-ERROR: Does not evaluate to true.
+{"totalTime": 12.579350233078003, "genResults": {"instance": "gen-inst-1.param", "status": "solverTimeOut", "seed": 754252698, "SRTime": 7.24965763092041, "solverTime": 5.069150686264038}, "instanceResults": {}, "status": "gensolverTimeOut", "score": 2}

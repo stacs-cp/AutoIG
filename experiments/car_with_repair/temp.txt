@@ -264,8 +264,8 @@ $nbFixed
 $nbVariable
 [1] 11
 
-# 2025-04-10 10:38:30 UTC: Parameters have been read
-# 2025-04-10 10:38:30 UTC: Initialization
+# 2025-04-10 11:01:41 UTC: Parameters have been read
+# 2025-04-10 11:01:41 UTC: Initialization
 # Elitist race
 # Elitist new instances: 1
 # Elitist limit: 2
@@ -278,12 +278,12 @@ $nbVariable
 # mu: 5
 # deterministic: FALSE
 
-# 2025-04-10 10:38:30 UTC: Iteration 1 of 5
+# 2025-04-10 11:01:41 UTC: Iteration 1 of 5
 # experimentsUsedSoFar: 0
 # remainingBudget: 300
 # currentBudget: 60
 # nbConfigurations: 10
-# 2025-04-10 10:38:30 UTC: Sample 10 configurations from uniform distribution
+# 2025-04-10 11:01:41 UTC: Sample 10 configurations from uniform distribution
 Called scenario.r!********
 Called scenario.r!********
 Called scenario.r!********
@@ -294,7 +294,7 @@ Called scenario.r!********
 Called scenario.r!********
 Called scenario.r!********
 Called scenario.r!********
-# 2025-04-10 10:38:30 UTC: Configurations for the race n 1 (elite configurations listed first, then new configurations):
+# 2025-04-10 11:01:41 UTC: Configurations for the race n 1 (elite configurations listed first, then new configurations):
    .ID. np_cars_plus np_classes np_options quantity_range_min quantity_range_delta maxcars_range_min maxcars_range_delta blksize_delta_range_min blksize_delta_range_delta usage_card_min usage_card_delta .PARENT.
 1     1          184        173         64                 52                  148                 8                   9                       8                         1            288               19       NA
 2     2          157         26         26                 15                   10                 6                   1                       8                         7            886               51       NA
@@ -306,7 +306,7 @@ Called scenario.r!********
 8     8          108        115        124                143                   24                 4                   9                       6                         1            870               20       NA
 9     9          186        178         28                158                   90                 2                   8                       4                         3            404               47       NA
 10   10           74         94         10                 38                  196                 4                   1                       5                         0            339                2       NA
-# 2025-04-10 10:38:30 UTC: Launch race
+# 2025-04-10 11:01:41 UTC: Launch race
 # Markers:
      x No test is performed.
      c Configurations are discarded only due to capping.
@@ -318,8 +318,8 @@ Called scenario.r!********
 +-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
 | |   Instance|      Alive|       Best|      Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
 +-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
-# 2025-04-10 10:38:30 UTC: /AutoIG/scripts/target-runner 1 1 754252698 dummy   -np_cars_plus 184 -np_classes 173 -np_options 64 -quantity_range_min 52 -quantity_range_delta 148 -maxcars_range_min 8 -maxcars_range_delta 9 -blksize_delta_range_min 8 -blksize_delta_range_delta 1 -usage_card_min 288 -usage_card_delta 19
-# 2025-04-10 10:38:31 UTC: DONE (1) Elapsed wall-clock seconds: 1.49
+# 2025-04-10 11:01:41 UTC: /AutoIG/scripts/target-runner 1 1 754252698 dummy   -np_cars_plus 184 -np_classes 173 -np_options 64 -quantity_range_min 52 -quantity_range_delta 148 -maxcars_range_min 8 -maxcars_range_delta 9 -blksize_delta_range_min 8 -blksize_delta_range_delta 1 -usage_card_min 288 -usage_card_delta 19
+# 2025-04-10 11:01:43 UTC: DONE (1) Elapsed wall-clock seconds: 1.46
 python3 -u /AutoIG/scripts/wrapper.py 1 1 754252698 dummy -np_cars_plus 184 -np_classes 173 -np_options 64 -quantity_range_min 52 -quantity_range_delta 148 -maxcars_range_min 8 -maxcars_range_delta 9 -blksize_delta_range_min 8 -blksize_delta_range_delta 1 -usage_card_min 288 -usage_card_delta 19 > detailed-output/out-1-754252698 2>&1
 Error! 
 /AutoIG/experiments/car_with_repair/detailed-output /AutoIG/experiments/car_with_repair
