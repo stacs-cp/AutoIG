@@ -249,6 +249,8 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
     print("\n")
     log("Solving " + instFile + "...")
 
+    print("testing")
+
     # solve the instance using each solver
     stop = False  # when to stop the evaluation early
     lsSolvingTime = {}  # solving time of each solver per random seed
