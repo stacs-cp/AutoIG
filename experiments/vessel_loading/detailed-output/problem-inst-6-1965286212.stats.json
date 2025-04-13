@@ -1,0 +1,29 @@
+{"computer": "eb6af18f1c49",
+ "conjureVersion": "Conjure v2.5.1 (Repository version b988be2 (2025-03-24 22:07:42 +0000))",
+ "essence": "./problem.essence", "essenceParams": ["./detailed-output/inst-6-1965286212.param"], "runsolverInfo": {},
+ "savilerowInfo":
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "1.28", "SolverFailures": "2908",
+      "SolverNodes": "25016", "SolverSatisfiable": "1", "SolverTimeOut": "0", "SolverTotalTime": "0.329"},
+ "savilerowLogs":
+     {"exitCode": 0,
+      "stderr":
+          ["WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval."],
+      "stdout":
+          ["WARNING: Index domains do not match for the matrix separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitR3_1_Explicit",
+           "WARNING: This could be a mismatch between the matrix given in the parameter file",
+           "WARNING: and its matrix domain in the given statement in the model file.",
+           "Created output file for domain filtering ./detailed-output/problem-inst-6-1965286212.eprime-minion",
+           "Created output file ./detailed-output/problem-inst-6-1965286212.eprime-param.fzn",
+           "Created information file ./detailed-output/problem-inst-6-1965286212.eprime-info"]},
+ "savilerowOptions": [" "],
+ "savilerowVersion": "Savile Row 1.10.0 (Repository Version: 1aded299f (2024-03-10 10:56:22 +0000))",
+ "solver": "chuffed", "solverOptions": [" --rnd-seed 1965286212 -f"], "status": "OK",
+ "timestamp": "2025-03-26T01:07:49.327876629Z", "totalTime": 1.61, "useExistingModels": ["problem.eprime"]}

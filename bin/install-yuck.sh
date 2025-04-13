@@ -1,3 +1,4 @@
+#!/bin/bash
 name="yuck"
 version="20210501"
 
@@ -5,7 +6,7 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # minizinc must be installed before ortools
 if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
@@ -17,7 +18,7 @@ pushd $BIN_DIR
 
 url="https://github.com/informarte/yuck/releases/download/20210501/yuck-${version}.zip"
 
-mkdir -p $name 
+mkdir -p $name
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR

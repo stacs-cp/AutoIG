@@ -1,0 +1,5 @@
+letting deck_width_tuned be 28
+letting deck_length_tuned be 52
+letting n_containers_delta be 17
+letting n_classes_tuned be 7
+letting coverage_max be 79

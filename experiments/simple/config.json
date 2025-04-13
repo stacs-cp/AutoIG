@@ -1,0 +1,20 @@
+{
+ "runDir": "/AutoIG/experiments/simple",
+ "problemModel": "/AutoIG/data/models/simple/problem.essence",
+ "generatorModel": "/AutoIG/data/models/simple/generator.essence",
+ "seed": 42,
+ "maxEvaluations": 180,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "5",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "graded",
+ "instanceValidTypes": "all",
+ "minSolverTime": 0,
+ "maxSolverTime": 5,
+ "nRunsPerInstance": 1,
+ "solver": "chuffed",
+ "solverFlags": "-f"
+}

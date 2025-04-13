@@ -1,0 +1,31 @@
+given deck_width_tuned, deck_length_tuned: int(1..100)
+given n_containers_delta: int(1..20)
+given n_classes_tuned: int(1..10)
+
+find deck_width, deck_length, n_containers, n_classes: int(1..100)
+such that
+    deck_width = deck_width_tuned,
+    deck_length = deck_length_tuned,
+    n_containers = n_classes_tuned + n_containers_delta,
+    n_classes = n_classes_tuned
+
+letting Container be domain int(1..(n_containers_delta + n_classes_tuned)),
+        Class     be domain int(1..n_classes_tuned),
+        Width     be domain int(1..deck_width_tuned),
+        Length    be domain int(1..deck_length_tuned)
+
+find  width      : function (total) Container --> Width,
+      length     : function (total) Container --> Length,
+      class      : function (total) Container --> Class,
+      separation : function (maxSize 3) set (size 2) of Class --> int(1..max([deck_width_tuned, deck_length_tuned]))
+
+$ how much area coverage of the deck that the total container sizes take up
+given coverage_max: int(10..100)
+letting min_total_size be 10 * deck_width_tuned * deck_length_tuned / 100
+letting max_total_size be coverage_max * deck_width_tuned * deck_length_tuned / 100
+such that 
+    min_total_size <= (sum c : Container . width(c)*length(c)),
+    max_total_size >= (sum c : Container . width(c)*length(c)),
+
+such that (sum c : Container . width(c)*length(c)) <= deck_width*deck_length
+such that |range(class)| = n_classes
