@@ -1,0 +1,24 @@
+2024-10-16 16:20:06: /home/tudor/AutoIG/scripts/wrapper.py 1 1 895807196 dummy -A 137
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tudor/AutoIG/data/models/simple/simple.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/simple/simple_gen.essence', 'runDir': '/home/tudor/AutoIG/experiments/simple'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'SRTimeLimit': 1, 'SRFlags': '', 'solverTimeLimit': 1, 'solverFlags': '-f', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'totalTimeLimit': 5}}
+
+
+2024-10-16 16:20:06: Creating generator instance: ./detailed-output/gen-inst-1.param
+2024-10-16 16:20:06: minion ./detailed-output/gen-inst-1.minion -solsout ./detailed-output/gen-inst-1.solution -randomseed 895807196 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-16 16:20:06: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-1.aux -out-solution ./detailed-output/gen-inst-1.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-1.solution
+2024-10-16 16:20:06: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-solution=./detailed-output/gen-inst-1.solution.eprime-param --essence-solution ./detailed-output/gen-inst-1.solution.param
+Traceback (most recent call last):
+  File "/home/tudor/AutoIG/scripts/wrapper.py", line 1104, in <module>
+    main()
+  File "/home/tudor/AutoIG/scripts/wrapper.py", line 979, in main
+    ) = solve_generator(
+  File "/home/tudor/AutoIG/scripts/generator.py", line 91, in solve_generator
+    conjure_translate_solution(
+  File "/home/tudor/AutoIG/scripts/essence_pipeline_utils.py", line 161, in conjure_translate_solution
+    cmdOutput, returnCode = run_cmd(cmd)
+  File "/home/tudor/AutoIG/scripts/utils.py", line 35, in run_cmd
+    p = subprocess.run(lsCmds, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1141, in communicate
+    stdout = self.stdout.read()
+KeyboardInterrupt

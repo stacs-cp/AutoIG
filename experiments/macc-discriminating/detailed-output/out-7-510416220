@@ -1,0 +1,35 @@
+2024-10-05 14:31:48: /home/tudor/AutoIG/scripts/wrapper.py 7 1 510416220 dummy -Ag 2 -Tg 9 -Xg 6 -Zg 2 -ground_coverage 14 -avg_height_ratio 83
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:31:48: Creating generator instance: ./detailed-output/gen-inst-7.param
+2024-10-05 14:31:48: minion ./detailed-output/gen-inst-7.minion -solsout ./detailed-output/gen-inst-7.solution -randomseed 510416220 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:31:48: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-7.aux -out-solution ./detailed-output/gen-inst-7.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-7.solution
+2024-10-05 14:31:48: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-7.param --eprime-solution=./detailed-output/gen-inst-7.solution.eprime-param --essence-solution ./detailed-output/gen-inst-7.solution.param
+
+
+2024-10-05 14:31:48: 
+Generator results: genInstance=gen-inst-7, genStatus=sat, genSRTime=0, genSolverTime=0.04236173629760742
+conjure autoig --remove-aux ./detailed-output/inst-7-510416220.param ./detailed-output/inst-7-510416220.auxRemoved.param
+conjure pretty ./detailed-output/inst-7-510416220.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-7-510416220.dzn generated
+
+
+runsolver -w ./detailed-output/inst-7-510416220.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-7-510416220.dzn --output-mode dzn --output-objective -s
+2.50: 7.0
+2.52: 6.0
+2.55: 5.0
+2.56: 4.0
+C 2.8180644512176514 {'objs': [(2.5009326934814453, 7.0), (2.515366792678833, 6.0), (2.5540177822113037, 5.0), (2.5644192695617676, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.559243, 'instanceType': 'sat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-7-510416220.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-7-510416220.dzn --output-mode dzn --output-objective -s
+1.01: 5.0
+2.07: 4.0
+UNK 3.123298406600952 {'objs': [(1.0060617923736572, 5.0), (2.0716376304626465, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.583952, 'instanceType': 'unknown', 'answerStatus': 'unknown'}
+False
+
+Borda score for base and favoured solvers: 
+{'complete': (0, 1), 'incomplete': (0, 1)}
+{'totalTime': 6.398601531982422, 'genResults': {'instance': 'gen-inst-7.param', 'status': 'sat', 'seed': 510416220, 'SRTime': 0, 'solverTime': 0.04236173629760742}, 'instanceResults': {'instance': './detailed-output/inst-7-510416220.dzn', 'status': 'ok', 'score': -99999, 'results': {'base': {'runs': [{'seed': None, 'status': 'UNK', 'time': 3.123298406600952, 'extra': {'objs': [(1.0060617923736572, 5.0), (2.0716376304626465, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.583952, 'instanceType': 'unknown', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 2.8180644512176514, 'extra': {'objs': [(2.5009326934814453, 7.0), (2.515366792678833, 6.0), (2.5540177822113037, 5.0), (2.5644192695617676, 4.0)], 'flattenStatus': 'ok', 'flattenTime': 0.559243, 'instanceType': 'sat', 'answerStatus': 'unknown'}}]}}}, 'status': 'ok', 'score': -99999}
+-99999 6.4

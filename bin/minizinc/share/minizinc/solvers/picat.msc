@@ -1,0 +1,15 @@
+{ "id": "picat",
+  "name": "picat",
+  "description": "Picat FlatZinc solver",
+  "version": "9.2",
+   "mznlib": "../picat",
+   "executable": "../../../../run_picat_sat.sh",
+    "tags": ["sat","int"],
+    "stdFlags": ["-a","-n","-f"],
+    "supportsMzn": false,
+    "supportsFzn": true,
+    "needsSolns2Out": true,
+    "needsMznExecutable": false,
+     "needsStdlibDir": false,
+     "isGUIApplication": false
+}

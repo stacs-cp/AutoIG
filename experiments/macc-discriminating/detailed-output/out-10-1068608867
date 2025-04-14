@@ -1,0 +1,15 @@
+2024-10-05 14:32:37: /home/tudor/AutoIG/scripts/wrapper.py 10 1 1068608867 dummy -Ag 3 -Tg 4 -Xg 6 -Zg 2 -ground_coverage 10 -avg_height_ratio 90
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:32:37: Creating generator instance: ./detailed-output/gen-inst-10.param
+2024-10-05 14:32:37: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-10.param --eprime-param=./detailed-output/gen-inst-10.eprime-param
+2024-10-05 14:32:37: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-10.eprime-param -out-aux ./detailed-output/gen-inst-10.aux -out-minion ./detailed-output/gen-inst-10.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2024-10-05 14:32:38: minion ./detailed-output/gen-inst-10.minion -solsout ./detailed-output/gen-inst-10.solution -randomseed 1068608867 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2024-10-05 14:32:38: 
+Generator results: genInstance=gen-inst-10, genStatus=unsat, genSRTime=0.26860547065734863, genSolverTime=0.001405954360961914
+No instance file generated. Exitting...
+{'totalTime': 0.49408864974975586, 'genResults': {'instance': 'gen-inst-10.param', 'status': 'unsat', 'seed': 1068608867, 'SRTime': 0.26860547065734863, 'solverTime': 0.001405954360961914}, 'instanceResults': {}, 'status': 'genunsat', 'score': 'Inf'}
+Inf 0.49

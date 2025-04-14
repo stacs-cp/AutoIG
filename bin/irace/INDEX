@@ -1,0 +1,48 @@
+ablation                Performs ablation between two configurations.
+buildCommandLine        Generate a command-line representation of a
+                        configuration
+checkIraceScenario      Test that the given irace scenario can be run.
+checkScenario           Check and correct the given scenario
+configurations.print    Print configurations as a data frame
+configurations.print.command
+                        Print configurations as command-line strings.
+configurationsBoxplot   Creates box plots of the quality of
+                        configurations.
+defaultScenario         Default scenario settings
+getConfigurationById    Returns the configurations selected by ID.
+getConfigurationByIteration
+                        Returns the configurations by the iteration in
+                        which they were executed.
+getFinalElites          Return the elite configurations of the final
+                        iteration.
+irace                   irace
+irace-package           The irace package: Iterated Racing for
+                        Automatic Algorithm Configuration
+irace.cmdline           irace.cmdline
+irace.license           irace.license
+irace.main              irace.main
+irace.usage             irace.usage
+irace.version           irace.version
+irace2pyimp             Convert an 'irace.Rdata' file into the format
+                        supported by PyImp
+irace2pyimp_cmdline     Command-line interface to irace2pyimp
+parallelCoordinatesPlot
+                        parallelCoordinatesPlot
+parameterFrequency      Plot of histogram of parameter values
+plotAblation            Create plot from an ablation log
+printScenario           Prints the given scenario
+psRace                  psRace
+readConfigurationsFile
+                        readConfigurationsFile
+readParameters          readParameters
+readScenario            readScenario
+read_pcs_file           read_pcs_file
+removeConfigurationsMetaData
+                        removeConfigurationsMetaData
+scenario.update.paths   Update filesystem paths of a scenario
+                        consistently.
+target.evaluator.default
+                        target.evaluator.default
+target.runner.default   target.runner.default
+testConfigurations      testConfigurations
+testing.main            testing.main

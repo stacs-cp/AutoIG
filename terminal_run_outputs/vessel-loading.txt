@@ -1,0 +1,1188 @@
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 3.4.1.9fcaeaf
+# Copyright (C) 2010-2020
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste  
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /AutoIG/bin/irace
+# called with: --seed 42 --scenario /AutoIG/scripts/scenario.R --parameter-file params.irace --train-instances-file instances --exec-dir ./ --max-experiments 180 --target-runner /AutoIG/scripts/target-runner --debug-level 2
+## irace scenario:
+scenarioFile = "./scenario.txt"
+parameterFile = "/AutoIG/experiments/vessel-loading/params.irace"
+execDir = "/AutoIG/experiments/vessel-loading"
+logFile = "/AutoIG/experiments/vessel-loading/irace.Rdata"
+recoveryFile = NULL
+instances = "dummy"
+initConfigurations = NULL
+trainInstancesDir = ""
+trainInstancesFile = "/AutoIG/experiments/vessel-loading/instances"
+configurationsFile = ""
+forbiddenExps = NULL = expression()
+forbiddenFile = ""
+targetRunner = "/AutoIG/scripts/target-runner"
+targetRunnerRetries = 0
+targetRunnerData = ""
+targetRunnerParallel = NULL
+targetEvaluator = NULL
+maxExperiments = 180
+maxTime = 0
+budgetEstimation = 0.02
+digits = 4
+debugLevel = 2
+nbIterations = 0
+nbExperimentsPerIteration = 0
+sampleInstances = TRUE
+testType = "friedman"
+firstTest = 5
+eachTest = 1
+minNbSurvival = 0
+nbConfigurations = 0
+mu = 5
+confidence = 0.95
+deterministic = FALSE
+seed = 42
+parallel = 0
+loadBalancing = TRUE
+mpi = FALSE
+batchmode = "0"
+softRestart = TRUE
+softRestartThreshold = 1e-04
+testInstancesDir = ""
+testInstancesFile = ""
+testInstances = NULL
+testNbElites = 1
+testIterationElites = FALSE
+elitist = TRUE
+elitistNewInstances = 1
+elitistLimit = 2
+repairConfiguration = function (id, allConfigurations, parameters, digits, nConfsPreviousRaces = 0) {    outputDir <- "./detailed-output/"    configuration <- allConfigurations[id - nConfsPreviousRaces,         ]    require(data.table)    repairModel <- paste(outputDir, "/repair.eprime", sep = "")    if (!file.exists(repairModel))         return(configuration)    start_time <- Sys.time()    originalConfiguration <- configuration    baseFileName <- id    outFile <- paste(outputDir, "/repairout-", baseFileName,         sep = "")    if (file.exists(outFile)) {        configuration <- fread(outFile)        return(configuration)    }    lsParams <- sort(parameters$names)    for (param in lsParams) {        maxParam <- NA        if (endsWith(param, "_min")) {            maxParam <- paste(substr(param, 1, nchar(param) -                 3), "max", sep = "")        }        else if (endsWith(param, "Min")) {            maxParam <- paste(substr(param, 1, nchar(param) -                 3), "Max", sep = "")        }        if (!is.na(maxParam)) {            minVal <- min(configuration[[param]], configuration[[maxParam]])            maxVal <- max(configuration[[param]], configuration[[maxParam]])            configuration[[param]] <- minVal            configuration[[maxParam]] <- maxVal        }    }    paramFile <- paste(outputDir, "/repair-", baseFileName, ".param",         sep = "")    lsLines <- c()    for (paramName in colnames(configuration)) {        if (!(paramName %in% c(".ID.", ".PARENT."))) {            val <- configuration[[paramName]]            lsLines <- c(lsLines, paste("letting", paramName,                 "be", val))        }    }    writeLines(lsLines, con <- file(paramFile))    close(con)    seed <- as.integer(id)    cmd <- paste("conjure solve repair.essence ", paramFile,         " -o ", outputDir, " --use-existing-model repair.eprime ",         " --solver-options \"-timelimit 120 -varorder domoverwdeg -randomiseorder",         "-randomseed", seed, "\"", " --copy-solutions=off")    cat(cmd, "\n")    exitCode <- system(cmd, intern = FALSE, wait = TRUE)    if (exitCode != 0) {        cat("ERROR while repairing configuration \n")        print(configuration)        return(NULL)    }    solutionFile <- paste(outputDir, "/repair-repair-", baseFileName,         "-solution000001.solution", sep = "")    lsLines <- readLines(con <- file(solutionFile))    close(con)    lsLines <- gsub("repaired_", "", lsLines)    lsLines <- lsLines[grep("letting ", lsLines)]    baseTempName <- paste(outputDir, "/repair-repair-", baseFileName,         sep = "")    for (endName in c(".eprime-info", ".eprime-infor", ".eprime-minion",         ".eprime-param", "-solution000001.eprime-solution", "-solution000001.solution")) {        file.remove(paste(baseTempName, endName, sep = ""))    }    file.remove(paramFile)    for (paramName in colnames(configuration)) {        if (!(paramName %in% c(".ID.", ".PARENT."))) {            pattern <- paste("letting ", paramName, " be ", sep = "")            s <- lsLines[grep(pattern, lsLines)]            newVal <- as.integer(trimws(strsplit(s, " be ")[[1]][2]))            configuration[[paramName]] <- newVal        }    }    cat("\nBefore repair: \n")    print(originalConfiguration)    cat("After repair: \n")    print(configuration)    cat("\n")    end_time <- Sys.time()    cat("\nRepairing time: ", round(end_time - start_time, 2),         " seconds\n")    write.csv(configuration, file = outFile, row.names = FALSE)    return(configuration)}
+capping = FALSE
+cappingType = "median"
+boundType = "candidate"
+boundMax = NULL
+boundDigits = 0
+boundPar = 1
+boundAsTimeout = TRUE
+postselection = 0
+aclib = FALSE
+## end of irace scenario
+# --- Parameters Hierarchy ---
+[1] "deck_width_tuned"   "deck_length_tuned"  "n_containers_delta" "n_classes_tuned"    "coverage_max"      
+  deck_width_tuned  deck_length_tuned n_containers_delta    n_classes_tuned       coverage_max 
+                 1                  1                  1                  1                  1 
+  deck_width_tuned  deck_length_tuned n_containers_delta    n_classes_tuned       coverage_max 
+                ""                 ""                 ""                 ""                 "" 
+           Parameter Level Depends.on
+1   deck_width_tuned     1           
+2  deck_length_tuned     1           
+3 n_containers_delta     1           
+4    n_classes_tuned     1           
+5       coverage_max     1           
+
+# ------------------------
+$names
+[1] "deck_width_tuned"   "deck_length_tuned"  "n_containers_delta" "n_classes_tuned"    "coverage_max"      
+
+$types
+  deck_width_tuned  deck_length_tuned n_containers_delta    n_classes_tuned       coverage_max 
+               "i"                "i"                "i"                "i"                "i" 
+
+$switches
+      deck_width_tuned      deck_length_tuned     n_containers_delta        n_classes_tuned           coverage_max 
+  "-deck_width_tuned "  "-deck_length_tuned " "-n_containers_delta "    "-n_classes_tuned "       "-coverage_max " 
+
+$domain
+$domain$deck_width_tuned
+[1]   1 100
+
+$domain$deck_length_tuned
+[1]   1 100
+
+$domain$n_containers_delta
+[1]  1 20
+
+$domain$n_classes_tuned
+[1]  1 10
+
+$domain$coverage_max
+[1]  10 100
+
+
+$conditions
+$conditions$deck_width_tuned
+[1] TRUE
+
+$conditions$deck_length_tuned
+[1] TRUE
+
+$conditions$n_containers_delta
+[1] TRUE
+
+$conditions$n_classes_tuned
+[1] TRUE
+
+$conditions$coverage_max
+[1] TRUE
+
+
+$isFixed
+  deck_width_tuned  deck_length_tuned n_containers_delta    n_classes_tuned       coverage_max 
+             FALSE              FALSE              FALSE              FALSE              FALSE 
+
+$transform
+$transform$deck_width_tuned
+[1] ""
+
+$transform$deck_length_tuned
+[1] ""
+
+$transform$n_containers_delta
+[1] ""
+
+$transform$n_classes_tuned
+[1] ""
+
+$transform$coverage_max
+[1] ""
+
+
+$depends
+$depends$deck_width_tuned
+character(0)
+
+$depends$deck_length_tuned
+character(0)
+
+$depends$n_containers_delta
+character(0)
+
+$depends$n_classes_tuned
+character(0)
+
+$depends$coverage_max
+character(0)
+
+
+$hierarchy
+  deck_width_tuned  deck_length_tuned n_containers_delta    n_classes_tuned       coverage_max 
+                 1                  1                  1                  1                  1 
+
+$nbParameters
+[1] 5
+
+$nbFixed
+[1] 0
+
+$nbVariable
+[1] 5
+
+# 2024-10-17 21:45:04 UTC: Parameters have been read
+# 2024-10-17 21:45:05 UTC: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 4
+# minNbSurvival: 4
+# nbParameters: 5
+# seed: 42
+# confidence level: 0.95
+# budget: 180
+# mu: 5
+# deterministic: FALSE
+
+# 2024-10-17 21:45:05 UTC: Iteration 1 of 4
+# experimentsUsedSoFar: 0
+# remainingBudget: 180
+# currentBudget: 45
+# nbConfigurations: 7
+# 2024-10-17 21:45:05 UTC: Sample 7 configurations from uniform distribution
+Loading required package: data.table
+# 2024-10-17 21:45:05 UTC: Configurations for the race n 1 (elite configurations listed first, then new configurations):
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1    1               58                83                  3               8           66       NA
+2    2               15                 9                 10               8           76       NA
+3    3               82                18                 19               3           23       NA
+4    4               72                33                 16               4           71       NA
+5    5               78                19                  1               2           71       NA
+6    6               94                56                 13               2           58       NA
+7    7               18                46                  7               2           26       NA
+# 2024-10-17 21:45:05 UTC: Launch race
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|      Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# 2024-10-17 21:45:05 UTC: /AutoIG/scripts/target-runner 1 1 1965286212 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:45:14 UTC: DONE (1) Elapsed wall-clock seconds: 9.20
+1 8.51
+# 2024-10-17 21:45:14 UTC: /AutoIG/scripts/target-runner 2 1 1965286212 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:45:22 UTC: DONE (2) Elapsed wall-clock seconds: 8.02
+1 7.54
+# 2024-10-17 21:45:22 UTC: /AutoIG/scripts/target-runner 3 1 1965286212 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:45:29 UTC: DONE (3) Elapsed wall-clock seconds: 7.65
+1 7.16
+# 2024-10-17 21:45:30 UTC: /AutoIG/scripts/target-runner 4 1 1965286212 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:45:37 UTC: DONE (4) Elapsed wall-clock seconds: 7.72
+1 7.27
+# 2024-10-17 21:45:37 UTC: /AutoIG/scripts/target-runner 5 1 1965286212 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:45:44 UTC: DONE (5) Elapsed wall-clock seconds: 6.70
+1 6.23
+# 2024-10-17 21:45:44 UTC: /AutoIG/scripts/target-runner 6 1 1965286212 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:45:52 UTC: DONE (6) Elapsed wall-clock seconds: 8.52
+1 8.06
+# 2024-10-17 21:45:52 UTC: /AutoIG/scripts/target-runner 7 1 1965286212 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:46:00 UTC: DONE (7) Elapsed wall-clock seconds: 7.25
+1 6.76
+|x|          1|          7|          1|    1.000000000|          7|00:00:55|   NA|  NA|    NA|
+# 2024-10-17 21:46:00 UTC: /AutoIG/scripts/target-runner 1 1 601225362 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:46:05 UTC: DONE (1) Elapsed wall-clock seconds: 5.05
+1 4.58
+# 2024-10-17 21:46:05 UTC: /AutoIG/scripts/target-runner 2 1 601225362 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:46:10 UTC: DONE (2) Elapsed wall-clock seconds: 5.06
+1 4.6
+# 2024-10-17 21:46:10 UTC: /AutoIG/scripts/target-runner 3 1 601225362 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:46:15 UTC: DONE (3) Elapsed wall-clock seconds: 5.05
+1 4.58
+# 2024-10-17 21:46:15 UTC: /AutoIG/scripts/target-runner 4 1 601225362 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:46:20 UTC: DONE (4) Elapsed wall-clock seconds: 5.01
+1 4.53
+# 2024-10-17 21:46:20 UTC: /AutoIG/scripts/target-runner 5 1 601225362 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:46:25 UTC: DONE (5) Elapsed wall-clock seconds: 4.87
+1 4.34
+# 2024-10-17 21:46:25 UTC: /AutoIG/scripts/target-runner 6 1 601225362 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:46:30 UTC: DONE (6) Elapsed wall-clock seconds: 5.12
+1 4.65
+# 2024-10-17 21:46:30 UTC: /AutoIG/scripts/target-runner 7 1 601225362 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:46:35 UTC: DONE (7) Elapsed wall-clock seconds: 5.11
+1 4.64
+|x|          2|          7|          1|    1.000000000|         14|00:00:35|+1.00|1.00|0.0000|
+# 2024-10-17 21:46:35 UTC: /AutoIG/scripts/target-runner 1 1 510416220 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:46:40 UTC: DONE (1) Elapsed wall-clock seconds: 5.24
+1 4.76
+# 2024-10-17 21:46:40 UTC: /AutoIG/scripts/target-runner 2 1 510416220 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:46:45 UTC: DONE (2) Elapsed wall-clock seconds: 5.24
+1 4.73
+# 2024-10-17 21:46:45 UTC: /AutoIG/scripts/target-runner 3 1 510416220 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:46:51 UTC: DONE (3) Elapsed wall-clock seconds: 5.17
+1 4.71
+# 2024-10-17 21:46:51 UTC: /AutoIG/scripts/target-runner 4 1 510416220 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:46:56 UTC: DONE (4) Elapsed wall-clock seconds: 5.21
+1 4.72
+# 2024-10-17 21:46:56 UTC: /AutoIG/scripts/target-runner 5 1 510416220 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:47:01 UTC: DONE (5) Elapsed wall-clock seconds: 4.62
+1 4.16
+# 2024-10-17 21:47:01 UTC: /AutoIG/scripts/target-runner 6 1 510416220 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:47:06 UTC: DONE (6) Elapsed wall-clock seconds: 5.17
+1 4.68
+# 2024-10-17 21:47:06 UTC: /AutoIG/scripts/target-runner 7 1 510416220 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:47:11 UTC: DONE (7) Elapsed wall-clock seconds: 5.15
+1 4.67
+|x|          3|          7|          1|    1.000000000|         21|00:00:35|+1.00|1.00|0.0000|
+# 2024-10-17 21:47:11 UTC: /AutoIG/scripts/target-runner 1 1 1489266180 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:47:16 UTC: DONE (1) Elapsed wall-clock seconds: 5.30
+1 4.82
+# 2024-10-17 21:47:16 UTC: /AutoIG/scripts/target-runner 2 1 1489266180 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:47:21 UTC: DONE (2) Elapsed wall-clock seconds: 5.34
+1 4.86
+# 2024-10-17 21:47:21 UTC: /AutoIG/scripts/target-runner 3 1 1489266180 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:47:27 UTC: DONE (3) Elapsed wall-clock seconds: 5.50
+1 5.0
+# 2024-10-17 21:47:27 UTC: /AutoIG/scripts/target-runner 4 1 1489266180 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:47:32 UTC: DONE (4) Elapsed wall-clock seconds: 5.30
+1 4.76
+# 2024-10-17 21:47:32 UTC: /AutoIG/scripts/target-runner 5 1 1489266180 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:47:37 UTC: DONE (5) Elapsed wall-clock seconds: 4.86
+1 4.35
+# 2024-10-17 21:47:37 UTC: /AutoIG/scripts/target-runner 6 1 1489266180 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:47:42 UTC: DONE (6) Elapsed wall-clock seconds: 5.26
+1 4.78
+# 2024-10-17 21:47:42 UTC: /AutoIG/scripts/target-runner 7 1 1489266180 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:47:48 UTC: DONE (7) Elapsed wall-clock seconds: 5.21
+1 4.69
+|x|          4|          7|          1|    1.000000000|         28|00:00:36|+1.00|1.00|0.0000|
+# 2024-10-17 21:47:48 UTC: /AutoIG/scripts/target-runner 1 1 1222707704 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:47:53 UTC: DONE (1) Elapsed wall-clock seconds: 5.67
+1 5.18
+# 2024-10-17 21:47:53 UTC: /AutoIG/scripts/target-runner 2 1 1222707704 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:47:59 UTC: DONE (2) Elapsed wall-clock seconds: 5.24
+1 4.77
+# 2024-10-17 21:47:59 UTC: /AutoIG/scripts/target-runner 3 1 1222707704 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:48:04 UTC: DONE (3) Elapsed wall-clock seconds: 5.21
+1 4.73
+# 2024-10-17 21:48:04 UTC: /AutoIG/scripts/target-runner 4 1 1222707704 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:48:09 UTC: DONE (4) Elapsed wall-clock seconds: 5.32
+1 4.83
+# 2024-10-17 21:48:09 UTC: /AutoIG/scripts/target-runner 5 1 1222707704 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:48:14 UTC: DONE (5) Elapsed wall-clock seconds: 4.80
+1 4.33
+# 2024-10-17 21:48:14 UTC: /AutoIG/scripts/target-runner 6 1 1222707704 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:48:19 UTC: DONE (6) Elapsed wall-clock seconds: 5.29
+1 4.74
+# 2024-10-17 21:48:19 UTC: /AutoIG/scripts/target-runner 7 1 1222707704 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:48:25 UTC: DONE (7) Elapsed wall-clock seconds: 5.32
+1 4.82
+|=|          5|          7|          1|    1.000000000|         35|00:00:36|+1.00|1.00|0.0000|
+# 2024-10-17 21:48:25 UTC: /AutoIG/scripts/target-runner 1 1 1068608867 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:48:30 UTC: DONE (1) Elapsed wall-clock seconds: 5.21
+1 4.72
+# 2024-10-17 21:48:30 UTC: /AutoIG/scripts/target-runner 2 1 1068608867 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:48:35 UTC: DONE (2) Elapsed wall-clock seconds: 5.21
+1 4.71
+# 2024-10-17 21:48:35 UTC: /AutoIG/scripts/target-runner 3 1 1068608867 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:48:40 UTC: DONE (3) Elapsed wall-clock seconds: 5.29
+1 4.81
+# 2024-10-17 21:48:40 UTC: /AutoIG/scripts/target-runner 4 1 1068608867 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:48:46 UTC: DONE (4) Elapsed wall-clock seconds: 5.35
+1 4.87
+# 2024-10-17 21:48:46 UTC: /AutoIG/scripts/target-runner 5 1 1068608867 dummy   -deck_width_tuned 78 -deck_length_tuned 19 -n_containers_delta 1 -n_classes_tuned 2 -coverage_max 71
+# 2024-10-17 21:48:50 UTC: DONE (5) Elapsed wall-clock seconds: 4.66
+1 4.17
+# 2024-10-17 21:48:50 UTC: /AutoIG/scripts/target-runner 6 1 1068608867 dummy   -deck_width_tuned 94 -deck_length_tuned 56 -n_containers_delta 13 -n_classes_tuned 2 -coverage_max 58
+# 2024-10-17 21:48:56 UTC: DONE (6) Elapsed wall-clock seconds: 5.24
+1 4.76
+# 2024-10-17 21:48:56 UTC: /AutoIG/scripts/target-runner 7 1 1068608867 dummy   -deck_width_tuned 18 -deck_length_tuned 46 -n_containers_delta 7 -n_classes_tuned 2 -coverage_max 26
+# 2024-10-17 21:49:01 UTC: DONE (7) Elapsed wall-clock seconds: 5.54
+1 5.03
+|=|          6|          7|          1|    1.000000000|         42|00:00:36|+1.00|1.00|0.0000|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# Stopped because experiments for next test (49) > max experiments (45)
+Best-so-far configuration:           1    mean value:     1.000000000
+Description of the best-so-far configuration:
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1    1               58                83                  3               8           66       NA
+
+# 2024-10-17 21:49:01 UTC: Extracting elites
+# 2024-10-17 21:49:01 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT. .ALIVE. .RANK. .WEIGHT.
+1    1               58                83                  3               8           66       NA    TRUE     24      0.4
+2    2               15                 9                 10               8           76       NA    TRUE     24      0.3
+3    3               82                18                 19               3           23       NA    TRUE     24      0.2
+4    4               72                33                 16               4           71       NA    TRUE     24      0.1
+# 2024-10-17 21:49:01 UTC: Initialise model
+# 2024-10-17 21:49:01 UTC: End of iteration 1
+# 2024-10-17 21:49:01 UTC: Iteration 2 of 4
+# experimentsUsedSoFar: 42
+# remainingBudget: 138
+# currentBudget: 46
+# nbConfigurations: 10
+# 2024-10-17 21:49:01 UTC: Update model
+# Model:
+$deck_width_tuned
+$deck_width_tuned$`1`
+[1] 34.59194 58.00000
+
+$deck_width_tuned$`2`
+[1] 34.59194 15.00000
+
+$deck_width_tuned$`3`
+[1] 34.59194 82.00000
+
+$deck_width_tuned$`4`
+[1] 34.59194 72.00000
+
+
+$deck_length_tuned
+$deck_length_tuned$`1`
+[1] 34.59194 83.00000
+
+$deck_length_tuned$`2`
+[1] 34.59194  9.00000
+
+$deck_length_tuned$`3`
+[1] 34.59194 18.00000
+
+$deck_length_tuned$`4`
+[1] 34.59194 33.00000
+
+
+$n_containers_delta
+$n_containers_delta$`1`
+[1] 6.638858 3.000000
+
+$n_containers_delta$`2`
+[1]  6.638858 10.000000
+
+$n_containers_delta$`3`
+[1]  6.638858 19.000000
+
+$n_containers_delta$`4`
+[1]  6.638858 16.000000
+
+
+$n_classes_tuned
+$n_classes_tuned$`1`
+[1] 3.144722 8.000000
+
+$n_classes_tuned$`2`
+[1] 3.144722 8.000000
+
+$n_classes_tuned$`3`
+[1] 3.144722 3.000000
+
+$n_classes_tuned$`4`
+[1] 3.144722 4.000000
+
+
+$coverage_max
+$coverage_max$`1`
+[1] 31.44722 66.00000
+
+$coverage_max$`2`
+[1] 31.44722 76.00000
+
+$coverage_max$`3`
+[1] 31.44722 23.00000
+
+$coverage_max$`4`
+[1] 31.44722 71.00000
+
+
+# 2024-10-17 21:49:01 UTC: Sample 6 configurations from model
+# 2024-10-17 21:49:01 UTC: Computing similarity of configurations .......... DONE
+# 2024-10-17 21:49:01 UTC: Configurations for the race n 2 (elite configurations listed first, then new configurations):
+   .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1     1               58                83                  3               8           66       NA
+2     2               15                 9                 10               8           76       NA
+3     3               82                18                 19               3           23       NA
+4     4               72                33                 16               4           71       NA
+8     8               74                16                 12               4           46        3
+9     9               66                40                 12               3           44        3
+10   10               83                13                 18               3           35        3
+11   11               54                90                  4               8           69        1
+12   12               90                52                  9               7           71        1
+13   13               62                49                  3               7           47        1
+# 2024-10-17 21:49:01 UTC: Launch race
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|      Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# 2024-10-17 21:49:01 UTC: /AutoIG/scripts/target-runner 1 1 735527639 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:49:06 UTC: DONE (1) Elapsed wall-clock seconds: 5.24
+1 4.74
+# 2024-10-17 21:49:06 UTC: /AutoIG/scripts/target-runner 2 1 735527639 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:49:12 UTC: DONE (2) Elapsed wall-clock seconds: 5.24
+1 4.76
+# 2024-10-17 21:49:12 UTC: /AutoIG/scripts/target-runner 3 1 735527639 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:49:17 UTC: DONE (3) Elapsed wall-clock seconds: 5.18
+1 4.69
+# 2024-10-17 21:49:17 UTC: /AutoIG/scripts/target-runner 4 1 735527639 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:49:22 UTC: DONE (4) Elapsed wall-clock seconds: 5.29
+1 4.79
+# 2024-10-17 21:49:22 UTC: /AutoIG/scripts/target-runner 8 1 735527639 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:49:30 UTC: DONE (8) Elapsed wall-clock seconds: 7.98
+1 7.45
+# 2024-10-17 21:49:30 UTC: /AutoIG/scripts/target-runner 9 1 735527639 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:49:38 UTC: DONE (9) Elapsed wall-clock seconds: 7.88
+1 7.39
+# 2024-10-17 21:49:38 UTC: /AutoIG/scripts/target-runner 10 1 735527639 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:49:46 UTC: DONE (10) Elapsed wall-clock seconds: 7.74
+1 7.26
+# 2024-10-17 21:49:46 UTC: /AutoIG/scripts/target-runner 11 1 735527639 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:49:54 UTC: DONE (11) Elapsed wall-clock seconds: 8.56
+1 8.07
+# 2024-10-17 21:49:54 UTC: /AutoIG/scripts/target-runner 12 1 735527639 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:50:03 UTC: DONE (12) Elapsed wall-clock seconds: 8.70
+1 8.21
+# 2024-10-17 21:50:03 UTC: /AutoIG/scripts/target-runner 13 1 735527639 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:50:11 UTC: DONE (13) Elapsed wall-clock seconds: 8.01
+1 7.53
+|x|          7|         10|          1|    1.000000000|         10|00:01:09|   NA|  NA|    NA|
+# 2024-10-17 21:50:11 UTC: /AutoIG/scripts/target-runner 8 1 1068608867 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:50:16 UTC: DONE (8) Elapsed wall-clock seconds: 5.22
+1 4.73
+# 2024-10-17 21:50:16 UTC: /AutoIG/scripts/target-runner 9 1 1068608867 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:50:21 UTC: DONE (9) Elapsed wall-clock seconds: 5.15
+1 4.67
+# 2024-10-17 21:50:21 UTC: /AutoIG/scripts/target-runner 10 1 1068608867 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:50:27 UTC: DONE (10) Elapsed wall-clock seconds: 5.18
+1 4.72
+# 2024-10-17 21:50:27 UTC: /AutoIG/scripts/target-runner 11 1 1068608867 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:50:32 UTC: DONE (11) Elapsed wall-clock seconds: 5.18
+1 4.7
+# 2024-10-17 21:50:32 UTC: /AutoIG/scripts/target-runner 12 1 1068608867 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:50:37 UTC: DONE (12) Elapsed wall-clock seconds: 5.23
+1 4.77
+# 2024-10-17 21:50:37 UTC: /AutoIG/scripts/target-runner 13 1 1068608867 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:50:42 UTC: DONE (13) Elapsed wall-clock seconds: 5.21
+1 4.74
+|x|          6|         10|          1|    1.000000000|         16|00:00:31|+1.00|1.00|0.0000|
+# 2024-10-17 21:50:42 UTC: /AutoIG/scripts/target-runner 8 1 1489266180 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:50:47 UTC: DONE (8) Elapsed wall-clock seconds: 5.24
+1 4.76
+# 2024-10-17 21:50:47 UTC: /AutoIG/scripts/target-runner 9 1 1489266180 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:50:53 UTC: DONE (9) Elapsed wall-clock seconds: 5.33
+1 4.84
+# 2024-10-17 21:50:53 UTC: /AutoIG/scripts/target-runner 10 1 1489266180 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:50:58 UTC: DONE (10) Elapsed wall-clock seconds: 5.23
+1 4.76
+# 2024-10-17 21:50:58 UTC: /AutoIG/scripts/target-runner 11 1 1489266180 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:51:03 UTC: DONE (11) Elapsed wall-clock seconds: 5.24
+1 4.75
+# 2024-10-17 21:51:03 UTC: /AutoIG/scripts/target-runner 12 1 1489266180 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:51:08 UTC: DONE (12) Elapsed wall-clock seconds: 5.20
+1 4.7
+# 2024-10-17 21:51:08 UTC: /AutoIG/scripts/target-runner 13 1 1489266180 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:51:14 UTC: DONE (13) Elapsed wall-clock seconds: 5.24
+1 4.77
+|x|          4|         10|          1|    1.000000000|         22|00:00:31|+1.00|1.00|0.0000|
+# 2024-10-17 21:51:14 UTC: /AutoIG/scripts/target-runner 8 1 510416220 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:51:19 UTC: DONE (8) Elapsed wall-clock seconds: 5.21
+1 4.7
+# 2024-10-17 21:51:19 UTC: /AutoIG/scripts/target-runner 9 1 510416220 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:51:24 UTC: DONE (9) Elapsed wall-clock seconds: 5.19
+1 4.72
+# 2024-10-17 21:51:24 UTC: /AutoIG/scripts/target-runner 10 1 510416220 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:51:29 UTC: DONE (10) Elapsed wall-clock seconds: 5.24
+1 4.77
+# 2024-10-17 21:51:29 UTC: /AutoIG/scripts/target-runner 11 1 510416220 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:51:35 UTC: DONE (11) Elapsed wall-clock seconds: 5.19
+1 4.73
+# 2024-10-17 21:51:35 UTC: /AutoIG/scripts/target-runner 12 1 510416220 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:51:40 UTC: DONE (12) Elapsed wall-clock seconds: 5.25
+1 4.76
+# 2024-10-17 21:51:40 UTC: /AutoIG/scripts/target-runner 13 1 510416220 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:51:45 UTC: DONE (13) Elapsed wall-clock seconds: 5.19
+1 4.71
+|x|          3|         10|          1|    1.000000000|         28|00:00:31|+1.00|1.00|0.0000|
+# 2024-10-17 21:51:45 UTC: /AutoIG/scripts/target-runner 8 1 1965286212 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:51:50 UTC: DONE (8) Elapsed wall-clock seconds: 5.22
+1 4.72
+# 2024-10-17 21:51:50 UTC: /AutoIG/scripts/target-runner 9 1 1965286212 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:51:55 UTC: DONE (9) Elapsed wall-clock seconds: 5.24
+1 4.75
+# 2024-10-17 21:51:55 UTC: /AutoIG/scripts/target-runner 10 1 1965286212 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:52:01 UTC: DONE (10) Elapsed wall-clock seconds: 5.32
+1 4.83
+# 2024-10-17 21:52:01 UTC: /AutoIG/scripts/target-runner 11 1 1965286212 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:52:06 UTC: DONE (11) Elapsed wall-clock seconds: 5.20
+1 4.71
+# 2024-10-17 21:52:06 UTC: /AutoIG/scripts/target-runner 12 1 1965286212 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:52:11 UTC: DONE (12) Elapsed wall-clock seconds: 5.30
+1 4.81
+# 2024-10-17 21:52:11 UTC: /AutoIG/scripts/target-runner 13 1 1965286212 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:52:16 UTC: DONE (13) Elapsed wall-clock seconds: 5.07
+1 4.6
+|=|          1|         10|          1|    1.000000000|         34|00:00:31|+1.00|1.00|0.0000|
+# 2024-10-17 21:52:16 UTC: /AutoIG/scripts/target-runner 8 1 1222707704 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:52:22 UTC: DONE (8) Elapsed wall-clock seconds: 5.20
+1 4.7
+# 2024-10-17 21:52:22 UTC: /AutoIG/scripts/target-runner 9 1 1222707704 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:52:27 UTC: DONE (9) Elapsed wall-clock seconds: 5.17
+1 4.7
+# 2024-10-17 21:52:27 UTC: /AutoIG/scripts/target-runner 10 1 1222707704 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:52:32 UTC: DONE (10) Elapsed wall-clock seconds: 5.24
+1 4.75
+# 2024-10-17 21:52:32 UTC: /AutoIG/scripts/target-runner 11 1 1222707704 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:52:37 UTC: DONE (11) Elapsed wall-clock seconds: 5.21
+1 4.74
+# 2024-10-17 21:52:37 UTC: /AutoIG/scripts/target-runner 12 1 1222707704 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:52:43 UTC: DONE (12) Elapsed wall-clock seconds: 5.41
+1 4.93
+# 2024-10-17 21:52:43 UTC: /AutoIG/scripts/target-runner 13 1 1222707704 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:52:49 UTC: DONE (13) Elapsed wall-clock seconds: 6.25
+1 5.59
+|=|          5|         10|          1|    1.000000000|         40|00:00:32|+1.00|1.00|0.0000|
+# 2024-10-17 21:52:49 UTC: /AutoIG/scripts/target-runner 8 1 601225362 dummy   -deck_width_tuned 74 -deck_length_tuned 16 -n_containers_delta 12 -n_classes_tuned 4 -coverage_max 46
+# 2024-10-17 21:52:54 UTC: DONE (8) Elapsed wall-clock seconds: 5.25
+1 4.78
+# 2024-10-17 21:52:54 UTC: /AutoIG/scripts/target-runner 9 1 601225362 dummy   -deck_width_tuned 66 -deck_length_tuned 40 -n_containers_delta 12 -n_classes_tuned 3 -coverage_max 44
+# 2024-10-17 21:52:59 UTC: DONE (9) Elapsed wall-clock seconds: 5.29
+1 4.74
+# 2024-10-17 21:52:59 UTC: /AutoIG/scripts/target-runner 10 1 601225362 dummy   -deck_width_tuned 83 -deck_length_tuned 13 -n_containers_delta 18 -n_classes_tuned 3 -coverage_max 35
+# 2024-10-17 21:53:05 UTC: DONE (10) Elapsed wall-clock seconds: 5.29
+1 4.8
+# 2024-10-17 21:53:05 UTC: /AutoIG/scripts/target-runner 11 1 601225362 dummy   -deck_width_tuned 54 -deck_length_tuned 90 -n_containers_delta 4 -n_classes_tuned 8 -coverage_max 69
+# 2024-10-17 21:53:10 UTC: DONE (11) Elapsed wall-clock seconds: 5.17
+1 4.7
+# 2024-10-17 21:53:10 UTC: /AutoIG/scripts/target-runner 12 1 601225362 dummy   -deck_width_tuned 90 -deck_length_tuned 52 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 71
+# 2024-10-17 21:53:15 UTC: DONE (12) Elapsed wall-clock seconds: 5.30
+1 4.84
+# 2024-10-17 21:53:15 UTC: /AutoIG/scripts/target-runner 13 1 601225362 dummy   -deck_width_tuned 62 -deck_length_tuned 49 -n_containers_delta 3 -n_classes_tuned 7 -coverage_max 47
+# 2024-10-17 21:53:20 UTC: DONE (13) Elapsed wall-clock seconds: 5.15
+1 4.67
+|=|          2|         10|          1|    1.000000000|         46|00:00:31|+1.00|1.00|0.0000|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# Stopped because experiments for next test (56) > max experiments (46)
+Best-so-far configuration:           1    mean value:     1.000000000
+Description of the best-so-far configuration:
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1    1               58                83                  3               8           66       NA
+
+# 2024-10-17 21:53:20 UTC: Extracting elites
+# 2024-10-17 21:53:20 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT. .ALIVE. .RANK. .WEIGHT.
+1    1               58                83                  3               8           66       NA    TRUE   38.5      0.4
+2    2               15                 9                 10               8           76       NA    TRUE   38.5      0.3
+3    3               82                18                 19               3           23       NA    TRUE   38.5      0.2
+4    4               72                33                 16               4           71       NA    TRUE   38.5      0.1
+# 2024-10-17 21:53:20 UTC: End of iteration 2
+# 2024-10-17 21:53:20 UTC: Iteration 3 of 4
+# experimentsUsedSoFar: 88
+# remainingBudget: 92
+# currentBudget: 46
+# nbConfigurations: 9
+# 2024-10-17 21:53:20 UTC: Update model
+# Model:
+$deck_width_tuned
+$deck_width_tuned$`1`
+[1] 25.07154 58.00000
+
+$deck_width_tuned$`2`
+[1] 25.07154 15.00000
+
+$deck_width_tuned$`3`
+[1] 25.07154 82.00000
+
+$deck_width_tuned$`4`
+[1] 25.07154 72.00000
+
+
+$deck_length_tuned
+$deck_length_tuned$`1`
+[1] 25.07154 83.00000
+
+$deck_length_tuned$`2`
+[1] 25.07154  9.00000
+
+$deck_length_tuned$`3`
+[1] 25.07154 18.00000
+
+$deck_length_tuned$`4`
+[1] 25.07154 33.00000
+
+
+$n_containers_delta
+$n_containers_delta$`1`
+[1] 4.811709 3.000000
+
+$n_containers_delta$`2`
+[1]  4.811709 10.000000
+
+$n_containers_delta$`3`
+[1]  4.811709 19.000000
+
+$n_containers_delta$`4`
+[1]  4.811709 16.000000
+
+
+$n_classes_tuned
+$n_classes_tuned$`1`
+[1] 2.279231 8.000000
+
+$n_classes_tuned$`2`
+[1] 2.279231 8.000000
+
+$n_classes_tuned$`3`
+[1] 2.279231 3.000000
+
+$n_classes_tuned$`4`
+[1] 2.279231 4.000000
+
+
+$coverage_max
+$coverage_max$`1`
+[1] 22.79231 66.00000
+
+$coverage_max$`2`
+[1] 22.79231 76.00000
+
+$coverage_max$`3`
+[1] 22.79231 23.00000
+
+$coverage_max$`4`
+[1] 22.79231 71.00000
+
+
+# 2024-10-17 21:53:20 UTC: Sample 5 configurations from model
+# 2024-10-17 21:53:20 UTC: Computing similarity of configurations ......... DONE
+# 2024-10-17 21:53:20 UTC: Configurations for the race n 3 (elite configurations listed first, then new configurations):
+   .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1     1               58                83                  3               8           66       NA
+2     2               15                 9                 10               8           76       NA
+3     3               82                18                 19               3           23       NA
+4     4               72                33                 16               4           71       NA
+14   14               53                58                 14               1           51        3
+15   15               79                48                 17               3           21        3
+16   16               34                31                  6               7           35        1
+17   17               14                38                  9               7           48        2
+18   18               52                19                  9               7           99        2
+# 2024-10-17 21:53:20 UTC: Launch race
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|      Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# 2024-10-17 21:53:20 UTC: /AutoIG/scripts/target-runner 1 1 61910261 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:53:26 UTC: DONE (1) Elapsed wall-clock seconds: 5.21
+1 4.73
+# 2024-10-17 21:53:26 UTC: /AutoIG/scripts/target-runner 2 1 61910261 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:53:31 UTC: DONE (2) Elapsed wall-clock seconds: 5.19
+1 4.71
+# 2024-10-17 21:53:31 UTC: /AutoIG/scripts/target-runner 3 1 61910261 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:53:36 UTC: DONE (3) Elapsed wall-clock seconds: 5.22
+1 4.74
+# 2024-10-17 21:53:36 UTC: /AutoIG/scripts/target-runner 4 1 61910261 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:53:41 UTC: DONE (4) Elapsed wall-clock seconds: 5.46
+1 4.95
+# 2024-10-17 21:53:41 UTC: /AutoIG/scripts/target-runner 14 1 61910261 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:53:49 UTC: DONE (14) Elapsed wall-clock seconds: 7.87
+1 7.37
+# 2024-10-17 21:53:49 UTC: /AutoIG/scripts/target-runner 15 1 61910261 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:53:58 UTC: DONE (15) Elapsed wall-clock seconds: 8.55
+1 7.98
+# 2024-10-17 21:53:58 UTC: /AutoIG/scripts/target-runner 16 1 61910261 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:54:06 UTC: DONE (16) Elapsed wall-clock seconds: 7.80
+1 7.29
+# 2024-10-17 21:54:06 UTC: /AutoIG/scripts/target-runner 17 1 61910261 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:54:13 UTC: DONE (17) Elapsed wall-clock seconds: 7.57
+1 7.11
+# 2024-10-17 21:54:13 UTC: /AutoIG/scripts/target-runner 18 1 61910261 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:54:21 UTC: DONE (18) Elapsed wall-clock seconds: 7.62
+1 7.16
+|x|          8|          9|          1|    1.000000000|          9|00:01:00|   NA|  NA|    NA|
+# 2024-10-17 21:54:21 UTC: /AutoIG/scripts/target-runner 14 1 1965286212 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:54:26 UTC: DONE (14) Elapsed wall-clock seconds: 5.18
+1 4.69
+# 2024-10-17 21:54:26 UTC: /AutoIG/scripts/target-runner 15 1 1965286212 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:54:31 UTC: DONE (15) Elapsed wall-clock seconds: 5.38
+1 4.89
+# 2024-10-17 21:54:31 UTC: /AutoIG/scripts/target-runner 16 1 1965286212 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:54:37 UTC: DONE (16) Elapsed wall-clock seconds: 5.33
+1 4.85
+# 2024-10-17 21:54:37 UTC: /AutoIG/scripts/target-runner 17 1 1965286212 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:54:42 UTC: DONE (17) Elapsed wall-clock seconds: 5.35
+1 4.83
+# 2024-10-17 21:54:42 UTC: /AutoIG/scripts/target-runner 18 1 1965286212 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:54:47 UTC: DONE (18) Elapsed wall-clock seconds: 5.25
+1 4.75
+|x|          1|          9|          1|    1.000000000|         14|00:00:26|+1.00|1.00|0.0000|
+# 2024-10-17 21:54:47 UTC: /AutoIG/scripts/target-runner 14 1 510416220 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:54:53 UTC: DONE (14) Elapsed wall-clock seconds: 5.15
+1 4.66
+# 2024-10-17 21:54:53 UTC: /AutoIG/scripts/target-runner 15 1 510416220 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:54:58 UTC: DONE (15) Elapsed wall-clock seconds: 5.20
+1 4.72
+# 2024-10-17 21:54:58 UTC: /AutoIG/scripts/target-runner 16 1 510416220 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:55:03 UTC: DONE (16) Elapsed wall-clock seconds: 5.29
+1 4.82
+# 2024-10-17 21:55:03 UTC: /AutoIG/scripts/target-runner 17 1 510416220 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:55:09 UTC: DONE (17) Elapsed wall-clock seconds: 5.42
+1 4.86
+# 2024-10-17 21:55:09 UTC: /AutoIG/scripts/target-runner 18 1 510416220 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:55:14 UTC: DONE (18) Elapsed wall-clock seconds: 5.31
+1 4.81
+|x|          3|          9|          1|    1.000000000|         19|00:00:26|+1.00|1.00|0.0000|
+# 2024-10-17 21:55:14 UTC: /AutoIG/scripts/target-runner 14 1 1489266180 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:55:19 UTC: DONE (14) Elapsed wall-clock seconds: 5.29
+1 4.81
+# 2024-10-17 21:55:19 UTC: /AutoIG/scripts/target-runner 15 1 1489266180 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:55:24 UTC: DONE (15) Elapsed wall-clock seconds: 5.34
+1 4.85
+# 2024-10-17 21:55:24 UTC: /AutoIG/scripts/target-runner 16 1 1489266180 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:55:30 UTC: DONE (16) Elapsed wall-clock seconds: 5.18
+1 4.7
+# 2024-10-17 21:55:30 UTC: /AutoIG/scripts/target-runner 17 1 1489266180 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:55:35 UTC: DONE (17) Elapsed wall-clock seconds: 5.13
+1 4.65
+# 2024-10-17 21:55:35 UTC: /AutoIG/scripts/target-runner 18 1 1489266180 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:55:40 UTC: DONE (18) Elapsed wall-clock seconds: 5.22
+1 4.73
+|x|          4|          9|          1|    1.000000000|         24|00:00:26|+1.00|1.00|0.0000|
+# 2024-10-17 21:55:40 UTC: /AutoIG/scripts/target-runner 14 1 601225362 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:55:45 UTC: DONE (14) Elapsed wall-clock seconds: 5.14
+1 4.66
+# 2024-10-17 21:55:45 UTC: /AutoIG/scripts/target-runner 15 1 601225362 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:55:50 UTC: DONE (15) Elapsed wall-clock seconds: 5.13
+1 4.6
+# 2024-10-17 21:55:50 UTC: /AutoIG/scripts/target-runner 16 1 601225362 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:55:56 UTC: DONE (16) Elapsed wall-clock seconds: 5.50
+1 5.0
+# 2024-10-17 21:55:56 UTC: /AutoIG/scripts/target-runner 17 1 601225362 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:56:01 UTC: DONE (17) Elapsed wall-clock seconds: 5.20
+1 4.67
+# 2024-10-17 21:56:01 UTC: /AutoIG/scripts/target-runner 18 1 601225362 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:56:06 UTC: DONE (18) Elapsed wall-clock seconds: 5.12
+1 4.65
+|=|          2|          9|          1|    1.000000000|         29|00:00:26|+1.00|1.00|0.0000|
+# 2024-10-17 21:56:06 UTC: /AutoIG/scripts/target-runner 14 1 1068608867 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:56:11 UTC: DONE (14) Elapsed wall-clock seconds: 5.16
+1 4.67
+# 2024-10-17 21:56:11 UTC: /AutoIG/scripts/target-runner 15 1 1068608867 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:56:16 UTC: DONE (15) Elapsed wall-clock seconds: 5.15
+1 4.66
+# 2024-10-17 21:56:16 UTC: /AutoIG/scripts/target-runner 16 1 1068608867 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:56:22 UTC: DONE (16) Elapsed wall-clock seconds: 5.11
+1 4.64
+# 2024-10-17 21:56:22 UTC: /AutoIG/scripts/target-runner 17 1 1068608867 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:56:27 UTC: DONE (17) Elapsed wall-clock seconds: 5.15
+1 4.69
+# 2024-10-17 21:56:27 UTC: /AutoIG/scripts/target-runner 18 1 1068608867 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:56:32 UTC: DONE (18) Elapsed wall-clock seconds: 5.25
+1 4.77
+|=|          6|          9|          1|    1.000000000|         34|00:00:25|+1.00|1.00|0.0000|
+# 2024-10-17 21:56:32 UTC: /AutoIG/scripts/target-runner 14 1 1222707704 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:56:37 UTC: DONE (14) Elapsed wall-clock seconds: 5.35
+1 4.88
+# 2024-10-17 21:56:37 UTC: /AutoIG/scripts/target-runner 15 1 1222707704 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:56:43 UTC: DONE (15) Elapsed wall-clock seconds: 5.27
+1 4.78
+# 2024-10-17 21:56:43 UTC: /AutoIG/scripts/target-runner 16 1 1222707704 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:56:48 UTC: DONE (16) Elapsed wall-clock seconds: 5.23
+1 4.76
+# 2024-10-17 21:56:48 UTC: /AutoIG/scripts/target-runner 17 1 1222707704 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:56:53 UTC: DONE (17) Elapsed wall-clock seconds: 5.18
+1 4.68
+# 2024-10-17 21:56:53 UTC: /AutoIG/scripts/target-runner 18 1 1222707704 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:56:58 UTC: DONE (18) Elapsed wall-clock seconds: 5.21
+1 4.73
+|=|          5|          9|          1|    1.000000000|         39|00:00:26|+1.00|1.00|0.0000|
+# 2024-10-17 21:56:58 UTC: /AutoIG/scripts/target-runner 14 1 735527639 dummy   -deck_width_tuned 53 -deck_length_tuned 58 -n_containers_delta 14 -n_classes_tuned 1 -coverage_max 51
+# 2024-10-17 21:57:03 UTC: DONE (14) Elapsed wall-clock seconds: 5.17
+1 4.67
+# 2024-10-17 21:57:03 UTC: /AutoIG/scripts/target-runner 15 1 735527639 dummy   -deck_width_tuned 79 -deck_length_tuned 48 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 21
+# 2024-10-17 21:57:09 UTC: DONE (15) Elapsed wall-clock seconds: 5.21
+1 4.73
+# 2024-10-17 21:57:09 UTC: /AutoIG/scripts/target-runner 16 1 735527639 dummy   -deck_width_tuned 34 -deck_length_tuned 31 -n_containers_delta 6 -n_classes_tuned 7 -coverage_max 35
+# 2024-10-17 21:57:14 UTC: DONE (16) Elapsed wall-clock seconds: 5.30
+1 4.82
+# 2024-10-17 21:57:14 UTC: /AutoIG/scripts/target-runner 17 1 735527639 dummy   -deck_width_tuned 14 -deck_length_tuned 38 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 48
+# 2024-10-17 21:57:19 UTC: DONE (17) Elapsed wall-clock seconds: 5.29
+1 4.81
+# 2024-10-17 21:57:19 UTC: /AutoIG/scripts/target-runner 18 1 735527639 dummy   -deck_width_tuned 52 -deck_length_tuned 19 -n_containers_delta 9 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:57:24 UTC: DONE (18) Elapsed wall-clock seconds: 5.21
+1 4.7
+|=|          7|          9|          1|    1.000000000|         44|00:00:26|+1.00|1.00|0.0000|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# Stopped because experiments for next test (53) > max experiments (46)
+Best-so-far configuration:           1    mean value:     1.000000000
+Description of the best-so-far configuration:
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1    1               58                83                  3               8           66       NA
+
+# 2024-10-17 21:57:24 UTC: Extracting elites
+# 2024-10-17 21:57:24 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT. .ALIVE. .RANK. .WEIGHT.
+1    1               58                83                  3               8           66       NA    TRUE     40      0.4
+2    2               15                 9                 10               8           76       NA    TRUE     40      0.3
+3    3               82                18                 19               3           23       NA    TRUE     40      0.2
+4    4               72                33                 16               4           71       NA    TRUE     40      0.1
+# 2024-10-17 21:57:24 UTC: End of iteration 3
+# 2024-10-17 21:57:24 UTC: Iteration 4 of 4
+# experimentsUsedSoFar: 132
+# remainingBudget: 48
+# currentBudget: 48
+# nbConfigurations: 8
+# 2024-10-17 21:57:24 UTC: Update model
+# Model:
+$deck_width_tuned
+$deck_width_tuned$`1`
+[1] 19.00067 58.00000
+
+$deck_width_tuned$`2`
+[1] 19.00067 15.00000
+
+$deck_width_tuned$`3`
+[1] 19.00067 82.00000
+
+$deck_width_tuned$`4`
+[1] 19.00067 72.00000
+
+
+$deck_length_tuned
+$deck_length_tuned$`1`
+[1] 19.00067 83.00000
+
+$deck_length_tuned$`2`
+[1] 19.00067  9.00000
+
+$deck_length_tuned$`3`
+[1] 19.00067 18.00000
+
+$deck_length_tuned$`4`
+[1] 19.00067 33.00000
+
+
+$n_containers_delta
+$n_containers_delta$`1`
+[1] 3.646594 3.000000
+
+$n_containers_delta$`2`
+[1]  3.646594 10.000000
+
+$n_containers_delta$`3`
+[1]  3.646594 19.000000
+
+$n_containers_delta$`4`
+[1]  3.646594 16.000000
+
+
+$n_classes_tuned
+$n_classes_tuned$`1`
+[1] 1.727334 8.000000
+
+$n_classes_tuned$`2`
+[1] 1.727334 8.000000
+
+$n_classes_tuned$`3`
+[1] 1.727334 3.000000
+
+$n_classes_tuned$`4`
+[1] 1.727334 4.000000
+
+
+$coverage_max
+$coverage_max$`1`
+[1] 17.27334 66.00000
+
+$coverage_max$`2`
+[1] 17.27334 76.00000
+
+$coverage_max$`3`
+[1] 17.27334 23.00000
+
+$coverage_max$`4`
+[1] 17.27334 71.00000
+
+
+# 2024-10-17 21:57:24 UTC: Sample 4 configurations from model
+# 2024-10-17 21:57:24 UTC: Computing similarity of configurations ........ DONE
+# 2024-10-17 21:57:25 UTC: Configurations for the race n 4 (elite configurations listed first, then new configurations):
+   .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1     1               58                83                  3               8           66       NA
+2     2               15                 9                 10               8           76       NA
+3     3               82                18                 19               3           23       NA
+4     4               72                33                 16               4           71       NA
+19   19                6                 2                  4               7           99        2
+20   20               27                18                 10               8           66        2
+21   21               19                36                  8               7           54        2
+22   22               56                 3                 17               3           75        4
+# 2024-10-17 21:57:25 UTC: Launch race
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|      Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# 2024-10-17 21:57:25 UTC: /AutoIG/scripts/target-runner 1 1 2073674354 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:57:30 UTC: DONE (1) Elapsed wall-clock seconds: 5.26
+1 4.78
+# 2024-10-17 21:57:30 UTC: /AutoIG/scripts/target-runner 2 1 2073674354 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 21:57:35 UTC: DONE (2) Elapsed wall-clock seconds: 5.19
+1 4.71
+# 2024-10-17 21:57:35 UTC: /AutoIG/scripts/target-runner 3 1 2073674354 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 21:57:40 UTC: DONE (3) Elapsed wall-clock seconds: 5.22
+1 4.74
+# 2024-10-17 21:57:40 UTC: /AutoIG/scripts/target-runner 4 1 2073674354 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 21:57:45 UTC: DONE (4) Elapsed wall-clock seconds: 5.26
+1 4.78
+# 2024-10-17 21:57:45 UTC: /AutoIG/scripts/target-runner 19 1 2073674354 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:57:53 UTC: DONE (19) Elapsed wall-clock seconds: 7.31
+1 6.82
+# 2024-10-17 21:57:53 UTC: /AutoIG/scripts/target-runner 20 1 2073674354 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:58:00 UTC: DONE (20) Elapsed wall-clock seconds: 7.66
+1 7.17
+# 2024-10-17 21:58:00 UTC: /AutoIG/scripts/target-runner 21 1 2073674354 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:58:08 UTC: DONE (21) Elapsed wall-clock seconds: 7.59
+1 7.11
+# 2024-10-17 21:58:08 UTC: /AutoIG/scripts/target-runner 22 1 2073674354 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 21:58:15 UTC: DONE (22) Elapsed wall-clock seconds: 7.41
+1 6.91
+|x|          9|          8|          1|    1.000000000|          8|00:00:50|   NA|  NA|    NA|
+# 2024-10-17 21:58:15 UTC: /AutoIG/scripts/target-runner 19 1 1489266180 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:58:21 UTC: DONE (19) Elapsed wall-clock seconds: 5.30
+1 4.82
+# 2024-10-17 21:58:21 UTC: /AutoIG/scripts/target-runner 20 1 1489266180 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:58:26 UTC: DONE (20) Elapsed wall-clock seconds: 5.29
+1 4.78
+# 2024-10-17 21:58:26 UTC: /AutoIG/scripts/target-runner 21 1 1489266180 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:58:31 UTC: DONE (21) Elapsed wall-clock seconds: 5.35
+1 4.84
+# 2024-10-17 21:58:31 UTC: /AutoIG/scripts/target-runner 22 1 1489266180 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 21:58:37 UTC: DONE (22) Elapsed wall-clock seconds: 5.31
+1 4.85
+|x|          4|          8|          1|    1.000000000|         12|00:00:21|+1.00|1.00|0.0000|
+# 2024-10-17 21:58:37 UTC: /AutoIG/scripts/target-runner 19 1 1222707704 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:58:42 UTC: DONE (19) Elapsed wall-clock seconds: 5.21
+1 4.73
+# 2024-10-17 21:58:42 UTC: /AutoIG/scripts/target-runner 20 1 1222707704 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:58:47 UTC: DONE (20) Elapsed wall-clock seconds: 5.14
+1 4.67
+# 2024-10-17 21:58:47 UTC: /AutoIG/scripts/target-runner 21 1 1222707704 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:58:52 UTC: DONE (21) Elapsed wall-clock seconds: 5.27
+1 4.79
+# 2024-10-17 21:58:52 UTC: /AutoIG/scripts/target-runner 22 1 1222707704 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 21:58:58 UTC: DONE (22) Elapsed wall-clock seconds: 5.18
+1 4.68
+|x|          5|          8|          1|    1.000000000|         16|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 21:58:58 UTC: /AutoIG/scripts/target-runner 19 1 510416220 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:59:03 UTC: DONE (19) Elapsed wall-clock seconds: 5.15
+1 4.66
+# 2024-10-17 21:59:03 UTC: /AutoIG/scripts/target-runner 20 1 510416220 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:59:08 UTC: DONE (20) Elapsed wall-clock seconds: 5.14
+1 4.65
+# 2024-10-17 21:59:08 UTC: /AutoIG/scripts/target-runner 21 1 510416220 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:59:13 UTC: DONE (21) Elapsed wall-clock seconds: 5.22
+1 4.72
+# 2024-10-17 21:59:13 UTC: /AutoIG/scripts/target-runner 22 1 510416220 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 21:59:18 UTC: DONE (22) Elapsed wall-clock seconds: 5.26
+1 4.72
+|x|          3|          8|          1|    1.000000000|         20|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 21:59:18 UTC: /AutoIG/scripts/target-runner 19 1 601225362 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:59:23 UTC: DONE (19) Elapsed wall-clock seconds: 5.18
+1 4.7
+# 2024-10-17 21:59:23 UTC: /AutoIG/scripts/target-runner 20 1 601225362 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:59:29 UTC: DONE (20) Elapsed wall-clock seconds: 5.17
+1 4.68
+# 2024-10-17 21:59:29 UTC: /AutoIG/scripts/target-runner 21 1 601225362 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:59:34 UTC: DONE (21) Elapsed wall-clock seconds: 5.33
+1 4.85
+# 2024-10-17 21:59:34 UTC: /AutoIG/scripts/target-runner 22 1 601225362 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 21:59:39 UTC: DONE (22) Elapsed wall-clock seconds: 5.28
+1 4.77
+|=|          2|          8|          1|    1.000000000|         24|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 21:59:39 UTC: /AutoIG/scripts/target-runner 19 1 1965286212 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 21:59:44 UTC: DONE (19) Elapsed wall-clock seconds: 5.17
+1 4.66
+# 2024-10-17 21:59:44 UTC: /AutoIG/scripts/target-runner 20 1 1965286212 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 21:59:50 UTC: DONE (20) Elapsed wall-clock seconds: 5.23
+1 4.75
+# 2024-10-17 21:59:50 UTC: /AutoIG/scripts/target-runner 21 1 1965286212 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 21:59:55 UTC: DONE (21) Elapsed wall-clock seconds: 5.16
+1 4.68
+# 2024-10-17 21:59:55 UTC: /AutoIG/scripts/target-runner 22 1 1965286212 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 22:00:00 UTC: DONE (22) Elapsed wall-clock seconds: 5.19
+1 4.72
+|=|          1|          8|          1|    1.000000000|         28|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 22:00:00 UTC: /AutoIG/scripts/target-runner 19 1 61910261 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 22:00:05 UTC: DONE (19) Elapsed wall-clock seconds: 5.18
+1 4.69
+# 2024-10-17 22:00:05 UTC: /AutoIG/scripts/target-runner 20 1 61910261 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 22:00:10 UTC: DONE (20) Elapsed wall-clock seconds: 5.22
+1 4.76
+# 2024-10-17 22:00:10 UTC: /AutoIG/scripts/target-runner 21 1 61910261 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 22:00:16 UTC: DONE (21) Elapsed wall-clock seconds: 5.22
+1 4.74
+# 2024-10-17 22:00:16 UTC: /AutoIG/scripts/target-runner 22 1 61910261 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 22:00:21 UTC: DONE (22) Elapsed wall-clock seconds: 5.18
+1 4.7
+|=|          8|          8|          1|    1.000000000|         32|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 22:00:21 UTC: /AutoIG/scripts/target-runner 19 1 1068608867 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 22:00:26 UTC: DONE (19) Elapsed wall-clock seconds: 5.20
+1 4.72
+# 2024-10-17 22:00:26 UTC: /AutoIG/scripts/target-runner 20 1 1068608867 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 22:00:31 UTC: DONE (20) Elapsed wall-clock seconds: 5.19
+1 4.71
+# 2024-10-17 22:00:31 UTC: /AutoIG/scripts/target-runner 21 1 1068608867 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 22:00:36 UTC: DONE (21) Elapsed wall-clock seconds: 5.20
+1 4.71
+# 2024-10-17 22:00:36 UTC: /AutoIG/scripts/target-runner 22 1 1068608867 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 22:00:42 UTC: DONE (22) Elapsed wall-clock seconds: 5.17
+1 4.7
+|=|          6|          8|          1|    1.000000000|         36|00:00:20|+1.00|1.00|0.0000|
+# 2024-10-17 22:00:42 UTC: /AutoIG/scripts/target-runner 19 1 735527639 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 22:00:47 UTC: DONE (19) Elapsed wall-clock seconds: 5.17
+1 4.68
+# 2024-10-17 22:00:47 UTC: /AutoIG/scripts/target-runner 20 1 735527639 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 22:00:52 UTC: DONE (20) Elapsed wall-clock seconds: 5.20
+1 4.73
+# 2024-10-17 22:00:52 UTC: /AutoIG/scripts/target-runner 21 1 735527639 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 22:00:57 UTC: DONE (21) Elapsed wall-clock seconds: 5.29
+1 4.82
+# 2024-10-17 22:00:57 UTC: /AutoIG/scripts/target-runner 22 1 735527639 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 22:01:03 UTC: DONE (22) Elapsed wall-clock seconds: 5.39
+1 4.9
+|=|          7|          8|          1|    1.000000000|         40|00:00:21|+1.00|1.00|0.0000|
+# 2024-10-17 22:01:03 UTC: /AutoIG/scripts/target-runner 1 1 285596038 dummy   -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 22:01:08 UTC: DONE (1) Elapsed wall-clock seconds: 5.40
+1 4.91
+# 2024-10-17 22:01:08 UTC: /AutoIG/scripts/target-runner 2 1 285596038 dummy   -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+# 2024-10-17 22:01:13 UTC: DONE (2) Elapsed wall-clock seconds: 5.25
+1 4.69
+# 2024-10-17 22:01:13 UTC: /AutoIG/scripts/target-runner 3 1 285596038 dummy   -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+# 2024-10-17 22:01:19 UTC: DONE (3) Elapsed wall-clock seconds: 5.39
+1 4.86
+# 2024-10-17 22:01:19 UTC: /AutoIG/scripts/target-runner 4 1 285596038 dummy   -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71
+# 2024-10-17 22:01:24 UTC: DONE (4) Elapsed wall-clock seconds: 5.58
+1 4.97
+# 2024-10-17 22:01:24 UTC: /AutoIG/scripts/target-runner 19 1 285596038 dummy   -deck_width_tuned 6 -deck_length_tuned 2 -n_containers_delta 4 -n_classes_tuned 7 -coverage_max 99
+# 2024-10-17 22:01:30 UTC: DONE (19) Elapsed wall-clock seconds: 5.19
+1 4.67
+# 2024-10-17 22:01:30 UTC: /AutoIG/scripts/target-runner 20 1 285596038 dummy   -deck_width_tuned 27 -deck_length_tuned 18 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 66
+# 2024-10-17 22:01:35 UTC: DONE (20) Elapsed wall-clock seconds: 5.21
+1 4.74
+# 2024-10-17 22:01:35 UTC: /AutoIG/scripts/target-runner 21 1 285596038 dummy   -deck_width_tuned 19 -deck_length_tuned 36 -n_containers_delta 8 -n_classes_tuned 7 -coverage_max 54
+# 2024-10-17 22:01:40 UTC: DONE (21) Elapsed wall-clock seconds: 5.19
+1 4.7
+# 2024-10-17 22:01:40 UTC: /AutoIG/scripts/target-runner 22 1 285596038 dummy   -deck_width_tuned 56 -deck_length_tuned 3 -n_containers_delta 17 -n_classes_tuned 3 -coverage_max 75
+# 2024-10-17 22:01:45 UTC: DONE (22) Elapsed wall-clock seconds: 5.34
+1 4.83
+|=|         10|          8|          1|    1.000000000|         48|00:00:42|+1.00|1.00|0.0000|
++-+-----------+-----------+-----------+---------------+-----------+--------+-----+----+------+
+# Stopped because experiments for next test (56) > max experiments (48)
+Best-so-far configuration:           1    mean value:     1.000000000
+Description of the best-so-far configuration:
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT.
+1    1               58                83                  3               8           66       NA
+
+# 2024-10-17 22:01:45 UTC: Extracting elites
+# 2024-10-17 22:01:45 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  .ID. deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max .PARENT. .ALIVE. .RANK. .WEIGHT.
+1    1               58                83                  3               8           66       NA    TRUE     45      0.4
+2    2               15                 9                 10               8           76       NA    TRUE     45      0.3
+3    3               82                18                 19               3           23       NA    TRUE     45      0.2
+4    4               72                33                 16               4           71       NA    TRUE     45      0.1
+# 2024-10-17 22:01:45 UTC: End of iteration 4
+# 2024-10-17 22:01:45 UTC: Stopped because budget is exhausted
+# Iteration: 5
+# nbIterations: 4
+# experimentsUsedSoFar: 180
+# timeUsed: 0
+# remainingBudget: 0
+# currentBudget: 48
+# number of elites: 4
+# nbConfigurations: 8
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+  deck_width_tuned deck_length_tuned n_containers_delta n_classes_tuned coverage_max
+1               58                83                  3               8           66
+2               15                 9                 10               8           76
+3               82                18                 19               3           23
+4               72                33                 16               4           71
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+1  -deck_width_tuned 58 -deck_length_tuned 83 -n_containers_delta 3 -n_classes_tuned 8 -coverage_max 66
+2  -deck_width_tuned 15 -deck_length_tuned 9 -n_containers_delta 10 -n_classes_tuned 8 -coverage_max 76
+3  -deck_width_tuned 82 -deck_length_tuned 18 -n_containers_delta 19 -n_classes_tuned 3 -coverage_max 23
+4  -deck_width_tuned 72 -deck_length_tuned 33 -n_containers_delta 16 -n_classes_tuned 4 -coverage_max 71

@@ -1,0 +1,28 @@
+2024-10-05 14:33:02: /home/tudor/AutoIG/scripts/wrapper.py 14 1 1222707704 dummy -Ag 1 -Tg 6 -Xg 6 -Zg 2 -ground_coverage 54 -avg_height_ratio 66
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/home/tudor/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/home/tudor/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/home/tudor/AutoIG/experiments/macc-discriminating'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2024-10-05 14:33:02: Creating generator instance: ./detailed-output/gen-inst-14.param
+2024-10-05 14:33:02: minion ./detailed-output/gen-inst-14.minion -solsout ./detailed-output/gen-inst-14.solution -randomseed 1222707704 -timelimit 5 -varorder domoverwdeg -valorder random
+2024-10-05 14:33:03: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-14.aux -out-solution ./detailed-output/gen-inst-14.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-14.solution
+2024-10-05 14:33:03: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-14.param --eprime-solution=./detailed-output/gen-inst-14.solution.eprime-param --essence-solution ./detailed-output/gen-inst-14.solution.param
+
+
+2024-10-05 14:33:03: 
+Generator results: genInstance=gen-inst-14, genStatus=sat, genSRTime=0, genSolverTime=0.03912806510925293
+conjure autoig --remove-aux ./detailed-output/inst-14-1222707704.param ./detailed-output/inst-14-1222707704.auxRemoved.param
+conjure pretty ./detailed-output/inst-14-1222707704.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-14-1222707704.dzn generated
+
+
+runsolver -w ./detailed-output/inst-14-1222707704.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-14-1222707704.dzn --output-mode dzn --output-objective -s
+C 0.7174584865570068 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.342301, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+
+
+runsolver -w ./detailed-output/inst-14-1222707704.dzn.chuffed.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver chuffed -i   problem.mzn ./detailed-output/inst-14-1222707704.dzn --output-mode dzn --output-objective -s
+C 0.6184647083282471 {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.333502, 'instanceType': 'unsat', 'answerStatus': 'unknown'}
+True
+
+Instance is too easy for the base solver. Quitting...
+{'totalTime': 1.8316388130187988, 'genResults': {'instance': 'gen-inst-14.param', 'status': 'sat', 'seed': 1222707704, 'SRTime': 0, 'solverTime': 0.03912806510925293}, 'instanceResults': {'instance': './detailed-output/inst-14-1222707704.dzn', 'status': 'baseTooEasy', 'score': 0, 'results': {'base': {'runs': [{'seed': None, 'status': 'C', 'time': 0.6184647083282471, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.333502, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}, 'favoured': {'runs': [{'seed': None, 'status': 'C', 'time': 0.7174584865570068, 'extra': {'objs': [], 'flattenStatus': 'ok', 'flattenTime': 0.342301, 'instanceType': 'unsat', 'answerStatus': 'unknown'}}]}}}, 'status': 'baseTooEasy', 'score': 0}
+0 1.83

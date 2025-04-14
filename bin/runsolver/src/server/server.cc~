@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+
+bool readMaps(pid_t pid)
+{
+  ostringstream fname;
+  fname << "/proc/" << pid << "/maps";
+  
+  ifstream in(fname.str());
+  if(!in.good())
+    return false;
+
+  long beg,end,inode;
+  string perm,path,tmp;
+  char sep;
+  
+  while(true)
+  {
+    in >> hex >> beg >> sep >> end >> dec >> perm >> tmp >> tmp >> inode;
+    getline(in,path);
+    if(in.fail() &&path.empty())
+      break;
+
+    cout << hex << beg << "-" << end << "  " << perm <<<< endl;
+  }
+  
+  return true;
+}
+
+int main()
+{
+
+}

@@ -1,0 +1,97 @@
+language ESSENCE' 1.0
+
+given a: int
+letting let1 be -3
+find x: int(-3..30)
+find y: int(0..6)
+find z: int(-10..100000)
+branching on [x, y, z]
+such that
+    x = a,
+    z = x * y
+
+$ Conjure's
+$ {"finds": [{"Name": "x"}, {"Name": "y"}, {"Name": "z"}], "givens": [{"Name": "a"}], "enumGivens": [],
+$  "enumLettings": [],
+$  "lettings":
+$      [[{"Name": "xDomain"},
+$        {"Domain":
+$             {"DomainInt":
+$                  [{"TagInt": []},
+$                   [{"RangeBounded":
+$                         [{"Op": {"MkOpNegate": {"Constant": {"ConstantInt": [{"TagInt": []}, 3]}}}},
+$                          {"Constant": {"ConstantInt": [{"TagInt": []}, 30]}}]}]]}}],
+$       [{"Name": "yDomain"},
+$        {"Domain":
+$             {"DomainInt":
+$                  [{"TagInt": []},
+$                   [{"RangeBounded":
+$                         [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                          {"Constant": {"ConstantInt": [{"TagInt": []}, 6]}}]}]]}}],
+$       [{"Name": "zDomain"},
+$        {"Domain":
+$             {"DomainInt":
+$                  [{"TagInt": []},
+$                   [{"RangeBounded":
+$                         [{"Op": {"MkOpNegate": {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}}},
+$                          {"Constant": {"ConstantInt": [{"TagInt": []}, 100000]}}]}]]}}],
+$       [{"MachineName": ["let", 1, []]}, {"Op": {"MkOpNegate": {"Constant": {"ConstantInt": [{"TagInt": []}, 3]}}}}],
+$       [{"MachineName": ["let", 2, []]}, {"Op": {"MkOpNegate": {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}}}]],
+$  "unnameds": [], "strategyQ": {"PickFirst": []}, "strategyA": {"Compact": []},
+$  "trailCompact":
+$      [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1]],
+$  "nameGenState": [["let", 3], ["q", 2]], "nbExtraGivens": 0,
+$  "representations":
+$      [[{"Name": "x"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Reference":
+$                          [{"MachineName": ["let", 1, []]},
+$                           {"Alias": {"Op": {"MkOpNegate": {"Constant": {"ConstantInt": [{"TagInt": []}, 3]}}}}}]},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 30]}}]}]]}],
+$       [{"Name": "a"}, {"DomainInt": [{"TagInt": []}, []]}],
+$       [{"Name": "z"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, -10]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 100000]}}]}]]}],
+$       [{"Name": "y"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 6]}}]}]]}]],
+$  "representationsTree":
+$      [[{"Name": "a"}, [{"rootLabel": null, "subForest": []}]], [{"Name": "x"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "y"}, [{"rootLabel": null, "subForest": []}]], [{"Name": "z"}, [{"rootLabel": null, "subForest": []}]]],
+$  "originalDomains":
+$      [[{"Name": "a"}, {"DomainInt": [{"TagInt": []}, []]}],
+$       [{"Name": "x"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Reference": [{"MachineName": ["let", 1, []]}, null]},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 30]}}]}]]}],
+$       [{"Name": "y"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 6]}}]}]]}],
+$       [{"Name": "z"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Reference": [{"MachineName": ["let", 2, []]}, null]},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 100000]}}]}]]}]],
+$  "trailGeneralised":
+$      [[-2837820877398800564, -749231371568315151], [-4000166151720015434, 2250390948238814067],
+$       [2620437197264302244, -8133421871407305387], [-717366734935143855, 3255091040926687568],
+$       [-1282943573648411100, -910884602729897484], [-9218549232709607215, 3772027134991055264],
+$       [-8077263858689544042, 2213152538113773448], [4306617495255995440, 4871926961238393418],
+$       [614562512419718136, -8230097287794726398], [6447962128344708346, 1955424055347446475],
+$       [-6292468628842062847, 1437602301845095264]],
+$  "trailVerbose": [], "trailRewrites": []}

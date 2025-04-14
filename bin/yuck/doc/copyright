@@ -1,0 +1,40 @@
+Yuck (https://github.com/informarte/yuck) is provided under the terms
+of the Mozilla Public License 2.0.
+
+Some global constraint definitions (in the mzn/ folder) reuse
+bits and pieces from the default definitions that come with the
+MiniZinc 2.0.x distributions (https://github.com/MiniZinc/libminizinc)
+which are used under the terms of the Mozilla Public License 2.0.
+
+Yuck directly and transitively depends on some libraries, see the jar
+files in the lib/ folder.
+
+The following libraries are used under the terms of the revised BSD
+license:
+
+* The Scala Library
+  (http://www.scala-lang.org)
+* The Scala Standard Parser Combinators Library
+  (https://github.com/scala/scala-parser-combinators)
+
+The following libraries are used under the terms of the MIT license:
+
+* The scopt library for parsing command line options
+  (https://github.com/scopt/scopt)
+
+The following libraries are used under the terms of the Eclipse
+Public License 1.0:
+
+* JGraphT
+  (http://www.jgrapht.org)
+
+The following libraries are used under the terms of the Apache
+License 2.0:
+
+* spray-json
+  (https://github.com/spray/spray-json)
+* Conversant RTree
+  (https://github.com/conversant/rtree)
+
+Please see the folder licenses/ for all copyright statements and the
+licenses.
