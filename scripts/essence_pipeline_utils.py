@@ -435,6 +435,7 @@ def make_conjure_solve_command(
         + " --solver="
         + solver
     )
+    print(conjureCmd)
 
     return conjureCmd, lsTempFiles
 
@@ -450,8 +451,22 @@ def call_conjure_solve(
         solverTimeLimit, 
         solverFlags, 
         seed):
+    
+    print("***** call_conjure_solve PARAMS INFO *****")
+    print(f"essenceModelFile: {essenceModelFile}")
+    print(f"eprimeModelFile: {eprimeModelFile}")
+    print(f"instFile: {instFile}")
+    print(f"solver: {solver}")
+    print(f"SRTimeLimit: {SRTimeLimit}")
+    print(f"SRFlags: {SRFlags}")
+    print(f"solverTimeLimit: {solverTimeLimit}")
+    print(f"solverFlags: {solverFlags}")
+    print(f"seed: {seed}")
+    print("******************************************")
 
     lsTempFiles = []
+
+    print()
 
     # make conjure solve command line
     conjureCmd, tempFiles = make_conjure_solve_command(

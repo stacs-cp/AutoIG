@@ -1,0 +1,505 @@
+language ESSENCE' 1.0
+
+given np_cars_plus: int(1..200)
+given np_classes: int(1..200)
+given np_options: int(1..200)
+given quantity_range_min: int(1..200)
+given quantity_range_delta: int(0..199)
+given quantity_range_max: int(1..1000)
+given maxcars_range_min: int(1..10)
+given maxcars_range_delta: int(0..9)
+given maxcars_range_max: int(1..10)
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_delta: int(0..9)
+given blksize_delta_range_max: int(1..10)
+given usage_card_min: int(0..1000)
+given usage_card_delta: int(0..99)
+given usage_card_max: int(1..1000)
+find repaired_np_cars_plus: int(1..200)
+find repaired_np_classes: int(1..200)
+find repaired_np_options: int(1..200)
+find repaired_quantity_range_min: int(1..200)
+find repaired_quantity_range_delta: int(0..199)
+find repaired_quantity_range_max: int(1..1000)
+find repaired_maxcars_range_min: int(1..10)
+find repaired_maxcars_range_delta: int(0..9)
+find repaired_maxcars_range_max: int(1..10)
+find repaired_blksize_delta_range_min: int(1..10)
+find repaired_blksize_delta_range_delta: int(0..9)
+find repaired_blksize_delta_range_max: int(1..10)
+find repaired_usage_card_min: int(0..1000)
+find repaired_usage_card_delta: int(0..99)
+find repaired_usage_card_max: int(1..1000)
+branching on
+    [repaired_np_cars_plus, repaired_np_classes, repaired_np_options, repaired_quantity_range_min,
+     repaired_quantity_range_delta, repaired_quantity_range_max, repaired_maxcars_range_min,
+     repaired_maxcars_range_delta, repaired_maxcars_range_max, repaired_blksize_delta_range_min,
+     repaired_blksize_delta_range_delta, repaired_blksize_delta_range_max, repaired_usage_card_min,
+     repaired_usage_card_delta, repaired_usage_card_max]
+minimising
+    sum([|repaired_np_cars_plus - np_cars_plus|, |repaired_np_classes - np_classes|, |repaired_np_options - np_options|,
+         |repaired_quantity_range_min - quantity_range_min|, |repaired_quantity_range_delta - quantity_range_delta|,
+         |repaired_quantity_range_max - quantity_range_max|, |repaired_usage_card_min - usage_card_min|,
+         |repaired_usage_card_delta - usage_card_delta|, |repaired_usage_card_max - usage_card_max|,
+         |repaired_maxcars_range_min - maxcars_range_min|, |repaired_maxcars_range_delta - maxcars_range_delta|,
+         |repaired_maxcars_range_max - maxcars_range_max|, |blksize_delta_range_min - repaired_blksize_delta_range_min|,
+         |blksize_delta_range_delta - repaired_blksize_delta_range_delta|,
+         |blksize_delta_range_max - repaired_blksize_delta_range_max|;
+             int(1..1000)])
+such that
+    min([200, repaired_np_classes + repaired_np_cars_plus; int(1..2)]) >= repaired_np_classes,
+    allDiff([200, repaired_np_classes + repaired_np_cars_plus; int(1..2)]),
+    repaired_quantity_range_min <= repaired_quantity_range_max,
+    repaired_quantity_range_min * repaired_np_classes <=
+    min([200, repaired_np_classes + repaired_np_cars_plus; int(1..2)]),
+    (repaired_quantity_range_min + repaired_quantity_range_delta) * repaired_np_classes >=
+    min([200, repaired_np_classes + repaired_np_cars_plus; int(1..2)]),
+    repaired_usage_card_min + repaired_usage_card_delta <= repaired_np_classes * repaired_np_options,
+    repaired_usage_card_min >= repaired_np_options,
+    repaired_usage_card_min >= repaired_np_classes,
+    repaired_maxcars_range_min <= repaired_maxcars_range_max,
+    repaired_blksize_delta_range_min <= repaired_blksize_delta_range_max,
+    repaired_usage_card_min <= repaired_usage_card_max
+
+$ Conjure's
+$ {"finds":
+$      [{"Name": "repaired_np_cars_plus"}, {"Name": "repaired_np_classes"}, {"Name": "repaired_np_options"},
+$       {"Name": "repaired_quantity_range_min"}, {"Name": "repaired_quantity_range_delta"},
+$       {"Name": "repaired_quantity_range_max"}, {"Name": "repaired_maxcars_range_min"},
+$       {"Name": "repaired_maxcars_range_delta"}, {"Name": "repaired_maxcars_range_max"},
+$       {"Name": "repaired_blksize_delta_range_min"}, {"Name": "repaired_blksize_delta_range_delta"},
+$       {"Name": "repaired_blksize_delta_range_max"}, {"Name": "repaired_usage_card_min"},
+$       {"Name": "repaired_usage_card_delta"}, {"Name": "repaired_usage_card_max"}],
+$  "givens":
+$      [{"Name": "np_cars_plus"}, {"Name": "np_classes"}, {"Name": "np_options"}, {"Name": "quantity_range_min"},
+$       {"Name": "quantity_range_delta"}, {"Name": "quantity_range_max"}, {"Name": "maxcars_range_min"},
+$       {"Name": "maxcars_range_delta"}, {"Name": "maxcars_range_max"}, {"Name": "blksize_delta_range_min"},
+$       {"Name": "blksize_delta_range_delta"}, {"Name": "blksize_delta_range_max"}, {"Name": "usage_card_min"},
+$       {"Name": "usage_card_delta"}, {"Name": "usage_card_max"}],
+$  "enumGivens": [], "enumLettings": [], "lettings": [], "unnameds": [], "strategyQ": {"PickFirst": []},
+$  "strategyA": {"Compact": []},
+$  "trailCompact":
+$      [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+$  "nameGenState": [], "nbExtraGivens": 0,
+$  "representations":
+$      [[{"Name": "repaired_np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "repaired_usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "repaired_usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}],
+$       [{"Name": "repaired_np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_usage_card_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "quantity_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}],
+$       [{"Name": "usage_card_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]],
+$  "representationsTree":
+$      [[{"Name": "blksize_delta_range_delta"}, [{"subForest": []}]],
+$       [{"Name": "blksize_delta_range_max"}, [{"subForest": []}]],
+$       [{"Name": "blksize_delta_range_min"}, [{"subForest": []}]],
+$       [{"Name": "maxcars_range_delta"}, [{"subForest": []}]], [{"Name": "maxcars_range_max"}, [{"subForest": []}]],
+$       [{"Name": "maxcars_range_min"}, [{"subForest": []}]], [{"Name": "np_cars_plus"}, [{"subForest": []}]],
+$       [{"Name": "np_classes"}, [{"subForest": []}]], [{"Name": "np_options"}, [{"subForest": []}]],
+$       [{"Name": "quantity_range_delta"}, [{"subForest": []}]], [{"Name": "quantity_range_max"}, [{"subForest": []}]],
+$       [{"Name": "quantity_range_min"}, [{"subForest": []}]],
+$       [{"Name": "repaired_blksize_delta_range_delta"}, [{"subForest": []}]],
+$       [{"Name": "repaired_blksize_delta_range_max"}, [{"subForest": []}]],
+$       [{"Name": "repaired_blksize_delta_range_min"}, [{"subForest": []}]],
+$       [{"Name": "repaired_maxcars_range_delta"}, [{"subForest": []}]],
+$       [{"Name": "repaired_maxcars_range_max"}, [{"subForest": []}]],
+$       [{"Name": "repaired_maxcars_range_min"}, [{"subForest": []}]],
+$       [{"Name": "repaired_np_cars_plus"}, [{"subForest": []}]], [{"Name": "repaired_np_classes"}, [{"subForest": []}]],
+$       [{"Name": "repaired_np_options"}, [{"subForest": []}]],
+$       [{"Name": "repaired_quantity_range_delta"}, [{"subForest": []}]],
+$       [{"Name": "repaired_quantity_range_max"}, [{"subForest": []}]],
+$       [{"Name": "repaired_quantity_range_min"}, [{"subForest": []}]],
+$       [{"Name": "repaired_usage_card_delta"}, [{"subForest": []}]],
+$       [{"Name": "repaired_usage_card_max"}, [{"subForest": []}]],
+$       [{"Name": "repaired_usage_card_min"}, [{"subForest": []}]], [{"Name": "usage_card_delta"}, [{"subForest": []}]],
+$       [{"Name": "usage_card_max"}, [{"subForest": []}]], [{"Name": "usage_card_min"}, [{"subForest": []}]]],
+$  "originalDomains":
+$      [[{"Name": "np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "quantity_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}],
+$       [{"Name": "usage_card_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "repaired_np_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_np_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_np_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 199]}}]}]]}],
+$       [{"Name": "repaired_quantity_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "repaired_maxcars_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "repaired_blksize_delta_range_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "repaired_usage_card_min"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "repaired_usage_card_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 99]}}]}]]}],
+$       [{"Name": "repaired_usage_card_max"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}]],
+$  "trailGeneralised":
+$      [[-6180656923487468850, -186660180348961625], [5821037952449198761, -1837351810458570233],
+$       [3426295886765622837, 64154530079602256], [6759807199946444322, 7183146978160436833],
+$       [7869630760117903716, 2803296083562921239], [2620942240988850777, -7083253858747447621],
+$       [1475137812261232339, 340607158986371139], [-3592232216300837701, -9037379569143351941],
+$       [1862380179171966157, -3061779709343085784], [-3606046108160435800, 5696671841639464874],
+$       [-1286754379179187340, 2353779461624131484], [7948021879650428813, 5895199506309167572],
+$       [-48269013140760806, 1225583718817894739], [-7069330420722329486, -3716534042114765879],
+$       [3255119650305606029, -9091328966865091726], [-489831044717055120, -3798617581276814845],
+$       [-5075584545215429941, -699922364460456934], [-5262699348534882893, -3571806017725136767],
+$       [-8017863929408887721, 2782785306576026268], [-508388841139235126, -590867199410163042],
+$       [-2660137947620144466, -5805363669042825404], [-8983903795177450164, -3571806017725136767],
+$       [-4908945335905856679, 2782785306576026268], [-3996317769026417309, -3646988825543986582],
+$       [-8810140779747036525, 6723576830879166005], [8747604442018225818, -3571806017725136767],
+$       [-5691523289794856342, 2782785306576026268], [4885004886394194658, 4526742905376376405],
+$       [-7297448464237030067, -3577916283058286900], [-2190042358551380767, -6221104096633770068],
+$       [-3480011191173666377, 3229913029497373742], [-5358732201041978135, 1079479603165923783],
+$       [-1971381983172373436, 4631208708765393761], [-5282791334118271711, 8423455424998863574],
+$       [2914688188000607958, -7882642953505993501], [-2913924794202601068, 346488967142619725],
+$       [7133160932189310982, 5337126744483062413], [1927308061737841392, -3729672346666749020],
+$       [9200703536952084661, 6509763766585342351], [-6007718353607535149, -5757894832410888948],
+$       [-4470022935646646418, -4144219066555207181], [-5529598328915067876, 6173313236024342453],
+$       [4762158018496324321, 3057215425568983936], [12320857378365447, -8067972957124625528],
+$       [-800175726447215910, -3103642060915903324], [3544410010297459117, 5743348900913768859],
+$       [840028477254383168, -1296025128869068142], [6983984547028440552, 4658878666353330349],
+$       [-1134201657708508027, -4715043980986361614], [-6877749342044826361, -6417278859745121907],
+$       [7369077862007475752, 326431140700210889], [8926617442956708106, 8628408627421713555],
+$       [7049608203560973539, 428562551126408528], [-4321750364910707498, 4892384277582751242],
+$       [4145350368250863184, -4127838527329375374], [-4932967058681607867, -485080017389194515],
+$       [4985847062133909243, 2552525299342021045]],
+$  "trailVerbose": [], "trailRewrites": []}

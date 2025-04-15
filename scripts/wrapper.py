@@ -249,6 +249,8 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
     print("\n")
     log("Solving " + instFile + "...")
 
+    print("testing")
+
     # solve the instance using each solver
     stop = False  # when to stop the evaluation early
     lsSolvingTime = {}  # solving time of each solver per random seed
@@ -1008,6 +1010,7 @@ def main():
             # .param files are used in essence
             # .dzn files are used in minizinc 
         es = setting["evaluationSettings"]
+        print("SETTINGS DICT: ", es)
         if experimentType == "graded":
             oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
             # only called for incomplete solvers, which aren't actually allowed yet
@@ -1015,6 +1018,22 @@ def main():
                 oracleSolver = "ortools"
                 oracleSolverFlags = "-f"
                 oracleSolverTimeLimit = 3600
+            print("*** evaluate_essence_instance_graded DEBUG INFO ***")
+            print(f"modelFile: problem.essence")
+            print(f"instFile: {instFile}")
+            print(f"unwantedTypes: {get_unwanted_types()}")
+            print(f"nEvaluations: {es['nEvaluations']}")
+            print(f"solver: {es['solver']}")
+            print(f"solverFlags: {es['solverFlags']}")
+            print(f"solverType: {es['solverType']}")
+            print(f"minTime: {es['minTime']}")
+            print(f"timeLimit: {es['totalTimeLimit']}")
+            print(f"initSeed: {seed}")
+            print(f"oracleSolver: {oracleSolver}")
+            print(f"oracleSolverFlags: {oracleSolverFlags}")
+            print(f"oracleSolverTimeLimit: {oracleSolverTimeLimit}")
+            print("****************************************************")
+
             score, instanceResults = evaluate_essence_instance_graded(
                 modelFile="problem.essence",            # 
                 instFile=instFile,                      # TODO: this is how the instfile was originaly passed, in think this is correct
@@ -1026,6 +1045,7 @@ def main():
                 minTime=es["minTime"],                  # correct
                 timeLimit=es["totalTimeLimit"],         # correct
                 initSeed=seed,                          # correct
+                solverTimeLimit=es["totalTimeLimit"],   # corresponds to max solver time, is called total time limit in dictionary
                 oracleSolver=oracleSolver,              # oracle isnt implemented yet, so ignoring
                 oracleSolverFlags=oracleSolverFlags,    #
                 oracleSolverTimeLimit=oracleSolverTimeLimit,  #
