@@ -917,6 +917,7 @@ def main():
 
     # read all setting
     setting = read_setting("./config.json")
+
     print(setting)
 
     # initialise run results
@@ -1009,7 +1010,7 @@ def main():
             # .param files are used in essence
             # .dzn files are used in minizinc 
         es = setting["evaluationSettings"]
-        print("SETTINGS DICT: ", es)
+        print("NEW SETTINGS DICT AGAIN: ", setting)
         if experimentType == "graded":
             oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
             # only called for incomplete solvers, which aren't actually allowed yet
@@ -1033,6 +1034,8 @@ def main():
             print(f"oracleSolverTimeLimit: {oracleSolverTimeLimit}")
             print("****************************************************")
 
+            print("THE SR TIME LIMIT IS: ", es['SRTimeLimit'])
+
             score, instanceResults = evaluate_essence_instance_graded(
                 modelFile="problem.essence",            # 
                 instFile=instFile,                      # TODO: this is how the instfile was originaly passed, in think this is correct
@@ -1043,7 +1046,7 @@ def main():
                 solverType=es["solverType"],            # correct
                 minTime=es["minTime"],                  # correct
                 timeLimit=es["totalTimeLimit"],         # correct
-                # SRTimeLimit=es["SRTimeLimit"],         # correct
+                SRTimeLimit=es["SRTimeLimit"],         # correct
                 initSeed=seed,                          # correct
                 oracleSolver=oracleSolver,              # oracle isnt implemented yet, so ignoring
                 oracleSolverFlags=oracleSolverFlags,    #

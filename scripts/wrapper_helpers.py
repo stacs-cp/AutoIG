@@ -53,6 +53,7 @@ def read_setting(settingFile):
             c["evaluationSettings"]["solverType"] = "complete"
         c["evaluationSettings"]["minTime"] = setting["minSolverTime"]
         c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
+        c["evaluationSettings"]["SRTimeLimit"] = setting["SRTimeLimit"]
         c["evaluationSettings"]["totalTimeLimit"] = setting["maxSolverTime"]
     else:
         c["evaluationSettings"][

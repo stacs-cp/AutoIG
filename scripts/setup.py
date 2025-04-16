@@ -41,6 +41,7 @@ def read_config(args):
         "instanceValidTypes",
         "minSolverTime",
         "maxSolverTime",
+        "SRTimeLimit",
         "nRunsPerInstance",
     ]
 
@@ -341,6 +342,14 @@ def main():
         required=True,
         type=int,
         help="time limit when solving an instance (in seconds)",
+    )
+
+
+    parser.add_argument(
+        "--SRTimeLimit",
+        default=0,
+        type=int,
+        help="Time limit of SR for instance solving (in seconds)",
     )
     parser.add_argument(
         "--nRunsPerInstance", default=1, type=int, help="number of runs per instance"
