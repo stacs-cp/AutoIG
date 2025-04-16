@@ -2,7 +2,6 @@ import os
 import sys
 import time
 import glob
-import json
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -65,67 +64,6 @@ solverInfo["kissat"] = {
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
 }
-solverInfo["or-tools"] = {
-    "timelimitUnit": "s",
-    "timelimitPrefix": "-t ",
-    "randomSeedPrefix": "--fz_seed=",
-}
-
-
-def get_essence_problem_type(modelFile: str):
-    """
-    Read an Essence model and return its type (MIN/MAX/SAT)
-    Uses the conjure pretty print feature, then interprets the generated JSON
-    """
-    cmd = f"conjure pretty {modelFile} --output-format=astjson"
-    results_dict = run_cmd(cmd)
-    try:
-        parsed_json = json.loads(results_dict[0])
-    except json.JSONDecodeError as e:
-        print("Failed to parse JSON:", e)
-        exit()
-
-    # Now check for the Maximising objective recursively
-    def check_type(data):
-        if isinstance(data, dict):
-            for key, value in data.items():
-                if key == "Objective" and isinstance(value, list):
-                    if value[0] == "Maximising":
-                        return "MAX"
-                    elif value[0] == "Minimising":
-                        return "MIN"
-                result = check_type(value)
-                if result in ("MAX", "MIN"):
-                    return result
-        elif isinstance(data, list):
-            for item in data:
-                result = check_type(item)
-                if result in ("MAX", "MIN"):
-                    return result
-        return "SAT"
-
-    return check_type(parsed_json)
-
-# can parse it using conjure, can do conjure pretty AST format using json
-# that gives us a json document, which gives us a parse tree, 
-# then i can see if i have an objective statement at the top level 
-# The AST json 
-# can look at the oxide repository for an example
-# Lea is implementing a parser 
-# can complain on Github 
-
-
-# look at conjure_oxide/src/utils/conjure.rs prase essence file function 
-    # if find_str("minimising"):
-    #     return "MIN"
-    # if find_str("maximising"):
-    #     return "MAX"
-    # if find_str("satisfy"):
-    #     return "SAT"
-    # print("ERROR: cannot determine problem type of " + modelFile)
-    # sys.exit(1)
-    # return None
-
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
@@ -163,10 +101,6 @@ def savilerow_translate(
         + " "
         + flags
     )
-    # print("THE COMMAND IS RIGHT HERE ***************")
-    # print(cmd)
-    # print("THE COMMAND IS RIGHT HERE ***************")
-
     log(cmd)
 
     start = time.time()
@@ -365,7 +299,7 @@ def make_conjure_solve_command(
     SRFlags="",
     solverTimeLimit=0,
     solverFlags="",
-    seed=None, # no seed as default
+    seed=None,
 ):
     # temporary files that will be removed
     lsTempFiles = []
@@ -438,19 +372,12 @@ def make_conjure_solve_command(
 
     return conjureCmd, lsTempFiles
 
-# Changed to take in the paramters directly, rather than through a provided settings dictionary
-# TODO where does essenceModelFile and eprimeModelFile come from 
-def call_conjure_solve(
-        essenceModelFile: str, 
-        eprimeModelFile: str, 
-        instFile: str, 
-        solver: str, 
-        SRTimeLimit, 
-        SRFlags, 
-        solverTimeLimit, 
-        solverFlags, 
-        seed):
 
+def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, seed):
+    if "name" in setting:
+        solver = setting["name"]
+    elif "solver" in setting:
+        solver = setting["solver"]
     lsTempFiles = []
 
     # make conjure solve command line
@@ -459,10 +386,10 @@ def call_conjure_solve(
         eprimeModelFile,
         instFile,
         solver,
-        SRTimeLimit,
-        SRFlags,
-        solverTimeLimit,
-        solverFlags,
+        setting["SRTimeLimit"],
+        setting["SRFlags"],
+        setting["solverTimeLimit"],
+        setting["solverFlags"],
         seed,
     )
     lsTempFiles.extend(tempFiles)
@@ -491,7 +418,7 @@ def call_conjure_solve(
     ):
         status = "solverMemOut"
     elif ("Sub-process exited with error code:139" in cmdOutput) and (
-        setting["abortIfSolverCrash"] is False  # TODO This is deprecated, but not sure what to replace with
+        setting["abortIfSolverCrash"] is False
     ):
         status = "solverCrash"
     elif returnCode != 0:
@@ -554,7 +481,7 @@ def call_conjure_solve(
 
         # parse SR info file
         infoStatus, SRTime, solverTime = parse_SR_info_file(
-            infoFile, timelimit=solverTimeLimit
+            infoFile, timelimit=setting["solverTimeLimit"]
         )
         if status != "solverCrash":
             status = infoStatus

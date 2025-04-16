@@ -1,4 +1,3 @@
-#!/bin/bash
 name="picat"
 version="9.2"
 
@@ -6,7 +5,7 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # minizinc must be installed before picat
 if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
@@ -26,7 +25,7 @@ else
     exit 1
 fi
 
-mkdir -p $name
+mkdir -p $name 
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR
@@ -40,8 +39,7 @@ d="Picat"
 cp -r $d/lib $d/picat $BIN_DIR/$name/ # TODO: check the macos version
 
 # download picat flatzinc intepreter
-wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip
-unzip main.zip
+wget https://github.com/nfzhou/fzn_picat/archive/refs/heads/main.zip; unzip main.zip
 #wget https://github.com/hakank/fzn_picat/archive/6a12883ace8ab7b4cf94419af5a40139c105a005.zip; unzip 6a12883ace8ab7b4cf94419af5a40139c105a005.zip; mv fzn_picat-6a12883ace8ab7b4cf94419af5a40139c105a005 fzn_picat-main/
 cp -r fzn_picat-main/mznlib $BIN_DIR/minizinc/share/minizinc/$name
 cp fzn_picat-main/*.pi $BIN_DIR/$name/

@@ -1,6 +1,4 @@
 # get current script's folder
-
-# Flagvp: this causes some issues with running AutoIG inside the GitHub VM, which uses sh but calls it from a dif script
 if [ -n "$ZSH_VERSION" ]; then
     BIN_DIR="$( cd "$( dirname "${(%):-%x}" )" &> /dev/null && pwd )"
 elif [ -n "$BASH_VERSION" ]; then
@@ -44,6 +42,3 @@ export PATH=$BIN_DIR/picat/:$PATH
 
 # runsolver
 export PATH=$BIN_DIR/runsolver/src/:$PATH
-
-# Setting ortools path using path set script
-$BIN_DIR/update-or-path.sh
