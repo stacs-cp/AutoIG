@@ -1,0 +1,18 @@
+{"computer": "eb6af18f1c49",
+ "conjureVersion": "Conjure v2.5.1 (Repository version b988be2 (2025-03-24 22:07:42 +0000))",
+ "essence": "./problem.essence", "essenceParams": ["./detailed-output/inst-25-929397434.param"], "runsolverInfo": {},
+ "savilerowInfo":
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "25.531", "SolverFailures": "13888",
+      "SolverNodes": "38338", "SolverSatisfiable": "0", "SolverTimeOut": "1", "SolverTotalTime": "5.679"},
+ "savilerowLogs":
+     {"exitCode": 0,
+      "stdout":
+          ["Created output file for domain filtering ./detailed-output/problem-inst-25-929397434.eprime-minion",
+           "Created output file ./detailed-output/problem-inst-25-929397434.eprime-param.fzn",
+           "Solver exited with error code:0 and message:",
+           "[WARNING: the --time-out flag has recently been changed.The time-out is now provided in milliseconds instead of seconds]",
+           "Created information file ./detailed-output/problem-inst-25-929397434.eprime-info"]},
+ "savilerowOptions": [" "],
+ "savilerowVersion": "Savile Row 1.10.0 (Repository Version: 1aded299f (2024-03-10 10:56:22 +0000))",
+ "solver": "chuffed", "solverOptions": ["-t 5000 --rnd-seed 929397434 -f"], "status": "TimeOut",
+ "timestamp": "2025-04-16T14:17:46.236154585Z", "totalTime": 31.21, "useExistingModels": ["problem.eprime"]}

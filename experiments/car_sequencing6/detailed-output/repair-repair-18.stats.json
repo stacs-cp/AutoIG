@@ -1,0 +1,18 @@
+{"computer": "eb6af18f1c49",
+ "conjureVersion": "Conjure v2.5.1 (Repository version b988be2 (2025-03-24 22:07:42 +0000))",
+ "essence": "repair.essence", "essenceParams": ["./detailed-output//repair-18.param"], "runsolverInfo": {},
+ "savilerowInfo":
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "0.292", "SolverNodes": "691",
+      "SolverSatisfiable": "1", "SolverSetupTime": "0.011994", "SolverSolutionsFound": "286",
+      "SolverSolveTime": "0.005732", "SolverTimeOut": "0", "SolverTotalTime": "0.03752"},
+ "savilerowLogs":
+     {"exitCode": 0,
+      "stdout":
+          ["Created output file for domain filtering ./detailed-output/repair-repair-18.eprime-minion",
+           "Created output file ./detailed-output/repair-repair-18.eprime-minion",
+           "Created information file ./detailed-output/repair-repair-18.eprime-info"]},
+ "savilerowOptions": [],
+ "savilerowVersion": "Savile Row 1.10.0 (Repository Version: 1aded299f (2024-03-10 10:56:22 +0000))",
+ "solver": "minion", "solverOptions": ["-timelimit 120 -varorder domoverwdeg -randomiseorder -randomseed 18 "],
+ "status": "OK", "timestamp": "2025-04-16T14:07:28.062344132Z", "totalTime": 0.33,
+ "useExistingModels": ["repair.eprime"]}
