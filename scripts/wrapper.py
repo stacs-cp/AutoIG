@@ -66,7 +66,6 @@ def evaluate_essence_instance_graded(
     initSeed: int = None, # present for mzn 
     SRTimeLimit: int = 0, # same default as provided in make_conjure_solve_command previously 
     SRFlags: str = "",  # same default as povideed in make_conjure_solve command previously
-    solverTimeLimit: int = 0, # same default as provided in the make_conjure_solve command previously
     oracleSolver: str = None,
     oracleSolverFlags: str = "-f",
     oracleSolverTimeLimit: int = 3600,
@@ -165,7 +164,7 @@ def evaluate_essence_instance_graded(
         # this has both essenceModelFile, and eprimeModelFile, rather than just modelFile like minizinc
         # there is also two time limits, theres SRTimeLimit and solverTimeLimit
         runStatus, SRTime, solverTime = call_conjure_solve(
-            essenceModelFile, eprimeModelFile, instFile, solver, SRTimeLimit, SRFlags, solverTimeLimit, solverFlags, seed
+            essenceModelFile, eprimeModelFile, instFile, solver, SRTimeLimit, SRFlags, timeLimit, solverFlags, seed
         )
 
         # Append each iteration to the runs directory
@@ -1044,8 +1043,8 @@ def main():
                 solverType=es["solverType"],            # correct
                 minTime=es["minTime"],                  # correct
                 timeLimit=es["totalTimeLimit"],         # correct
+                # SRTimeLimit=es["SRTimeLimit"],         # correct
                 initSeed=seed,                          # correct
-                solverTimeLimit=es["totalTimeLimit"],   # corresponds to max solver time, is called total time limit in dictionary
                 oracleSolver=oracleSolver,              # oracle isnt implemented yet, so ignoring
                 oracleSolverFlags=oracleSolverFlags,    #
                 oracleSolverTimeLimit=oracleSolverTimeLimit,  #
