@@ -216,7 +216,24 @@ def evaluate_essence_instance_graded(
     return score, get_results()
 
 
-def evaluate_essence_instance_discriminating(instFile, seed, setting):
+def evaluate_essence_instance_discriminating(
+    # instFile, 
+    # seed, 
+    # setting
+    modelFile: str,
+    instFile: str, 
+    scoringMethod: str = "complete",
+    unwantedTypes: list = [],
+    nEvaluations: int = 1,
+    baseSolver: str = "ortools",
+    baseSolverFlags: str = "-f",
+    baseMinTime: int = 0,
+    favouredSolver: str = "yuck",
+    favouredSolverFlags: str = "-f",
+    totalTimeLimit: int = 1200,
+    initSeed: int = None, 
+    totalMemLimit=8192,
+):
     # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
     # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
 
@@ -1057,7 +1074,21 @@ def main():
             )
         else: 
             #TODO implement for discriminating
-            evaluate_essence_instance_discriminating()
+            score, instanceResults = evaluate_essence_instance_discriminating(
+                modelFile="problem.essence",
+                instFile=instFile,
+                unwantedTypes=get_unwanted_types(),
+                nEvaluations=es['nEvaluations'],
+                baseSolver=
+                baseSolverFlags=
+                baseMinTime=
+                favouredSolver=
+                favouredSolverFlags=
+                totalTimeLimit=
+                initSeed=
+                totalMemLimit=
+
+            )
     else:
         # convert the generated instance into .dzn
         mznInstFile = instFile.replace(".param", ".dzn")
