@@ -238,7 +238,7 @@ def evaluate_essence_instance_discriminating(
     # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
 
     # Seeing what specifically is in this settings dictionary
-    print(setting)
+    print("setting********", setting)
     """evaluate a generated instance based on discriminating power with two solvers ###
     " NOTE:
     " - this function can be improved using parallelisation, as there are various cases in the scoring where runs can be safely terminated before they finished. Things to consider
