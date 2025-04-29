@@ -222,7 +222,7 @@ def evaluate_essence_instance_discriminating(
     # setting
     modelFile: str,
     instFile: str, 
-    scoringMethod: str = "complete",
+    # scoringMethod: str = "complete",
     unwantedTypes: list = [],
     nEvaluations: int = 1,
     baseSolver: str = "ortools",
@@ -233,12 +233,17 @@ def evaluate_essence_instance_discriminating(
     totalTimeLimit: int = 1200,
     initSeed: int = None, 
     totalMemLimit=8192,
+    SRTimeLimit: int = 0,
+    SRFlags: str = "",  # same default as povideed in make_conjure_solve command previously
+    gradedTypes: str = "",
+    # solverTimeLimit: int = 0,   #temporary replacement for totalTimeLimt
+
 ):
     # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
     # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
 
     # Seeing what specifically is in this settings dictionary
-    print("setting********", setting)
+    # print("setting********", setting)
     """evaluate a generated instance based on discriminating power with two solvers ###
     " NOTE:
     " - this function can be improved using parallelisation, as there are various cases in the scoring where runs can be safely terminated before they finished. Things to consider
@@ -261,10 +266,24 @@ def evaluate_essence_instance_discriminating(
     score = None
     results = {}
 
-    def get_results():
-        results["score"] = score
-        results["status"] = status
+    # def get_results():
+    #     results["score"] = score
+    #     results["status"] = status
 
+    def get_results():
+        assert (score is not None) and (
+            status is not None
+        ), "ERROR: score/status is missing"
+        rs = {
+            "instance": instFile,
+            "status": status,
+            "score": score,
+            "results": results,
+        }
+        # print("\n",rs)
+        return rs
+
+        
     print("\n")
     log("Solving " + instFile + "...")
 
@@ -275,33 +294,46 @@ def evaluate_essence_instance_discriminating(
     lsSolvingTime = {}  # solving time of each solver per random seed
     lsSolvingTime["favouredSolver"] = []
     lsSolvingTime["baseSolver"] = []
-    for i in range(setting["nEvaluations"]):
-        rndSeed = seed + i
+    for i in range(nEvaluations):
+        rndSeed = initSeed + i
 
         status = "ok"
+        solverSetting = {}
+        current_solver = None
         for solver in ["favouredSolver", "baseSolver"]:
-            solverSetting = setting[solver]
-            print(
-                "\n\n---- With random seed "
-                + str(i)
-                + "th ("
-                + str(rndSeed)
-                + ") and solver "
-                + solverSetting["name"]
-                + " ("
-                + solver
-                + ")"
-            )
 
+            if solver == favouredSolver:
+                solverSetting = favouredSolverFlags
+                current_solver  = favouredSolver
+
+            else:
+                solverSetting = baseSolverFlags
+                current_solver  = baseSolver
+
+            # solverSetting = str(solver) + "Flags"
+            print("Solversetting: ", solverSetting)
+            # print(
+            #     "\n\n---- With random seed "
+            #     + str(i)
+            #     + "th ("
+            #     + str(rndSeed)
+            #     + ") and solver "
+            #     + solverSetting["name"]
+            #     + " ("
+            #     + solver
+            #     + ")"
+            # )
+
+            print("reaching conjure solve point")
             runStatus, SRTime, solverTime = call_conjure_solve(
-                essenceModelFile, eprimeModelFile, instFile, solverSetting, rndSeed
+                essenceModelFile, eprimeModelFile, instFile, current_solver, SRTimeLimit, SRFlags, totalTimeLimit, solverSetting, rndSeed
             )
             localVars = locals()
             log(
                 "\nRun results: solverType="
                 + solver
                 + ", solver="
-                + solverSetting["name"]
+                + solverSetting
                 + ", instance="
                 + instance
                 + ", runId="
@@ -320,9 +352,9 @@ def evaluate_essence_instance_discriminating(
             # ------------ update score
             # inst unwanted type: score=1
             if (
-                (setting["gradedTypes"] != "both")
+                (gradedTypes != "both")
                 and (runStatus in ["sat", "unsat"])
-                and (runStatus != setting["gradedTypes"])
+                and (runStatus != gradedTypes)
             ):
                 print("\nunwanted instance type. Quitting!...")
                 score = 1
@@ -406,6 +438,9 @@ def evaluate_essence_instance_discriminating(
     )
     print(s)
 
+    print("returning score and get_results: ")
+    print("score: ", score)
+    print("results: ", get_results());
     return score, get_results()
 
 
@@ -1038,23 +1073,6 @@ def main():
                 oracleSolver = "ortools"
                 oracleSolverFlags = "-f"
                 oracleSolverTimeLimit = 3600
-            print("*** evaluate_essence_instance_graded DEBUG INFO ***")
-            print(f"modelFile: problem.essence")
-            print(f"instFile: {instFile}")
-            print(f"unwantedTypes: {get_unwanted_types()}")
-            print(f"nEvaluations: {es['nEvaluations']}")
-            print(f"solver: {es['solver']}")
-            print(f"solverFlags: {es['solverFlags']}")
-            print(f"solverType: {es['solverType']}")
-            print(f"minTime: {es['minTime']}")
-            print(f"timeLimit: {es['totalTimeLimit']}")
-            print(f"initSeed: {seed}")
-            print(f"oracleSolver: {oracleSolver}")
-            print(f"oracleSolverFlags: {oracleSolverFlags}")
-            print(f"oracleSolverTimeLimit: {oracleSolverTimeLimit}")
-            print("****************************************************")
-
-            print("THE SR TIME LIMIT IS: ", es['SRTimeLimit'])
 
             score, instanceResults = evaluate_essence_instance_graded(
                 modelFile="problem.essence",            # 
@@ -1074,6 +1092,7 @@ def main():
             )
         else: 
             #TODO implement for discriminating
+            print("************** printing es", es)
             score, instanceResults = evaluate_essence_instance_discriminating(
                 modelFile="problem.essence",
                 instFile=instFile,
@@ -1084,10 +1103,15 @@ def main():
                 baseMinTime=es["baseSolver"]["solverMinTime"],
                 favouredSolver=es["favouredSolver"]["name"],
                 favouredSolverFlags=es["favouredSolver"]["solverFlags"],
+                # timeLimit=es["totalTimeLimit"],         # correct
                 totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
                 initSeed=seed,
-                # totalMemLimit=
+                gradedTypes=es["gradedTypes"],
+                # SRTimeLimit=es["SRTimeLimit"],         # correct
+                # SRFlags=es["SRTimeLimit"],         # correct
 
+
+                # totalMemLimit=
             )
     else:
         # convert the generated instance into .dzn
@@ -1140,7 +1164,9 @@ def main():
                 oracleSolverTimeLimit=oracleSolverTimeLimit,
             )
 
+    
     results["instanceResults"] = instanceResults
+    print("instance results *******", instanceResults)
     status = instanceResults["status"]
 
     # add the generated instance into generator's minion negative table, so that next time when we solve this generator instance again we don't re-generate the same instance
