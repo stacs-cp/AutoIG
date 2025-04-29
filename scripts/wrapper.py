@@ -1079,14 +1079,14 @@ def main():
                 instFile=instFile,
                 unwantedTypes=get_unwanted_types(),
                 nEvaluations=es['nEvaluations'],
-                baseSolver=
-                baseSolverFlags=
-                baseMinTime=
-                favouredSolver=
-                favouredSolverFlags=
-                totalTimeLimit=
-                initSeed=
-                totalMemLimit=
+                baseSolver=es["baseSolver"]["name"],
+                baseSolverFlags=es["baseSolver"]["solverFlags"],
+                baseMinTime=es["baseSolver"]["solverMinTime"],
+                favouredSolver=es["favouredSolver"]["name"],
+                favouredSolverFlags=es["favouredSolver"]["solverFlags"],
+                totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
+                initSeed=seed,
+                # totalMemLimit=
 
             )
     else:
