@@ -255,6 +255,28 @@ def evaluate_essence_instance_discriminating(
     # In minizinc pipeline here there was another OR-tools check, no need here, theres no objective function
     baseScores = []
     favouredScores = []
+    for i in range(nEvaluations):
+        baseResults = results["base"]["runs"][i]
+        favouredResults = results["favoured"]["runs"][i]
+
+        # baseScores.append
+
+
+
+
+    if favouredSum == 0:
+        score = 0
+    elif baseSum == 0:
+        assert (
+            favouredSum == nEvaluations
+            # the best kind of instance possible, where base fails andfavoured succeeds
+            
+        )
+        score = conf.SCORE_BEST
+
+
+    status = "ok"
+    return score, get_results()
     # here other pipeline calculates "minizinc borda scores"
     # TODO not sure if im supposd to replicate that or what, but can try
 
@@ -262,51 +284,51 @@ def evaluate_essence_instance_discriminating(
 
             # ------------ update score
             # inst unwanted type: score=1
-            if (
-                (gradedTypes != "both")
-                and (runStatus in ["sat", "unsat"])
-                and (runStatus != gradedTypes)
-            ):
-                print("\nunwanted instance type. Quitting!...")
-                score = 1
-                stop = True
-                status = "unwantedType"
-                break
-            # SR timeout or SR memout: score=1
-            if runStatus in ["SRTimeOut", "SRMemOut"]:
-                print(
-                    "\nSR timeout/memout while translating the instance. Quitting!..."
-                )
-                score = 1
-                stop = True
-                status = runStatus
-                break
-            # solver crashes
-            if runStatus == "solverCrash":
-                print("\nsolver crashes. Quitting!...")
-                score = 1
-                stop = True
-                status = runStatus
-                break
-            # favoured solver timeout (any run) or base solver too easy (any run): score=0
-            if (solver == "favouredSolver") and (runStatus == "solverTimeOut"):
-                print("\nfavoured solver timeout. Quitting!...")
-                score = 0
-                stop = True
-                status = "favouredTimeOut"
-                break
-            if (solver == "baseSolver") and (
-                solverTime < solverSetting["solverMinTime"]
-            ):
-                print("\ntoo easy run for base solver. Quitting!...")
-                score = 0
-                stop = True
-                status = "baseTooEasy"
-                break
+        #     if (
+        #         (gradedTypes != "both")
+        #         and (runStatus in ["sat", "unsat"])
+        #         and (runStatus != gradedTypes)
+        #     ):
+        #         print("\nunwanted instance type. Quitting!...")
+        #         score = 1
+        #         stop = True
+        #         status = "unwantedType"
+        #         break
+        #     # SR timeout or SR memout: score=1
+        #     if runStatus in ["SRTimeOut", "SRMemOut"]:
+        #         print(
+        #             "\nSR timeout/memout while translating the instance. Quitting!..."
+        #         )
+        #         score = 1
+        #         stop = True
+        #         status = runStatus
+        #         break
+        #     # solver crashes
+        #     if runStatus == "solverCrash":
+        #         print("\nsolver crashes. Quitting!...")
+        #         score = 1
+        #         stop = True
+        #         status = runStatus
+        #         break
+        #     # favoured solver timeout (any run) or base solver too easy (any run): score=0
+        #     if (solver == "favouredSolver") and (runStatus == "solverTimeOut"):
+        #         print("\nfavoured solver timeout. Quitting!...")
+        #         score = 0
+        #         stop = True
+        #         status = "favouredTimeOut"
+        #         break
+        #     if (solver == "baseSolver") and (
+        #         solverTime < solverSetting["solverMinTime"]
+        #     ):
+        #         print("\ntoo easy run for base solver. Quitting!...")
+        #         score = 0
+        #         stop = True
+        #         status = "baseTooEasy"
+        #         break
 
-        # evaluation is stopped as there's no need to test the rest
-        if stop:
-            break
+        # # evaluation is stopped as there's no need to test the rest
+        # if stop:
+        #     break
 
     # if nothing is stop prematurely, calculate mean solving time & ratio, and update score
     ratio = 0

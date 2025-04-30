@@ -253,8 +253,12 @@ def evaluate_mzn_instance_discriminating(
         print("bordascores****")
         print(bordaScores)
         sc = bordaScores[scoringMethod]
+        print("sc: ", sc)
         baseScores.append(sc[0])
         favouredScores.append(sc[1])
+        print("sc 0 is: ", sc[0])
+        print("sc 1 is: ", sc[1])
+
 
     # summarise over all runs
     baseSum = sum(baseScores)
@@ -267,7 +271,7 @@ def evaluate_mzn_instance_discriminating(
         assert (
             favouredSum == nEvaluations
         )  # the best type of instance we can achieve, where the base solver fails and the favoured solver succeeds
-        score = -99999
+        score = conf.SCORE_BEST
     else:
         score = (
             -favouredSum / baseSum
