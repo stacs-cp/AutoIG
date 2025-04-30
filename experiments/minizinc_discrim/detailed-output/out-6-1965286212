@@ -1,0 +1,15 @@
+2025-04-30 20:15:03: /AutoIG/scripts/wrapper.py 6 1 1965286212 dummy -Ag 1 -Tg 10 -Xg 5 -Zg 2 -ground_coverage 19 -avg_height_ratio 73
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/AutoIG/experiments/minizinc_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2025-04-30 20:15:03: Creating generator instance: ./detailed-output/gen-inst-6.param
+2025-04-30 20:15:03: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-6.param --eprime-param=./detailed-output/gen-inst-6.eprime-param
+2025-04-30 20:15:03: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-6.eprime-param -out-aux ./detailed-output/gen-inst-6.aux -out-minion ./detailed-output/gen-inst-6.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2025-04-30 20:15:05: minion ./detailed-output/gen-inst-6.minion -solsout ./detailed-output/gen-inst-6.solution -randomseed 1965286212 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2025-04-30 20:15:05: 
+Generator results: genInstance=gen-inst-6, genStatus=unsat, genSRTime=1.408358097076416, genSolverTime=0.035439252853393555
+No instance file generated. Exitting...
+{'totalTime': 1.8256430625915527, 'genResults': {'instance': 'gen-inst-6.param', 'status': 'unsat', 'seed': 1965286212, 'SRTime': 1.408358097076416, 'solverTime': 0.035439252853393555}, 'instanceResults': {}, 'status': 'genunsat', 'score': 'Inf'}
+Inf 1.83
