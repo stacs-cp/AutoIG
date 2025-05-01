@@ -1,6 +1,6 @@
 import os, random, time
 from utils import log
-from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type
+from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type, calculate_essence_borda_scores
 import copy
 import conf
 
@@ -106,13 +106,13 @@ def evaluate_essence_instance_discriminating(
     # solve the instance using each solver
     stop = False  # when to stop the evaluation early
     lsSolvingTime = {}  # solving time of each solver per random seed
-    lsSolvingTime["favouredSolver"] = []
-    lsSolvingTime["baseSolver"] = []
+    lsSolvingTime["favoured"] = []
+    lsSolvingTime["base"] = []
 
     for solverType in ["favouredSolver", "baseSolver"]:
         solved = False
 
-        if solver == favouredSolver:
+        if solverType == "favouredSolver":
             solverSetting = favouredSolverFlags
             current_solver  = favouredSolver
 
@@ -142,16 +142,16 @@ def evaluate_essence_instance_discriminating(
                 #     + solver
                 #     + ")"
                 # )
-            if i > 0:
-                assert len(results[solverType]["runs"]) > 0
-                flattenStatus = results[solverType]["runs"][0]["extra"]["flattenStatus"]
-                if (info[solverType]["name"] in conf.deterministicSolvers) or (
-                    flattenStatus != "ok"
-                ):
-                    r = copy.deepcopy(results[solverType]["runs"][0])
-                    r["seed"] = rndSeed
-                    results[solverType]["runs"].append(r)
-                    continue
+            # if i > 0:
+            #     assert len(results[solverType]["runs"]) > 0
+            #     flattenStatus = results[solverType]["runs"][0]["extra"]["flattenStatus"]
+            #     if (info[solverType]["name"] in conf.deterministicSolvers) or (
+            #         flattenStatus != "ok"
+            #     ):
+            #         r = copy.deepcopy(results[solverType]["runs"][0])
+            #         r["seed"] = rndSeed
+            #         results[solverType]["runs"].append(r)
+            #         continue
 
 
             print("reaching conjure solve point")
@@ -166,7 +166,7 @@ def evaluate_essence_instance_discriminating(
             # Different because of the different results reutrned by SRpipeline
             if runStatus in ["sat", "nsat"]:
                 if instanceType is None:
-                    instanceType = status
+                    instanceType = runStatus
                     assert instanceType in ["sat", "nsat"]
                     solved = True
 
@@ -196,13 +196,13 @@ def evaluate_essence_instance_discriminating(
                         if instanceType == correctedType:
                             solver = info[solverType]["name"]
                             print(
-                                f"WARNING: incorrect results by {solver} on {instFile} with seed {seed}. Results returned: {extra['instanceType']}, while chuffed returns {correctedType}"
+                                f"WARNING: incorrect results by {solver} on {instFile} with seed {rndSeed}. Chuffed returns {correctedType}"
                             )
                             runStatus = "ERR"
                         if status == correctedType:
                             for st in results.keys():
                                 for r in results[st]["runs"]:
-                                    if r["extra"]["instanceType"] == instanceType:
+                                    if r["status"] == instanceType:
                                         print(
                                             f"WARNING: incorrect results by {info[st]['name']} on {instFile} with seed {r['seed']}. Results returned: {r['extra']['instanceType']}, while chuffed returns {correctedType}"
                                         )
@@ -229,14 +229,14 @@ def evaluate_essence_instance_discriminating(
                 return score, get_results()
             
 
-        if (solverTYpe == "favoured") and (solved is False):
+        if (solverType == "favoured") and (solved is False):
             print("\nCannot be solved by favoured solver. Quitting...")
             score = conf.SCORE_FAVOURED_TOO_DIFFICULT
             status = "favouredTooDifficult"
             return score, get_results()            
 
     # check if the instance is too easy for the base solver
-    baseAvgTime = sum([r["time"] for r in results["base"]["runs"]]) / nEvaluations
+    baseAvgTime = sum([r["solverTime"] for r in results["base"]["runs"]]) / nEvaluations
     solvedByAllBaseRuns = True
     for r in results["base"]["runs"]:
         if r["status"] != "C":
@@ -258,12 +258,25 @@ def evaluate_essence_instance_discriminating(
     for i in range(nEvaluations):
         baseResults = results["base"]["runs"][i]
         favouredResults = results["favoured"]["runs"][i]
+        bordaScore = calculate_essence_borda_scores(
+            baseResults["status"],
+            favouredResults["status"],
+            baseResults["time"],
+            favouredResults["time"],
+            problemType,
+            # baseResults["extra"]["objs"],
+            # favouredResults["extra"]["objs"],
+            True,
+        )
+        # sc = bordaScore
+        baseScores.append(bordaScore[0])
+        favouredScores.append(bordaScore[1])
 
-        # baseScores.append
+    baseSum = sum(baseScores)
+    favouredSum = sum(favouredScores)
 
 
-
-
+    # we want to maximise favouredSum / baseSum
     if favouredSum == 0:
         score = 0
     elif baseSum == 0:
