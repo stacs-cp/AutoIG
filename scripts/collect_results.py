@@ -11,6 +11,7 @@ scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
 
 from minizinc_utils import calculate_minizinc_borda_scores, get_minizinc_problem_type
+from essence_pipeline_utils import get_essence_problem_type, calculate_essence_borda_scores
 
 pd.options.mode.chained_assignment = None
 
@@ -59,6 +60,7 @@ def read_data(runDir):
 
     # read instance hashsum
     tHs = pd.read_csv(hashSumFile)
+    print("the ths is: ", tHs)
 
     # add instance hashsum into tRs
     tRs = tRs.merge(tHs,on="instance", how="left")
@@ -78,6 +80,9 @@ def read_data(runDir):
             else:
                 return status
         tRs.loc[:,"status"] = [rename_status_dis(s[0],s[1]) for s in zip(tRs.status,tRs.score)]
+
+
+    print("pre replace: ", tRs)
         #display(tRs[tRs.status.str.contains("Wins")])
     
     # rename some columns and re-order the columns
@@ -100,6 +105,11 @@ def print_stats(config, tRs, tRsNoDup):
     
     # number of instances generated
     nInstances = len(tRsNoDup.instance.unique())
+    # nInstances = tRsNoDup['instance'].nunique()
+    print("the ninstances is: ", tRs)
+
+    print("the ninstances nodup is: ", tRsNoDup)
+
 
     # number of runs for each run status
     runStats = tRs.groupby('status').genResults.count().to_dict()
@@ -171,7 +181,18 @@ def extract_graded_and_discriminating_instances(runDir):
         # extract instance type
         tInfo.loc[:,"instanceType"] = [x["results"]["favoured"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
         # extract MiniZinc Borda score of the favoured and the base solvers
-        problemType = get_minizinc_problem_type(config["problemModel"])
+        print("about to try to get problem type", config["problemModel"])
+        if config["problemModel"].endswith('.essence'):
+            print("Problem model of type essence")
+            problemType = get_essence_problem_type(config["problemModel"])
+        elif config["problemModel"].endswith('.mzn'):
+            print("Problem model of type mzn")
+            problemType = get_minizinc_problem_type(config["problemModel"])
+        else:
+            print("Problem model type unknown, please try again")
+
+
+        print("just after getting problem type")
         def extract_minizinc_score(r):
             results = calculate_minizinc_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
                                        r['base']['runs'][0]['time'], r['favoured']['runs'][0]['time'],

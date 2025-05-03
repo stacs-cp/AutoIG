@@ -109,7 +109,7 @@ def evaluate_essence_instance_discriminating(
     lsSolvingTime["favoured"] = []
     lsSolvingTime["base"] = []
 
-    for solverType in ["favouredSolver", "baseSolver"]:
+    for solverType in ["favoured", "base"]:
         solved = False
 
         if solverType == "favouredSolver":
@@ -261,8 +261,8 @@ def evaluate_essence_instance_discriminating(
         bordaScore = calculate_essence_borda_scores(
             baseResults["status"],
             favouredResults["status"],
-            baseResults["time"],
-            favouredResults["time"],
+            baseResults["solverTime"],
+            favouredResults["solverTime"],
             problemType,
             # baseResults["extra"]["objs"],
             # favouredResults["extra"]["objs"],
@@ -286,106 +286,11 @@ def evaluate_essence_instance_discriminating(
             
         )
         score = conf.SCORE_BEST
+    else:
+        score = (
+            -favouredSum / baseSum
+        )
 
 
     status = "ok"
     return score, get_results()
-    # here other pipeline calculates "minizinc borda scores"
-    # TODO not sure if im supposd to replicate that or what, but can try
-
-            # lsSolvingTime[solver].append(solverTime)
-
-            # ------------ update score
-            # inst unwanted type: score=1
-        #     if (
-        #         (gradedTypes != "both")
-        #         and (runStatus in ["sat", "unsat"])
-        #         and (runStatus != gradedTypes)
-        #     ):
-        #         print("\nunwanted instance type. Quitting!...")
-        #         score = 1
-        #         stop = True
-        #         status = "unwantedType"
-        #         break
-        #     # SR timeout or SR memout: score=1
-        #     if runStatus in ["SRTimeOut", "SRMemOut"]:
-        #         print(
-        #             "\nSR timeout/memout while translating the instance. Quitting!..."
-        #         )
-        #         score = 1
-        #         stop = True
-        #         status = runStatus
-        #         break
-        #     # solver crashes
-        #     if runStatus == "solverCrash":
-        #         print("\nsolver crashes. Quitting!...")
-        #         score = 1
-        #         stop = True
-        #         status = runStatus
-        #         break
-        #     # favoured solver timeout (any run) or base solver too easy (any run): score=0
-        #     if (solver == "favouredSolver") and (runStatus == "solverTimeOut"):
-        #         print("\nfavoured solver timeout. Quitting!...")
-        #         score = 0
-        #         stop = True
-        #         status = "favouredTimeOut"
-        #         break
-        #     if (solver == "baseSolver") and (
-        #         solverTime < solverSetting["solverMinTime"]
-        #     ):
-        #         print("\ntoo easy run for base solver. Quitting!...")
-        #         score = 0
-        #         stop = True
-        #         status = "baseTooEasy"
-        #         break
-
-        # # evaluation is stopped as there's no need to test the rest
-        # if stop:
-        #     break
-
-    # if nothing is stop prematurely, calculate mean solving time & ratio, and update score
-    ratio = 0
-    if stop is False:
-        meanSolverTime_favouredSolver = np.mean(lsSolvingTime["favouredSolver"])
-        meanSolverTime_baseSolver = np.mean(lsSolvingTime["baseSolver"])
-        ratio = meanSolverTime_baseSolver / meanSolverTime_favouredSolver
-        # if minRatio is provided, use it
-        if setting["minRatio"] != 0:
-            score = max(-setting["minValue"], -ratio)
-        else:  # otherwise, simply use the current ratio
-            score = -ratio
-
-        print("\n\nMean solving time: ")
-        print(
-            "\t- Favoured solver: "
-            + str(np.round(meanSolverTime_favouredSolver, 2))
-            + "s"
-        )
-        print("\t- Base solver: " + str(np.round(meanSolverTime_baseSolver, 2)) + "s")
-        print("\t- Ratio: " + str(np.round(ratio, 2)))
-
-    # print summary for later analysis
-    favouredSolverTotalTime = baseSolverTotalTime = 0
-    if len(lsSolvingTime["favouredSolver"]) > 0:
-        favouredSolverTotalTime = sum(lsSolvingTime["favouredSolver"])
-    if len(lsSolvingTime["baseSolver"]) > 0:
-        baseSolverTotalTime = sum(lsSolvingTime["baseSolver"])
-    s = (
-        "\nInstance summary: instance="
-        + instance
-        + ", status="
-        + status
-        + ", favouredSolverTotalTime="
-        + str(favouredSolverTotalTime)
-        + ", baseSolverTotalTime="
-        + str(baseSolverTotalTime)
-        + ", ratio="
-        + str(ratio)
-    )
-    print(s)
-
-    print("returning score and get_results: ")
-    print("score: ", score)
-    print("results: ", get_results());
-    return score, get_results()
-
