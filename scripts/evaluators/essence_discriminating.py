@@ -258,6 +258,7 @@ def evaluate_essence_instance_discriminating(
     for i in range(nEvaluations):
         baseResults = results["base"]["runs"][i]
         favouredResults = results["favoured"]["runs"][i]
+        # Calculating the borda scores based off only the solver time
         bordaScore = calculate_essence_borda_scores(
             baseResults["status"],
             favouredResults["status"],

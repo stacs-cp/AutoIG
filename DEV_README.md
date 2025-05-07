@@ -1,4 +1,4 @@
-# Docker Build And Run Commands in a Container
+ # Docker Build And Run Commands in a Container
 
 ### Builds an image of <container-name> using Docker
 
@@ -47,7 +47,7 @@ At this point, AutoIG is fully configured and ready for use as normal.
 
 `cd experiments/macc-discriminating/`
 
-`python $AUTOIG/scripts/setup.py --generatorModel $AUTOIG/data/models/macc/generator-small.essence --problemModel $AUTOIG/data/models/macc/problem.mzn --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 3 --baseSolver chuffed --solverFlags="-f" --favouredSolver ortools --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 5`
+`python $AUTOIG/scripts/setup.py --generatorModel $AUTOIG/data/models/macc/generator-small.essence --problemModel $AUTOIG/data/models/macc/problem.mzn --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 3 --baseSolver chuffed --solverFlags="-f" --favouredSolver or-tools --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 5`
 
 
 ### To set up for essence
@@ -61,7 +61,7 @@ For "car-sequencing" essence problem
 
 #### Discriminating Example
 
-python $AUTOIG/scripts/setup.py --generatorModel $AUTOIG/data/models/vessel-loading/generator.essence --problemModel $AUTOIG/data/models/vessel-loading/problem.essence --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 3 --baseSolver chuffed --solverFlags="-f" --favouredSolver ortools --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 5 
+`python $AUTOIG/scripts/setup.py --generatorModel $AUTOIG/data/models/vessel-loading/generator.essence --problemModel $AUTOIG/data/models/vessel-loading/problem.essence --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 3 --baseSolver chuffed --solverFlags="-f" --favouredSolver ortools --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 5` 
 ### To Run The Generated Bash Script
 
 bash run.sh

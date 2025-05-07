@@ -247,10 +247,11 @@ def extract_graded_and_discriminating_instances(runDir):
 
 
             def extract_essence_score(r):
-                totalBaseTime = r['base']['runs'][0]['solverTime'] + r['base']['runs'][0]['SRTime']
-                totalFavouredTime = r['favoured']['runs'][0]['solverTime'] + r['base']['runs'][0]['SRTime']
+                # totalBaseTime = r['base']['runs'][0]['solverTime'] + r['base']['runs'][0]['SRTime']
+                # totalFavouredTime = r['favoured']['runs'][0]['solverTime'] + r['base']['runs'][0]['SRTime']
+                # Calculated using only solver time rather than total time of SR + Solver Time
                 results = calculate_essence_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
-                                        totalBaseTime, totalFavouredTime,
+                                        r['base']['runs'][0]['solverTime'], r['favoured']['runs'][0]['solverTime'],
                                             problemType,
                                         True)
                 print("results are: ", results)
