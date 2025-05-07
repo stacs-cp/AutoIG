@@ -3,5 +3,5 @@
 echo $AUTOIG
 mkdir -p "$AUTOIG/experiments/macc-discrim-gen"
 cd "$AUTOIG/experiments/macc-discrim-gen"
-python3 "$AUTOIG/scripts/setup.py" --generatorModel "$AUTOIG/data/models/macc/generator.essence" --problemModel "$AUTOIG/data/models/macc/problem.mzn" --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 10 --baseSolver chuffed --baseSolverFlags="-f" --favouredSolver or-tools --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 300
+python3 "$AUTOIG/scripts/setup.py" --generatorModel "$AUTOIG/data/models/macc/generator.essence" --problemModel "$AUTOIG/data/models/macc/problem.mzn" --instanceSetting discriminating --minSolverTime 1 --maxSolverTime 10 --baseSolver chuffed --baseSolverFlags="-f" --favouredSolver cpsat --favouredSolverFlags="-f" --maxEvaluations 180 --genSolverTimeLimit 300
 bash "$AUTOIG/experiments/macc-discrim-gen/run.sh"
