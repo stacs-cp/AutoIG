@@ -58,7 +58,7 @@ jobs:
 
           # Getting current branch
           REPO="${{ github.repository }}"
-          CURRENT_BRANCH="${{ github.ref_name }}"
+          CURRENT_BRANCH="${{ github.head_ref }}"
           echo "Repository*^*:  $REPO"
           echo "Branch name*^*:  $CURRENT_BRANCH"
           git clone -b "${CURRENT_BRANCH}" "https://github.com/${REPO}.git"
