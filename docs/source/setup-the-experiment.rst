@@ -108,6 +108,7 @@ Each generator instance is solved using the Essence pipeline, which consists of 
     - ``--genSolver``: the solver being used for solving each generator instance. Currently only minion is supported.
     - ``--genSolverTimeLimit``: (in seconds) solving time limit for minion. Default: 300
     - ``--genSolverFlags``: minion flags. Default: ``-varorder domoverwdeg -valorder random``
+    - ``--repairModel``: path to a repair model. If none provided, framework will check experiment run directory for one. Default: None. 
 
 .. note:: 
     We suggest keeping all generator settings as their default values, although the time limits for Savile Row and minion can be increased/decreased depending on applications.
@@ -120,6 +121,7 @@ Each generator instance is solved using the Essence pipeline, which consists of 
     - ``--instanceValidTypes``: if you are only interested in SAT instances (or UNSAT instances), please set this argument to ``sat`` (or ``unsat``). Default: ``all`` (both SAT and UNSAT instances are accepted by AutoIG).
     - ``--minSolverTime``: (in seconds) instances solved within less than this lower bound will be considered too trivial and will be discarded.  For discriminating instance generation, this requirement is only applied to the base solver. Default value: 0 (no lower bound).
     - ``--maxSolverTime``: (in seconds) the time limit for each solver call when solving a candidate instance.
+    - ``--SRTimeLimit``: (in seconds) the time limit for Savile Row while soving generated instances (only applicable for essence problem models).
     - ``--nRunsPerInstance``: number of runs a solver is being evaluated per candidate instance. To evaluate the quality of a candidate instance, results will be aggregated across all runs: for graded experiment the median of the results will be used, while for discriminating experiment the MiniZinc complete scores are calculated per run and all scores are summed up before calculating the discriminating power. Default: 1
 
 *(for graded experiments only)*
