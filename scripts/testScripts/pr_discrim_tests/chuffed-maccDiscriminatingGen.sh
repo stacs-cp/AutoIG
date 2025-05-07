@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tests discriminating instance generation with Macc problem,  using small generator, and basesolver: Chuffed and favouredSolver: ortools.
+# Tests discriminating instance generation with Vessel_loading problem, and basesolver: Chuffed and favouredSolver: ortools.
 echo $AUTOIG
 mkdir -p "$AUTOIG/experiments/macc-discrim-gen"
 cd "$AUTOIG/experiments/macc-discrim-gen"
