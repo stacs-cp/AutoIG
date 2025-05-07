@@ -78,7 +78,9 @@ jobs:
           cd scripts/testScripts
 
           # Run the two test scripts associated with PRs
+          echo "About to run pr_discrim tests"
           bash check_pr_discrim.sh
+          echo "About to run pr_graded tests"
           bash check_pr_graded.sh
 
       # if script fails reject PR
