@@ -78,8 +78,8 @@ jobs:
           cd scripts/testScripts
 
           # Run the two test scripts associated with PRs
-          bash check_pr_graded.sh
           bash check_pr_discrim.sh
+          bash check_pr_graded.sh
 
       # if script fails reject PR
       - name: Fail
