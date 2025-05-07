@@ -1,9 +1,14 @@
 name: Run PR tests, graded and discrim
 
 on:
-  push:
+  pull_request:
+    # only run when PRs target the main branch
     branches:
-      - test/maccGradedCase
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   run-tests:
