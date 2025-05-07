@@ -59,6 +59,8 @@ jobs:
           # Getting current branch
           REPO="${{ github.repository }}"
           CURRENT_BRANCH="${{ github.ref_name }}"
+          echo "Repository*^*:  $REPO"
+          echo "Branch name*^*:  $CURRENT_BRANCH"
           git clone -b "${CURRENT_BRANCH}" "https://github.com/${REPO}.git"
 
           # Install Necessary Dependencies into AutoIG Bin
