@@ -69,8 +69,8 @@ jobs:
           bash bin/install-irace.sh 
           bash bin/install-yuck.sh
           bash bin/install-picat.sh
-          RUN bash bin/update-or-path.sh
-          RUN bash bin/update-conjure-paths.sh
+          bash bin/update-or-path.sh
+          bash bin/update-conjure-paths.sh
 
           # Set Paths
           . bin/container-set-path.sh
