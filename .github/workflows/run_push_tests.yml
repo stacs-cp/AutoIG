@@ -4,7 +4,7 @@ name: Run push tests, graded and discrim
 on:
   push:
     branches:
-      - "*"
+      - "**"
 
 jobs:
   run-tests:

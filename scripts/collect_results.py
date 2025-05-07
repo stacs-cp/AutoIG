@@ -61,7 +61,6 @@ def read_data(runDir):
 
     # read instance hashsum
     tHs = pd.read_csv(hashSumFile)
-    print("the ths is: ", tHs)
 
     # add instance hashsum into tRs
     tRs = tRs.merge(tHs,on="instance", how="left")
@@ -83,16 +82,12 @@ def read_data(runDir):
         tRs.loc[:,"status"] = [rename_status_dis(s[0],s[1]) for s in zip(tRs.status,tRs.score)]
 
 
-    print("pre replace: ", tRs)
-        #display(tRs[tRs.status.str.contains("Wins")])
-    
     # rename some columns and re-order the columns
     tRs.rename(columns={"hashValue":"instanceHashValue","score":"iraceScore"}, inplace=True)
     tRs = tRs[["genInstance","instance","genResults","instanceResults","status","iraceScore","totalTime","instanceHashValue"]]
 
     # create a copy of tRs where duplicate instances are removed
     tRsNoDup = tRs.groupby(["instanceHashValue"]).first().reset_index()
-    print("tRsNoDup***** is: ", tRsNoDup)
 
     return config, tRs, tRsNoDup
 
@@ -109,10 +104,6 @@ def print_stats(config, tRs, tRsNoDup):
     nInstances = len(tRsNoDup.instance.unique())
 
 
-    # nInstances = tRsNoDup['instance'].nunique()
-    print("the ninstances is: ", tRs)
-
-    print("the ninstances nodup is: ", tRsNoDup)
 
 
     # number of runs for each run status
@@ -165,7 +156,6 @@ def extract_graded_and_discriminating_instances(runDir):
     """ 
     extract information about graded/discriminating instances and save to a .csv file
     """
-    print("config is *****: ", config)
 
 
     outFile = None
@@ -195,7 +185,6 @@ def extract_graded_and_discriminating_instances(runDir):
           
 
 
-            print("just after getting problem type")
             def extract_minizinc_score(r):
                 results = calculate_minizinc_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
                                         r['base']['runs'][0]['time'], r['favoured']['runs'][0]['time'],
@@ -203,8 +192,6 @@ def extract_graded_and_discriminating_instances(runDir):
                                         r['base']['runs'][0]['extra']['objs'], r['favoured']['runs'][0]['extra']['objs'],
                                         True)
                 scores = results["complete"] # first element: base solver's score, second element: favoured solver's score     
-                print("the scores is: ", scores)
-                print("the scores 1 is: ", scores[1])   
                 return scores[1]
             tInfo.loc[:,"favouredSolverMiniZincScore"] = [extract_minizinc_score(x["results"]) for x in tInfo.instanceResults]
             tInfo.loc[:,"baseSolverMiniZincScore"] = [1 - x for x in tInfo.favouredSolverMiniZincScore]    
@@ -237,13 +224,8 @@ def extract_graded_and_discriminating_instances(runDir):
             # The instance type 
             tInfo.loc[:,"instanceType"] = [x["results"]["favoured"]["runs"][0]["status"] for x in tInfo.instanceResults]
             # extract Esesnce Borda score of the favoured and the base solvers
-            print("about to try to get problem type", config["problemModel"])
    
             problemType = get_essence_problem_type(config["problemModel"])
-
-
-
-            print("just after getting problem type")
 
 
             def extract_essence_score(r):
@@ -254,7 +236,6 @@ def extract_graded_and_discriminating_instances(runDir):
                                         r['base']['runs'][0]['solverTime'], r['favoured']['runs'][0]['solverTime'],
                                             problemType,
                                         True)
-                print("results are: ", results)
                 # scores = results # first element: base solver's score, second element: favoured solver's score        
                 # Different than the essence pipeline, instaed the calculate_essence_borda_scores calculates the score directly
                 return results[1]

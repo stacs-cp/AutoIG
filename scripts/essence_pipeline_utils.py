@@ -106,26 +106,6 @@ def get_essence_problem_type(modelFile: str):
 
     return check_type(parsed_json)
 
-# can parse it using conjure, can do conjure pretty AST format using json
-# that gives us a json document, which gives us a parse tree, 
-# then i can see if i have an objective statement at the top level 
-# The AST json 
-# can look at the oxide repository for an example
-# Lea is implementing a parser 
-# can complain on Github 
-
-
-# look at conjure_oxide/src/utils/conjure.rs prase essence file function 
-    # if find_str("minimising"):
-    #     return "MIN"
-    # if find_str("maximising"):
-    #     return "MAX"
-    # if find_str("satisfy"):
-    #     return "SAT"
-    # print("ERROR: cannot determine problem type of " + modelFile)
-    # sys.exit(1)
-    # return None
-
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
