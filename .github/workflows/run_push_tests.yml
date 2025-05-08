@@ -52,12 +52,13 @@ jobs:
           sudo apt-get install r-base -y
           sudo apt-get install git-all -y
 
-          # Getting current branch
+          # Getting current branch         
           REPO="${{ github.repository }}"
-          CURRENT_BRANCH="${{ github.head_ref }}"
+
+          CURRENT_BRANCH="${{ github.ref_name }}"
           echo "Repository*^*:  $REPO"
-          echo "Branch name*^*:  $CURRENT_BRANCH"
-          git clone -b "${CURRENT_BRANCH}" "https://github.com/${REPO}.git"   
+
+          git clone -b "$CURRENT_BRANCH" https://github.com/${REPO}.git   
 
           # Install Necessary Dependencies into AutoIG Bin
           bash bin/install-mininzinc.sh
