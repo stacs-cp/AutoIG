@@ -1,0 +1,14 @@
+2025-04-16 14:27:15: /AutoIG/scripts/wrapper.py 33 1 1114738950 dummy -np_cars_plus 189 -np_classes 45 -np_options 24 -quantity_range_min 4 -quantity_range_delta 136 -maxcars_range_min 10 -maxcars_range_delta 4 -blksize_delta_range_min 6 -blksize_delta_range_delta 7 -usage_card_min 393 -usage_card_delta 24
+{'runDir': '/AutoIG/experiments/car_sequencing6', 'problemModel': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorModel': '/AutoIG/data/models/car-sequencing/generator.essence', 'seed': 42, 'maxEvaluations': 300, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorFile': '/AutoIG/data/models/car-sequencing/generator.essence', 'runDir': '/AutoIG/experiments/car_sequencing6'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-04-16 14:27:15: Creating generator instance: ./detailed-output/gen-inst-33.param
+2025-04-16 14:27:15: minion ./detailed-output/gen-inst-33.minion -solsout ./detailed-output/gen-inst-33.solution -randomseed 1114738950 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2025-04-16 14:27:20: 
+Generator results: genInstance=gen-inst-33, genStatus=solverTimeOut, genSRTime=0, genSolverTime=5.086183547973633
+No instance file generated. Exitting...
+{'totalTime': 5.09023118019104, 'genResults': {'instance': 'gen-inst-33.param', 'status': 'solverTimeOut', 'seed': 1114738950, 'SRTime': 0, 'solverTime': 5.086183547973633}, 'instanceResults': {}, 'status': 'gensolverTimeOut', 'score': 2}
+2 5.09

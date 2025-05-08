@@ -4,7 +4,7 @@ name: Run push tests, graded and discrim
 on:
   push:
     branches:
-      - "*"
+      - "**"
 
 jobs:
   run-tests:
@@ -52,9 +52,13 @@ jobs:
           sudo apt-get install r-base -y
           sudo apt-get install git-all -y
 
-          # Getting current branch
+          # Getting current branch         
+          REPO="${{ github.repository }}"
+
           CURRENT_BRANCH="${{ github.ref_name }}"
-          git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git   
+          echo "Repository*^*:  $REPO"
+
+          git clone -b "$CURRENT_BRANCH" https://github.com/${REPO}.git   
 
           # Install Necessary Dependencies into AutoIG Bin
           bash bin/install-mininzinc.sh

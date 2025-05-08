@@ -106,26 +106,6 @@ def get_essence_problem_type(modelFile: str):
 
     return check_type(parsed_json)
 
-# can parse it using conjure, can do conjure pretty AST format using json
-# that gives us a json document, which gives us a parse tree, 
-# then i can see if i have an objective statement at the top level 
-# The AST json 
-# can look at the oxide repository for an example
-# Lea is implementing a parser 
-# can complain on Github 
-
-
-# look at conjure_oxide/src/utils/conjure.rs prase essence file function 
-    # if find_str("minimising"):
-    #     return "MIN"
-    # if find_str("maximising"):
-    #     return "MAX"
-    # if find_str("satisfy"):
-    #     return "SAT"
-    # print("ERROR: cannot determine problem type of " + modelFile)
-    # sys.exit(1)
-    # return None
-
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
@@ -627,3 +607,60 @@ def parse_SR_info_file(fn, knownSolverMemOut=False, timelimit=0):
             else:
                 status = "unsat"
     return status, SRTime, solverTime
+
+def calculate_essence_borda_scores(
+    status1: str,
+    status2: str,
+    time1: float,
+    time2: float,
+    problemType: str,
+    # no obj funciton for 
+    zeroScoreWhenBothFail: bool = False,
+):
+    """ 
+    Compute a replica of the MiniZinc competition's Borda scores between runs of two solvers. 
+    Different than the one for the MiniZinc pipeline because there is no optimization score
+    """
+
+
+    possible_status = {
+    "sat",
+    "nsat",
+    "SRTimeOut",
+    "SRMemOut",
+    "solverTimeOut",
+    "solverMemOut",
+    "solverCrash",
+    "solverNodeOut"
+    }
+    # Initial Assertions
+    assert status1 in possible_status and status2 in possible_status
+
+    assert problemType in ["MIN", "MAX", "SAT"]
+
+    # scores = {"complete": (), "incomplete": ()}
+
+    def solved(status):
+        return status in ["sat", "nsat"]
+    
+
+    def calculateMnzScore(time1, time2):
+        return ( time2 / (time1 + time2),time1 / (time1 + time2))
+    
+    # General Logic used across both optimization and sat problems
+    if solved(status1) and not solved(status2):
+        # scores["complete"] = scores["incomplete"] = (1, 0)
+        return (1,0)
+    elif solved(status2) and not solved(status1):
+        # scores["complete"] = scores["incomplete"] = (0, 1)
+        return (0,1)
+
+    if not solved(status1) and not solved(status2):
+        if zeroScoreWhenBothFail:
+            return (0,0)
+        else: 
+            return (0, 1)
+ 
+    return calculateMnzScore(time1, time2)
+
+                

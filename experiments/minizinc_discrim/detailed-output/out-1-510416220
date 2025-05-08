@@ -1,0 +1,31 @@
+2025-04-30 20:15:36: /AutoIG/scripts/wrapper.py 1 1 510416220 dummy -Ag 2 -Tg 17 -Xg 3 -Zg 3 -ground_coverage 63 -avg_height_ratio 14
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/macc/problem.mzn', 'generatorFile': '/AutoIG/data/models/macc/generator-small.essence', 'runDir': '/AutoIG/experiments/minizinc_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'ortools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2025-04-30 20:15:36: Creating generator instance: ./detailed-output/gen-inst-1.param
+2025-04-30 20:15:36: minion ./detailed-output/gen-inst-1.minion -solsout ./detailed-output/gen-inst-1.solution -randomseed 510416220 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-04-30 20:15:37: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-1.aux -out-solution ./detailed-output/gen-inst-1.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-1.solution
+2025-04-30 20:15:37: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-1.param --eprime-solution=./detailed-output/gen-inst-1.solution.eprime-param --essence-solution ./detailed-output/gen-inst-1.solution.param
+
+
+2025-04-30 20:15:38: 
+Generator results: genInstance=gen-inst-1, genStatus=sat, genSRTime=0, genSolverTime=0.0831294059753418
+conjure autoig --remove-aux ./detailed-output/inst-1-510416220.param ./detailed-output/inst-1-510416220.auxRemoved.param
+conjure pretty ./detailed-output/inst-1-510416220.auxRemoved.param --output-format=minizinc
+./detailed-output/inst-1-510416220.dzn generated
+
+
+runsolver -w ./detailed-output/inst-1-510416220.dzn.ortools.runsolver -d 2 --wall-clock-limit 3 --vsize-limit 8192 minizinc --time-limit 3000 --solver ortools -i  -f problem.mzn ./detailed-output/inst-1-510416220.dzn --output-mode dzn --output-objective -s
+Traceback (most recent call last):
+  File "/AutoIG/scripts/wrapper.py", line 260, in <module>
+    main()
+  File "/AutoIG/scripts/wrapper.py", line 212, in main
+    score, instanceResults = evaluate_mzn_instance_discriminating(
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/evaluators/mzn_discriminating.py", line 90, in evaluate_mzn_instance_discriminating
+    runStatus, runTotalTime, extra = minizinc_solve(
+                                     ^^^^^^^^^^^^^^^
+  File "/AutoIG/scripts/minizinc_utils.py", line 230, in minizinc_solve
+    for line in p.stdout:
+                ^^^^^^^^
+KeyboardInterrupt

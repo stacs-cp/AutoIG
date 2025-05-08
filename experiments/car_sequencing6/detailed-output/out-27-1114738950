@@ -1,0 +1,63 @@
+2025-04-16 14:26:25: /AutoIG/scripts/wrapper.py 27 1 1114738950 dummy -np_cars_plus 164 -np_classes 45 -np_options 18 -quantity_range_min 4 -quantity_range_delta 19 -maxcars_range_min 8 -maxcars_range_delta 0 -blksize_delta_range_min 9 -blksize_delta_range_delta 5 -usage_card_min 754 -usage_card_delta 53
+{'runDir': '/AutoIG/experiments/car_sequencing6', 'problemModel': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorModel': '/AutoIG/data/models/car-sequencing/generator.essence', 'seed': 42, 'maxEvaluations': 300, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorFile': '/AutoIG/data/models/car-sequencing/generator.essence', 'runDir': '/AutoIG/experiments/car_sequencing6'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-04-16 14:26:25: Creating generator instance: ./detailed-output/gen-inst-27.param
+2025-04-16 14:26:25: minion ./detailed-output/gen-inst-27.minion -solsout ./detailed-output/gen-inst-27.solution -randomseed 1114738950 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-04-16 14:26:30: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-27.aux -out-solution ./detailed-output/gen-inst-27.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-27.solution
+2025-04-16 14:26:30: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-27.param --eprime-solution=./detailed-output/gen-inst-27.solution.eprime-param --essence-solution ./detailed-output/gen-inst-27.solution.param
+
+
+2025-04-16 14:26:34: 
+Generator results: genInstance=gen-inst-27, genStatus=sat, genSRTime=0, genSolverTime=1.9902212619781494
+SETTINGS DICT:  {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}
+*** evaluate_essence_instance_graded DEBUG INFO ***
+modelFile: problem.essence
+instFile: ./detailed-output/inst-27-1114738950.param
+unwantedTypes: []
+nEvaluations: 1
+solver: chuffed
+solverFlags: -f
+solverType: complete
+minTime: 0
+timeLimit: 5
+initSeed: 1114738950
+oracleSolver: None
+oracleSolverFlags: None
+oracleSolverTimeLimit: None
+****************************************************
+
+
+2025-04-16 14:26:34: Solving ./detailed-output/inst-27-1114738950.param...
+
+
+----------- With seed 0th (1114738950)
+***** call_conjure_solve PARAMS INFO *****
+essenceModelFile: ./problem.essence
+eprimeModelFile: ./detailed-output/problem.eprime
+instFile: ./detailed-output/inst-27-1114738950.param
+solver: chuffed
+SRTimeLimit: 0
+SRFlags: 
+solverTimeLimit: 5
+solverFlags: -f
+seed: 1114738950
+******************************************
+
+conjure solve ./problem.essence ./detailed-output/inst-27-1114738950.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 5000 --rnd-seed 1114738950 -f" --solver=chuffed
+
+Calling conjure
+2025-04-16 14:26:34: conjure solve ./problem.essence ./detailed-output/inst-27-1114738950.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 5000 --rnd-seed 1114738950 -f" --solver=chuffed
+2025-04-16 14:26:41: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-27-1114738950.param
+Running minion for domain filtering.
+Running solver: chuffed
+No solutions found.
+
+Waiting for ./detailed-output/problem-inst-27-1114738950.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-27-1114738950.eprime-info -> ./detailed-output/problem-inst-27-1114738950-seed_1114738950-chuffed.eprime-info
+Instance not satisfiable or timeout occurred. Quitting...
+{'totalTime': 15.242477416992188, 'genResults': {'instance': 'gen-inst-27.param', 'status': 'sat', 'seed': 1114738950, 'SRTime': 0, 'solverTime': 1.9902212619781494}, 'instanceResults': {'instance': './detailed-output/inst-27-1114738950.param', 'status': 'tooDifficult', 'score': 0, 'results': {'main': {'runs': [{'seed': 1114738950, 'status': 'unsat', 'solverTime': 0.048, 'SRTime': 3.714}]}, 'oracle': {'runs': []}}}, 'status': 'tooDifficult', 'score': 0}
+0 15.24

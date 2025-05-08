@@ -1,0 +1,16 @@
+2025-04-16 14:08:35: /AutoIG/scripts/wrapper.py 13 1 184624119 dummy -np_cars_plus 96 -np_classes 95 -np_options 131 -quantity_range_min 2 -quantity_range_delta 64 -maxcars_range_min 1 -maxcars_range_delta 8 -blksize_delta_range_min 3 -blksize_delta_range_delta 7 -usage_card_min 819 -usage_card_delta 96
+{'runDir': '/AutoIG/experiments/car_sequencing6', 'problemModel': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorModel': '/AutoIG/data/models/car-sequencing/generator.essence', 'seed': 42, 'maxEvaluations': 300, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 0, 'maxSolverTime': 5, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/AutoIG/data/models/car-sequencing/problem.essence', 'generatorFile': '/AutoIG/data/models/car-sequencing/generator.essence', 'runDir': '/AutoIG/experiments/car_sequencing6'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 0, 'solverFlags': '-f', 'totalTimeLimit': 5}}
+
+
+2025-04-16 14:08:35: Creating generator instance: ./detailed-output/gen-inst-13.param
+2025-04-16 14:08:35: conjure translate-parameter --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-13.param --eprime-param=./detailed-output/gen-inst-13.eprime-param
+2025-04-16 14:08:36: savilerow ./detailed-output/generator.eprime ./detailed-output/gen-inst-13.eprime-param -out-aux ./detailed-output/gen-inst-13.aux -out-minion ./detailed-output/gen-inst-13.minion -save-symbols -timelimit 300 -S0 -no-bound-vars
+2025-04-16 14:08:45: minion ./detailed-output/gen-inst-13.minion -solsout ./detailed-output/gen-inst-13.solution -randomseed 184624119 -timelimit 5 -varorder domoverwdeg -valorder random
+
+
+2025-04-16 14:08:50: 
+Generator results: genInstance=gen-inst-13, genStatus=solverTimeOut, genSRTime=9.498515367507935, genSolverTime=5.105350732803345
+No instance file generated. Exitting...
+{'totalTime': 14.954479694366455, 'genResults': {'instance': 'gen-inst-13.param', 'status': 'solverTimeOut', 'seed': 184624119, 'SRTime': 9.498515367507935, 'solverTime': 5.105350732803345}, 'instanceResults': {}, 'status': 'gensolverTimeOut', 'score': 2}
+2 14.95

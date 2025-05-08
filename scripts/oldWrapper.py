@@ -189,6 +189,8 @@ def evaluate_essence_instance_discriminating(instFile, seed, setting):
     " - note: if minRatio>0, ideally we should set timelimit_baseSolver = minRatio * timelimit_favouredSolver
     """
 
+    print("settings is: ", setting)
+
     essenceModelFile = "./problem.essence"
     eprimeModelFile = detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
