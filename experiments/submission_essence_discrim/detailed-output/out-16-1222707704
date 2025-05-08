@@ -1,0 +1,80 @@
+2025-05-01 19:43:12: /AutoIG/scripts/wrapper.py 16 1 1222707704 dummy -deck_width_tuned 75 -deck_length_tuned 6 -n_containers_delta 13 -n_classes_tuned 3 -coverage_max 11
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/new_final_essence_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2025-05-01 19:43:12: Creating generator instance: ./detailed-output/gen-inst-16.param
+2025-05-01 19:43:12: minion ./detailed-output/gen-inst-16.minion -solsout ./detailed-output/gen-inst-16.solution -randomseed 1222707704 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-05-01 19:43:13: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-16.aux -out-solution ./detailed-output/gen-inst-16.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-16.solution
+2025-05-01 19:43:13: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-16.param --eprime-solution=./detailed-output/gen-inst-16.solution.eprime-param --essence-solution ./detailed-output/gen-inst-16.solution.param
+
+
+2025-05-01 19:43:14: 
+Generator results: genInstance=gen-inst-16, genStatus=sat, genSRTime=0, genSolverTime=0.10767316818237305
+NEW SETTINGS DICT AGAIN:  {'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/new_final_essence_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+************** printing es {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}
+ am getting to here*******************
+
+
+2025-05-01 19:43:14: Solving ./detailed-output/inst-16-1222707704.param...
+Solversetting:  
+About to enter loop for nEvaluations
+reaching conjure solve point
+***** call_conjure_solve PARAMS INFO *****
+essenceModelFile: ./problem.essence
+eprimeModelFile: ./detailed-output/problem.eprime
+instFile: ./detailed-output/inst-16-1222707704.param
+solver: chuffed
+SRTimeLimit: 0
+SRFlags: 
+solverTimeLimit: 3
+solverFlags: 
+seed: 1222707704
+******************************************
+
+conjure solve ./problem.essence ./detailed-output/inst-16-1222707704.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 1222707704 " --solver=chuffed
+
+Calling conjure
+2025-05-01 19:43:14: conjure solve ./problem.essence ./detailed-output/inst-16-1222707704.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 1222707704 " --solver=chuffed
+2025-05-01 19:43:18: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-1222707704.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-1222707704.solution
+
+Waiting for ./detailed-output/problem-inst-16-1222707704.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-1222707704.eprime-info -> ./detailed-output/problem-inst-16-1222707704-seed_1222707704-chuffed.eprime-info
+Solversetting:  
+About to enter loop for nEvaluations
+reaching conjure solve point
+***** call_conjure_solve PARAMS INFO *****
+essenceModelFile: ./problem.essence
+eprimeModelFile: ./detailed-output/problem.eprime
+instFile: ./detailed-output/inst-16-1222707704.param
+solver: chuffed
+SRTimeLimit: 0
+SRFlags: 
+solverTimeLimit: 3
+solverFlags: 
+seed: 1222707704
+******************************************
+
+conjure solve ./problem.essence ./detailed-output/inst-16-1222707704.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 1222707704 " --solver=chuffed
+
+Calling conjure
+2025-05-01 19:43:18: conjure solve ./problem.essence ./detailed-output/inst-16-1222707704.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 1222707704 " --solver=chuffed
+2025-05-01 19:43:22: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-16-1222707704.param
+Running minion for domain filtering.
+Running solver: chuffed
+Copying solution to: problem-inst-16-1222707704.solution
+
+Waiting for ./detailed-output/problem-inst-16-1222707704.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-16-1222707704.eprime-info -> ./detailed-output/problem-inst-16-1222707704-seed_1222707704-chuffed.eprime-info
+False
+instance results ******* {'instance': './detailed-output/inst-16-1222707704.param', 'status': 'ok', 'score': -1.0563380281690142, 'results': {'base': {'runs': [{'seed': 1222707704, 'status': 'sat', 'SRTime': 1.813, 'solverTime': 0.075}]}, 'favoured': {'runs': [{'seed': 1222707704, 'status': 'sat', 'SRTime': 1.752, 'solverTime': 0.071}]}}}
+{'totalTime': 9.823430061340332, 'genResults': {'instance': 'gen-inst-16.param', 'status': 'sat', 'seed': 1222707704, 'SRTime': 0, 'solverTime': 0.10767316818237305}, 'instanceResults': {'instance': './detailed-output/inst-16-1222707704.param', 'status': 'ok', 'score': -1.0563380281690142, 'results': {'base': {'runs': [{'seed': 1222707704, 'status': 'sat', 'SRTime': 1.813, 'solverTime': 0.075}]}, 'favoured': {'runs': [{'seed': 1222707704, 'status': 'sat', 'SRTime': 1.752, 'solverTime': 0.071}]}}}, 'status': 'ok', 'score': -1.0563380281690142}
+-1.0563380281690142 9.82

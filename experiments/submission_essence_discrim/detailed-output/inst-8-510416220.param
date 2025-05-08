@@ -1,0 +1,10 @@
+language Essence 1.3
+
+letting class be function(1 --> 1, 2 --> 1, 3 --> 3, 4 --> 3, 5 --> 3, 6 --> 2, 7 --> 2, 8 --> 1, 9 --> 3)
+letting deck_length be 54
+letting deck_width be 86
+letting length be function(1 --> 1, 2 --> 6, 3 --> 11, 4 --> 28, 5 --> 15, 6 --> 24, 7 --> 49, 8 --> 15, 9 --> 31)
+letting n_classes be 3
+letting n_containers be 9
+letting separation be function({1, 3} --> 42, {2, 3} --> 86)
+letting width be function(1 --> 4, 2 --> 1, 3 --> 2, 4 --> 39, 5 --> 1, 6 --> 1, 7 --> 45, 8 --> 1, 9 --> 12)
