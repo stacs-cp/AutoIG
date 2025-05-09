@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import glob
+import json
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -64,6 +65,47 @@ solverInfo["kissat"] = {
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
 }
+solverInfo["or-tools"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--fz_seed=",
+}
+
+
+def get_essence_problem_type(modelFile: str):
+    """
+    Read an Essence model and return its type (MIN/MAX/SAT)
+    Uses the conjure pretty print feature, then interprets the generated JSON
+    """
+    cmd = f"conjure pretty {modelFile} --output-format=astjson"
+    results_dict = run_cmd(cmd)
+    try:
+        parsed_json = json.loads(results_dict[0])
+    except json.JSONDecodeError as e:
+        print("Failed to parse JSON:", e)
+        exit()
+
+    # Now check for the Maximising objective recursively
+    def check_type(data):
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key == "Objective" and isinstance(value, list):
+                    if value[0] == "Maximising":
+                        return "MAX"
+                    elif value[0] == "Minimising":
+                        return "MIN"
+                result = check_type(value)
+                if result in ("MAX", "MIN"):
+                    return result
+        elif isinstance(data, list):
+            for item in data:
+                result = check_type(item)
+                if result in ("MAX", "MIN"):
+                    return result
+        return "SAT"
+
+    return check_type(parsed_json)
+
 
 
 def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
@@ -101,6 +143,7 @@ def savilerow_translate(
         + " "
         + flags
     )
+
     log(cmd)
 
     start = time.time()
@@ -299,7 +342,7 @@ def make_conjure_solve_command(
     SRFlags="",
     solverTimeLimit=0,
     solverFlags="",
-    seed=None,
+    seed=None, # no seed as default
 ):
     # temporary files that will be removed
     lsTempFiles = []
@@ -369,16 +412,25 @@ def make_conjure_solve_command(
         + " --solver="
         + solver
     )
+    print(conjureCmd)
 
     return conjureCmd, lsTempFiles
 
-
-def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, seed):
-    if "name" in setting:
-        solver = setting["name"]
-    elif "solver" in setting:
-        solver = setting["solver"]
+# Changed to take in the paramters directly, rather than through a provided settings dictionary
+def call_conjure_solve(
+        essenceModelFile: str, 
+        eprimeModelFile: str, 
+        instFile: str, 
+        solver: str, 
+        SRTimeLimit, 
+        SRFlags, 
+        solverTimeLimit, 
+        solverFlags, 
+        seed):
+    
     lsTempFiles = []
+
+    print()
 
     # make conjure solve command line
     conjureCmd, tempFiles = make_conjure_solve_command(
@@ -386,10 +438,10 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
         eprimeModelFile,
         instFile,
         solver,
-        setting["SRTimeLimit"],
-        setting["SRFlags"],
-        setting["solverTimeLimit"],
-        setting["solverFlags"],
+        SRTimeLimit,
+        SRFlags,
+        solverTimeLimit,
+        solverFlags,
         seed,
     )
     lsTempFiles.extend(tempFiles)
@@ -418,7 +470,7 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
     ):
         status = "solverMemOut"
     elif ("Sub-process exited with error code:139" in cmdOutput) and (
-        setting["abortIfSolverCrash"] is False
+        setting["abortIfSolverCrash"] is False  # TODO This is deprecated, but not sure what to replace with
     ):
         status = "solverCrash"
     elif returnCode != 0:
@@ -481,7 +533,7 @@ def call_conjure_solve(essenceModelFile, eprimeModelFile, instFile, setting, see
 
         # parse SR info file
         infoStatus, SRTime, solverTime = parse_SR_info_file(
-            infoFile, timelimit=setting["solverTimeLimit"]
+            infoFile, timelimit=solverTimeLimit
         )
         if status != "solverCrash":
             status = infoStatus
@@ -539,3 +591,55 @@ def parse_SR_info_file(fn, knownSolverMemOut=False, timelimit=0):
             else:
                 status = "unsat"
     return status, SRTime, solverTime
+
+def calculate_essence_borda_scores(
+    status1: str,
+    status2: str,
+    time1: float,
+    time2: float,
+    problemType: str,
+    # no obj funciton for 
+    zeroScoreWhenBothFail: bool = False,
+):
+    """ 
+    Compute a replica of the MiniZinc competition's Borda scores between runs of two solvers. 
+    Different than the one for the MiniZinc pipeline because there is no optimization score
+    """
+
+
+    possible_status = {
+    "sat",
+    "nsat",
+    "SRTimeOut",
+    "SRMemOut",
+    "solverTimeOut",
+    "solverMemOut",
+    "solverCrash",
+    "solverNodeOut"
+    }
+    # Initial Assertions
+    assert status1 in possible_status and status2 in possible_status
+    assert problemType in ["MIN", "MAX", "SAT"]
+
+    def solved(status):
+        return status in ["sat", "nsat"]
+    
+
+    def calculateMnzScore(time1, time2):
+        return ( time2 / (time1 + time2),time1 / (time1 + time2))
+    
+    # General Logic used across both optimization and sat problems
+    if solved(status1) and not solved(status2):
+        return (1,0)
+    elif solved(status2) and not solved(status1):
+        return (0,1)
+
+    # Special Cases
+    if not solved(status1) and not solved(status2):
+        if zeroScoreWhenBothFail:
+            return (0,0)
+        else: 
+            return (0, 1)
+    return calculateMnzScore(time1, time2)
+
+                

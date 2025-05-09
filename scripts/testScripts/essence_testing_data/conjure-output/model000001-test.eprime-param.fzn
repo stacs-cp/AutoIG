@@ -1,0 +1,3 @@
+var 6..10: y:: output_var ;
+constraint bool_eq(true,true);
+solve :: int_search([y], input_order, indomain_min, complete) satisfy;

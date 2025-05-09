@@ -39,7 +39,7 @@ RUN echo "$CACHEBUST"
 
 # Clone into AutoIG directory on Vincent fork
 # Not incorrect, but will need to be changed later to clone from stacs-cp/AutoIG instead
-RUN git clone -b build/update-docker https://github.com/vincepick/AutoIG.git 
+RUN git clone --depth 1 -b main https://github.com/vincepick/AutoIG.git 
 
 WORKDIR /AutoIG
 
@@ -59,6 +59,8 @@ RUN bash bin/update-or-path.sh
 RUN bash bin/update-conjure-paths.sh
 
 # For use during development
+
+RUN apt-get update
 RUN apt-get install -y \
     vim \
     file

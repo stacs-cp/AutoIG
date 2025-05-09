@@ -1,9 +1,14 @@
 name: Run PR tests, graded and discrim
 
 on:
-  push:
+  pull_request:
+    # only run when PRs target the main branch
     branches:
-      - test/maccGradedCase
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   run-tests:
@@ -52,8 +57,11 @@ jobs:
           sudo apt-get install git-all -y
 
           # Getting current branch
-          CURRENT_BRANCH="${{ github.ref_name }}"
-          git clone -b "$CURRENT_BRANCH" https://github.com/stacs-cp/AutoIG.git   
+          REPO="${{ github.repository }}"
+          CURRENT_BRANCH="${{ github.head_ref }}"
+          echo "Repository*^*:  $REPO"
+          echo "Branch name*^*:  $CURRENT_BRANCH"
+          git clone -b "${CURRENT_BRANCH}" "https://github.com/${REPO}.git"
 
           # Install Necessary Dependencies into AutoIG Bin
           bash bin/install-mininzinc.sh
@@ -70,18 +78,20 @@ jobs:
           cd scripts/testScripts
 
           # Run the two test scripts associated with PRs
+          echo "About to run pr_discrim tests"
           bash check_pr_discrim.sh
-          bash check_pr.sh
+          echo "About to run pr_graded tests"
+          bash check_pr_graded.sh
 
       # if script fails reject PR
       - name: Fail
         if: ${{ failure() }}
         run: |
-          echo "This tests failed, rejecting PR."
+          echo "PR tests failed, rejecting."
           exit 1
       # if script passes approve PR
       - name: Pass
         if: ${{ success() }}
         run: |
-          echo "This tests passed! allowing PR."
+          echo "PR tests passed! allowing PR."
           exit 0
