@@ -1,0 +1,23 @@
+{
+ "runDir": "/AutoIG/experiments/new_final_essence_discrim",
+ "problemModel": "/AutoIG/data/models/vessel-loading/problem.essence",
+ "generatorModel": "/AutoIG/data/models/vessel-loading/generator.essence",
+ "seed": 42,
+ "maxEvaluations": 180,
+ "nCores": 1,
+ "genSRTimeLimit": 300,
+ "genSRFlags": "-S0 -no-bound-vars",
+ "genSolver": "minion",
+ "genSolverTimeLimit": "5",
+ "genSolverFlags": "-varorder domoverwdeg -valorder random",
+ "instanceSetting": "discriminating",
+ "instanceValidTypes": "all",
+ "minSolverTime": 1,
+ "maxSolverTime": 3,
+ "SRTimeLimit": 0,
+ "nRunsPerInstance": 1,
+ "favouredSolver": "or-tools",
+ "favouredSolverFlags": "-f",
+ "baseSolver": "chuffed",
+ "baseSolverFlags": ""
+}

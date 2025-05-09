@@ -1,0 +1,5 @@
+deck_width_tuned "-deck_width_tuned " i (1, 100)
+deck_length_tuned "-deck_length_tuned " i (1, 100)
+n_containers_delta "-n_containers_delta " i (1, 20)
+n_classes_tuned "-n_classes_tuned " i (1, 10)
+coverage_max "-coverage_max " i (10, 100)

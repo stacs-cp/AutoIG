@@ -1,0 +1,52 @@
+2025-05-01 19:38:59: /AutoIG/scripts/wrapper.py 12 1 510416220 dummy -deck_width_tuned 79 -deck_length_tuned 78 -n_containers_delta 1 -n_classes_tuned 5 -coverage_max 61
+{'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/new_final_essence_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+
+
+2025-05-01 19:38:59: Creating generator instance: ./detailed-output/gen-inst-12.param
+2025-05-01 19:38:59: minion ./detailed-output/gen-inst-12.minion -solsout ./detailed-output/gen-inst-12.solution -randomseed 510416220 -timelimit 5 -varorder domoverwdeg -valorder random
+2025-05-01 19:39:00: savilerow ./detailed-output/generator.eprime -mode ReadSolution -out-aux ./detailed-output/gen-inst-12.aux -out-solution ./detailed-output/gen-inst-12.solution.eprime-param -minion-sol-file ./detailed-output/gen-inst-12.solution
+2025-05-01 19:39:00: conjure translate-solution --eprime=./detailed-output/generator.eprime --essence-param=./detailed-output/gen-inst-12.param --eprime-solution=./detailed-output/gen-inst-12.solution.eprime-param --essence-solution ./detailed-output/gen-inst-12.solution.param
+
+
+2025-05-01 19:39:00: 
+Generator results: genInstance=gen-inst-12, genStatus=sat, genSRTime=0, genSolverTime=0.12604331970214844
+NEW SETTINGS DICT AGAIN:  {'generalSettings': {'experimentType': 'discriminating', 'modelFile': '/AutoIG/data/models/vessel-loading/problem.essence', 'generatorFile': '/AutoIG/data/models/vessel-loading/generator.essence', 'runDir': '/AutoIG/experiments/new_final_essence_discrim'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '5', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}}
+************** printing es {'nEvaluations': 1, 'gradedTypes': 'all', 'scoringMethod': 'complete', 'baseSolver': {'name': 'chuffed', 'solverMinTime': 1, 'totalTimeLimit': 3, 'solverFlags': ''}, 'favouredSolver': {'name': 'or-tools', 'totalTimeLimit': 3, 'solverFlags': '-f'}}
+ am getting to here*******************
+
+
+2025-05-01 19:39:00: Solving ./detailed-output/inst-12-510416220.param...
+Solversetting:  
+About to enter loop for nEvaluations
+reaching conjure solve point
+***** call_conjure_solve PARAMS INFO *****
+essenceModelFile: ./problem.essence
+eprimeModelFile: ./detailed-output/problem.eprime
+instFile: ./detailed-output/inst-12-510416220.param
+solver: chuffed
+SRTimeLimit: 0
+SRFlags: 
+solverTimeLimit: 3
+solverFlags: 
+seed: 510416220
+******************************************
+
+conjure solve ./problem.essence ./detailed-output/inst-12-510416220.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 510416220 " --solver=chuffed
+
+Calling conjure
+2025-05-01 19:39:00: conjure solve ./problem.essence ./detailed-output/inst-12-510416220.param -o ./detailed-output --use-existing-models=problem.eprime --savilerow-options " " --solver-options "-t 3000 --rnd-seed 510416220 " --solver=chuffed
+2025-05-01 19:39:03: conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+conjure: Ticker: poll failed: Interrupted system call: Interrupted system call
+Using existing models.
+Savile Row: ./detailed-output/problem.eprime ./detailed-output/inst-12-510416220.param
+Running minion for domain filtering.
+Running solver: chuffed
+No solutions found.
+
+Waiting for ./detailed-output/problem-inst-12-510416220.eprime-info
+Renaming SR info file: ./detailed-output/problem-inst-12-510416220.eprime-info -> ./detailed-output/problem-inst-12-510416220-seed_510416220-chuffed.eprime-info
+
+Cannot be solved by favoured solver. Quitting...
+instance results ******* {'instance': './detailed-output/inst-12-510416220.param', 'status': 'favouredTooDifficult', 'score': 0, 'results': {'base': {'runs': []}, 'favoured': {'runs': [{'seed': 510416220, 'status': 'unsat', 'SRTime': 0.736, 'solverTime': 0.046}]}}}
+{'totalTime': 4.46240234375, 'genResults': {'instance': 'gen-inst-12.param', 'status': 'sat', 'seed': 510416220, 'SRTime': 0, 'solverTime': 0.12604331970214844}, 'instanceResults': {'instance': './detailed-output/inst-12-510416220.param', 'status': 'favouredTooDifficult', 'score': 0, 'results': {'base': {'runs': []}, 'favoured': {'runs': [{'seed': 510416220, 'status': 'unsat', 'SRTime': 0.736, 'solverTime': 0.046}]}}}, 'status': 'favouredTooDifficult', 'score': 0}
+0 4.46
