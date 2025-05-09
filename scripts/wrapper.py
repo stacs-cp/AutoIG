@@ -63,8 +63,7 @@ def main():
     def print_results():
         assert (score is not None) and (status is not None)
         assert results["genResults"] != {}
-        # if results['genResults']['status']=='sat':
-        #    assert results['instanceResults']!={}
+
         totalWrapperTime = time.time() - startTime
         results["totalTime"] = totalWrapperTime
         results["status"] = status
@@ -112,7 +111,7 @@ def main():
         "ERROR: invalid experimentType " + experimentType
     )
 
-    # TODO can make this display more information if available
+
     modelType = os.path.basename(setting["generalSettings"]["modelFile"]).split(".")[-1]
     assert modelType in ["essence", "mzn"], (
         "ERROR: "
@@ -135,18 +134,9 @@ def main():
 
     # evaluate the generated instance
     if modelType == "essence":
-        
-        
-        # I dont think I need to do this, because.param are used in conjure
-        # essenceInstFile = instFile.replace(".param",".dzn") 
-        # # FIXME: this is a nearly direct take from the MZN implementation, 
-        # I have double checked all the resulting entries in the settings and the minizinc inputs, 
-        # but still not positive it will work
-            # the line above replaces the filename sting
-            # .param files are used in essence
-            # .dzn files are used in minizinc 
         es = setting["evaluationSettings"]
-        print("NEW SETTINGS DICT AGAIN: ", setting)
+
+        # Case for graded
         if experimentType == "graded":
             oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
             # only called for incomplete solvers, which aren't actually allowed yet
@@ -156,24 +146,23 @@ def main():
                 oracleSolverTimeLimit = 3600
 
             score, instanceResults = evaluate_essence_instance_graded(
-                modelFile="problem.essence",            # 
-                instFile=instFile,                      # TODO: this is how the instfile was originaly passed, in think this is correct
-                unwantedTypes=get_unwanted_types(),     # TODO: this is also different from essence, will have to be handled differently but is correct
-                nEvaluations=es["nEvaluations"],        # correct
-                solver=es["solver"],                    # correct
-                solverFlags=es["solverFlags"],          # correct
-                solverType=es["solverType"],            # correct
-                minTime=es["minTime"],                  # correct
-                timeLimit=es["totalTimeLimit"],         # correct
-                SRTimeLimit=es["SRTimeLimit"],         # correct
-                initSeed=seed,                          # correct
-                oracleSolver=oracleSolver,              # oracle isnt implemented yet, so ignoring
-                oracleSolverFlags=oracleSolverFlags,    #
-                oracleSolverTimeLimit=oracleSolverTimeLimit,  #
+                modelFile="problem.essence",            
+                instFile=instFile,                      
+                unwantedTypes=get_unwanted_types(),    
+                nEvaluations=es["nEvaluations"],     
+                solver=es["solver"],                    
+                solverFlags=es["solverFlags"],       
+                solverType=es["solverType"],           
+                minTime=es["minTime"],                  
+                timeLimit=es["totalTimeLimit"],         
+                SRTimeLimit=es["SRTimeLimit"],         
+                initSeed=seed,                       
+                oracleSolver=oracleSolver,              
+                oracleSolverFlags=oracleSolverFlags,    
+                oracleSolverTimeLimit=oracleSolverTimeLimit,  
             )
+        # Case for discriminating
         else: 
-            #TODO implement for discriminating
-            print("************** printing es", es)
             score, instanceResults = evaluate_essence_instance_discriminating(
                 modelFile="problem.essence",
                 instFile=instFile,
@@ -185,15 +174,9 @@ def main():
                 baseMinTime=es["baseSolver"]["solverMinTime"],
                 favouredSolver=es["favouredSolver"]["name"],
                 favouredSolverFlags=es["favouredSolver"]["solverFlags"],
-                # timeLimit=es["totalTimeLimit"],         # correct
                 totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
                 initSeed=seed,
                 gradedTypes=es["gradedTypes"],
-                # SRTimeLimit=es["SRTimeLimit"],         # correct
-                # SRFlags=es["SRTimeLimit"],         # correct
-
-
-                # totalMemLimit=
             )
     else:
         # convert the generated instance into .dzn
@@ -202,8 +185,10 @@ def main():
 
         # start the evaluation
         es = setting["evaluationSettings"]
+
         if es["nEvaluations"] == 1:
             seed = None
+        # Case for discriminating instance generation
         if experimentType == "discriminating":
             assert (
                 es["baseSolver"]["totalTimeLimit"]
@@ -224,6 +209,7 @@ def main():
                 initSeed=seed,
             )
 
+        # Case for graded instance generation
         else:
             oracleSolver = oracleSolverFlags = oracleSolverTimeLimit = None
             if es["solverType"] == "incomplete":

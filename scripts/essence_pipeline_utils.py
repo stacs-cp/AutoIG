@@ -143,9 +143,6 @@ def savilerow_translate(
         + " "
         + flags
     )
-    # print("THE COMMAND IS RIGHT HERE ***************")
-    # print(cmd)
-    # print("THE COMMAND IS RIGHT HERE ***************")
 
     log(cmd)
 
@@ -420,7 +417,6 @@ def make_conjure_solve_command(
     return conjureCmd, lsTempFiles
 
 # Changed to take in the paramters directly, rather than through a provided settings dictionary
-# TODO where does essenceModelFile and eprimeModelFile come from 
 def call_conjure_solve(
         essenceModelFile: str, 
         eprimeModelFile: str, 
@@ -432,18 +428,6 @@ def call_conjure_solve(
         solverFlags, 
         seed):
     
-    print("***** call_conjure_solve PARAMS INFO *****")
-    print(f"essenceModelFile: {essenceModelFile}")
-    print(f"eprimeModelFile: {eprimeModelFile}")
-    print(f"instFile: {instFile}")
-    print(f"solver: {solver}")
-    print(f"SRTimeLimit: {SRTimeLimit}")
-    print(f"SRFlags: {SRFlags}")
-    print(f"solverTimeLimit: {solverTimeLimit}")
-    print(f"solverFlags: {solverFlags}")
-    print(f"seed: {seed}")
-    print("******************************************")
-
     lsTempFiles = []
 
     print()
@@ -635,10 +619,7 @@ def calculate_essence_borda_scores(
     }
     # Initial Assertions
     assert status1 in possible_status and status2 in possible_status
-
     assert problemType in ["MIN", "MAX", "SAT"]
-
-    # scores = {"complete": (), "incomplete": ()}
 
     def solved(status):
         return status in ["sat", "nsat"]
@@ -649,18 +630,16 @@ def calculate_essence_borda_scores(
     
     # General Logic used across both optimization and sat problems
     if solved(status1) and not solved(status2):
-        # scores["complete"] = scores["incomplete"] = (1, 0)
         return (1,0)
     elif solved(status2) and not solved(status1):
-        # scores["complete"] = scores["incomplete"] = (0, 1)
         return (0,1)
 
+    # Special Cases
     if not solved(status1) and not solved(status2):
         if zeroScoreWhenBothFail:
             return (0,0)
         else: 
             return (0, 1)
- 
     return calculateMnzScore(time1, time2)
 
                 
