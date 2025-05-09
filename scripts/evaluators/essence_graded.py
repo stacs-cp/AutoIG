@@ -1,37 +1,29 @@
-import os, random, time
+import os
 from utils import log
 from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type
 
-import conf
-# from conf import (
-#     SCORE_UNWANTED_TYPE,
-#     SCORE_TOO_EASY,
-#     SCORE_BASE_TOO_EASY,
-#     SCORE_FAVOURED_TOO_DIFFICULT,
-#     SCORE_TOO_DIFFICULT,
-#     SCORE_INCORRECT_ANSWER,
-#     conf.SCORE_GRADED,
-#     conf.detailedOutputDir,
-#     deterministicSolvers,
-# )
+import conf # External file for holding static configurations, no need to redeclare here
+
 
 def evaluate_essence_instance_graded(    
-    modelFile: str, # present for MZN
-    instFile: str, # present for mzn 
-    unwantedTypes: list = [], # present for mzn
-    nEvaluations: int = 1,  # present for MZN, 
-    solver: str = "ortools", #present for mzn 
-    solverFlags: str = "-f", # present for mzn 
-    solverType: str = "complete", # present for mzn
-    minTime: int = 10, # present for mzn 
-    timeLimit: int = 1200, # present for mzn 
-    initSeed: int = None, # present for mzn 
-    SRTimeLimit: int = 0, # same default as provided in make_conjure_solve_command previously 
-    SRFlags: str = "",  # same default as povideed in make_conjure_solve command previously
+    modelFile: str, # Path to the Essence model file
+    instFile: str, # Path to the instance parameter file
+    unwantedTypes: list = [], # List of unwanted types
+    nEvaluations: int = 1,  # Number of repeated solver runs
+    solver: str = "ortools", #Name of the solver to use, default is ortools
+    solverFlags: str = "-f", # Flags for the solver, fed into Conjure
+    solverType: str = "complete", # The type of the provided solver, default is complete
+    minTime: int = 10, # The minimum time threshold for the solver
+    timeLimit: int = 1200, # The default time limit for each solver run
+    initSeed: int = None, # The initial seed
+    SRTimeLimit: int = 0, # The timelimit for SR
+    SRFlags: str = "",  # Flags for SR
+
+    # Currently no oracle implemented, left here in case it is done later on
     oracleSolver: str = None,
     oracleSolverFlags: str = "-f",
     oracleSolverTimeLimit: int = 3600,
-    memLimit=8192,
+    memLimit=8192, # Total memory limit for solver runs (currently unused)
 ):
     
     
@@ -44,13 +36,11 @@ def evaluate_essence_instance_graded(
     eprimeModelFile = conf.detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
 
-    # got rid of some usage of existing parameters, such as solver 
-
     score = None
     results = {}
     status = "ok"
 
-    # check validity of input: identical to how it was done for MZN implementation
+    # check validity of input: similar to how it was done for MZN implementation
     if len(unwantedTypes) > 0:
         for s in unwantedTypes:
             assert s in [
@@ -62,6 +52,7 @@ def evaluate_essence_instance_graded(
         "complete",
         "incomplete",
     ], "ERROR: solver type must be either complete or incomplete"
+    # Again, leaving so can be used in the future if the oracle is implemented
     if solverType == "incomplete":
         assert (
             oracleSolver != None
@@ -70,19 +61,17 @@ def evaluate_essence_instance_graded(
         minTime < timeLimit
     ), "ERROR: min solving time must be less than total time limit"
 
-    # TODO may need to change implementation of get_essence_problem_type
+    # Get the essence problem type using Conjure AST functionality
     problemType = get_essence_problem_type(modelFile)   
     conf.problemType = problemType
 
-    # initialise results
+    # initialise results dictionaries
     results = {"main": {}, "oracle": {}}
     for st in ["main", "oracle"]:
         results[st]["runs"] = []
     score = status = None
 
-    # NOTE: updated get results from the minizinc pipeline
-    # concerning because existing essence pipeline had two simultaneous versions of the function
-    # was the same implementation as previously, should be fine
+    # Function to get results
     def get_results():
         assert (score is not None) and (
             status is not None
@@ -96,23 +85,20 @@ def evaluate_essence_instance_graded(
         # print("\n",rs)
         return rs
     
-    """ 
-    THIS IS WHERE THE ORACLE SHOULD BE HANDLED, EVERYTHING BEFOREHAND WAS JUST PARAMETER HANDLING
-    """
 
-    """ 
-    THIS IS WHERE THE ACTUAL ESSENCE INSTANCE GENERATION STARTS
-    """
-
+ 
+    # Starting the actual Essence instance generation object
     print("\n")
     log("Solving " + instFile + "...")
     # run the main solver
+    # These variables aren't currently used, left for future implementation
     instanceType = None
     optimalObj = None
-
-    lsSolverTime = []   # FIXME: NOT SURE IF THIS SHOULD BE HERE, IS LEFTOVER FROM OLD ESSENCE IMPLEMENTATION 
+    lsSolverTime = []   
+    
+    # Looping for each iteration of the nEvaluations parameter
     for i in range(nEvaluations):
-        # FIXME: be careful about the way seed was handled, used to be rndseed
+        # Change seed each time
         if initSeed:
             seed = initSeed + i
         else:
@@ -122,9 +108,7 @@ def evaluate_essence_instance_graded(
             "\n\n----------- With seed " + str(i) + "th (" + str(seed) + ")"
         )
 
-        #TODO did same implementatino for call_conjure_solve but need to check
-        # this has both essenceModelFile, and eprimeModelFile, rather than just modelFile like minizinc
-        # there is also two time limits, theres SRTimeLimit and solverTimeLimit
+        # call conjure solve
         runStatus, SRTime, solverTime = call_conjure_solve(
             essenceModelFile, eprimeModelFile, instFile, solver, SRTimeLimit, SRFlags, timeLimit, solverFlags, seed
         )
@@ -136,22 +120,17 @@ def evaluate_essence_instance_graded(
 
         # Minizinc had a check here for if the instance type was the same as the previous command
         # checked for inconsistencies but isn't possible here, no "EXTRA" field returned
-            
         # there was a check here based on the optimal objective, but not possible
 
-        # there was a check for instance of an wanted type
-        # doing this because runStatus returns sat or nsat
+        # Checking if the result is an unwanted type
         if len(unwantedTypes) > 0 and runStatus and (runStatus in unwantedTypes):
             print("Unwanted instance type. Quitting...")
             score = conf.SCORE_UNWANTED_TYPE
             status = "unwantedType"
-            # TODO: in this context, we don't really need to run the oracle to check correctness of instance type, since return scores for unwanted type and incorrect results are the same. But if we decide to have the two scores being different, we may need to use the oracle here
             return score, get_results()
         
-    # cant do this because don't have objective function
-    # function to get the median run, and uses it to determine weather the instance is too easy 
-    # I just took the median of the times used to solve it
-    # just trying to take the mean based on solvertime alone
+
+    # Calculate median runtime
     results["main"]["runs"] = sorted(
         results["main"]["runs"], key=lambda run: run["solverTime"]
     )
@@ -163,7 +142,7 @@ def evaluate_essence_instance_graded(
     if (medianRun["status"] == "sat") and (medianRun["solverTime"] < minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
-        status = "tooEasy"  #TODO maybe change based on how I implement the returns of this function
+        status = "tooEasy"  
         return score, get_results()
     
         # if the instance is unsolvable by the main solver, there's no need to run the oracle

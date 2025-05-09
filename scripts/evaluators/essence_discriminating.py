@@ -1,39 +1,28 @@
-import os, random, time
+import os
 from utils import log
 from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type, calculate_essence_borda_scores
-import copy
 import conf
 
-def evaluate_essence_instance_discriminating(
-    # instFile, 
-    # seed, 
-    # setting
-    modelFile: str,
-    instFile: str, 
-    scoringMethod: str = "complete",
-    unwantedTypes: list = [],
-    nEvaluations: int = 1,
-    baseSolver: str = "ortools",
-    baseSolverFlags: str = "-f",
-    baseMinTime: int = 0,
-    favouredSolver: str = "yuck",
-    favouredSolverFlags: str = "-f",
-    totalTimeLimit: int = 1200,
-    initSeed: int = None, 
-    totalMemLimit=8192,
-    SRTimeLimit: int = 0,
-    SRFlags: str = "",  # same default as povideed in make_conjure_solve command previously
-    gradedTypes: str = "",
-    # solverTimeLimit: int = 0,   #temporary replacement for totalTimeLimt
 
+
+def evaluate_essence_instance_discriminating(
+    modelFile: str, # Path to the Essence model file 
+    instFile: str, # Path to the instance parameter file
+    scoringMethod: str = "complete", # Scoring method, complete by default
+    unwantedTypes: list = [], # A list of unwanted types, empty by default
+    nEvaluations: int = 1, # The number of iterations for each generator model, 1 by default
+    baseSolver: str = "ortools", # Default baseSolver if none is provided
+    baseSolverFlags: str = "-f", # Flags for the base solver, fed into Conjure
+    baseMinTime: int = 0, # The minimum time threshold for the base solver
+    favouredSolver: str = "yuck", # The default favoured solver, if none is provided
+    favouredSolverFlags: str = "-f", # Flags for the favoured solver, fed into Conjure
+    totalTimeLimit: int = 1200, # The default time limit for each solver run
+    initSeed: int = None, # The initial seed
+    totalMemLimit=8192, # Total memory limit for solver runs (currently unused)
+    SRTimeLimit: int = 0, # The timelimit for SR
+    SRFlags: str = "",  # Flags for SR
 ):
     
-    print(" am getting to here*******************")
-    # TODO: we need to return a dictionary of results, as in evaluate_mzn_instance_discriminating
-    # TODO: make all inputs of the function explicit, as in evaluate_mzn_instance_discriminating
-
-    # Seeing what specifically is in this settings dictionary
-    # print("setting********", setting)
     """evaluate a generated instance based on discriminating power with two solvers ###
     " NOTE:
     " - this function can be improved using parallelisation, as there are various cases in the scoring where runs can be safely terminated before they finished. Things to consider
@@ -50,13 +39,13 @@ def evaluate_essence_instance_discriminating(
     """
 
 
-   # settings that stay hte same across runs
+    # Set up file paths for Essence and EPrime files
     essenceModelFile = "./problem.essence"
     eprimeModelFile = conf.detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
 
 
-    """ taken directly from minizinc """
+    # Assertions to validate unwanted type and scoring method inputs
     assert scoringMethod in ["complete", "incomplete"], (
         "ERROR: scoringMethod " + scoringMethod + " is not supported"
     )
@@ -69,21 +58,21 @@ def evaluate_essence_instance_discriminating(
             ], "ERROR: elements of unwantedTypes must be in {'sat','unsat'}"
     assert nEvaluations > 0
 
-    # initialise info and results
+    # Initialize info and results dictionaries
     info = {
         "base": {"name": baseSolver, "flags": baseSolverFlags},
         "favoured": {"name": favouredSolver, "flags": favouredSolverFlags},
     }
 
+    # Initialize results dictionary for each solver
     results = {"base": {}, "favoured": {}}
     for solverType in ["base", "favoured"]:
         results[solverType]["runs"] = []
     score = status = None
     instanceType = None
 
-    """Nearly all above is directly taken from minizinc"""
  
-
+    # Create a function to return the results of the run
     def get_results():
         assert (score is not None) and (
             status is not None
@@ -94,7 +83,6 @@ def evaluate_essence_instance_discriminating(
             "score": score,
             "results": results,
         }
-        # print("\n",rs)
         return rs
 
 
@@ -125,45 +113,15 @@ def evaluate_essence_instance_discriminating(
         print("About to enter loop for nEvaluations")
         
         for i in range(nEvaluations):
-            # Minizinc had this not be plus one
             rndSeed = initSeed + i
 
-            # status = "ok"
-            # solverSetting = {}
-            # current_solver = None
-                # print(
-                #     "\n\n---- With random seed "
-                #     + str(i)
-                #     + "th ("
-                #     + str(rndSeed)
-                #     + ") and solver "
-                #     + solverSetting["name"]
-                #     + " ("
-                #     + solver
-                #     + ")"
-                # )
-            # if i > 0:
-            #     assert len(results[solverType]["runs"]) > 0
-            #     flattenStatus = results[solverType]["runs"][0]["extra"]["flattenStatus"]
-            #     if (info[solverType]["name"] in conf.deterministicSolvers) or (
-            #         flattenStatus != "ok"
-            #     ):
-            #         r = copy.deepcopy(results[solverType]["runs"][0])
-            #         r["seed"] = rndSeed
-            #         results[solverType]["runs"].append(r)
-            #         continue
-
-
-            print("reaching conjure solve point")
+            # Making the call to Conjure Solve
             runStatus, SRTime, solverTime = call_conjure_solve(
                 essenceModelFile, eprimeModelFile, instFile, current_solver, SRTimeLimit, SRFlags, totalTimeLimit, solverSetting, rndSeed
             )
             localVars = locals()
-  
-            ## has none of these checks, because there is no extra
 
-            ##TODO have to check which of htese is returned by hte SR pipeline again
-            # Different because of the different results reutrned by SRpipeline
+            # Checking the produced run status
             if runStatus in ["sat", "nsat"]:
                 if instanceType is None:
                     instanceType = runStatus
@@ -171,12 +129,12 @@ def evaluate_essence_instance_discriminating(
                     solved = True
 
 
-                # for if it hasn't already been run in a previous nEvaluation 
+                # Condition if it hasn't already been run in a previous nEvaluation 
                 else:
                     if instanceType is None:
-                        # if instanceType != status:
+                        # If a different result appears, verify with a third solver (chuffed)
                         if correctedType is None:
-                            # use a third solver, chuffed, to solve hte instance
+                            # use a third solver, chuffed, to solve the instance
                             c_runStatus, c_SRTime, c_solverTime = call_conjure_solve(
                                     essenceModelFile, 
                                     eprimeModelFile,
@@ -209,6 +167,7 @@ def evaluate_essence_instance_discriminating(
                                         r["status"] = "ERR"
                         instanceType = correctedType
 
+            # Append run results
             results[solverType]["runs"].append(
                 {
                     "seed":rndSeed,
@@ -218,6 +177,7 @@ def evaluate_essence_instance_discriminating(
                 }
             )
 
+            # Early exit if instance type is unwanted
             if (
                 len(unwantedTypes) > 0
                 and instanceType
@@ -229,13 +189,14 @@ def evaluate_essence_instance_discriminating(
                 return score, get_results()
             
 
+        # For the case that the instance cannot be solved by the favoured solver
         if (solverType == "favoured") and (solved is False):
             print("\nCannot be solved by favoured solver. Quitting...")
             score = conf.SCORE_FAVOURED_TOO_DIFFICULT
             status = "favouredTooDifficult"
             return score, get_results()            
 
-    # check if the instance is too easy for the base solver
+    # Check if the instance is too easy for the base solver
     baseAvgTime = sum([r["solverTime"] for r in results["base"]["runs"]]) / nEvaluations
     solvedByAllBaseRuns = True
     for r in results["base"]["runs"]:
@@ -245,39 +206,39 @@ def evaluate_essence_instance_discriminating(
     print(solvedByAllBaseRuns)
     if solvedByAllBaseRuns and (baseAvgTime < baseMinTime):
         print("\nInstance is too easy for the base solver. Quitting...")
-        score = conf.SCORE_BASE_TOO_EASY
+        score = conf.SCORE_BASE_TOO_EASY    # Setting the type appropriately
         status = "baseTooEasy"
         return score, get_results()
     
+    # Getting the problem model type, using the AST produced by Conjure
     problemType = get_essence_problem_type(modelFile)
 
 
-    # In minizinc pipeline here there was another OR-tools check, no need here, theres no objective function
+    # In minizinc pipeline here there were checks for objective value, is a TODO here for a later implementation
     baseScores = []
     favouredScores = []
     for i in range(nEvaluations):
         baseResults = results["base"]["runs"][i]
         favouredResults = results["favoured"]["runs"][i]
-        # Calculating the borda scores based off only the solver time
+
+        # Calculating the borda scores based off only the solver time, no objective function implemented yet
         bordaScore = calculate_essence_borda_scores(
             baseResults["status"],
             favouredResults["status"],
             baseResults["solverTime"],
             favouredResults["solverTime"],
             problemType,
-            # baseResults["extra"]["objs"],
-            # favouredResults["extra"]["objs"],
             True,
         )
-        # sc = bordaScore
         baseScores.append(bordaScore[0])
         favouredScores.append(bordaScore[1])
 
+    # Adding up for the total scores
     baseSum = sum(baseScores)
     favouredSum = sum(favouredScores)
 
 
-    # we want to maximise favouredSum / baseSum
+    # Aiming to maximise favouredSum / baseSum for these discriminating instances
     if favouredSum == 0:
         score = 0
     elif baseSum == 0:

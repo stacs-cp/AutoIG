@@ -14,6 +14,7 @@ SCORE_GRADED = -1
 # Discriminating
 SCORE_BASE_TOO_EASY = 0
 SCORE_FAVOURED_TOO_DIFFICULT = 0
+# Best when one can do it but the other can't
 SCORE_BEST = -9999
 
 
