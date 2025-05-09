@@ -1,0 +1,31 @@
+{"computer": "03a54c82ab3f",
+ "conjureVersion": "Conjure v2.5.1 (Repository version b988be2 (2025-03-24 22:07:42 +0000))",
+ "essence": "./problem.essence", "essenceParams": ["./detailed-output/inst-7-1222707704.param"], "runsolverInfo": {},
+ "savilerowInfo":
+     {"SavileRowClauseOut": "0", "SavileRowTimeOut": "0", "SavileRowTotalTime": "1.031", "SolverFailures": "154",
+      "SolverNodes": "580", "SolverSatisfiable": "1", "SolverTimeOut": "0", "SolverTotalTime": "0.035"},
+ "savilerowLogs":
+     {"exitCode": 0,
+      "stderr":
+          ["WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval.",
+           "WARNING: interval 1..0 is out of order. Rewriting to empty interval."],
+      "stdout":
+          ["WARNING: Index domains do not match for the matrix separation_FunctionAsRelationR3_RelationAsSetR3_ExplicitR3_1_Explicit",
+           "WARNING: This could be a mismatch between the matrix given in the parameter file",
+           "WARNING: and its matrix domain in the given statement in the model file.",
+           "Created output file for domain filtering ./detailed-output/problem-inst-7-1222707704.eprime-minion",
+           "Created output file ./detailed-output/problem-inst-7-1222707704.eprime-param.fzn",
+           "Solver exited with error code:0 and message:",
+           "[WARNING: the --time-out flag has recently been changed.The time-out is now provided in milliseconds instead of seconds]",
+           "Created information file ./detailed-output/problem-inst-7-1222707704.eprime-info"]},
+ "savilerowOptions": [" "],
+ "savilerowVersion": "Savile Row 1.10.0 (Repository Version: 1aded299f (2024-03-10 10:56:22 +0000))",
+ "solver": "chuffed", "solverOptions": ["-t 3000 --rnd-seed 1222707704 "], "status": "OK",
+ "timestamp": "2025-05-01T19:25:26.449981761Z", "totalTime": 1.07, "useExistingModels": ["problem.eprime"]}
