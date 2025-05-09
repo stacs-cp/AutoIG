@@ -1,3 +1,0 @@
-
-{"totalTime": 21.871262550354004, "genResults": {"instance": "gen-inst-1.param", "status": "sat", "seed": 1965286212, "SRTime": 0, "solverTime": 0.10128188133239746}, "instanceResults": {"instance": "./detailed-output/inst-1-1965286212.param", "status": "ok", "score": -1, "results": {"main": {"runs": [{"seed": 1965286215, "status": "sat", "solverTime": 0.606, "SRTime": 1.176}, {"seed": 1965286212, "status": "sat", "solverTime": 0.612, "SRTime": 1.205}, {"seed": 1965286216, "status": "sat", "solverTime": 0.616, "SRTime": 1.138}, {"seed": 1965286213, "status": "sat", "solverTime": 0.619, "SRTime": 1.132}, {"seed": 1965286214, "status": "sat", "solverTime": 0.65, "SRTime": 1.208}]}, "oracle": {"runs": []}}}, "status": "ok", "score": -1}
-             ^^^^^^^^^^^^^^^^^^

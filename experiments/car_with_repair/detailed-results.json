@@ -1,6 +1,0 @@
-
-{"totalTime": 28.152055501937866, "genResults": {"instance": "gen-inst-1.param", "status": "solverTimeOut", "seed": 754252698, "SRTime": 7.805822372436523, "solverTime": 20.0724778175354}, "instanceResults": {}, "status": "gensolverTimeOut", "score": 2}
-{"totalTime": 19.000612020492554, "genResults": {"instance": "gen-inst-2.param", "status": "sat", "seed": 754252698, "SRTime": 6.6019508838653564, "solverTime": 0.08826136589050293}, "instanceResults": {"instance": "./detailed-output/inst-2-754252698.param", "status": "tooDifficult", "score": 0, "results": {"main": {"runs": [{"seed": 754252698, "status": "unsat", "solverTime": 0.04, "SRTime": 4.221}]}, "oracle": {"runs": []}}}, "status": "tooDifficult", "score": 0}
-{"totalTime": 27.214457273483276, "genResults": {"instance": "gen-inst-3.param", "status": "solverTimeOut", "seed": 754252698, "SRTime": 6.868354082107544, "solverTime": 20.06598401069641}, "instanceResults": {}, "status": "gensolverTimeOut", "score": 2}
-{"totalTime": 28.307173490524292, "genResults": {"instance": "gen-inst-4.param", "status": "solverTimeOut", "seed": 754252698, "SRTime": 7.960742712020874, "solverTime": 20.072858810424805}, "instanceResults": {}, "status": "gensolverTimeOut", "score": 2}
-             ^^^^^^^^^^^^^^^^^^

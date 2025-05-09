@@ -1,5 +1,0 @@
-given A: int(1..1000)
-
-find a: int(1..1000)
-such that
-a = A
