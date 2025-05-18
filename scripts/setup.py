@@ -35,12 +35,15 @@ def read_config(args):
         "genSolver",
         "genSolverTimeLimit",
         "genSolverFlags",
+        "repairModel",
+
     ]
     instSettings = [
         "instanceSetting",
         "instanceValidTypes",
         "minSolverTime",
         "maxSolverTime",
+        "SRTimeLimit",
         "nRunsPerInstance",
     ]
 
@@ -175,7 +178,19 @@ def setup(config):
         assert os.path.isfile(iraceParamFile), "ERROR: params.irace is missing"
 
         tmpPath = os.path.join(config["runDir"], "repair.essence")
+        # Check if there is an already provided repair model
         if os.path.isfile(tmpPath):
+            print("Repair model provided at: ", tmpPath)
+            repairModelFile = tmpPath
+        # Check if a path to a repair model has been provided
+        elif config.get("repairModel") != None:
+            repair_dir = config["repairModel"]
+            if not os.path.isfile(repair_dir):
+                raise FileNotFoundError(f"Repair model not found: {repair_dir}")
+            print("Repair model provided at: ", config["repairModel"])
+
+            # Copy the repair model to the current directory
+            copy(repair_dir, tmpPath)
             repairModelFile = tmpPath
 
     # generate problem's eprime model
@@ -342,6 +357,23 @@ def main():
         type=int,
         help="time limit when solving an instance (in seconds)",
     )
+
+
+    parser.add_argument(
+        "--SRTimeLimit",
+        default=0,
+        type=int,
+        help="Time limit of SR for instance solving (in seconds)",
+    )
+
+
+    parser.add_argument(
+        "--repairModel",
+        default=None,
+        help="Optional parameter to specify location of a repair model",
+    )
+
+
     parser.add_argument(
         "--nRunsPerInstance", default=1, type=int, help="number of runs per instance"
     )

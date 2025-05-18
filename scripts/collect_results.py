@@ -6,11 +6,13 @@ import numpy as np
 
 import sys
 import os
+import re
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
 
 from minizinc_utils import calculate_minizinc_borda_scores, get_minizinc_problem_type
+from essence_pipeline_utils import get_essence_problem_type, calculate_essence_borda_scores
 
 pd.options.mode.chained_assignment = None
 
@@ -78,8 +80,8 @@ def read_data(runDir):
             else:
                 return status
         tRs.loc[:,"status"] = [rename_status_dis(s[0],s[1]) for s in zip(tRs.status,tRs.score)]
-        #display(tRs[tRs.status.str.contains("Wins")])
-    
+
+
     # rename some columns and re-order the columns
     tRs.rename(columns={"hashValue":"instanceHashValue","score":"iraceScore"}, inplace=True)
     tRs = tRs[["genInstance","instance","genResults","instanceResults","status","iraceScore","totalTime","instanceHashValue"]]
@@ -100,6 +102,7 @@ def print_stats(config, tRs, tRsNoDup):
     
     # number of instances generated
     nInstances = len(tRsNoDup.instance.unique())
+
 
     # number of runs for each run status
     runStats = tRs.groupby('status').genResults.count().to_dict()
@@ -151,44 +154,100 @@ def extract_graded_and_discriminating_instances(runDir):
     """ 
     extract information about graded/discriminating instances and save to a .csv file
     """
+
+
     outFile = None
-    if config["instanceSetting"] == "graded":
-        # filter out non-graded instances
-        tInfo = tRsNoDup.loc[tRsNoDup.status=="graded",:]
-        # extract instance type
-        tInfo.loc[:,"instanceType"] = [x["results"]["main"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
-        # calculate average solving time for each instance  
-        tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
-        # re-order columns
-        tInfo = tInfo[["instance","instanceType","avgSolvingTime","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
-        # save to a .csv file
-        outFile = f"{runDir}/graded-instances-info.csv"
-        print(f"\nInfo of graded instances is saved to {os.path.abspath(outFile)}")
-        tInfo.to_csv(outFile, index=False)
+    if re.search(r'\.mzn$', config["problemModel"]):
+        if config["instanceSetting"] == "graded":
+            # filter out non-graded instances
+            tInfo = tRsNoDup.loc[tRsNoDup.status=="graded",:]
+            # extract instance type
+            tInfo.loc[:,"instanceType"] = [x["results"]["main"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
+            # calculate average solving time for each instance  
+            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
+            # re-order columns
+            tInfo = tInfo[["instance","instanceType","avgSolvingTime","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
+            # save to a .csv file
+            outFile = f"{runDir}/graded-instances-info.csv"
+            print(f"\nInfo of graded instances is saved to {os.path.abspath(outFile)}")
+            tInfo.to_csv(outFile, index=False)
+        else:
+            # filter out non-discriminating instances or instances where the favoured solver lost
+            tInfo = tRsNoDup.loc[tRsNoDup.status.isin(["favouredSolverWins"]),:]
+            # extract instance type
+            tInfo.loc[:,"instanceType"] = [x["results"]["favoured"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
+            # extract MiniZinc Borda score of the favoured and the base solvers
+            print("about to try to get problem type", config["problemModel"])
+
+            problemType = get_minizinc_problem_type(config["problemModel"])
+          
+
+
+            def extract_minizinc_score(r):
+                results = calculate_minizinc_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
+                                        r['base']['runs'][0]['time'], r['favoured']['runs'][0]['time'],
+                                            problemType,
+                                        r['base']['runs'][0]['extra']['objs'], r['favoured']['runs'][0]['extra']['objs'],
+                                        True)
+                scores = results["complete"] # first element: base solver's score, second element: favoured solver's score     
+                return scores[1]
+            tInfo.loc[:,"favouredSolverMiniZincScore"] = [extract_minizinc_score(x["results"]) for x in tInfo.instanceResults]
+            tInfo.loc[:,"baseSolverMiniZincScore"] = [1 - x for x in tInfo.favouredSolverMiniZincScore]    
+            tInfo.loc[:,"discriminatingPower"] = tInfo["favouredSolverMiniZincScore"] / tInfo["baseSolverMiniZincScore"]
+            # re-order columns
+            tInfo = tInfo[["instance","discriminatingPower","favouredSolverMiniZincScore","baseSolverMiniZincScore","instanceType","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
+            # save to a .csv file
+            outFile = f"{runDir}/discriminating-instances-info.csv"
+            print(f"\nInfo of discriminating instances is saved to {os.path.abspath(outFile)}")
+            tInfo.to_csv(outFile, index=False)
+
+    elif re.search(r'\.essence$', config["problemModel"]):
+        if config["instanceSetting"] == "graded":
+            # filter out non-graded instances
+            tInfo = tRsNoDup.loc[tRsNoDup.status=="graded",:]
+            
+            # extract instance type
+            tInfo.loc[:,"instanceType"] = [x["results"]["main"]["runs"][0]["status"] for x in tInfo.instanceResults]
+            # calculate average solving time for each instance  
+            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
+            # re-order columns
+            tInfo = tInfo[["instance","instanceType","avgSolvingTime","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
+            # save to a .csv file
+            outFile = f"{runDir}/graded-instances-info.csv"
+            print(f"\nInfo of graded instances is saved to {os.path.abspath(outFile)}")
+            tInfo.to_csv(outFile, index=False)
+        else:
+            # filter out non-discriminating instances or instances where the favoured solver lost
+            tInfo = tRsNoDup.loc[tRsNoDup.status.isin(["favouredSolverWins"]),:]
+            # The instance type 
+            tInfo.loc[:,"instanceType"] = [x["results"]["favoured"]["runs"][0]["status"] for x in tInfo.instanceResults]
+            # extract Esesnce Borda score of the favoured and the base solvers
+   
+            problemType = get_essence_problem_type(config["problemModel"])
+
+
+            def extract_essence_score(r):
+                # Calculated using only solver time rather than total time of SR + Solver Time
+                results = calculate_essence_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
+                                        r['base']['runs'][0]['solverTime'], r['favoured']['runs'][0]['solverTime'],
+                                            problemType,
+                                        True)
+                # scores = results # first element: base solver's score, second element: favoured solver's score        
+                # Different than the essence pipeline, instaed the calculate_essence_borda_scores calculates the score directly
+                return results[1]
+            tInfo.loc[:,"favouredSolverEssenceScore"] = [extract_essence_score(x["results"]) for x in tInfo.instanceResults]
+            tInfo.loc[:,"baseSolverEssenceScore"] = [1 - x for x in tInfo.favouredSolverEssenceScore]    
+            tInfo.loc[:,"discriminatingPower"] = tInfo["favouredSolverEssenceScore"] / tInfo["baseSolverEssenceScore"]
+            # re-order columns
+            tInfo = tInfo[["instance","discriminatingPower","favouredSolverEssenceScore","baseSolverEssenceScore","instanceType","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
+            # save to a .csv file
+            outFile = f"{runDir}/discriminating-instances-info.csv"
+            print(f"\nInfo of discriminating instances is saved to {os.path.abspath(outFile)}")
+            tInfo.to_csv(outFile, index=False)
     else:
-        # filter out non-discriminating instances or instances where the favoured solver lost
-        tInfo = tRsNoDup.loc[tRsNoDup.status.isin(["favouredSolverWins"]),:]
-        # extract instance type
-        tInfo.loc[:,"instanceType"] = [x["results"]["favoured"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
-        # extract MiniZinc Borda score of the favoured and the base solvers
-        problemType = get_minizinc_problem_type(config["problemModel"])
-        def extract_minizinc_score(r):
-            results = calculate_minizinc_borda_scores(r['base']['runs'][0]['status'], r['favoured']['runs'][0]['status'],
-                                       r['base']['runs'][0]['time'], r['favoured']['runs'][0]['time'],
-                                        problemType,
-                                       r['base']['runs'][0]['extra']['objs'], r['favoured']['runs'][0]['extra']['objs'],
-                                       True)
-            scores = results["complete"] # first element: base solver's score, second element: favoured solver's score        
-            return scores[1]
-        tInfo.loc[:,"favouredSolverMiniZincScore"] = [extract_minizinc_score(x["results"]) for x in tInfo.instanceResults]
-        tInfo.loc[:,"baseSolverMiniZincScore"] = [1 - x for x in tInfo.favouredSolverMiniZincScore]    
-        tInfo.loc[:,"discriminatingPower"] = tInfo["favouredSolverMiniZincScore"] / tInfo["baseSolverMiniZincScore"]
-        # re-order columns
-        tInfo = tInfo[["instance","discriminatingPower","favouredSolverMiniZincScore","baseSolverMiniZincScore","instanceType","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
-        # save to a .csv file
-        outFile = f"{runDir}/discriminating-instances-info.csv"
-        print(f"\nInfo of discriminating instances is saved to {os.path.abspath(outFile)}")
-        tInfo.to_csv(outFile, index=False)
+        # there are no other supported model types for now
+        print("Unsupported model type, please try agian with Essence or Mzn problem model")
+
     
     return tInfo
     

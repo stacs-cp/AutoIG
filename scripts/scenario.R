@@ -3,12 +3,11 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     outputDir <- './detailed-output/'
     configuration <- allConfigurations[id-nConfsPreviousRaces,]
 
-    require(data.table)
-
     # if there is no repairing model, just return the current configuration
     repairModel <- paste(outputDir,'/repair.eprime',sep='')
-    if (!file.exists(repairModel))
+    if (!file.exists(repairModel)){
         return (configuration)
+    }
 
     # just for debug
     start_time <- Sys.time()
@@ -20,7 +19,7 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     # check if repairing results are already available
     outFile <- paste(outputDir,'/repairout-',baseFileName,sep='')
     if (file.exists(outFile)){
-        configuration <- fread(outFile)
+        configuration <- read.csv(outFile)
         return (configuration)
     }
 

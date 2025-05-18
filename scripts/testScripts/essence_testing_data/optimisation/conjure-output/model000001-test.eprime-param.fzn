@@ -1,0 +1,4 @@
+var 6..10: y:: output_var ;
+var {30,35,40,45,50}: aux0:: var_is_introduced ;
+constraint int_lin_eq([5,-1],[y,aux0],0);
+solve :: int_search([y], input_order, indomain_min, complete) maximize aux0;
