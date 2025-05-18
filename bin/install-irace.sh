@@ -5,7 +5,7 @@ echo ""
 echo "============= INSTALLING $name ==================="
 echo "$name version: $version"
 
-BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # check if R is installed
 if ! [ -x "$(command -v R)" ]; then
@@ -17,7 +17,7 @@ url="https://cran.r-project.org/src/contrib/irace_3.4.1.tar.gz"
 
 pushd $BIN_DIR
 
-mkdir -p $name
+mkdir -p $name 
 
 SOURCE_DIR="$name-source"
 mkdir -p $SOURCE_DIR
