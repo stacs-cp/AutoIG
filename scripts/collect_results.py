@@ -164,7 +164,7 @@ def extract_graded_and_discriminating_instances(runDir):
             # extract instance type
             tInfo.loc[:,"instanceType"] = [x["results"]["main"]["runs"][0]["extra"]["instanceType"] for x in tInfo.instanceResults]
             # calculate average solving time for each instance  
-            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
+            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["solverTime"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
             # re-order columns
             tInfo = tInfo[["instance","instanceType","avgSolvingTime","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
             # save to a .csv file
@@ -209,7 +209,7 @@ def extract_graded_and_discriminating_instances(runDir):
             # extract instance type
             tInfo.loc[:,"instanceType"] = [x["results"]["main"]["runs"][0]["status"] for x in tInfo.instanceResults]
             # calculate average solving time for each instance  
-            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
+            tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["solverTime"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]        
             # re-order columns
             tInfo = tInfo[["instance","instanceType","avgSolvingTime","instanceResults","genInstance","genResults","status","iraceScore","totalTime","instanceHashValue"]]
             # save to a .csv file
