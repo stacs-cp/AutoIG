@@ -139,18 +139,20 @@ def evaluate_essence_instance_graded(
 
 
     # if the instance is too easy by the main solver, can just return now, no need to run the oracle
-    if (medianRun["status"] == "sat") and (medianRun["solverTime"] < minTime):
+    if (medianRun["solverTime"] <= minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
         status = "tooEasy"  
         return score, get_results()
-    
-        # if the instance is unsolvable by the main solver, there's no need to run the oracle
-    if medianRun["status"] not in ["sat"]:
+    elif (medianRun["solverTime"] >= timeLimit):
         print("Instance not satisfiable or timeout occurred. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
         return score, get_results()
+    
+        # if the instance is unsolvable by the main solver, there's no need to run the oracle
+    # if medianRun["status"] not in ["sat"]:
+        
 
     status = "ok"
     score = conf.SCORE_GRADED
