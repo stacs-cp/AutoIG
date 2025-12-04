@@ -32,7 +32,7 @@ def evaluate_essence_instance_graded(
     """
     # same implementation used as in the existing Essence pipeline
     # using the new parameters passed in:
-    essenceModelFile = "./" + modelFile # Model file has sting "problem.essence" passed in
+    essenceModelFile = "./" + modelFile # Model file has string "problem.essence" passed in
     eprimeModelFile = conf.detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
 
@@ -137,15 +137,19 @@ def evaluate_essence_instance_graded(
     nRuns = len(results["main"]["runs"])
     medianRun = results["main"]["runs"][int(nRuns / 2)]
 
+    print("\nMedian run:")
+    print(medianRun)
 
     # if the instance is too easy by the main solver, can just return now, no need to run the oracle
+    # basically need to check for status = complete
     if (medianRun["solverTime"] <= minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
         status = "tooEasy"  
         return score, get_results()
-    elif (medianRun["solverTime"] >= timeLimit):
-        print("Instance not satisfiable or timeout occurred. Quitting...")
+    
+    if (medianRun["solverTime"] >= timeLimit):
+        print("Solver timeout occurred. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
         return score, get_results()
