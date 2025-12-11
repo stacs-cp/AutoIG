@@ -12,3 +12,4 @@ experiments/
 .gitignore
 bin/runsolver-3.4.1.tar.bz2
 experiment/
+data/models/mapf/temp

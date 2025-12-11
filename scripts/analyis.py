@@ -80,7 +80,7 @@ def main():
                     okInst.append(data["instanceResults"]["instance"])
                 else:
                     lsLines.append(data["status"])
-            plt.scatter(okInst, okTimes)
+            plt.hist(okInst, okTimes)
             plt.show()
     print(Counter(lsLines).items())
     print (okTimes)
