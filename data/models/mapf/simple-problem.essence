@@ -8,6 +8,11 @@ given map_length: int(1..)
 given bot_start: matrix indexed by [int(1..bots)] of int(1..map_length)
 given bot_end: matrix indexed by [int(1..bots)] of int(1..map_length)
 
+given shelf_col_size: int(1..10)
+given shelf_row_size: int(1..10)
+given buffer_col: int(1..10)
+given buffer_row: int(1..10)
+
 find x : int(1..10)
 
 such that

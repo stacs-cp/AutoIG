@@ -1,16 +1,16 @@
 given g_n_bots: int(1..10)
 
-letting shelf_col_size be 2
-letting shelf_row_size be 1
+letting g_shelf_col_size be 2
+letting g_shelf_row_size be 1
 
 letting corridor_size be 1
-letting world_border be 10
+letting world_border be 2
 
 given g_n_shelves_col: int(1..10)
 given g_n_shelves_row: int(1..10)
 
-letting col_l be (g_n_shelves_col * (shelf_col_size + corridor_size) + (world_border * 2)) $ contains one extra "corridor" space
-letting row_l be (g_n_shelves_row * (shelf_row_size + corridor_size) + (world_border * 2))  $ contains one extra "corridor" space
+letting col_l be (g_n_shelves_col * (g_shelf_col_size + corridor_size) + (world_border * 2)) $ contains one extra "corridor" space
+letting row_l be (g_n_shelves_row * (g_shelf_row_size + corridor_size) + (world_border * 2))  $ contains one extra "corridor" space
 
 letting map_size be col_l * row_l
 
@@ -25,20 +25,27 @@ find n_shelves_row: int(1..50)
 find bot_start: matrix indexed by [int(1..g_n_bots)] of int(1..map_size)
 find bot_end: matrix indexed by [int(1..g_n_bots)] of int(1..map_size)
 
-find map_length : int(1..10000)
+$ aux variables
+find shelf_col_size: int(1..10)
+find shelf_row_size: int(1..10)
+find buffer_col: int(1..10)
+find buffer_row: int(1..10)
+find map_length: int(1..1000000)
 
 such that
     bots=g_n_bots,
     n_shelves_col=g_n_shelves_col, n_shelves_row=g_n_shelves_row,
     allDiff(bot_start),
     allDiff(bot_end),
-    map_length=map_size,
+	shelf_col_size=g_shelf_col_size,
+	shelf_row_size=g_shelf_row_size,
+	buffer_col=world_border,
+	buffer_row=world_border,
+	map_length=map_size,
     
     $ We want all bots to not be in shelves.
     $ So check first if they are in a shelf then negate.
-    
-    $ NEED TO CHECK FOR CORRECT col_l AND row_l VALUES (/ or %) 
-    
+        
     forAll bot : int(1..g_n_bots) .
     	!(
 	    $ The start location not being in world edges
@@ -58,8 +65,8 @@ such that
 		$ (bot_end[bot] % col_l) < col_l - world_border /\
 		
 		$ check to see if bot is in shelf
-		((bot_start[bot] / col_l) - world_border) % (shelf_row_size + corridor_size) < shelf_row_size /\ $ index needs to be within the shelf unit, shelf_w+corridor_size = block size in y
-		((bot_start[bot] % col_l)- world_border) % (shelf_col_size + corridor_size) < shelf_col_size /\ $ index needs to be within the shelf unit, shelf_l+corridor_size = block size in x
-		((bot_end[bot] / col_l) - world_border) % (shelf_row_size + corridor_size) < shelf_row_size /\
-		((bot_end[bot] % col_l) - world_border) % (shelf_col_size + corridor_size) < shelf_col_size
+		((bot_start[bot] / col_l) - world_border) % (g_shelf_row_size + corridor_size) < g_shelf_row_size /\ $ index needs to be within the shelf unit, shelf_w+corridor_size = block size in y
+		((bot_start[bot] % col_l)- world_border) % (g_shelf_col_size + corridor_size) < g_shelf_col_size /\ $ index needs to be within the shelf unit, shelf_l+corridor_size = block size in x
+		((bot_end[bot] / col_l) - world_border) % (g_shelf_row_size + corridor_size) < g_shelf_row_size /\
+		((bot_end[bot] % col_l) - world_border) % (g_shelf_col_size + corridor_size) < g_shelf_col_size
 													)
