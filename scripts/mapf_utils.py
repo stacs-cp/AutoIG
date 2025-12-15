@@ -23,6 +23,37 @@ def call_solve_sat_mapf(instFile, solverFlags, solverTimelimit, seed):
     
     return
 
+def call_solve_cbs_mapf(instFile, solverFlags, solverTimeLimit, seed):
+    
+    return
+
+def write_cbs_file(instFile):
+    params = read_shelfworld_inst_params(instFile)
+    grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
+    n_col, n_row = get_side_lengths(params)
+    bots_start, bots_end = get_bots(params)
+    
+    cbs_param_file = conf.detailedOutputDir + os.path.basename(instFile).replace(".param", ".txt")
+    if not os.path.isfile(cbs_param_file):
+        with open(cbs_param_file, "a") as f:
+            f.write(f"{n_row} {n_col}\n")
+            
+            for y in grid:
+                for x in y:
+                    f.write(x)
+                f.write("\n")
+            f.write(str(len(bots_start))+"\n")
+            
+            for i in range(len(bots_start)):
+                col_start = bots_start[i] % n_col
+                row_start = bots_start[i] // n_col
+                col_end = bots_end[i] % n_col
+                row_end = bots_end[i] // n_col
+
+                f.write(f"{col_start} {row_start} {col_end} {row_end}\n")
+    
+    return
+
 def get_bots(params):
     bots_start = []
     bots_end = []
