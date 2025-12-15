@@ -3,15 +3,14 @@ given bots: int(1..10)
 given n_shelves_col: int(1..50)
 given n_shelves_row: int(1..50)
 
-given map_length: int(1..)
-
-given bot_start: matrix indexed by [int(1..bots)] of int(1..map_length)
-given bot_end: matrix indexed by [int(1..bots)] of int(1..map_length)
+given bot_start: matrix indexed by [int(1..bots)] of int(1..100000000)
+given bot_end: matrix indexed by [int(1..bots)] of int(1..100000000)
 
 given shelf_col_size: int(1..10)
 given shelf_row_size: int(1..10)
 given buffer_col: int(1..10)
 given buffer_row: int(1..10)
+given corridor_size: int(1..10)
 
 find x : int(1..10)
 
