@@ -80,9 +80,11 @@ def main():
                     okInst.append(data["instanceResults"]["instance"])
                 else:
                     lsLines.append(data["status"])
+
             
-        plt.hist(okTimes)
         plt.savefig(os.path.join(os.path.dirname(args.fileName), "plot.png"))
+        plt.hist(okInst, okTimes)
+
     print(Counter(lsLines).items())
 
 

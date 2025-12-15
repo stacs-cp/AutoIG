@@ -609,7 +609,7 @@ def calculate_essence_borda_scores(
 
     possible_status = {
     "sat",
-    "nsat",
+    "unsat",
     "SRTimeOut",
     "SRMemOut",
     "solverTimeOut",
@@ -622,7 +622,7 @@ def calculate_essence_borda_scores(
     assert problemType in ["MIN", "MAX", "SAT"]
 
     def solved(status):
-        return status in ["sat", "nsat"]
+        return status in ["sat", "unsat"]
     
 
     def calculateMnzScore(time1, time2):

@@ -92,11 +92,6 @@ def evaluate_essence_instance_discriminating(
     correctedType = None
     
     # solve the instance using each solver
-    stop = False  # when to stop the evaluation early
-    lsSolvingTime = {}  # solving time of each solver per random seed
-    lsSolvingTime["favoured"] = []
-    lsSolvingTime["base"] = []
-
     for solverType in ["favoured", "base"]:
         solved = False
 
@@ -119,20 +114,23 @@ def evaluate_essence_instance_discriminating(
             runStatus, SRTime, solverTime = call_conjure_solve(
                 essenceModelFile, eprimeModelFile, instFile, current_solver, SRTimeLimit, SRFlags, totalTimeLimit, solverSetting, rndSeed
             )
-            localVars = locals()
 
             # Checking the produced run status
-            if runStatus in ["sat", "nsat"]:
+            if runStatus in ["sat", "unsat"]:
                 if instanceType is None:
                     instanceType = runStatus
-                    assert instanceType in ["sat", "nsat"]
+                    assert instanceType in ["sat", "unsat"]
                     solved = True
 
 
                 # Condition if it hasn't already been run in a previous nEvaluation 
                 else:
-                    if instanceType is None:
+                    # TODO: need to fix this, instance type is already guaranteed to be none in previous if statement
+                    # need to implement check for whether results match with previous runs
+
+                    if instanceType != runStatus:
                         # If a different result appears, verify with a third solver (chuffed)
+
                         if correctedType is None:
                             # use a third solver, chuffed, to solve the instance
                             c_runStatus, c_SRTime, c_solverTime = call_conjure_solve(
@@ -148,10 +146,10 @@ def evaluate_essence_instance_discriminating(
                                 )
                             assert c_runStatus in [
                                 "sat",
-                                "nsat"
+                                "unsat"
                             ], "Error: Third solver (chuffed) also fails to prove sat or unsat"
                             correctedType = c_runStatus
-                        if instanceType == correctedType:
+                        if instanceType != correctedType:
                             solver = info[solverType]["name"]
                             print(
                                 f"WARNING: incorrect results by {solver} on {instFile} with seed {rndSeed}. Chuffed returns {correctedType}"
@@ -200,7 +198,8 @@ def evaluate_essence_instance_discriminating(
     baseAvgTime = sum([r["solverTime"] for r in results["base"]["runs"]]) / nEvaluations
     solvedByAllBaseRuns = True
     for r in results["base"]["runs"]:
-        if r["status"] != "C":
+        # TODO: FIX, NOT AN ESSENCE STATUS CODE
+        if r["status"] not in ["sat", "unsat"]:
             solvedByAllBaseRuns = False
             break
     print(solvedByAllBaseRuns)

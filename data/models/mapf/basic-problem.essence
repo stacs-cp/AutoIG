@@ -1,1 +1,20 @@
-/home/tw74/Desktop/MAPF/basic-problem.essence
+given bots: int(1..10)
+
+given shelf_y: int(1..10)
+given shelf_x: int(1..20)
+
+given space_btwn_shelf_x: int(1..10)
+given space_btwn_shelf_y: int(1..10)
+
+given n_shelves_across: int(1..50)
+given n_shelves_down: int(1..50)
+
+given x_edge_size: int(1..50)
+given y_edge_size: int(1..20)
+
+$ 1D Array of size # of rows * # of columns
+letting map_size be (n_shelves_across * shelf_x + (x_edge_size * 2)) * (n_shelves_down * shelf_y + (y_edge_size * 2))
+
+find x: matrix indexed by [int(0..map_size)] of int(0..1)
+such that
+	sum(x)=bots
