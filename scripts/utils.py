@@ -41,6 +41,19 @@ def run_cmd(cmd, printOutput=False, outFile=None):
         print(output)
     return output, p.returncode
 
+def run_cmd_with_timeout(cmd, printOutput=False, outFile=None, timeout=60):
+    lsCmds = shlex.split(cmd)
+    try:
+        p = subprocess.run(lsCmds, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return "timeout", -1
+    output = p.stdout.decode("utf-8")
+    if outFile is not None:
+        with open(outFile, "wt") as f:
+            f.write(output)
+    if printOutput:
+        print(output)
+    return output, p.returncode
 
 def run_cmd_with_assertion(cmd):
     output, rc = run_cmd(cmd)
