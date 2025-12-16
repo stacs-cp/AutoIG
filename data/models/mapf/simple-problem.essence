@@ -3,8 +3,8 @@ given bots: int(1..10)
 given n_shelves_col: int(1..50)
 given n_shelves_row: int(1..50)
 
-given bot_start: matrix indexed by [int(1..bots)] of int(1..100000000)
-given bot_end: matrix indexed by [int(1..bots)] of int(1..100000000)
+given bot_start: matrix indexed by [int(1..bots)] of int(0..)
+given bot_end: matrix indexed by [int(1..bots)] of int(0..)
 
 given shelf_col_size: int(1..10)
 given shelf_row_size: int(1..10)
