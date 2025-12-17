@@ -10,30 +10,60 @@ import conf
 # solver flags (may include time limit)
 # will need to implement solver time limit by user
 # seed in case of nondeterminism
-def call_solve_sat_mapf(instFile, solverFlags, solverTimelimit, seed):
+def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimelimit=60, seed=None):
     params = read_shelfworld_inst_params(instFile=instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     write_map_file(instFile, grid)
     
     bots_start, bots_end = get_bots(params)
     n_col, n_row = get_side_lengths(params)
-    write_scen_file(instfile=instFile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
+
+    instance = os.path.basename(instFile).replace(".param", "")
+    scenfile = os.path.join(conf.detailedOutputDir, instance + ".scen")
+    outfile = os.path.join(conf.detailedOutputDir, instance + ".out")
+
+    write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
     # TODO implement calling the solver
-    
-    return
+    cmd = f"{solverPath} -s {scenfile} -m {conf.detailedOutputDir} -l 2 -f {outfile} -t {solverTimelimit} {solverFlags}"
+    output, returncode = run_cmd(cmd)
 
-def call_solve_cbs_mapf(instFile, solverPath, solverFlags, solverTimeLimit, seed):
+    status = "sat"
+    time = 0.0
+
+    # TODO deal with crashes etc.
+    if "timeout" in output:
+        status = "solverTimeOut"
+        time = solverTimelimit
+    else:
+        with open(outfile, "r") as f:
+            for line in f.readlines():
+                if "CNF building time" in line:
+                    time += float(line.replace("CNF building time:", "").strip())
+                elif "SAT solving time" in line:
+                    time += float(line.replace("SAT solving time:", "").strip())
+                    
+    return status, time / 1000.0 # time is given in ms
+
+def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, seed=None):
     cbs_param_file = conf.detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
     write_cbs_file(instFile, cbs_param_file)
     cmd = f"python3 {solverPath} --instance \"{cbs_param_file}\" {solverFlags}"
+
+    status = "sat"
+    time=0.0
+
     print("Running command:", cmd)
+
     cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit)
-    time = 0.0
-    for line in cmdOutput.splitlines():
-        if "CPU time" in line:
-            time = float(line.replace("CPU time (s):    ", ""))
-    return time
+    if "timeout" in cmdOutput:
+        status = "solverTimeOut"
+        time = solverTimeLimit
+    else:
+        for line in cmdOutput.splitlines():
+            if "CPU time" in line:
+                time = float(line.replace("CPU time (s):    ", ""))
+    return status, time
 
 def write_cbs_file(instFile, cbs_param_file):
     params = read_shelfworld_inst_params(instFile)
@@ -129,7 +159,7 @@ def read_shelfworld_inst_params(instFile:str):
         parsed_json = json.loads(results_dict[0][results_dict[0].find("\n") + 1:])
     except json.JSONDecodeError as e:
         print("Failed to parse JSON in shelfworld res")
-        exit()
+        # exit()
     return parsed_json
 
 # Stops if file with same name already exists
@@ -148,10 +178,8 @@ def write_map_file(instFile, map):
                 f.write("\n")
     return
 
-def write_scen_file(instfile, bots_start, bots_end, n_col, n_row):
-    instance = os.path.basename(instfile).replace(".param", "")
-    mapfile = instance + ".map"
-    scenfile = os.path.join(conf.detailedOutputDir, instance + ".scen")
+def write_scen_file(instfile, scenfile, bots_start, bots_end, n_col, n_row):
+    mapfile = os.path.basename(instfile).replace(".param", ".map")
     if(not os.path.isfile(scenfile)):
         with open(scenfile, "a") as f:
             f.write("version 1\n")
