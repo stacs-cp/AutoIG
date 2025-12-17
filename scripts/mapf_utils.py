@@ -2,7 +2,7 @@ import json
 from math import sqrt
 import sys
 import os
-from utils import run_cmd
+from utils import run_cmd, run_cmd_with_timeout
 import conf
 
 # what will be needed for framework:
@@ -23,17 +23,24 @@ def call_solve_sat_mapf(instFile, solverFlags, solverTimelimit, seed):
     
     return
 
-def call_solve_cbs_mapf(instFile, solverFlags, solverTimeLimit, seed):
-    
-    return
+def call_solve_cbs_mapf(instFile, solverPath, solverFlags, solverTimeLimit, seed):
+    cbs_param_file = conf.detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
+    write_cbs_file(instFile, cbs_param_file)
+    cmd = f"python3 {solverPath} --instance \"{cbs_param_file}\" {solverFlags}"
+    print("Running command:", cmd)
+    cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit)
+    time = 0.0
+    for line in cmdOutput.splitlines():
+        if "CPU time" in line:
+            time = float(line.replace("CPU time (s):    ", ""))
+    return time
 
-def write_cbs_file(instFile):
+def write_cbs_file(instFile, cbs_param_file):
     params = read_shelfworld_inst_params(instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     n_col, n_row = get_side_lengths(params)
     bots_start, bots_end = get_bots(params)
     
-    cbs_param_file = conf.detailedOutputDir + os.path.basename(instFile).replace(".param", ".txt")
     if not os.path.isfile(cbs_param_file):
         with open(cbs_param_file, "a") as f:
             f.write(f"{n_row} {n_col}\n")
@@ -50,7 +57,9 @@ def write_cbs_file(instFile):
                 col_end = bots_end[i] % n_col
                 row_end = bots_end[i] // n_col
 
-                f.write(f"{col_start} {row_start} {col_end} {row_end}\n")
+                print(f"Bot {i} {bots_start[i]} {bots_end[i]}: start ({row_start}, {col_start}) -> end ({row_end}, {col_end})")
+
+                f.write(f"{row_start} {col_start} {row_end} {col_end}\n")
     
     return
 
@@ -96,12 +105,20 @@ def draw_map_shelfworld(n_shelves_col, n_shelves_row, shelf_col_size, shelf_row_
 
     # print("length:", col_l, "width:", row_l)
 
-    grid = [['@' if is_shelf(y * col_l + x, n_shelves_col, n_shelves_row, shelf_col_size, shelf_row_size, corridor_size, buffer_col, buffer_row) else '.' for x in range(col_l)] for y in range(row_l)]
+    grid = [['@' if is_shelf(y * col_l + x,
+                              n_shelves_col,
+                              n_shelves_row, 
+                              shelf_col_size, 
+                              shelf_row_size, 
+                              corridor_size, 
+                              buffer_col, 
+                              buffer_row)
+                    else '.' for x in range(col_l)] for y in range(row_l)]
     
-    # for y in grid:
-    #     for x in y:
-    #         print(x, end="")
-    #     print()
+    for y in grid:
+        for x in y:
+            print(x, end=" ")
+        print()
     return grid
         
 def read_shelfworld_inst_params(instFile:str):
