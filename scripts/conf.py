@@ -24,3 +24,65 @@ detailedOutputDir = "./detailed-output"
 
 # for minizinc experiments only: solvers where -r doesn't work when being called via minizinc
 deterministicSolvers = ["ortools"]
+
+solverInfo = {}
+solverInfo["cplex"] = {
+    "timelimitUnit": "ms",
+    "timelimitPrefix": "--time-limit ",
+    "randomSeedPrefix": "via text file",
+}
+solverInfo["chuffed"] = {
+    "timelimitUnit": "ms",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--rnd-seed ",
+}
+solverInfo["minion"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-timelimit ",
+    "randomSeedPrefix": "-randomseed ",
+}
+solverInfo["gecode"] = {
+    "timelimitUnit": "ms",
+    "timelimitPrefix": "-time ",
+    "randomSeedPrefix": "-r ",
+}
+solverInfo["glucose"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-cpu-lim=",
+    "randomSeedPrefix": "-rnd-seed=",
+}
+solverInfo["glucose-syrup"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-cpu-lim=",
+    "randomSeedPrefix": "-rnd-seed=",
+}
+solverInfo["lingeling"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-T ",
+    "randomSeedPrefix": "--seed ",
+}
+solverInfo["cadical"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--seed=",
+}
+solverInfo["open-wbo"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-cpu-lim=",
+    "randomSeedPrefix": "-rnd-seed=",
+}
+solverInfo["boolector"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "--time=",
+    "randomSeedPrefix": "--seed=",
+}
+solverInfo["kissat"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "--time=",
+    "randomSeedPrefix": "--seed=",
+}
+solverInfo["or-tools"] = {
+    "timelimitUnit": "s",
+    "timelimitPrefix": "-t ",
+    "randomSeedPrefix": "--fz_seed=",
+}

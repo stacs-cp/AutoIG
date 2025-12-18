@@ -16,6 +16,7 @@ sys.path.append(scriptDir)
 import utils
 from utils import log
 
+from conf import solverInfo
 
 def read_config(args):
     config = OrderedDict()
@@ -68,6 +69,12 @@ def read_config(args):
                 getattr(args, name) is not None
             ), f"ERROR: --{name} is required for graded instance generation experiments."
             config[name] = getattr(args, name)
+        if config["solver"] not in solverInfo:
+            for name in ["translateScriptPath", "callSolverFunctionName"]:
+                assert (
+                    getattr(args, name) is not None
+                ), f"ERROR: --{name} is required for non-Conjure solvers in graded instance generation experiments."
+                config[name] = getattr(args, name)
 
     # read discriminating-specific settings
     else:
@@ -81,11 +88,18 @@ def read_config(args):
                 getattr(args, name) is not None
             ), f"ERROR: --{name} is required for discriminating instance generation experiments."
             config[name] = getattr(args, name)
-
+        for solver in ["favouredSolver", "baseSolver"]:
+            if config[solver] not in solverInfo:
+                for name in [f"{solver}TranslateScriptPath", f"{solver}CallSolverFunctionName"]:
+                    assert (
+                        getattr(args, name) is not None
+                    ), f"ERROR: --{name} is required for non-Conjure solvers in discriminating instance generation experiments."
+                    config[name] = getattr(args, name)
     return config
 
 
 def setup(config):
+    # TODO: Need to implement copying over the translation scripts so they are accessible within the package
     log("Setting up the tuning: BEGIN")
 
     # create runDir
@@ -256,6 +270,15 @@ def setup(config):
     with open(iraceFile, "wt") as f:
         f.writelines(lsLines)
 
+    # copying over external scripts if necessary
+    if config["instanceSetting"] == "graded":
+        if config["solver"] not in solverInfo:
+            copy(config["translateScriptPath"], config["runDir"])
+    else:
+        for solver in ["favouredSolver", "baseSolver"]:
+            if config[solver] not in solverInfo:
+                copy(config[f"{solver}TranslateScriptPath"], config["runDir"])
+
     log(f"All settings are saved in {configFile}")
     log("Setting up the tuning: COMPLETED\n\n")
 
@@ -390,6 +413,16 @@ def main():
         default="",
         help="(graded instance generation only) extra flags for solver",
     )
+    parser.add_argument(
+        "--translateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--callSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    )
 
     # instance setting (for discriminating experiment only)
     parser.add_argument(
@@ -404,6 +437,16 @@ def main():
         help="(discriminating instance generation only) extra flags for the favoured solver.",
     )
     parser.add_argument(
+        "--favouredSolverTranslateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--favouredSolverCallSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    )
+    parser.add_argument(
         "--baseSolver",
         type=str,
         help="(discriminating instance generation only) the base solver. We want to generate instances that are difficult for this solver.",
@@ -414,9 +457,33 @@ def main():
         default="",
         help="(discriminating instance generation only) extra flags for the base solver.",
     )
+    parser.add_argument(
+        "--baseSolverTranslateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--baseSolverCallSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    ) # TODO add in function description here
+    
 
     # read all settings into one variable and check setting validity
     args = parser.parse_args()
+    
+    # if args.instanceSetting == "graded":
+    #     if args.solver not in solverInfo and (args.translateScriptPath is None or args.callSolverFunctionName is None):
+    #         parser.error("Translation script file name (--translateScriptPath) and call solver function name (--callSolverFunctionName) required for non-Conjure solvers!")
+    # else:
+    #     if args.favouredSolver not in solverInfo and (args.favouredSolverTranslateScriptPath is None or args.favouredSolverCallSolverFunctionName is None):
+    #         parser.error("Translation script file name (--favouredSolverTranslateScriptPath) and call solver function name (--favouredSolverCallSolverFunctionName) required for non-Conjure solvers!")
+            
+    #     if args.baseSolver not in solverInfo and (args.baseSolverTranslateScriptPath is None or args.baseSolverCallSolverFunctionName is None):
+    #         parser.error("Translation script file name (--baseSolverTranslateScriptPath) and call solver function name (--baseSolverCallSolverFunctionName) required for non-Conjure solvers!")
+
+            
+    
     config = read_config(args)
 
     # set up tuning directory

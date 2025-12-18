@@ -2,6 +2,7 @@ from utils import log, read_file, search_string, run_cmd, delete_file
 import os
 import sys
 import json
+import conf
 
 
 def read_args(args):
@@ -51,6 +52,14 @@ def read_setting(settingFile):
             c["evaluationSettings"]["solverType"] = "incomplete"
         else:
             c["evaluationSettings"]["solverType"] = "complete"
+            
+        c["evaluationSettings"]["translateScriptPath"] = ""
+        c["evaluationSettings"]["solveFunctionName"] = ""
+            
+        if setting["solver"] not in conf.solverInfo:
+            c["evaluationSettings"]["translateScriptPath"] = setting["translateScriptPath"]
+            c["evaluationSettings"]["solveFunctionName"] = setting["callSolverFunctionName"]
+                
         c["evaluationSettings"]["minTime"] = setting["minSolverTime"]
         c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
         c["evaluationSettings"]["SRTimeLimit"] = setting["SRTimeLimit"]
@@ -60,16 +69,31 @@ def read_setting(settingFile):
             "scoringMethod"
         ] = "complete"  # NOTE: incomplete scoring method is also supported by the code
         baseSolverSettings = {
-            "name": setting["baseSolver"],
-            "solverMinTime": setting["minSolverTime"],
-            "totalTimeLimit": setting["maxSolverTime"],
-            "solverFlags": setting["baseSolverFlags"],
-        }
+                "name": setting["baseSolver"],
+                "solverMinTime": setting["minSolverTime"],
+                "totalTimeLimit": setting["maxSolverTime"],
+                "solverFlags": setting["baseSolverFlags"],
+            }
+        
+        baseSolverSettings["translateScriptPath"] = ""
+        baseSolverSettings["solveFunctionName"] = ""
+        
+        if setting["baseSolver"] not in conf.solverInfo:
+            baseSolverSettings["translateScriptPath"] = setting["baseSolverTranslateScriptPath"]
+            baseSolverSettings["solveFunctionName"] = setting["baseSolverCallSolverFunctionName"]
+            
         favouredSolverSettings = {
             "name": setting["favouredSolver"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["favouredSolverFlags"],
         }
+        
+        favouredSolverSettings["translateScriptPath"] = ""
+        favouredSolverSettings["solveFunctionName"] = ""
+        
+        if setting["favouredSolver"] not in conf.solverInfo:
+            favouredSolverSettings["translateScriptPath"] = setting["favouredSolverTranslateScriptPath"]
+            favouredSolverSettings["solveFunctionName"] = setting["favouredSolverCallSolverFunctionName"]
 
         c["evaluationSettings"]["baseSolver"] = baseSolverSettings
         c["evaluationSettings"]["favouredSolver"] = favouredSolverSettings

@@ -20,6 +20,7 @@ import pprint
 import math
 import conf
 import sys
+import importlib
 
 from wrapper_helpers import read_setting, read_args
 
@@ -159,7 +160,7 @@ def main():
                 initSeed=seed,                       
                 oracleSolver=oracleSolver,              
                 oracleSolverFlags=oracleSolverFlags,    
-                oracleSolverTimeLimit=oracleSolverTimeLimit,  
+                oracleSolverTimeLimit=oracleSolverTimeLimit,
             )
         # Case for discriminating
         else: 
@@ -176,6 +177,10 @@ def main():
                 favouredSolverFlags=es["favouredSolver"]["solverFlags"],
                 totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
                 initSeed=seed,
+                baseSolverTranslateScriptPath=es["baseSolver"]["translateScriptPath"],
+                baseSolverCallSolverFunctionName=es["baseSolver"]["solveFunctionName"],
+                favouredSolverTranslateScriptPath=es["favouredSolver"]["translateScriptPath"],
+                favouredSolverCallSolverFunctionName=es["favouredSolver"]["solveFunctionName"],
             )
     else:
         # convert the generated instance into .dzn

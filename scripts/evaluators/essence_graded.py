@@ -4,7 +4,7 @@ from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type
 
 import conf # External file for holding static configurations, no need to redeclare here
 
-
+# TODO: Modify to take non-Conjure solvers
 def evaluate_essence_instance_graded(    
     modelFile: str, # Path to the Essence model file
     instFile: str, # Path to the instance parameter file

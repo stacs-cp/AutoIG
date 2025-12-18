@@ -2,7 +2,8 @@ import os
 from utils import log
 from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type, calculate_essence_borda_scores
 import conf
-
+import importlib
+from pathlib import Path
 
 
 def evaluate_essence_instance_discriminating(
@@ -21,6 +22,10 @@ def evaluate_essence_instance_discriminating(
     totalMemLimit=8192, # Total memory limit for solver runs (currently unused)
     SRTimeLimit: int = 0, # The timelimit for SR
     SRFlags: str = "",  # Flags for SR
+    baseSolverTranslateScriptPath: str = "",
+    baseSolverCallSolverFunctionName: str = "",
+    favouredSolverTranslateScriptPath: str = "",
+    favouredSolverCallSolverFunctionName: str = "",
 ):
     
     """evaluate a generated instance based on discriminating power with two solvers ###
@@ -85,6 +90,14 @@ def evaluate_essence_instance_discriminating(
         }
         return rs
 
+    if favouredSolver not in conf.solverInfo:
+        # load translation script and load call function
+        favouredSolverModule = importlib.import_module(Path(favouredSolverTranslateScriptPath).stem)
+        favouredSolverCallSolver = getattr(favouredSolverModule, favouredSolverCallSolverFunctionName)
+    
+    if baseSolver not in conf.solverInfo:
+        baseSolverModule = importlib.import_module(Path(baseSolverTranslateScriptPath).stem)
+        baseSolverCallSolver = getattr(baseSolverModule, baseSolverCallSolverFunctionName)
 
     print("\n")
     log("Solving " + instFile + "...")
@@ -98,10 +111,14 @@ def evaluate_essence_instance_discriminating(
         if solverType == "favouredSolver":
             solverSetting = favouredSolverFlags
             current_solver  = favouredSolver
+            if favouredSolver not in conf.solverInfo:
+                callSolver = favouredSolverCallSolver
 
         else:
             solverSetting = baseSolverFlags
             current_solver  = baseSolver
+            if baseSolver not in conf.solverInfo:
+                callSolver = baseSolverCallSolver
 
         # solverSetting = str(solver) + "Flags"
         print("Solversetting: ", solverSetting)
@@ -110,10 +127,15 @@ def evaluate_essence_instance_discriminating(
         for i in range(nEvaluations):
             rndSeed = initSeed + i
 
-            # Making the call to Conjure Solve
-            runStatus, SRTime, solverTime = call_conjure_solve(
-                essenceModelFile, eprimeModelFile, instFile, current_solver, SRTimeLimit, SRFlags, totalTimeLimit, solverSetting, rndSeed
-            )
+            if current_solver not in conf.solverInfo:
+                SRTime = 0
+                runStatus, solverTime = callSolver(instFile=instFile, solverPath=current_solver, solverFlags=solverSetting, solverTimeLimit=totalTimeLimit, seed=rndSeed)
+            else:
+                
+                # Making the call to Conjure Solve
+                runStatus, SRTime, solverTime = call_conjure_solve(
+                    essenceModelFile, eprimeModelFile, instFile, current_solver, SRTimeLimit, SRFlags, totalTimeLimit, solverSetting, rndSeed
+                )
 
             # Checking the produced run status
             if runStatus in ["sat", "unsat"]:
@@ -127,10 +149,11 @@ def evaluate_essence_instance_discriminating(
                 else:
                     # TODO: need to fix this, instance type is already guaranteed to be none in previous if statement
                     # need to implement check for whether results match with previous runs
-
-                    if instanceType != runStatus:
+                    # TODO: Need to find a way to check solutions if both solvers don't use essence pipeline (so no essence problem model provided)
+                    if instanceType != runStatus and (baseSolver in conf.solverInfo or favouredSolver in conf.solverInfo):
                         # If a different result appears, verify with a third solver (chuffed)
-
+                        # Only do this step if one of the solver uses the essence pipeline so an essence model file exists
+ 
                         if correctedType is None:
                             # use a third solver, chuffed, to solve the instance
                             c_runStatus, c_SRTime, c_solverTime = call_conjure_solve(
@@ -198,7 +221,6 @@ def evaluate_essence_instance_discriminating(
     baseAvgTime = sum([r["solverTime"] for r in results["base"]["runs"]]) / nEvaluations
     solvedByAllBaseRuns = True
     for r in results["base"]["runs"]:
-        # TODO: FIX, NOT AN ESSENCE STATUS CODE
         if r["status"] not in ["sat", "unsat"]:
             solvedByAllBaseRuns = False
             break
@@ -211,7 +233,6 @@ def evaluate_essence_instance_discriminating(
     
     # Getting the problem model type, using the AST produced by Conjure
     problemType = get_essence_problem_type(modelFile)
-
 
     # In minizinc pipeline here there were checks for objective value, is a TODO here for a later implementation
     baseScores = []
