@@ -22,7 +22,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
 
     instance = os.path.basename(instFile).replace(".param", "")
     scenfile = os.path.join(detailedOutputDir, instance + ".scen")
-    outfile = os.path.join(detailedOutputDir, instance + ".out")
+    outfile = os.path.join(detailedOutputDir, instance + "-sat-mapf.out")
 
     write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
@@ -50,7 +50,7 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
     cbs_param_file = detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
     write_cbs_file(instFile, cbs_param_file)
     
-    outfile = os.path.join(detailedOutputDir, os.path.basename(instFile).replace(".param", "") + ".out")
+    outfile = os.path.join(detailedOutputDir, os.path.basename(instFile).replace(".param", "") + "-cbs.out")
     
     cmd = f"python3 {solverPath} --instance \"{cbs_param_file}\" {solverFlags}"
 
