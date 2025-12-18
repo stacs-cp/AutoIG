@@ -3,7 +3,9 @@ from math import sqrt
 import sys
 import os
 from utils import run_cmd, run_cmd_with_timeout
-import conf
+
+# Define constants for outputs
+detailedOutputDir = "./detailed-output"
 
 # what will be needed for framework:
 # instance parameter file
@@ -19,13 +21,12 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     n_col, n_row = get_side_lengths(params)
 
     instance = os.path.basename(instFile).replace(".param", "")
-    scenfile = os.path.join(conf.detailedOutputDir, instance + ".scen")
-    outfile = os.path.join(conf.detailedOutputDir, instance + ".out")
+    scenfile = os.path.join(detailedOutputDir, instance + ".scen")
+    outfile = os.path.join(detailedOutputDir, instance + ".out")
 
     write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
-    # TODO implement calling the solver
-    cmd = f"{solverPath} -s {scenfile} -m {conf.detailedOutputDir} -l 2 -f {outfile} -t {solverTimelimit} {solverFlags}"
+    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} -t {solverTimelimit} {solverFlags}"
     output, returncode = run_cmd(cmd)
 
     status = "sat"
@@ -46,8 +47,11 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     return status, time / 1000.0 # time is given in ms
 
 def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, seed=None):
-    cbs_param_file = conf.detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
+    cbs_param_file = detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
     write_cbs_file(instFile, cbs_param_file)
+    
+    outfile = os.path.join(detailedOutputDir, os.path.basename(instFile).replace(".param", "") + ".out")
+    
     cmd = f"python3 {solverPath} --instance \"{cbs_param_file}\" {solverFlags}"
 
     status = "sat"
@@ -55,6 +59,7 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
 
     print("Running command:", cmd)
 
+    # TODO deal with crashes, write output to file.
     cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit)
     if "timeout" in cmdOutput:
         status = "solverTimeOut"
@@ -63,6 +68,10 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
         for line in cmdOutput.splitlines():
             if "CPU time" in line:
                 time = float(line.replace("CPU time (s):    ", ""))
+    
+    with open(outfile, "w") as f:
+        f.write(cmdOutput)
+    
     return status, time
 
 def write_cbs_file(instFile, cbs_param_file):
@@ -165,7 +174,7 @@ def read_shelfworld_inst_params(instFile:str):
 # Stops if file with same name already exists
 def write_map_file(instFile, map):
     instance = os.path.basename(instFile).replace(".param", "")
-    mapfile = os.path.join(conf.detailedOutputDir, instance + ".map")
+    mapfile = os.path.join(detailedOutputDir, instance + ".map")
     if(not os.path.isfile(mapfile)):
         with open(mapfile, "a") as f:
             f.write("type octile\n")
