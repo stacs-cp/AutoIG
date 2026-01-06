@@ -9,16 +9,16 @@ letting world_border be 2
 given g_n_shelves_col: int(1..30)
 given g_n_shelves_row: int(1..30)
 
-given g_min_distance: int(1..1000)
+given g_percent_min_distance: int(5..90)
 
 letting col_l be (g_n_shelves_col * (g_shelf_col_size + g_corridor_size) + (world_border * 2)) $ contains one extra "corridor" space
 letting row_l be (g_n_shelves_row * (g_shelf_row_size + g_corridor_size) + (world_border * 2))  $ contains one extra "corridor" space
 
 letting map_size be col_l * row_l
+letting min_distance be (col_l + row_l) * g_percent_min_distance / 100
 
 $ will require repair
 where g_n_bots <= map_size - (g_shelf_col_size * g_shelf_row_size) * (g_n_shelves_col * g_n_shelves_row)
-where g_min_distance <= col_l + row_l
 
 letting row_id be map_size / col_l
 letting column_id be map_size % col_l
@@ -91,8 +91,8 @@ such that
 
 	$ Distance of 
 	forAll bot : int(1..g_n_bots) . 
-		|bot_start[bot] / col_l - bot_end[bot] / col_l| + 
-		|bot_start[bot] % col_l - bot_end[bot] % col_l| >= g_min_distance
+		(|bot_start[bot] / col_l - bot_end[bot] / col_l| + 
+		|bot_start[bot] % col_l - bot_end[bot] % col_l|) >= min_distance
 
 	
 	
