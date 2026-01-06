@@ -1,0 +1,31 @@
+given g_n_bots: int(1..1000)
+given g_n_shelves_col: int(1..100)
+given g_n_shelves_row: int(1..100)
+given g_min_distance: int(1..1000)
+
+letting g_shelf_col_size be 2
+letting g_shelf_row_size be 1
+letting g_corridor_size be 1
+letting world_border be 2
+letting col_l be (g_n_shelves_col * (g_shelf_col_size + g_corridor_size) + (world_border * 2)) $ contains one extra "corridor" space
+letting row_l be (g_n_shelves_row * (g_shelf_row_size + g_corridor_size) + (world_border * 2))  $ contains one extra "corridor" space
+letting map_size be col_l * row_l
+
+
+find repaired_g_n_bots: int(1..1000)
+find repaired_g_n_shelves_col: int(1..100)
+find repaired_g_n_shelves_row: int(1..100)
+find repaired_g_min_distance: int(1..1000)
+
+such that 
+
+g_n_shelves_col=repaired_g_n_shelves_col,
+g_n_shelves_row=repaired_g_n_shelves_row,
+
+$ number of empty spaces
+repaired_g_n_bots <= map_size - ((g_shelf_col_size * g_shelf_row_size) * (g_n_shelves_col * g_n_shelves_row)),
+repaired_g_min_distance <= col_l + row_l
+
+
+minimising
+	sum([|repaired_g_n_bots - g_n_bots|, |repaired_g_min_distance - g_min_distance|])
