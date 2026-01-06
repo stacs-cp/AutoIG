@@ -1,6 +1,7 @@
 given g_n_bots: int(1..1000)
 given g_n_shelves_col: int(1..100)
 given g_n_shelves_row: int(1..100)
+given g_percent_min_distance: int(5..95)
 
 letting g_shelf_col_size be 2
 letting g_shelf_row_size be 1
@@ -14,11 +15,13 @@ letting map_size be col_l * row_l
 find repaired_g_n_bots: int(1..1000)
 find repaired_g_n_shelves_col: int(1..100)
 find repaired_g_n_shelves_row: int(1..100)
+find repaired_g_percent_min_distance: int(5..95)
 
 such that 
 
 g_n_shelves_col=repaired_g_n_shelves_col,
 g_n_shelves_row=repaired_g_n_shelves_row,
+g_percent_min_distance=repaired_g_percent_min_distance,
 
 $ number of empty spaces
 repaired_g_n_bots <= map_size - ((g_shelf_col_size * g_shelf_row_size) * (g_n_shelves_col * g_n_shelves_row)),
