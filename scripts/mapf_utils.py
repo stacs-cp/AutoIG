@@ -12,7 +12,7 @@ detailedOutputDir = "./detailed-output"
 # solver flags (may include time limit)
 # will need to implement solver time limit by user
 # seed in case of nondeterminism
-def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimelimit=60, seed=None):
+def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimeLimit=60, seed=None):
     params = read_shelfworld_inst_params(instFile=instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     write_map_file(instFile, grid)
@@ -26,7 +26,9 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
 
     write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
-    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} -t {solverTimelimit} {solverFlags}"
+    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} -t {solverTimeLimit} {solverFlags}"
+    
+    print("Running command:", cmd)
     output, returncode = run_cmd(cmd)
 
     status = "sat"
@@ -35,7 +37,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     # TODO deal with crashes etc.
     if "timeout" in output:
         status = "solverTimeOut"
-        time = solverTimelimit
+        time = solverTimeLimit
     else:
         with open(outfile, "r") as f:
             for line in f.readlines():
@@ -60,7 +62,8 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
     print("Running command:", cmd)
 
     # TODO deal with crashes, write output to file.
-    cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit)
+    # Giving CBS extra time as a buffer for its IO delays
+    cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit * 2)
     if "timeout" in cmdOutput:
         status = "solverTimeOut"
         time = solverTimeLimit
@@ -71,7 +74,8 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
     
     with open(outfile, "w") as f:
         f.write(cmdOutput)
-    
+    if time >= solverTimeLimit:
+        return "solverTimeOut", time
     return status, time
 
 def write_cbs_file(instFile, cbs_param_file):
@@ -154,10 +158,10 @@ def draw_map_shelfworld(n_shelves_col, n_shelves_row, shelf_col_size, shelf_row_
                               buffer_row)
                     else '.' for x in range(col_l)] for y in range(row_l)]
     
-    for y in grid:
-        for x in y:
-            print(x, end=" ")
-        print()
+    # for y in grid:
+    #     for x in y:
+    #         print(x, end=" ")
+    #     print()
     return grid
         
 def read_shelfworld_inst_params(instFile:str):
