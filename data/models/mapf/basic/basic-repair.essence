@@ -1,6 +1,6 @@
-given g_n_bots: int(1..1000)
-given g_n_shelves_col: int(1..100)
-given g_n_shelves_row: int(1..100)
+given g_n_bots: int(1..200)
+given g_n_shelves_col: int(1..60)
+given g_n_shelves_row: int(1..60)
 given g_percent_min_distance: int(5..95)
 
 letting g_shelf_col_size be 2
@@ -12,9 +12,9 @@ letting row_l be (g_n_shelves_row * (g_shelf_row_size + g_corridor_size) + (worl
 letting map_size be col_l * row_l
 
 
-find repaired_g_n_bots: int(1..1000)
-find repaired_g_n_shelves_col: int(1..100)
-find repaired_g_n_shelves_row: int(1..100)
+find repaired_g_n_bots: int(1..200)
+find repaired_g_n_shelves_col: int(1..60)
+find repaired_g_n_shelves_row: int(1..60)
 find repaired_g_percent_min_distance: int(5..95)
 
 such that 
