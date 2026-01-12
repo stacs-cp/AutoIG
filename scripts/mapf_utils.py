@@ -75,7 +75,7 @@ def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver I
     with open(outfile, "w") as f:
         f.write(cmdOutput)
     if time >= solverTimeLimit:
-        return "solverTimeOut", time
+        return "solverTimeOut", solverTimeLimit
     return status, time
 
 def write_cbs_file(instFile, cbs_param_file):
