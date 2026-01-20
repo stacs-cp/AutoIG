@@ -38,7 +38,7 @@ def main():
     parser.add_argument(
         "--instanceSetting",
         choices=["graded", "discriminating"],
-        default="graded"
+        default="discriminating"
     )
 
 
@@ -50,7 +50,7 @@ def main():
         lsLines = []
         okTimes = []
         okInst = []
-        print(args.instanceSetting)
+        # print(args.instanceSetting)
         if args.instanceSetting == "graded":
             for s in f.readlines():
                 data = json.loads(s)
@@ -90,7 +90,6 @@ def main():
         elif args.instanceSetting == "discriminating":
              for s in f.readlines():
                 data = json.loads(s)
-                print()
                 if args.repair:
                     if "genunsat" in data["status"] or "gensolverTimeOut" in data["status"]:
                         lsLines.append(data["status"])
