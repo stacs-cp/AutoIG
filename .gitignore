@@ -13,3 +13,7 @@ experiments/
 bin/runsolver-3.4.1.tar.bz2
 experiment/
 data/models/mapf/temp
+scripts/detailed-output
+scripts/makeSeabornPlotMapf.py
+scripts/makeSeabornPlotMapf.py
+bin/runsolver
