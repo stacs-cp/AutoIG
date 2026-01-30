@@ -67,6 +67,7 @@ def conjure_translate_parameter(eprimeModelFile, paramFile, eprimeParamFile):
 def savilerow_translate(
     auxFile, eprimeModelFile, eprimeParamFile, minionFile, timelimit, flags
 ):
+    # TODO: rethink how the bound vars flag is given. Maybe give it a separate setup flag or maybe just keep as is
     cmd = (
         "savilerow "
         + eprimeModelFile
@@ -191,7 +192,7 @@ def read_minion_variables(minionFileSections):
     for line in search_section:
         if "PRINT" in line:
             variables = line.split("PRINT")[1]
-            variables = variables.replace("[", "").replace("]", "")
+            variables = variables.replace("[", "").replace("]", "").strip()
             return variables
 
     raise Exception("Cant find minion ordered variables section")
@@ -247,29 +248,43 @@ def encode_negative_table(minionFile, minionSolString):
 
     variables = read_minion_variables(minionFileSections)
 
+    if minionSolString != "":
+        sols = minionSolString.split(" ")
+        vars = variables.split(",")
+        negConstraint = (
+                            "watched-or({" +
+                            ",".join([f"w-notliteral({var}, {sol})" for var, sol in zip(vars, sols)]) + 
+                            "})"
+                         )
+        minionFileSections["CONSTRAINTS"].append(negConstraint)
+        write_out_modified_minion_file(minionFile, minionFileSections)
+    # print(negConstraint)
+
+
+
     # Grab the tuple list from the parsed minion section if it exists
-    tuple_list = minionFileSections.get("TUPLELIST", [])
+    # tuple_list = minionFileSections.get("TUPLELIST", [])
 
     # If the tuple_list is empty this must be the first time running this minion file. Add the negativetable constraint
-    if len(tuple_list) == 0:
-        minionFileSections["CONSTRAINTS"].append(
-            "negativetable([" + variables + "],negativeSol)"
-        )
-    # otherwise, remove the first line (negativeSol ...)
-    else:
-        tuple_list = tuple_list[1:]
+    # if len(tuple_list) == 0:
+    #     minionFileSections["CONSTRAINTS"].append(
+    #         "negativetable([" + variables + "],negativeSol)"
+    #     )
+    # # otherwise, remove the first line (negativeSol ...)
+    # else:
+    #     tuple_list = tuple_list[1:]
 
-    # only update minionFile if minion finds a solution, i.e., a new instance is generated
-    if minionSolString != "":
-        tuple_list.append(minionSolString)
-        tuple_list = list(
-            set(tuple_list)
-        )  # remove duplicate solutions (shouldn't happen, but sometime it does because of crashed runs or resume)
-        minionFileSections["TUPLELIST"] = [
-            "negativeSol {0} {1}".format(len(tuple_list), len(variables.split(",")))
-        ]
-        minionFileSections["TUPLELIST"].extend(tuple_list)
-        write_out_modified_minion_file(minionFile, minionFileSections)
+    # # only update minionFile if minion finds a solution, i.e., a new instance is generated
+    # if minionSolString != "":
+    #     tuple_list.append(minionSolString)
+    #     tuple_list = list(
+    #         set(tuple_list)
+    #     )  # remove duplicate solutions (shouldn't happen, but sometime it does because of crashed runs or resume)
+    #     minionFileSections["TUPLELIST"] = [
+    #         "negativeSol {0} {1}".format(len(tuple_list), len(variables.split(",")))
+    #     ]
+    #     minionFileSections["TUPLELIST"].extend(tuple_list)
+    #     write_out_modified_minion_file(minionFile, minionFileSections)
 
 
 def make_conjure_solve_command(
