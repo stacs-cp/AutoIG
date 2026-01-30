@@ -95,13 +95,13 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
 
     
     #DEBUG
-    cat("\nBefore repair: \n")
-    print(originalConfiguration)
-    cat("After repair: \n")
-    print(configuration)
-    cat("\n")
-    end_time <- Sys.time()
-    cat("\nRepairing time: ", round(end_time-start_time,2), " seconds\n")
+    # cat("\nBefore repair: \n")
+    # print(originalConfiguration)
+    # cat("After repair: \n")
+    # print(configuration)
+    # cat("\n")
+    # end_time <- Sys.time()
+    # cat("\nRepairing time: ", round(end_time-start_time,2), " seconds\n")
 
     # save results in case the tuning is resumed
     write.csv(configuration,file=outFile,row.names=FALSE)
