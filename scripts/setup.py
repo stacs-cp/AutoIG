@@ -312,8 +312,8 @@ def main():
     )
     parser.add_argument(
         "--genSRFlags",
-        default="-S0 -no-bound-vars",
-        help="Savile Row extra flags for solving a generator instance",
+        default="-S0 -no-bound-vars -minion-boundvar-threshold 16",
+        help="Savile Row extra flags for solving a generator instance, default: \"-S0 -no-bound-vars -minion-boundvar-threshold 16\"",
     )
     parser.add_argument(
         "--genSolver",
