@@ -37,6 +37,7 @@ def read_config(args):
         "genSolverTimeLimit",
         "genSolverFlags",
         "repairModel",
+        "genSolverVMemLimit",
 
     ]
     instSettings = [
@@ -46,6 +47,7 @@ def read_config(args):
         "maxSolverTime",
         "SRTimeLimit",
         "nRunsPerInstance",
+        "maxSolverVMem"
     ]
 
     # read common settings for both graded/discriminating experiments
@@ -355,6 +357,13 @@ def main():
         help="extra flags for the generator solver",
     )
 
+    parser.add_argument(
+        "--genSolverVMemLimit",
+        default=15360,
+        type=int,
+        help="maximum virtual memory allowed for generator solver"
+    )
+
     # instance settings (for both graded and discriminating)
     parser.add_argument(
         "--instanceSetting",
@@ -381,7 +390,12 @@ def main():
         help="time limit when solving an instance (in seconds)",
     )
 
-
+    parser.add_argument(
+        "--maxSolverVMem",
+        type=int,
+        default=10240,
+        help="virtual memory limit for target solvers, for both discriminating and graded experiments"
+    )
     parser.add_argument(
         "--SRTimeLimit",
         default=0,

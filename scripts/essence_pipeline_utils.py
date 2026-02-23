@@ -147,7 +147,18 @@ def conjure_translate_solution(
         raise Exception(cmdOutput)
 
 
-def run_minion(minionFile, minionSolFile, seed, timelimit, flags):
+def run_minion(minionFile, minionSolFile, seed, timelimit, flags, memLimit):
+
+    # check if runsolver is available on platform
+    use_runsolver = sys.platform.startswith("linux")
+
+    # define runsolver temp file name
+    runsolver_tmp_file = minionSolFile + ".runsolver"
+    runsolver_tmp_solver_outfile = minionSolFile + ".solver.out"
+
+    # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
+    runsolver_delay = 2
+
     cmd = (
         "minion "
         + minionFile
@@ -160,30 +171,68 @@ def run_minion(minionFile, minionSolFile, seed, timelimit, flags):
         + " "
         + flags
     )
+
+    if use_runsolver:
+        cmd = (
+            f"runsolver -w {runsolver_tmp_file} -o {runsolver_tmp_solver_outfile} -d {runsolver_delay} --wall-clock-limit {timelimit} --vsize-limit {memLimit} " 
+            + cmd
+        )
+
     log(cmd)
+
 
     start = time.time()
     cmdOutput, returnCode = run_cmd(cmd)
     runTime = time.time() - start
+    status = None
+
+    if use_runsolver:
+        with open(runsolver_tmp_file) as f:
+            for index, line in enumerate(f):
+                # check if minion times out or exceeds set memory
+                if "Maximum wall clock time exceeded" in line:
+                    returnCode = 0
+                    status = "solverTimeOut"
+                    break
+                elif "Maximum VSize exceeded" in line:
+                    returnCode = 0
+                    status = "solverMemOut"
+                    break
+                elif "Child status" in line:
+                    returnCode = int(line.split(":")[1].strip())
+                    # Check if minion return code is error
+                    if returnCode != 0:
+                        raise Exception(f"Minion exited with error code {returnCode}")
+                    
+                    # Read minion output
+                    with open(runsolver_tmp_solver_outfile) as solverOutputFile:
+                        ls = solverOutputFile.readlines()
+                        status = "sat"
+                        for l in ls:
+                            if "Solutions Found: 0" in l:
+                                status = "unsat"
+        os.remove(runsolver_tmp_file)
+        os.remove(runsolver_tmp_solver_outfile)
+    else:    
 
     # check if minion is timeout or memout
-    status = None
-    if "Time out." in cmdOutput:
-        status = "solverTimeOut"
-    elif (
-        ("Error: maximum memory exceeded" in cmdOutput)
-        or ("Out of memory" in cmdOutput)
-        or ("Memory exhausted!" in cmdOutput)
-    ):
-        status = "solverMemOut"
-    elif returnCode != 0:
-        raise Exception(cmdOutput)
-    else:
-        if "Solutions Found: 0" in cmdOutput:
-            status = "unsat"
+        status = None
+        if "Time out." in cmdOutput:
+            status = "solverTimeOut"
+        elif (
+            ("Error: maximum memory exceeded" in cmdOutput)
+            or ("Out of memory" in cmdOutput)
+            or ("Memory exhausted!" in cmdOutput)
+        ):
+            status = "solverMemOut"
+        elif returnCode != 0:
+            raise Exception(cmdOutput)
         else:
-            status = "sat"
-
+            if "Solutions Found: 0" in cmdOutput:
+                status = "unsat"
+            else:
+                status = "sat"
+    
     return status, runTime
 
 
@@ -232,7 +281,7 @@ def parse_minion_solution(minionSolFile):
 
 def write_out_modified_minion_file(minionFile, minionFileSections):
     file = open(minionFile, "w")
-    minionSectionKeys = ["VARIABLES", "SEARCH", "TUPLELIST", "CONSTRAINTS"]
+    minionSectionKeys = ["VARIABLES", "SEARCH", "CONSTRAINTS"]
     file.write("MINION 3\n")
     for key in minionSectionKeys:
         file.write("**{0}**".format(key) + "\n")
@@ -258,33 +307,6 @@ def encode_negative_table(minionFile, minionSolString):
                          )
         minionFileSections["CONSTRAINTS"].append(negConstraint)
         write_out_modified_minion_file(minionFile, minionFileSections)
-    # print(negConstraint)
-
-
-
-    # Grab the tuple list from the parsed minion section if it exists
-    # tuple_list = minionFileSections.get("TUPLELIST", [])
-
-    # If the tuple_list is empty this must be the first time running this minion file. Add the negativetable constraint
-    # if len(tuple_list) == 0:
-    #     minionFileSections["CONSTRAINTS"].append(
-    #         "negativetable([" + variables + "],negativeSol)"
-    #     )
-    # # otherwise, remove the first line (negativeSol ...)
-    # else:
-    #     tuple_list = tuple_list[1:]
-
-    # # only update minionFile if minion finds a solution, i.e., a new instance is generated
-    # if minionSolString != "":
-    #     tuple_list.append(minionSolString)
-    #     tuple_list = list(
-    #         set(tuple_list)
-    #     )  # remove duplicate solutions (shouldn't happen, but sometime it does because of crashed runs or resume)
-    #     minionFileSections["TUPLELIST"] = [
-    #         "negativeSol {0} {1}".format(len(tuple_list), len(variables.split(",")))
-    #     ]
-    #     minionFileSections["TUPLELIST"].extend(tuple_list)
-    #     write_out_modified_minion_file(minionFile, minionFileSections)
 
 
 def make_conjure_solve_command(

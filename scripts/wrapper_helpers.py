@@ -42,6 +42,7 @@ def read_setting(settingFile):
     c["generatorSettings"]["genSolver"] = setting["genSolver"]
     c["generatorSettings"]["genSolverTimeLimit"] = setting["genSolverTimeLimit"]
     c["generatorSettings"]["genSolverFlags"] = setting["genSolverFlags"]
+    c["generatorSettings"]["genSolverVMemLimit"] = setting["genSolverVMemLimit"]
 
     c["evaluationSettings"]["nEvaluations"] = setting["nRunsPerInstance"]
     c["evaluationSettings"]["gradedTypes"] = setting["instanceValidTypes"]
@@ -64,6 +65,7 @@ def read_setting(settingFile):
         c["evaluationSettings"]["solverFlags"] = setting["solverFlags"]
         c["evaluationSettings"]["SRTimeLimit"] = setting["SRTimeLimit"]
         c["evaluationSettings"]["totalTimeLimit"] = setting["maxSolverTime"]
+        c["evaluationSettings"]["totalVMemLimit"] = setting["maxSolverVMem"] 
     else:
         c["evaluationSettings"][
             "scoringMethod"
@@ -73,6 +75,7 @@ def read_setting(settingFile):
                 "solverMinTime": setting["minSolverTime"],
                 "totalTimeLimit": setting["maxSolverTime"],
                 "solverFlags": setting["baseSolverFlags"],
+                "totalVMemLimit": setting["maxSolverVMem"],
             }
         
         baseSolverSettings["translateScriptPath"] = ""
@@ -81,11 +84,14 @@ def read_setting(settingFile):
         if setting["baseSolver"] not in conf.solverInfo:
             baseSolverSettings["translateScriptPath"] = setting["baseSolverTranslateScriptPath"]
             baseSolverSettings["solveFunctionName"] = setting["baseSolverCallSolverFunctionName"]
+
+        
             
         favouredSolverSettings = {
             "name": setting["favouredSolver"],
             "totalTimeLimit": setting["maxSolverTime"],
             "solverFlags": setting["favouredSolverFlags"],
+            "totalVMemLimit": setting["maxSolverVMem"],
         }
         
         favouredSolverSettings["translateScriptPath"] = ""
