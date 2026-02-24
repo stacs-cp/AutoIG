@@ -2,7 +2,7 @@ import json
 from math import sqrt
 import sys
 import os
-from utils import run_cmd, run_cmd_with_timeout
+from utils import run_cmd, run_cmd_with_timeout, log
 
 # Define constants for outputs
 detailedOutputDir = "./detailed-output"
@@ -11,8 +11,9 @@ detailedOutputDir = "./detailed-output"
 # instance parameter file
 # solver flags (may include time limit)
 # will need to implement solver time limit by user
+# memory limit implementation
 # seed in case of nondeterminism
-def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimeLimit=60, seed=None):
+def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimeLimit=60, solverMemLimit=8192, seed=None):
     params = read_shelfworld_inst_params(instFile=instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     write_map_file(instFile, grid)
@@ -26,19 +27,52 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
 
     write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
-    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} -t {solverTimeLimit} {solverFlags}"
+    use_runsolver = sys.platform.startswith("linux")
+
+    # define runsolver temp file name
+    runsolver_tmp_file = os.path.join(detailedOutputDir, instance + ".runsolver")
+    runsolver_tmp_solver_outfile = os.path.join(detailedOutputDir, instance + ".satsolver.out")
+
+    # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
+    runsolver_delay = 2
+
+    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags}"
     
-    print("Running command:", cmd)
+    if use_runsolver:
+        cmd = (
+            f"runsolver -d {runsolver_delay} --wall-clock-limit {solverTimeLimit} --vsize-limit {solverMemLimit} " +
+            cmd
+        )
+
+    log("Running command:" + cmd)
+
     output, returncode = run_cmd(cmd)
 
     status = "sat"
+    # log(output)
+
+    if use_runsolver:
+            # with open(runsolver_tmp_file) as f:
+                for index, line in enumerate(output.splitlines()):
+                    # check if minion times out or exceeds set memory
+                    if "Maximum wall clock time exceeded" in line:
+                        returnCode = 0
+                        status = "solverTimeOut"
+                        break
+                    elif "Maximum VSize exceeded" in line:
+                        returnCode = 0
+                        status = "solverMemOut"
+                        break
+                    elif "Child status" in line:
+                        returnCode = int(line.split(":")[1].strip())
+                        # Check if minion return code is error
+                        if returnCode != 0:
+                            raise Exception(f"Sat solver exited with error code {returnCode}")
+                        
     time = 0.0
 
     # TODO deal with crashes etc.
-    if "timeout" in output:
-        status = "solverTimeOut"
-        time = solverTimeLimit
-    else:
+    if status == "sat":
         with open(outfile, "r") as f:
             for line in f.readlines():
                 if "CNF building time" in line:
@@ -48,33 +82,65 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                     
     return status, time / 1000.0 # time is given in ms
 
-def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, seed=None):
+
+def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, solverMemLimit=8192,seed=None):
     cbs_param_file = detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
     write_cbs_file(instFile, cbs_param_file)
     
     outfile = os.path.join(detailedOutputDir, os.path.basename(instFile).replace(".param", "") + "-cbs.out")
-    
+
+    use_runsolver = sys.platform.startswith("linux")
+
+    instance = os.path.basename(instFile).replace(".param", "")
+    # define runsolver temp file name
+    runsolver_tmp_file = os.path.join(detailedOutputDir, instance + ".runsolver")
+    # runsolver_tmp_solver_outfile = instance + ".satsolver.out"
+
+    # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
+    runsolver_delay = 2
+
     cmd = f"python3 {solverPath} --instance \"{cbs_param_file}\" {solverFlags}"
+
+    if use_runsolver:
+        cmd = (
+            f"runsolver -o {outfile} -d {runsolver_delay} --wall-clock-limit {solverTimeLimit} --vsize-limit {solverMemLimit} " +
+            cmd
+        )
 
     status = "sat"
     time=0.0
 
-    print("Running command:", cmd)
+    log("Running command:" + cmd)
 
     # TODO deal with crashes, write output to file.
-    # Giving CBS extra time as a buffer for its IO delays
-    cmdOutput, returnCode = run_cmd_with_timeout(cmd, timeout=solverTimeLimit * 2)
-    if "timeout" in cmdOutput:
-        status = "solverTimeOut"
-        time = solverTimeLimit
-    else:
-        for line in cmdOutput.splitlines():
+    cmdOutput, returnCode = run_cmd(cmd)
+
+    if use_runsolver:
+        # with open(runsolver_tmp_file) as f:
+            for index, line in enumerate(cmdOutput.splitlines()):
+                # check if minion times out or exceeds set memory
+                if "Maximum wall clock time exceeded" in line:
+                    returnCode = 0
+                    status = "solverTimeOut"
+                    break
+                elif "Maximum VSize exceeded" in line:
+                    returnCode = 0
+                    status = "solverMemOut"
+                    break
+                elif "Child status" in line:
+                    returnCode = int(line.split(":")[1].strip())
+                    # Check if minion return code is error
+                    if returnCode != 0:
+                        raise Exception(f"Sat solver exited with error code {returnCode}")
+
+    with open(outfile) as output:
+        for line in output.readlines():
             if "CPU time" in line:
                 time = float(line.replace("CPU time (s):    ", ""))
     
-    with open(outfile, "w") as f:
-        f.write(cmdOutput)
-    if time >= solverTimeLimit:
+    # with open(outfile, "w") as f:
+        # f.write(cmdOutput)
+    if status == "solverTimeOut":
         return "solverTimeOut", solverTimeLimit
     return status, time
 

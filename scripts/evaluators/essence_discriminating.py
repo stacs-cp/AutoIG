@@ -131,7 +131,7 @@ def evaluate_essence_instance_discriminating(
 
             if current_solver not in conf.solverInfo:
                 SRTime = 0
-                runStatus, solverTime = callSolver(instFile=instFile, solverPath=current_solver, solverFlags=solverSetting, solverTimeLimit=totalTimeLimit, seed=rndSeed)
+                runStatus, solverTime = callSolver(instFile=instFile, solverPath=current_solver, solverFlags=solverSetting, solverTimeLimit=totalTimeLimit, solverMemLimit=totalMemLimit,seed=rndSeed)
             else:
                 
                 # Making the call to Conjure Solve
