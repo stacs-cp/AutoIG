@@ -3,6 +3,7 @@ from math import sqrt
 import sys
 import os
 from utils import run_cmd, run_cmd_with_timeout, log
+import pandas as pd
 
 # Define constants for outputs
 detailedOutputDir = "./detailed-output"
@@ -82,6 +83,66 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                     
     return status, time / 1000.0 # time is given in ms
 
+
+def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, solverMemLimit=8192, seed=None):
+    params = read_shelfworld_inst_params(instFile=instFile)
+    grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
+    write_map_file(instFile, grid)
+    
+    bots_start, bots_end = get_bots(params)
+    n_col, n_row = get_side_lengths(params)
+
+    instance = os.path.basename(instFile).replace(".param", "")
+    scenfile = os.path.join(detailedOutputDir, instance + ".scen")
+    outfile = os.path.join(detailedOutputDir, instance + "-sat-mapf.csv")
+
+    write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
+    
+    use_runsolver = sys.platform.startswith("linux")
+
+    # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
+    runsolver_delay = 2
+
+    cmd = f"{solverPath} -a {scenfile} -m {os.path.join(detailedOutputDir, instance+".map")} -o {outfile} -k {len(bots_start)} {solverFlags}"
+    
+    if use_runsolver:
+        cmd = (
+            f"runsolver -d {runsolver_delay} --wall-clock-limit {solverTimeLimit} --vsize-limit {solverMemLimit} " +
+            cmd
+        )
+
+    log("Running command:" + cmd)
+
+    output, returncode = run_cmd(cmd)
+    status = "sat"
+
+    if use_runsolver:
+            # with open(runsolver_tmp_file) as f:
+                for index, line in enumerate(output.splitlines()):
+                    # check if minion times out or exceeds set memory
+                    if "Maximum wall clock time exceeded" in line:
+                        returnCode = 0
+                        status = "solverTimeOut"
+                        break
+                    elif "Maximum VSize exceeded" in line:
+                        returnCode = 0
+                        status = "solverMemOut"
+                        break
+                    elif "Child status" in line:
+                        returnCode = int(line.split(":")[1].strip())
+                        # Check if minion return code is error
+                        if returnCode != 0:
+                            raise Exception(f"cbs solver exited with error code {returnCode}")
+                        
+    time = 0.0
+
+    # TODO deal with crashes etc.
+    if status == "sat":
+        df = pd.read_csv(outfile)
+
+        time = float(df["runtime"][0])
+                    
+    return status, time
 
 def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, solverMemLimit=8192,seed=None):
     cbs_param_file = detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
