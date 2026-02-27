@@ -42,7 +42,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     if use_runsolver:
         cmd = (
             f"runsolver -d {runsolver_delay} --wall-clock-limit {solverTimeLimit} --vsize-limit {solverMemLimit} " +
-            cmd
+            cmd + f" > {runsolver_tmp_solver_outfile}"
         )
 
     log("Running command:" + cmd)
@@ -53,24 +53,37 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     # log(output)
 
     if use_runsolver:
+        memTaken = 0
+        memMax = 0
             # with open(runsolver_tmp_file) as f:
-                for index, line in enumerate(output.splitlines()):
-                    # check if minion times out or exceeds set memory
-                    if "Maximum wall clock time exceeded" in line:
-                        returnCode = 0
-                        status = "solverTimeOut"
-                        break
-                    elif "Maximum VSize exceeded" in line:
-                        returnCode = 0
-                        status = "solverMemOut"
-                        break
-                    elif "Child status" in line:
-                        returnCode = int(line.split(":")[1].strip())
-                        # Check if minion return code is error
-                        if returnCode != 0:
-                            raise Exception(f"Sat solver exited with error code {returnCode}")
+        for index, line in enumerate(output.splitlines()):
+            # check if minion times out or exceeds set memory
+            if "Maximum wall clock time exceeded" in line:
+                returnCode = 0
+                status = "solverTimeOut"
+                break
+            elif "Maximum VSize exceeded" in line:
+                returnCode = 0
+                status = "solverMemOut"
+                break
+            elif "Child status" in line:
+                returnCode = int(line.split(":")[1].strip())
+                # Check if minion return code is error
+                if returnCode != 0:
+                    raise Exception(f"Sat solver exited with error code {returnCode}")
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
+                memTaken = int(line.split(":")[1].strip())
+            elif "Max. memory (cumulated for all children) (KiB):" in line:
+                memMax = int(line.split(":")[1].strip())
+        if memTaken >= memMax:
+            returnCode = 0
+            status = "solverMemOut"
+            
                         
     time = 0.0
+
+    with open(os.path.join(detailedOutputDir, instance + ".runsolver.out"), "w") as runsolverFile:
+        runsolverFile.write(output)
 
     # TODO deal with crashes etc.
     if status == "sat":
@@ -103,12 +116,15 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
     # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
     runsolver_delay = 2
 
+    runsolver_tmp_solver_outfile = os.path.join(detailedOutputDir, instance + ".cbssolver.out")
+
+
     cmd = f"{solverPath} -a {scenfile} -m {os.path.join(detailedOutputDir, instance+".map")} -o {outfile} -k {len(bots_start)} {solverFlags}"
     
     if use_runsolver:
         cmd = (
             f"runsolver -d {runsolver_delay} --wall-clock-limit {solverTimeLimit} --vsize-limit {solverMemLimit} " +
-            cmd
+            cmd + f" > {runsolver_tmp_solver_outfile}"
         )
 
     log("Running command:" + cmd)
@@ -117,22 +133,31 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
     status = "sat"
 
     if use_runsolver:
+        memTaken = 0
+        memMax = 0
             # with open(runsolver_tmp_file) as f:
-                for index, line in enumerate(output.splitlines()):
-                    # check if minion times out or exceeds set memory
-                    if "Maximum wall clock time exceeded" in line:
-                        returnCode = 0
-                        status = "solverTimeOut"
-                        break
-                    elif "Maximum VSize exceeded" in line:
-                        returnCode = 0
-                        status = "solverMemOut"
-                        break
-                    elif "Child status" in line:
-                        returnCode = int(line.split(":")[1].strip())
-                        # Check if minion return code is error
-                        if returnCode != 0:
-                            raise Exception(f"cbs solver exited with error code {returnCode}")
+        for index, line in enumerate(output.splitlines()):
+            # check if minion times out or exceeds set memory
+            if "Maximum wall clock time exceeded" in line:
+                returnCode = 0
+                status = "solverTimeOut"
+                break
+            elif "Maximum VSize exceeded" in line:
+                returnCode = 0
+                status = "solverMemOut"
+                break
+            elif "Child status" in line:
+                returnCode = int(line.split(":")[1].strip())
+                # Check if minion return code is error
+                if returnCode != 0:
+                    raise Exception(f"cbs solver exited with error code {returnCode}")
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
+                memTaken = int(line.split(":")[1].strip())
+            elif "Max. memory (cumulated for all children) (KiB):" in line:
+                memMax = int(line.split(":")[1].strip())
+        if memTaken >= memMax:
+            returnCode = 0
+            status = "solverMemOut"
                         
     time = 0.0
 
