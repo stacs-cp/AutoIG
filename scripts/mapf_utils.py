@@ -62,7 +62,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                 returnCode = 0
                 status = "solverTimeOut"
                 break
-            elif "Maximum VSize exceeded" in line:
+            elif "Maximum VSize exceeded" in line or "std::bad_alloc" in line:
                 returnCode = 0
                 status = "solverMemOut"
                 break
@@ -71,7 +71,8 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                 # Check if minion return code is error
                 if returnCode != 0:
                     raise Exception(f"Sat solver exited with error code {returnCode}")
-            elif "Max. virtual memory (cumulated for all children) (KiB):" in line or "std::bad_alloc" in line:
+            
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
                 memTaken = int(line.split(":")[1].strip())
         if memTaken >= solverMemLimit * 1024: # convert to KiB from MiB
             returnCode = 0
@@ -140,7 +141,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
                 returnCode = 0
                 status = "solverTimeOut"
                 break
-            elif "Maximum VSize exceeded" in line:
+            elif "Maximum VSize exceeded" in line or "std::bad_alloc" in line:
                 returnCode = 0
                 status = "solverMemOut"
                 break
@@ -149,7 +150,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
                 # Check if minion return code is error
                 if returnCode != 0:
                     raise Exception(f"cbs solver exited with error code {returnCode}")
-            elif "Max. virtual memory (cumulated for all children) (KiB):" in line or "std::bad_alloc" in line:
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
                 memTaken = int(line.split(":")[1].strip())
             elif "Max. memory (cumulated for all children) (KiB):" in line:
                 memMax = int(line.split(":")[1].strip())
