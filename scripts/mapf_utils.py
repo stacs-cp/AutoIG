@@ -71,7 +71,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                 # Check if minion return code is error
                 if returnCode != 0:
                     raise Exception(f"Sat solver exited with error code {returnCode}")
-            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line or "std::bad_alloc" in line:
                 memTaken = int(line.split(":")[1].strip())
         if memTaken >= solverMemLimit * 1024: # convert to KiB from MiB
             returnCode = 0
@@ -149,7 +149,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
                 # Check if minion return code is error
                 if returnCode != 0:
                     raise Exception(f"cbs solver exited with error code {returnCode}")
-            elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
+            elif "Max. virtual memory (cumulated for all children) (KiB):" in line or "std::bad_alloc" in line:
                 memTaken = int(line.split(":")[1].strip())
             elif "Max. memory (cumulated for all children) (KiB):" in line:
                 memMax = int(line.split(":")[1].strip())
