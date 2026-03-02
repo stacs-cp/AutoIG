@@ -73,9 +73,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
                     raise Exception(f"Sat solver exited with error code {returnCode}")
             elif "Max. virtual memory (cumulated for all children) (KiB):" in line:
                 memTaken = int(line.split(":")[1].strip())
-            elif "Max. memory (cumulated for all children) (KiB):" in line:
-                memMax = int(line.split(":")[1].strip())
-        if memTaken >= memMax:
+        if memTaken >= solverMemLimit * 1024: # convert to KiB from MiB
             returnCode = 0
             status = "solverMemOut"
             
@@ -155,7 +153,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
                 memTaken = int(line.split(":")[1].strip())
             elif "Max. memory (cumulated for all children) (KiB):" in line:
                 memMax = int(line.split(":")[1].strip())
-        if memTaken >= memMax:
+        if memTaken >= solverMemLimit * 1024: # convert to KiB from MiB:
             returnCode = 0
             status = "solverMemOut"
                         
