@@ -81,7 +81,7 @@ solverInfo["kissat"] = {
     "timelimitPrefix": "--time=",
     "randomSeedPrefix": "--seed=",
 }
-solverInfo["or-tools"] = {
+solverInfo["ortools"] = {
     "timelimitUnit": "s",
     "timelimitPrefix": "-t ",
     "randomSeedPrefix": "--fz_seed=",
