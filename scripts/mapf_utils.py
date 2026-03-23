@@ -106,7 +106,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
 
     instance = os.path.basename(instFile).replace(".param", "")
     scenfile = os.path.join(detailedOutputDir, instance + ".scen")
-    outfile = os.path.join(detailedOutputDir, instance + "-sat-mapf.csv")
+    outfile = os.path.join(detailedOutputDir, instance + "-cbs-mapf.csv")
 
     write_scen_file(instfile=instFile, scenfile=scenfile, bots_start=bots_start, bots_end=bots_end, n_col=n_col, n_row=n_row)
     
