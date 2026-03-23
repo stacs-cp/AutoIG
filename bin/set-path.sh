@@ -34,7 +34,7 @@ export MZN_STDLIB_DIR=$BIN_DIR/minizinc/share/minizinc/
 
 # ortools
 export PATH=$BIN_DIR/ortools/bin/:$PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BIN_DIR/ortools/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BIN_DIR/ortools/bin/lib
 
 # yuck
 export PATH=$BIN_DIR/yuck/bin/:$PATH
