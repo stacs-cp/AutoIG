@@ -154,14 +154,16 @@ def evaluate_mzn_instance_graded(
     # pprint.pprint(results['main']['runs'])
 
     # if the instance is too easy by the main solver, there's no need to run the oracle
-    if (medianRun["status"] == "C") and (medianRun["time"] < minTime):
+    # For satisfiable problems we can accept incomplete search status "S", for optimisation problems results must be complete or "C"
+    if (medianRun["status"] in ["C", "S"] if problemType == "SAT" else ["C"]) and (medianRun["time"] < minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
         status = "tooEasy"
         return score, get_results()
 
     # if the instance is unsolvable by the main solver, there's no need to run the oracle
-    if medianRun["status"] not in ["S", "C"]:
+    # For satisfiable problems we can allow for incomplete searchers, but for optimising problems we must have complete searches
+    if medianRun["status"] not in ["S", "C"] if problemType == "SAT" else ["C"]:
         print("Instance too difficult. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
