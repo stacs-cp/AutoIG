@@ -1,6 +1,6 @@
 #!/bin/bash
 name="picat"
-version="9.2"
+version="3.9#7"
 
 echo ""
 echo "============= INSTALLING $name ==================="
@@ -18,9 +18,9 @@ pushd $BIN_DIR
 
 OS=$(uname)
 if [ "$OS" == "Darwin" ]; then
-    url="http://picat-lang.org/download/picat316_macx.tar.gz"
+    url="http://picat-lang.org/download/picat397_macx.tar.gz"
 elif [ "$OS" == "Linux" ]; then
-    url="http://picat-lang.org/download/picat316_linux64.tar.gz"
+    url="http://picat-lang.org/download/picat397_linux64.tar.gz"
 else
     echo "Cannot determine your OS, uname reports: ${OS}"
     exit 1
