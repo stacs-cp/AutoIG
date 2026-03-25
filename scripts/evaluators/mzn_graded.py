@@ -1,10 +1,13 @@
 from functools import cmp_to_key
+import subprocess
 
 # Import minizinc pipeline functions 
 from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_type, has_better_objective
 
 # Import configurations file for using constants
 import conf
+
+from filelock import FileLock
 
 def evaluate_mzn_instance_graded(
     modelFile: str,
@@ -247,7 +250,23 @@ def evaluate_mzn_instance_graded(
                     status = "tooEasy"
                     return score, get_results()
 
+    # hashing config file to get file lock name unique to this run
+    hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+    hash = hashProcess.stdout.decode('utf-8').strip()
+
+    # define file lock
+    lock = FileLock(f"{hash}.lock")
+
+    # request lock
+    with lock:
+        with open("diversity.txt", "r+") as f:
+            times = list(map(float, f.read().split(","))) # read and convert all times to float
+            timeDifference = [abs(time - medianRun["time"]) for time in times]
+            averageDifference = sum(timeDifference) / len(timeDifference)
+
+            # because the default test of irace is the friedman, which is a ranking based one, the scale doesn't matter. Nonethless we flatten to 0-1 by dividing against the max time
+            score = -(averageDifference / timeLimit)
+            f.write(f",{medianRun["time"]}")
     status = "ok"
-    score = conf.SCORE_GRADED
     return score, get_results()
 
