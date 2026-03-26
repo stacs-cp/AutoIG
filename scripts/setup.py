@@ -9,6 +9,7 @@ import json
 import subprocess
 import shlex
 from collections import OrderedDict
+import pathlib
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -272,10 +273,14 @@ def setup(config):
     with open(iraceFile, "wt") as f:
         f.writelines(lsLines)
 
+    # Create file for tracking intermediate diversity values
+    open(os.path.join(config["runDir"], "diversity.txt"), "w")
+
     # copying over external scripts if necessary
     if config["instanceSetting"] == "graded":
         if config["solver"] not in solverInfo:
             copy(config["translateScriptPath"], config["runDir"])
+        
     else:
         for solver in ["favouredSolver", "baseSolver"]:
             if config[solver] not in solverInfo:
