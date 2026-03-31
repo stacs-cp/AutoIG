@@ -335,7 +335,7 @@ def minizinc_solve(
                 print("Status is unknown, so we can't check the solution, sorry.")
 
     # remove tmp runsolver file
-    delete_file(runsolver_tmp_file)
+    # delete_file(runsolver_tmp_file)
 
     if verbose:
         print(status, totalTime, extra)
