@@ -2,7 +2,7 @@ import json
 from math import sqrt
 import sys
 import os
-from utils import run_cmd, run_cmd_with_timeout, log
+from utils import run_cmd, run_cmd_with_timeout, log, delete_file
 import pandas as pd
 
 # Define constants for outputs
@@ -34,10 +34,12 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     runsolver_tmp_file = os.path.join(detailedOutputDir, instance + ".runsolver")
     runsolver_tmp_solver_outfile = os.path.join(detailedOutputDir, instance + ".satsolver.out")
 
+    cnf_tmp_file = os.path.join(detailedOutputDir, instance + ".cnf")
+
     # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
     runsolver_delay = 2
 
-    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags}"
+    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags} -c {cnf_tmp_file}"
     
     if use_runsolver:
         cmd = (
@@ -50,6 +52,8 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     output, returncode = run_cmd(cmd)
 
     status = "sat"
+
+    delete_file([cnf_tmp_file])
     # log(output)
 
     if use_runsolver:
