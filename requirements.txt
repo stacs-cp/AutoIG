@@ -26,3 +26,4 @@ seaborn==0.13.2
 simplejson==3.20.2
 six==1.17.0
 tzdata==2025.2
+filelock==3.25.2
