@@ -1,5 +1,6 @@
 from functools import cmp_to_key
 import subprocess
+import math
 
 # Import minizinc pipeline functions 
 from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_type, has_better_objective
@@ -256,17 +257,62 @@ def evaluate_mzn_instance_graded(
 
     # define file lock
     lock = FileLock(f"{hash}.lock")
+    
+    data = []
+    instance = instFile.replace(".dzn", "")
+    seed = instance.split("-")[-1]
+    
+    def normalise(maxVal, minVal, val):
+        return ((val - minVal) / (maxVal - minVal))
+
 
     # request lock
     with lock:
         with open("diversity.txt", "r+") as f:
-            times = list(map(float, f.read().split(","))) # read and convert all times to float
-            timeDifference = [abs(time - medianRun["time"]) for time in times]
-            averageDifference = sum(timeDifference) / len(timeDifference)
+            
+            data = f.read().strip().split("\n") # read the data and split into separate file data
+            f.write(f"{instance},{medianRun["time"]}\n")
+    
+    # release lock once read data and written current time
+    
+    def filterFunc(x):
+        if(x == ''):
+            return False
+        return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+    
+    # filter out any instances that have the same seed (same run)
+    filteredData = list(filter(filterFunc, data))
 
-            # because the default test of irace is the friedman, which is a ranking based one, the scale doesn't matter. Nonethless we flatten to 0-1 by dividing against the max time
-            score = -(averageDifference / timeLimit)
-            f.write(f",{medianRun["time"]}")
+    if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+        score = -1
+        status="ok"
+        return score, get_results()
+
+    differences = []
+
+    # Get the absolute differences between the current item and all remaining times
+    for entry in filteredData:
+        entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+        differences.append(round(abs(entryTime - medianRun["time"]), 2))
+    
+    # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
+    # currently only to the granularity of 10 buckets so working in decimal
+    diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
+    
+    # zero pad the number in case array size smaller than 10
+    if len(diffNormal) < 10:
+        padLen = 10 - len(diffNormal)
+        diffNormal = diffNormal + [0] * padLen
+    
+    # sort from smallest to largest to get closest neigbours
+    diffNormal.sort(reverse=False)
+    diffNormal = diffNormal[:10]
+    # get the negative integer result of concatenating all the inidividual buckets
+    result = - int("".join(str(val) for val in diffNormal))
+    # averageDiff = sum(differences) / len(differences)
+
+    score = result
+
     status = "ok"
     return score, get_results()
 
