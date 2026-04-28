@@ -19,7 +19,7 @@ def evaluate_essence_instance_discriminating(
     favouredSolverFlags: str = "-f", # Flags for the favoured solver, fed into Conjure
     totalTimeLimit: int = 1200, # The default time limit for each solver run
     initSeed: int = None, # The initial seed
-    totalMemLimit=8192, # Total memory limit for solver runs (currently unused)
+    totalMemLimit=32768, # Total memory limit for solver runs (currently unused)
     SRTimeLimit: int = 0, # The timelimit for SR
     SRFlags: str = "",  # Flags for SR
     baseSolverTranslateScriptPath: str = "",
