@@ -17,8 +17,10 @@ url="https://cran.r-project.org/src/contrib/irace_4.4.1.tar.gz"
 
 Rscript -e "install.packages(c('https://cran.r-project.org/src/contrib/R6_2.6.1.tar.gz', 'https://cran.r-project.org/src/contrib/data.table_1.18.2.1.tar.gz', 'https://cran.r-project.org/src/contrib/matrixStats_1.5.0.tar.gz', 'https://cran.r-project.org/src/contrib/spacefillr_0.4.0.tar.gz', 'https://cran.r-project.org/src/contrib/digest_0.6.39.tar.gz'), lib='$BIN_DIR', repos=NULL, type='source')"
 export R_LIBS=$BIN_DIR/:$R_LIBS
-Rscript -e "install.packages('$url', type='source')"
+# Rscript -e "install.packages('$url', type='source')"
 
+# TODO CHANGE ONCE UPDATE IS OFFICIALLY PUSHED TO IRACE
+Rscript -e "install.packages('irace', repos = c('https://mlopez-ibanez.r-universe.dev', 'https://cloud.r-project.org'))"
 # pushd $BIN_DIR
 
 # mkdir -p $name
