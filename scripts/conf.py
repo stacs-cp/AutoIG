@@ -86,3 +86,6 @@ solverInfo["ortools"] = {
     "timelimitPrefix": "-t ",
     "randomSeedPrefix": "--fz_seed=",
 }
+
+solverInfo["yuck"] = {}
+solverInfo["picat"] = {}

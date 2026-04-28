@@ -14,7 +14,7 @@ detailedOutputDir = "./detailed-output"
 # will need to implement solver time limit by user
 # memory limit implementation
 # seed in case of nondeterminism
-def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimeLimit=60, solverMemLimit=8192, seed=None):
+def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_all", solverTimeLimit=60, solverMemLimit=32768, seed=None):
     params = read_shelfworld_inst_params(instFile=instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     write_map_file(instFile, grid)
@@ -39,7 +39,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
     runsolver_delay = 2
 
-    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags} -c {cnf_tmp_file}"
+    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags} -c {cnf_tmp_file} -t {solverTimeLimit}"
     
     if use_runsolver:
         cmd = (
@@ -62,7 +62,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
             # with open(runsolver_tmp_file) as f:
         for index, line in enumerate(output.splitlines()):
             # check if minion times out or exceeds set memory
-            if "Maximum wall clock time exceeded" in line:
+            if "Maximum wall clock time exceeded" in line or "No solution found in the given timeout" in line:
                 returnCode = 0
                 status = "solverTimeOut"
                 break
@@ -100,7 +100,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     return status, time / 1000.0 # time is given in ms
 
 
-def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, solverMemLimit=8192, seed=None):
+def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, solverMemLimit=32768, seed=None):
     params = read_shelfworld_inst_params(instFile=instFile)
     grid = draw_map_shelfworld(params["n_shelves_col"], params["n_shelves_row"], params["shelf_col_size"], params["shelf_row_size"], params["corridor_size"], params["buffer_col"], params["buffer_row"])
     write_map_file(instFile, grid)
@@ -172,7 +172,7 @@ def call_solve_CBSH2(instFile, solverPath, solverFlags="", solverTimeLimit=60, s
                     
     return status, time
 
-def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, solverMemLimit=8192,seed=None):
+def call_solve_cbs_mapf(instFile, solverPath, solverFlags="disjoint --hlsolver ICBS", solverTimeLimit=60, solverMemLimit=32768,seed=None):
     cbs_param_file = detailedOutputDir + "/" + os.path.basename(instFile).replace(".param", ".txt")
     write_cbs_file(instFile, cbs_param_file)
     
