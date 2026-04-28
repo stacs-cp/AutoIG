@@ -29,6 +29,7 @@ def read_config(args):
         "seed",
         "maxEvaluations",
         "nCores",
+        "elite"
     ]
     genSettings = [
         "genMaxInt",
@@ -64,6 +65,10 @@ def read_config(args):
     for name in ["runDir", "problemModel", "generatorModel"]:
         if name in config:
             config[name] = os.path.abspath(config[name])
+
+    assert(
+        config["elite"] in ["0", "1"]
+    ), f"ERROR: elite must be 0 or 1"
 
     # read graded-specific settings
     if config["instanceSetting"] == "graded":
@@ -265,6 +270,7 @@ def setup(config):
         "maxExperiments": config["maxEvaluations"],
         "targetRunner": f"{scriptDir}/target-runner",
         "scenario": f"{scriptDir}/scenario.R",
+        "elite": config["elite"],
     }
     with open(iraceFile, "rt") as f:
         lsLines = f.readlines()
@@ -486,6 +492,12 @@ def main():
         type=str,
         help="(non-Conjure based solver only) name of the function to call when solving the instance"
     ) # TODO add in function description here
+    parser.add_argument(
+        "--elite",
+        type=str,
+        help="whether elite mode should be on. Accepts 0 or 1",
+        default="1", 
+    )
     
 
     # read all settings into one variable and check setting validity

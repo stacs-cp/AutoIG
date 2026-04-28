@@ -17,3 +17,8 @@ scripts/detailed-output
 scripts/makeSeabornPlotMapf.py
 scripts/makeSeabornPlotMapf.py
 bin/runsolver
+bin/data.table
+bin/R6
+bin/matrixStats
+bin/digest
+bin/spacefillr

@@ -39,11 +39,7 @@ def call_solve_sat_mapf(instFile, solverPath, solverFlags="-e at_parallel_soc_al
     # delay btwn SIGTERM and SIGKILL when timeout in runsolver, to give solver time to gracefully exit
     runsolver_delay = 2
 
-<<<<<<< HEAD
-    cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags} -c {cnf_tmp_file}"
-=======
     cmd = f"{solverPath} -s {scenfile} -m {detailedOutputDir} -l 2 -f {outfile} {solverFlags} -c {cnf_tmp_file} -t {solverTimeLimit}"
->>>>>>> origin/mapf_implementation
     
     if use_runsolver:
         cmd = (
