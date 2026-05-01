@@ -36,6 +36,8 @@ def read_setting(settingFile):
     c["generalSettings"]["modelFile"] = setting["problemModel"]
     c["generalSettings"]["generatorFile"] = setting["generatorModel"]
     c["generalSettings"]["runDir"] = setting["runDir"]
+    c["generalSettings"]["elite"] = setting["elite"]
+    c["generalSettings"]["diversityMetric"] = setting["diversityMetric"]
 
     c["generatorSettings"]["genSRTimeLimit"] = setting["genSRTimeLimit"]
     c["generatorSettings"]["genSRFlags"] = setting["genSRFlags"]

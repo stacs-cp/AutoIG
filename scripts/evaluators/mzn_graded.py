@@ -1,12 +1,14 @@
 from functools import cmp_to_key
 import subprocess
 import math
+import random
 
 # Import minizinc pipeline functions 
 from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_type, has_better_objective
 
 # Import configurations file for using constants
 import conf
+from wrapper_helpers import read_setting
 
 from filelock import FileLock
 
@@ -251,67 +253,79 @@ def evaluate_mzn_instance_graded(
                     status = "tooEasy"
                     return score, get_results()
 
-    # hashing config file to get file lock name unique to this run
-    hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
-    hash = hashProcess.stdout.decode('utf-8').strip()
+    settings = read_setting("./config.json")
+    metric = settings["generalSettings"]["diversityMetric"]
 
-    # define file lock
-    lock = FileLock(f"{hash}.lock")
-    
-    data = []
-    instance = instFile.replace(".dzn", "")
-    seed = instance.split("-")[-1]
-    
-    def normalise(maxVal, minVal, val):
-        return ((val - minVal) / (maxVal - minVal))
+    if (metric == "max_closest_dist" or metric == "max_closest_dist_rev"):
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        
+        def normalise(maxVal, minVal, val):
+            return ((val - minVal) / (maxVal - minVal))
 
 
-    # request lock
-    with lock:
-        with open("diversity.txt", "r+") as f:
-            
-            data = f.read().strip().split("\n") # read the data and split into separate file data
-            f.write(f"{instance},{medianRun["time"]}\n")
-    
-    # release lock once read data and written current time
-    
-    def filterFunc(x):
-        if(x == ''):
-            return False
-        return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
-    
-    # filter out any instances that have the same seed (same run)
-    filteredData = list(filter(filterFunc, data))
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{medianRun["time"]}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # filter out any instances that have the same seed (same run)
+        filteredData = list(filter(filterFunc, data))
 
-    if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+
+        differences = []
+
+        # Get the absolute differences between the current item and all remaining times
+        for entry in filteredData:
+            entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+            differences.append(round(abs(entryTime - medianRun["time"]), 2))
+        
+        # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
+        # currently only to the granularity of 10 buckets so working in decimal
+        diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
+        
+        # zero pad the number in case array size smaller than 10
+        if len(diffNormal) < 10:
+            padLen = 10 - len(diffNormal)
+            diffNormal = diffNormal + [0] * padLen
+        
+        # sort from smallest to largest to get closest neigbours
+        diffNormal.sort(reverse=False)
+        diffNormal = diffNormal[:10]
+        # get the negative integer result of concatenating all the inidividual buckets
+        result = - int("".join(str(val) for val in diffNormal))
+        # averageDiff = sum(differences) / len(differences)
+
+        score = result
+    elif (metric == "none"):
         score = -1
-        status="ok"
-        return score, get_results()
-
-    differences = []
-
-    # Get the absolute differences between the current item and all remaining times
-    for entry in filteredData:
-        entryTime = float(entry.split(",")[-1]) #extract runtime from entry
-        differences.append(round(abs(entryTime - medianRun["time"]), 2))
-    
-    # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
-    # currently only to the granularity of 10 buckets so working in decimal
-    diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
-    
-    # zero pad the number in case array size smaller than 10
-    if len(diffNormal) < 10:
-        padLen = 10 - len(diffNormal)
-        diffNormal = diffNormal + [0] * padLen
-    
-    # sort from smallest to largest to get closest neigbours
-    diffNormal.sort(reverse=False)
-    diffNormal = diffNormal[:10]
-    # get the negative integer result of concatenating all the inidividual buckets
-    result = - int("".join(str(val) for val in diffNormal))
-    # averageDiff = sum(differences) / len(differences)
-
-    score = result
+    elif (metric == "random"):
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        random.seed(seed)
+        score = random.randint(-100, -1)
+        
 
     status = "ok"
     return score, get_results()

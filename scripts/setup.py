@@ -29,7 +29,8 @@ def read_config(args):
         "seed",
         "maxEvaluations",
         "nCores",
-        "elite"
+        "elite",
+        "diversityMetric",
     ]
     genSettings = [
         "genMaxInt",
@@ -498,6 +499,13 @@ def main():
         help="whether elite mode should be on. Accepts 0 or 1",
         default="1", 
     )
+    parser.add_argument(
+        "--diversityMetric",
+        type=str,
+        help="Diversity metric to use, current available options [\"none\", \"max_closest_dist\", \"random\"]",
+        default="none",
+        choices=["none", "max_closest_dist", "random"],
+    ) # TODO add choices and set boundarys (i.e. maybe one only works for graded etc.)
     
 
     # read all settings into one variable and check setting validity
