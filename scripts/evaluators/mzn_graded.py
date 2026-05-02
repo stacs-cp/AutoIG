@@ -321,7 +321,7 @@ def evaluate_mzn_instance_graded(
             score = result
         elif metric == "maxAvgDist":
             # normalise differences to range between 0-1
-            diffNormal = list(map(lambda x: (x / (timeLimit / minTime)), differences))
+            diffNormal = list(map(lambda x: (x / (timeLimit - minTime)), differences))
             
             # get the average distance between the current time and all previous times
             avgDist = sum(diffNormal) / len(diffNormal)
@@ -334,6 +334,59 @@ def evaluate_mzn_instance_graded(
         seed = instance.split("-")[-1]
         random.seed(seed)
         score = random.randint(-100, -1)
+    elif (metric == "indvidualAvgBuckets"):
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        genInstID = instance.split("-")[-2]
+        
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{medianRun["time"]}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return (genInstID == x.split("-")[-2]) # isolate the generator instance ID
+        
+        # keep any data from the same generator instance
+        filteredData = list(filter(filterFunc, data))
+
+        if len(filteredData) == 0: # if there is no data, first time this generator found an instance
+            score = -0.5 # set to .5 so that prioritise generators that have found over 50% instances in different buckets, but otherwise priorities novelty
+            status="ok"
+            return score, get_results()
+
+        # measure of granularity, how many buckets to divide the acceptable (graded) time range into
+        numBuckets = 20
+        buckets = [0] * numBuckets # create an array representing buckets
+
+        def getBucket(solverTime):
+            normTime = (solverTime - minTime) / (timeLimit - minTime) # normalise
+            return math.floor(normTime / (1 / numBuckets)) # divide into buckets
+
+        buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
+
+        # Get the absolute differences between the current item and all remaining times
+        for entry in filteredData:
+            entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+            buckets[getBucket(entryTime)] = 1
+
+        # score is the number of buckets over the number of instances seen
+        score = - (sum(buckets) / (len(filteredData) + 1)) # normalise over number of instances seen, +1 for current
+        
         
 
     status = "ok"
