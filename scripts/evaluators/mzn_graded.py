@@ -334,7 +334,7 @@ def evaluate_mzn_instance_graded(
         seed = instance.split("-")[-1]
         random.seed(seed)
         score = random.randint(-100, -1)
-    elif (metric == "indvidualAvgBuckets"):
+    elif (metric == "individualAvgBuckets"):
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
         hash = hashProcess.stdout.decode('utf-8').strip()
