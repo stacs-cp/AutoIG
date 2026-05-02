@@ -17,8 +17,7 @@ scripts/detailed-output
 scripts/makeSeabornPlotMapf.py
 scripts/makeSeabornPlotMapf.py
 bin/runsolver
-bin/data.table
-bin/R6
-bin/matrixStats
-bin/digest
-bin/spacefillr
+scripts/extractInstances.py
+scripts/makeParallelCoordPlot.py
+bin/MAPF-encodings
+bin/MAPF-ICBS

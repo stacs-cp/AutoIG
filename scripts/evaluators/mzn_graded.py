@@ -256,7 +256,7 @@ def evaluate_mzn_instance_graded(
     settings = read_setting("./config.json")
     metric = settings["generalSettings"]["diversityMetric"]
 
-    if (metric == "max_closest_dist" or metric == "max_closest_dist_rev"):
+    if (metric == "max_closest_dist" or metric == "maxAvgDist"):
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
         hash = hashProcess.stdout.decode('utf-8').strip()
@@ -301,23 +301,32 @@ def evaluate_mzn_instance_graded(
             entryTime = float(entry.split(",")[-1]) #extract runtime from entry
             differences.append(round(abs(entryTime - medianRun["time"]), 2))
         
-        # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
-        # currently only to the granularity of 10 buckets so working in decimal
-        diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
-        
-        # zero pad the number in case array size smaller than 10
-        if len(diffNormal) < 10:
-            padLen = 10 - len(diffNormal)
-            diffNormal = diffNormal + [0] * padLen
-        
-        # sort from smallest to largest to get closest neigbours
-        diffNormal.sort(reverse=False)
-        diffNormal = diffNormal[:10]
-        # get the negative integer result of concatenating all the inidividual buckets
-        result = - int("".join(str(val) for val in diffNormal))
-        # averageDiff = sum(differences) / len(differences)
+        if metric == "max_closest_dist":
+            # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
+            # currently only to the granularity of 10 buckets so working in decimal
+            diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
+            
+            # zero pad the number in case array size smaller than 10
+            if len(diffNormal) < 10:
+                padLen = 10 - len(diffNormal)
+                diffNormal = diffNormal + [0] * padLen
+            
+            # sort from smallest to largest to get closest neigbours
+            diffNormal.sort(reverse=False)
+            diffNormal = diffNormal[:10]
+            # get the negative integer result of concatenating all the inidividual buckets
+            result = - int("".join(str(val) for val in diffNormal))
+            # averageDiff = sum(differences) / len(differences)
 
-        score = result
+            score = result
+        elif metric == "maxAvgDist":
+            # normalise differences to range between 0-1
+            diffNormal = list(map(lambda x: (x / (timeLimit / minTime)), differences))
+            
+            # get the average distance between the current time and all previous times
+            avgDist = sum(diffNormal) / len(diffNormal)
+            score = -avgDist
+
     elif (metric == "none"):
         score = -1
     elif (metric == "random"):
