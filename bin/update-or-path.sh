@@ -5,7 +5,7 @@
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # Location of file to update:
-FILE="$BIN_DIR/minizinc/share/minizinc/solvers/cpsat.msc"
+FILE="$BIN_DIR/minizinc/share/minizinc/solvers/cp-sat.msc"
 
 OS=$(uname)
 if [ "$OS" == "Darwin" ]; then
