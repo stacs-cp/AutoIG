@@ -1,131 +1,86 @@
+import seaborn as sns
 import pandas as pd
-import numpy as np
+import argparse
 import matplotlib.pyplot as plt
+from collect_results import read_data
 import json
 import os
-import sys
-import argparse
-from collections import Counter
+import numpy as np
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
+import matplotlib
 
+from utils import get_normalised_entropy_score
+import math
+
+
+wantedStats = ["ok"]
+# dirs = ['mcd', 'base', 'nonElite', 'random', 'iavgbuc']
+dirs = ['mcd', 'mcdNE', 'base', 'nonElite', 'random', 'randomNE', 'iavgbuc', 'iavgbucNE']
+# dirs = ['mcd', 'base', 'iavgbuc']
 
 def main():
     parser = argparse.ArgumentParser()
 
     # general settings
     parser.add_argument(
-        "--fileName",
-        required=True,
+        "--dir",
+        default=".",
         type=str,
         help="path to the analysis file (json)"
     )
-
-    parser.add_argument(
-        "--repair",
-        type=bool,
-        default=False,
-    )
-
     parser.add_argument(
         "--minTime",
-        type=int
+        type=float,
+        default=5
     )
-
     parser.add_argument(
         "--maxTime",
-        type=int
+        type=float,
+        default=1200
+    )
+    parser.add_argument(
+        "--out",
+        default="data240.csv"
     )
 
     parser.add_argument(
-        "--instanceSetting",
-        choices=["graded", "discriminating"],
-        default="discriminating"
+        "--title",
+        default="Instance Solving Time using Chuffed on Macc",
     )
 
+    parser.add_argument(
+        "--numBuckets",
+        type=int,
+        default=240
+    )
 
-    # read all settings into one variable and check setting validity
     args = parser.parse_args()
-    with open(args.fileName, 'r') as f:
-        f.readline()
-        # print(f.readline())
-        lsLines = []
-        okTimes = []
-        okInst = []
-        # print(args.instanceSetting)
-        if args.instanceSetting == "graded":
-            for s in f.readlines():
-                data = json.loads(s)
-                if args.repair:
-                    if "genunsat" in data["status"] or "gensolverTimeOut" in data["status"]:
-                        lsLines.append(data["status"])
-                    else:
 
-                        data["instanceResults"]["results"]["main"]["runs"] = sorted(
-                            data["instanceResults"]["results"]["main"]["runs"], key=lambda run: run["solverTime"]
-                        )
-                        nRuns = len(data["instanceResults"]["results"]["main"]["runs"])
-                        medianRun = data["instanceResults"]["results"]["main"]["runs"][int(nRuns / 2)]
+    def getBucket(solverTime):
+        normTime = (solverTime - args.minTime) / (args.maxTime - args.minTime) # normalise
+        return math.floor(normTime / (1 / args.numBuckets)) # divide into buckets
 
-                        if (medianRun["solverTime"] <= args.minTime):
-                            lsLines.append("tooEasy")
-                        elif (medianRun["solverTime"] >= args.maxTime):
-                            lsLines.append("tooDifficult")
-                        else:
-                            lsLines.append("ok " + medianRun["status"])
-                            okTimes.append(medianRun["solverTime"])
-                            okInst.append(data["instanceResults"]["instance"])
+    allTimes = {}
+    bucketCounts = {}
+    entropyScores = {}
 
-                else:
-                    if "ok" in data["status"]:
-                        nRuns = len(data["instanceResults"]["results"]["main"]["runs"])
-                        medianRun = data["instanceResults"]["results"]["main"]["runs"][int(nRuns / 2)]
-                        if "unsat" in medianRun["status"]:
-                            lsLines.append("ok unsat")
-                            # print(s)
-                        else:
-                            lsLines.append("ok sat")
-                        okTimes.append(medianRun["solverTime"])
-                        okInst.append(data["instanceResults"]["instance"])
-                    else:
-                        lsLines.append(data["status"])
-        elif args.instanceSetting == "discriminating":
-             for s in f.readlines():
-                data = json.loads(s)
-                if args.repair:
-                    if "genunsat" in data["status"] or "gensolverTimeOut" in data["status"]:
-                        lsLines.append(data["status"])
-                    else:
+    for problem in dirs:
+        config, tRs, tRsNoDup = read_data(os.path.join(args.dir,problem))
+        bucketCounts[problem] = [0] * args.numBuckets
+        # filter out non-graded instances
+        tInfo = tRsNoDup.loc[tRsNoDup.status=="graded",:]
 
-                        data["instanceResults"]["results"]["main"]["runs"] = sorted(
-                            data["instanceResults"]["results"]["main"]["runs"], key=lambda run: run["solverTime"]
-                        )
-                        nRuns = len(data["instanceResults"]["results"]["main"]["runs"])
-                        medianRun = data["instanceResults"]["results"]["main"]["runs"][int(nRuns / 2)]
+        # calculate average solving time for each instance  
+        tInfo.loc[:,"avgSolvingTime"] = [np.mean([rs["time"] for rs in x["results"]["main"]["runs"]]) for x in tInfo.instanceResults]
+        allTimes[problem] = tInfo.loc[:,"avgSolvingTime"]
 
-                        if (medianRun["solverTime"] <= args.minTime):
-                            lsLines.append("tooEasy")
-                        elif (medianRun["solverTime"] >= args.maxTime):
-                            lsLines.append("tooDifficult")
-                        else:
-                            lsLines.append("ok " + medianRun["status"])
-                            okTimes.append(medianRun["solverTime"])
-                            okInst.append(data["instanceResults"]["instance"])
+        for time in allTimes[problem]:
+            bucketCounts[problem][getBucket(time)] += 1
 
-                else:
-                    if "ok" in data["status"]:
-                        score = float(data["instanceResults"]["score"])
-                        if score < -1:
-                            lsLines.append("favouredSolverWins")
-                        else:
-                            lsLines.append("baseSolverWins")
-                        
-                    else:
-                        lsLines.append(data["status"])
-
-            
-        # plt.savefig(os.path.join(os.path.dirname(args.fileName), "plot.png"))
-        # plt.hist(okInst, okTimes)
-
-    print(Counter(lsLines).items())
-
-
+        entropyScores[problem] = [get_normalised_entropy_score(bucketCounts[problem])] 
+        
+    # print(entropyScores)
+    df = pd.DataFrame(entropyScores)
+    df.to_csv(args.out)
 main()

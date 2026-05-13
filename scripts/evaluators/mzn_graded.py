@@ -10,6 +10,8 @@ from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_
 import conf
 from wrapper_helpers import read_setting
 
+from utils import get_normalised_entropy_score
+
 from filelock import FileLock
 
 def evaluate_mzn_instance_graded(
@@ -334,7 +336,7 @@ def evaluate_mzn_instance_graded(
         seed = instance.split("-")[-1]
         random.seed(seed)
         score = random.randint(-100, -1)
-    elif (metric == "individualAvgBuckets"):
+    elif (metric == "individualAvgBuckets" or metric == "individualNormEntropy"):
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
         hash = hashProcess.stdout.decode('utf-8').strip()
@@ -364,11 +366,6 @@ def evaluate_mzn_instance_graded(
         # keep any data from the same generator instance
         filteredData = list(filter(filterFunc, data))
 
-        if len(filteredData) == 0: # if there is no data, first time this generator found an instance
-            score = -0.5 # set to .5 so that prioritise generators that have found over 50% instances in different buckets, but otherwise priorities novelty
-            status="ok"
-            return score, get_results()
-
         # measure of granularity, how many buckets to divide the acceptable (graded) time range into
         numBuckets = 20
         buckets = [0] * numBuckets # create an array representing buckets
@@ -377,17 +374,35 @@ def evaluate_mzn_instance_graded(
             normTime = (solverTime - minTime) / (timeLimit - minTime) # normalise
             return math.floor(normTime / (1 / numBuckets)) # divide into buckets
 
-        buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
+        if (metric == "individualAvgBuckets"):
 
-        # Get the absolute differences between the current item and all remaining times
-        for entry in filteredData:
-            entryTime = float(entry.split(",")[-1]) #extract runtime from entry
-            buckets[getBucket(entryTime)] = 1
+            if len(filteredData) == 0: # if there is no data, first time this generator found an instance
+                score = -0.5 # set to .5 so that prioritise generators that have found over 50% instances in different buckets, but otherwise priorities novelty
+                status="ok"
+                return score, get_results()
+            
+            buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
 
-        # score is the number of buckets over the number of instances seen
-        score = - (sum(buckets) / (len(filteredData) + 1)) # normalise over number of instances seen, +1 for current
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] = 1
+
+            # score is the number of buckets over the number of instances seen
+            score = - (sum(buckets) / (len(filteredData) + 1)) # normalise over number of instances seen, +1 for current
         
-        
+        elif (metric == "individualNormEntropy"):
+
+            temp = getBucket(medianRun["time"])
+            print("bucket number: ", temp)
+
+
+            buckets[getBucket(medianRun["time"])] += 1 # add one to the current bucket
+            
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] += 1
+            
+            score = (- get_normalised_entropy_score(buckets)) - 1 # make negative for minimise and also shift by -1 for gradedness
 
     status = "ok"
     return score, get_results()

@@ -4,7 +4,30 @@ import subprocess
 import shlex
 import datetime
 import shutil
+import numpy as np
 
+
+def get_normalised_entropy_score(binCounts):
+    nm = sum(binCounts) # total number of instances
+    
+    p = []
+    for c in binCounts:
+        if c != 0: # filter out zeroes to avoid log(0)
+            p.append(c / nm)
+            
+    # sum( p * log(p))
+    entropy = np.sum(p * np.log(p)) 
+    
+    # divide by log(# of buckets) for normalised entropy value
+    Hnorm = - entropy / np.log(len(binCounts)) 
+    
+    # multiply by log(1+total) to reward the number of instances generated
+    score = Hnorm * np.log(1+nm)
+
+    return score
+    
+    
+    
 
 def log(logMessage):
     print(
