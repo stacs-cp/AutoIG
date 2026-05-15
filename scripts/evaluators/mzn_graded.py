@@ -10,7 +10,7 @@ from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_
 import conf
 from wrapper_helpers import read_setting
 
-from utils import get_normalised_entropy_score
+from utils import get_normalised_entropy_score, get_normalised_entropy
 
 from filelock import FileLock
 
@@ -34,6 +34,18 @@ def evaluate_mzn_instance_graded(
     Evaluate a mzn instance under the gradedness criteria
     """
     
+    # measure of granularity, how many buckets to divide the acceptable (graded) time range into
+    numBuckets = 20
+
+    def getBucket(solverTime):
+        normTime = (solverTime - minTime) / (timeLimit - minTime) # normalise
+        bucketID = math.floor(normTime / (1 / numBuckets)) # divide into buckets
+        if bucketID < numBuckets:
+            return bucketID
+        elif bucketID >= numBuckets:
+            return numBuckets - 1
+        
+        # return math.floor(normTime / (1 / numBuckets)) # divide into buckets
 
     # check validity of input
     if len(unwantedTypes) > 0:
@@ -336,7 +348,7 @@ def evaluate_mzn_instance_graded(
         seed = instance.split("-")[-1]
         random.seed(seed)
         score = random.randint(-100, -1)
-    elif (metric == "individualAvgBuckets" or metric == "individualNormEntropy"):
+    elif (metric == "individualAvgBuckets" or metric == "individualNormEntropy" or metric == "individualBuckets"):
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
         hash = hashProcess.stdout.decode('utf-8').strip()
@@ -366,13 +378,7 @@ def evaluate_mzn_instance_graded(
         # keep any data from the same generator instance
         filteredData = list(filter(filterFunc, data))
 
-        # measure of granularity, how many buckets to divide the acceptable (graded) time range into
-        numBuckets = 20
         buckets = [0] * numBuckets # create an array representing buckets
-
-        def getBucket(solverTime):
-            normTime = (solverTime - minTime) / (timeLimit - minTime) # normalise
-            return math.floor(normTime / (1 / numBuckets)) # divide into buckets
 
         if (metric == "individualAvgBuckets"):
 
@@ -402,8 +408,73 @@ def evaluate_mzn_instance_graded(
                 entryTime = float(entry.split(",")[-1]) #extract runtime from entry
                 buckets[getBucket(entryTime)] += 1
             
-            score = (- get_normalised_entropy_score(buckets)) - 1 # make negative for minimise and also shift by -1 for gradedness
+            score = (- get_normalised_entropy(buckets)) - 1 # make negative for minimise and also shift by -1 for gradedness
+        elif (metric == "individualBuckets"):
+            
+            buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
 
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] = 1 # set bucket to true
+
+            # score is the number of buckets total
+            score = - (sum(buckets))
+
+    elif (metric == "normalisedEntropyDelta"):
+        numBuckets = 120 # dividing time into about 10 s buckets
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        genInstID = instance.split("-")[-2]
+        
+        currentBucket = getBucket(medianRun["time"])
+        
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{currentBucket}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # keep any data from the same generator instance
+        filteredData = list(filter(filterFunc, data))
+        
+        buckets = [0] * numBuckets # create an array representing buckets
+        
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+        
+        for entry in filteredData:
+            bucketN = int(entry.split(",")[-1]) # get bucket number
+            buckets[bucketN] += 1 # increment bucket count
+        
+        entropyOld = get_normalised_entropy(buckets)
+        
+        buckets[currentBucket] += 1
+        
+        entropyNew = get_normalised_entropy(buckets)
+        
+        entropyDelta = entropyNew - entropyOld # positive difference = better, means the new score is higher (more uniform)
+        
+        # set -2 as the center, if the new instance is the worst for diversity (a difference of -1), will return the score to -1 which is a base graded score.
+        score = (-2) - entropyDelta
+
+        
     status = "ok"
     return score, get_results()
 

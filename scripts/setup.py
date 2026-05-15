@@ -502,9 +502,9 @@ def main():
     parser.add_argument(
         "--diversityMetric",
         type=str,
-        help="Diversity metric to use, current available options [\"none\", \"max_closest_dist\", \"random\", \"maxAvgDist\", \"individualAvgBuckets\", \"individualNormEntropy\"]",
+        help="Diversity metric to use, current available options [\"none\", \"max_closest_dist\", \"random\", \"maxAvgDist\", \"individualAvgBuckets\", \"individualNormEntropy\", \"normalisedEntropyDelta\", \"individualBuckets\"]",
         default="none",
-        choices=["none", "max_closest_dist", "random", "maxAvgDist", "individualAvgBuckets", "individualNormEntropy"],
+        choices=["none", "max_closest_dist", "random", "maxAvgDist", "individualAvgBuckets", "individualNormEntropy", "normalisedEntropyDelta", "individualBuckets"],
     ) # TODO add choices and set boundarys (i.e. maybe one only works for graded etc.)
     
 

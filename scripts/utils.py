@@ -6,8 +6,7 @@ import datetime
 import shutil
 import numpy as np
 
-
-def get_normalised_entropy_score(binCounts):
+def get_normalised_entropy(binCounts):
     nm = sum(binCounts) # total number of instances
     
     p = []
@@ -20,6 +19,12 @@ def get_normalised_entropy_score(binCounts):
     
     # divide by log(# of buckets) for normalised entropy value
     Hnorm = - entropy / np.log(len(binCounts)) 
+    return Hnorm
+
+def get_normalised_entropy_score(binCounts):
+    nm = sum(binCounts) # total number of instances
+    
+    Hnorm = get_normalised_entropy(binCounts)
     
     # multiply by log(1+total) to reward the number of instances generated
     score = Hnorm * np.log(1+nm)
