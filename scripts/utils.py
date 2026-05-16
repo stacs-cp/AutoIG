@@ -30,8 +30,22 @@ def get_normalised_entropy_score(binCounts):
     score = Hnorm * np.log(1+nm)
 
     return score
+
+# get the diminishing returns coverage score, 
+# prioritises coverage but allows for repeated coverage (with diminishing return score rho) to overcome missing bins
+def get_frequency_coverage_score(binCounts, rho):
     
+    numBuckets = len(binCounts)
+    rawScore = 0
+    maxCount = max(binCounts)
     
+    for k in range(1, maxCount + 1):
+        frequencyCount = sum(1 for count in binCounts if count >= k)
+        rawScore += pow(base=rho, exp=(k-1)) * frequencyCount
+    
+    normScore = rawScore / numBuckets
+    
+    return normScore
     
 
 def log(logMessage):

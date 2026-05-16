@@ -10,14 +10,14 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 import matplotlib
 
-from utils import get_normalised_entropy_score
+from utils import get_normalised_entropy_score, get_frequency_coverage_score
 import math
 
 
 wantedStats = ["ok"]
 # dirs = ['mcd', 'base', 'nonElite', 'random', 'iavgbuc']
-dirs = ['mcd', 'mcdNE', 'base', 'nonElite', 'random', 'randomNE', 'iavgbuc', 'iavgbucNE']
-# dirs = ['mcd', 'base', 'iavgbuc']
+# dirs = ['mcd', 'mcdNE', 'base', 'nonElite', 'random', 'randomNE', 'iavgbuc', 'iavgbucNE']
+dirs = ['mcd', 'base', 'mcdNE', 'ientropy', 'delta']
 
 def main():
     parser = argparse.ArgumentParser()
@@ -32,7 +32,7 @@ def main():
     parser.add_argument(
         "--minTime",
         type=float,
-        default=5
+        default=10
     )
     parser.add_argument(
         "--maxTime",
@@ -41,7 +41,7 @@ def main():
     )
     parser.add_argument(
         "--out",
-        default="data240.csv"
+        default="data120.csv"
     )
 
     parser.add_argument(
@@ -52,7 +52,13 @@ def main():
     parser.add_argument(
         "--numBuckets",
         type=int,
-        default=240
+        default=120
+    )
+
+    parser.add_argument(
+        "--metric",
+        default="entropy",
+        choices=["entropy", "lex"]
     )
 
     args = parser.parse_args()
@@ -63,7 +69,7 @@ def main():
 
     allTimes = {}
     bucketCounts = {}
-    entropyScores = {}
+    finalScores = {}
 
     for problem in dirs:
         config, tRs, tRsNoDup = read_data(os.path.join(args.dir,problem))
@@ -78,9 +84,12 @@ def main():
         for time in allTimes[problem]:
             bucketCounts[problem][getBucket(time)] += 1
 
-        entropyScores[problem] = [get_normalised_entropy_score(bucketCounts[problem])] 
+        if args.metric == "entropy":
+            finalScores[problem] = [get_normalised_entropy_score(bucketCounts[problem])]
+        else:
+            finalScores[problem] = [get_frequency_coverage_score(bucketCounts[problem], 0.5)] 
         
-    # print(entropyScores)
-    df = pd.DataFrame(entropyScores)
+    # print(finalScores)
+    df = pd.DataFrame(finalScores)
     df.to_csv(args.out)
 main()

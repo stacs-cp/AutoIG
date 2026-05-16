@@ -21,3 +21,7 @@ scripts/extractInstances.py
 scripts/makeParallelCoordPlot.py
 bin/MAPF-encodings
 bin/MAPF-ICBS
+bin/data.table
+bin/digest
+bin/matrixStats
+bin/spacefillr
