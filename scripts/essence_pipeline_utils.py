@@ -293,7 +293,7 @@ def parse_minion_solution(minionSolFile):
 
 def write_out_modified_minion_file(minionFile, minionFileSections):
     file = open(minionFile, "w")
-    minionSectionKeys = ["VARIABLES", "SEARCH", "TUPLELIST", "CONSTRAINTS"]
+    minionSectionKeys = ["VARIABLES", "SEARCH", "CONSTRAINTS"]
     file.write("MINION 3\n")
     for key in minionSectionKeys:
         file.write("**{0}**".format(key) + "\n")
