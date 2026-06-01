@@ -32,7 +32,7 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
         } else if (endsWith(param,'Min')){
             maxParam <- paste(substr(param,1,nchar(param)-3),'Max',sep='')
         }
-        if (!is.na(maxParam)){
+        if (maxParam %in% names(configuration)){
             minVal <- min(configuration[[param]],configuration[[maxParam]])
             maxVal <- max(configuration[[param]],configuration[[maxParam]])
             configuration[[param]] <- minVal

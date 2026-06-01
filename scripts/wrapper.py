@@ -176,7 +176,6 @@ def main():
                 favouredSolverFlags=es["favouredSolver"]["solverFlags"],
                 totalTimeLimit=es["baseSolver"]["totalTimeLimit"],
                 initSeed=seed,
-                gradedTypes=es["gradedTypes"],
             )
     else:
         # convert the generated instance into .dzn

@@ -100,13 +100,16 @@ def evaluate_essence_instance_discriminating(
     for solverType in ["favoured", "base"]:
         solved = False
 
-        if solverType == "favouredSolver":
+        if solverType == "favoured":
             solverSetting = favouredSolverFlags
             current_solver  = favouredSolver
 
-        else:
+        elif solverType == "base":
             solverSetting = baseSolverFlags
             current_solver  = baseSolver
+
+        else:
+            Exception("This should never happen")
 
         # solverSetting = str(solver) + "Flags"
         print("Solversetting: ", solverSetting)
@@ -203,7 +206,7 @@ def evaluate_essence_instance_discriminating(
         if r["status"] != "C":
             solvedByAllBaseRuns = False
             break
-    print(solvedByAllBaseRuns)
+    print(f"Solved by all base runs: {solvedByAllBaseRuns}")
     if solvedByAllBaseRuns and (baseAvgTime < baseMinTime):
         print("\nInstance is too easy for the base solver. Quitting...")
         score = conf.SCORE_BASE_TOO_EASY    # Setting the type appropriately

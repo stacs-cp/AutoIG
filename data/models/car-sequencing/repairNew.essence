@@ -1,0 +1,38 @@
+language Essence 1.3
+
+given g_n_options : int(1..200)
+given g_usage_center : int(1..1000)
+given g_usage_delta : int(0..200)
+
+given g_n_cars_plus : int(1..200)
+given g_n_classes : int(1..200)
+given g_maxcars_center : int(1..10)
+given g_maxcars_delta : int(0..9)
+given g_blksize_center : int(0..)
+given g_blksize_delta : int(0..)
+
+find repaired_g_n_options : int(1..200)
+find repaired_g_n_cars_plus : int(1..200)
+find repaired_g_n_classes : int(1..200)
+find repaired_g_maxcars_center : int(1..10)
+find repaired_g_maxcars_delta : int(0..9)
+find repaired_g_blksize_center : int(1..10)
+find repaired_g_blksize_delta : int(0..9)
+
+such that
+	g_n_cars_plus=repaired_g_n_cars_plus,
+	g_n_classes=repaired_g_n_classes,
+	g_maxcars_center=repaired_g_maxcars_center,
+	g_maxcars_delta=repaired_g_maxcars_delta,
+	g_blksize_center=repaired_g_blksize_center,
+	g_blksize_delta=repaired_g_blksize_delta,
+	g_n_options=repaired_g_n_options
+
+find repaired_g_usage_center : int(1..1000)
+find repaired_g_usage_delta : int(0..200)
+
+such that max([1, repaired_g_usage_center - repaired_g_usage_delta]) >= repaired_g_n_options,
+	  min([1000, repaired_g_usage_center + repaired_g_usage_delta]) <= repaired_g_n_options * repaired_g_n_classes
+
+minimising
+	sum([|repaired_g_usage_center-g_usage_center|, |repaired_g_usage_delta-g_usage_delta|])

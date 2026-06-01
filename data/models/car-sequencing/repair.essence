@@ -1,0 +1,52 @@
+given np_cars_plus: int(1..200)
+given np_classes: int(1..200)
+given np_options: int(1..200)
+
+find repaired_np_cars_plus: int(1..200)
+find repaired_np_classes: int(1..200)
+find repaired_np_options: int(1..200)
+
+given quantity_range_min: int(1..200)
+given quantity_range_delta: int(0..199)
+
+find repaired_quantity_range_min: int(1..200)
+find repaired_quantity_range_delta: int(0..199)
+
+$ irace (negated) forbidden constraint
+such that (repaired_quantity_range_min*repaired_np_classes <= min({200, (repaired_np_classes+repaired_np_cars_plus)})),
+(repaired_quantity_range_min+repaired_quantity_range_delta)*repaired_np_classes>=min({200, (repaired_np_classes+repaired_np_cars_plus)})
+
+given maxcars_range_min: int(1..10)
+given maxcars_range_delta: int(0..9)
+
+find repaired_maxcars_range_min: int(1..10)
+find repaired_maxcars_range_delta: int(0..9)
+
+given blksize_delta_range_min: int(1..10)
+given blksize_delta_range_delta: int(0..9)
+
+find repaired_blksize_delta_range_min: int(1..10)
+find repaired_blksize_delta_range_delta: int(0..9)
+
+given usage_card_min: int(0..1000)
+given usage_card_delta: int(0..99)
+
+find repaired_usage_card_min: int(0..1000)
+find repaired_usage_card_delta: int(0..99)
+
+$ irace (negated) forbidden constraint for the validity of cardinality of usage
+such that (repaired_usage_card_min+repaired_usage_card_delta)<=(repaired_np_classes*repaired_np_options),
+
+$ irace (negated) forbidden constraint for the above constraint
+repaired_usage_card_min>=repaired_np_options,
+
+$ irace (negated) forbidden constraint for the above constraint
+repaired_usage_card_min>=repaired_np_classes
+
+minimising
+	sum([|repaired_np_cars_plus - np_cars_plus|, |repaired_np_classes - np_classes|,
+	     |repaired_np_options - np_options|, |repaired_quantity_range_min - quantity_range_min|,
+	     |repaired_quantity_range_delta - quantity_range_delta|, |repaired_maxcars_range_min - maxcars_range_min|,
+	     |repaired_maxcars_range_delta - maxcars_range_delta|, |repaired_blksize_delta_range_min -blksize_delta_range_min|,
+	     |repaired_blksize_delta_range_delta - blksize_delta_range_delta|, |repaired_usage_card_min - usage_card_min|,
+	     |repaired_usage_card_delta-usage_card_delta|])

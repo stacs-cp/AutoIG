@@ -1,0 +1,66 @@
+language Essence 1.3
+
+letting MaxCars be domain int(1..10)
+
+given g_n_cars_plus, g_n_classes, g_n_options : int(1..200)
+
+find n_cars, n_classes, n_options : int(1..200)
+
+letting g_n_cars be min([200, g_n_classes+g_n_cars_plus])
+
+such that
+    n_cars = g_n_cars,
+    n_classes = g_n_classes,
+    n_options = g_n_options
+    
+      
+find quantity : function (total) int(1..g_n_classes) --> int(1..(g_n_cars_plus+1)) $ each class has at least one car, so the maximum quantity of each class is reduced by the number of classes.
+
+such that sum([quantity(class) | class : int(1..g_n_classes]) = g_n_cars
+
+
+given g_maxcars_center : int(1..10)
+given g_maxcars_delta : int(0..9)
+
+letting g_maxcars_min be max([1, g_maxcars_center - g_maxcars_delta])
+letting g_maxcars_max be min([10, g_maxcars_center + g_maxcars_delta])
+
+$ given g_maxcars_unique : int(1..10)
+
+find maxcars : function (total) int(1..g_n_options) --> MaxCars
+
+such that
+	and([(pair[2] >= g_maxcars_min /\ pair[2] <= g_maxcars_max) | pair <- maxcars])
+
+given g_blksize_center : int(1..10)
+given g_blksize_delta : int(0..9)
+
+letting g_blksize_min be max([1, g_blksize_center - g_blksize_delta])
+letting g_blksize_max be min([10, g_blksize_center + g_blksize_delta])
+find blksize_delta : function (total) int(1..g_n_options) --> MaxCars
+
+such that
+	and([(pair[2] >= g_blksize_min /\ pair[2] <= g_blksize_max) | pair <- blksize_delta])
+
+$ making sure that block size does not exceed total number of cars
+such that and([maxcars(option) + blksize_delta(option) <= g_n_cars | option : int(1..g_n_options)])
+
+given g_usage_center : int(1..1000)
+given g_usage_delta : int(0..200)
+
+letting g_usage_min be max([1, g_usage_center - g_usage_delta])
+letting g_usage_max be min([1000, g_usage_center + g_usage_delta])
+
+find usage : relation (minSize g_usage_min, maxSize g_usage_max) of ( int(1..g_n_classes) * int(1..g_n_options) )
+such that
+	|usage| >= g_usage_min, |usage| <= g_usage_max
+	
+$ each option should be used at least once, so usage must be at least that
+where g_usage_min >= g_n_options, g_usage_max <= g_n_classes * g_n_options
+
+$ Make sure that all options are used at least once
+such that forAll option: int(1..g_n_options) .  |toSet(usage(_,option))| >= 1
+
+$ Make sure that all classes have at least one option
+such that forAll class: int(1..g_n_classes) .  |toSet(usage(class,_))| >= 1
+
