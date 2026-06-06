@@ -10,7 +10,7 @@ from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_
 import conf
 from wrapper_helpers import read_setting
 
-from utils import get_normalised_entropy_score, get_normalised_entropy
+from utils import get_normalised_entropy_score, get_normalised_entropy, get_wasserstein_distance_area
 
 from filelock import FileLock
 
@@ -348,6 +348,60 @@ def evaluate_mzn_instance_graded(
         seed = instance.split("-")[-1]
         random.seed(seed)
         score = random.randint(-100, -1)
+    
+    elif (metric == "wassersteinDelta" or metric == "wassersteinDeltaReverse"):
+
+        def normalise(maxVal, minVal, val):
+            return ((val - minVal) / (maxVal - minVal))
+
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        # genInstID = instance.split("-")[-2]
+        currentNormTime = normalise(maxVal=timeLimit, minVal=minTime, val=medianRun["time"])
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{currentNormTime}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # filter out any instances that have the same seed (same run)
+        filteredData = list(filter(filterFunc, data))
+
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+
+        filteredData = list(map(lambda x: float(x.split(",")[-1]), filteredData)) # extract the normalised solver times
+
+        preDist = get_wasserstein_distance_area(filteredData)
+        filteredData.append(currentNormTime)
+        postDist = get_wasserstein_distance_area(filteredData)
+        
+        # smaller distance is better, so if post - pre > 0 is not desired, need to penalise
+        distDelta = postDist - preDist
+        if metric == "wassersteinDelta":
+            # Set -1.5 as center, Wmax is 0.5 so worst case an instance is scored same as no information/just graded score
+            score = (-1.5) + distDelta # addition because positive deltas are worse so penalise
+        elif metric == "wassersteinDeltaReverse":
+            score = (-1.5) - distDelta
+
     elif (metric == "individualAvgBuckets" or metric == "individualNormEntropy" or metric == "individualBuckets"):
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
@@ -420,7 +474,7 @@ def evaluate_mzn_instance_graded(
             # score is the number of buckets total
             score = - (sum(buckets))
 
-    elif (metric == "normalisedEntropyDelta"):
+    elif (metric == "normalisedEntropyDelta" or metric == "normalisedEntropyDeltaReverse"):
         numBuckets = 120 # dividing time into about 10 s buckets
         # hashing config file to get file lock name unique to this run
         hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
@@ -471,9 +525,11 @@ def evaluate_mzn_instance_graded(
         
         entropyDelta = entropyNew - entropyOld # positive difference = better, means the new score is higher (more uniform)
         
-        # set -2 as the center, if the new instance is the worst for diversity (a difference of -1), will return the score to -1 which is a base graded score.
-        score = (-2) - entropyDelta
-
+        if metric == "normalisedEntropyDelta":
+            # set -2 as the center, if the new instance is the worst for diversity (a difference of -1), will return the score to -1 which is a base graded score.
+            score = (-2) - entropyDelta
+        elif metric == "normalisedEntropyDeltaReverse":
+            score = (-2) + entropyDelta
         
     status = "ok"
     return score, get_results()

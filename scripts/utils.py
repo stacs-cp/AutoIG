@@ -5,6 +5,89 @@ import shlex
 import datetime
 import shutil
 import numpy as np
+import math
+
+
+def print_wasserstein_info(x):
+    print("area raw: ", get_wasserstein_distance_area(x))
+    print("linear raw: ", get_wasserstein_distance_linear(x))
+    print("area score: ", get_log_scaled_wasserstein_score(x))
+    print("linear score: ", get_log_scaled_wasserstein_score_linear(x))
+
+
+def get_wasserstein_distance_area(normalisedTimes):
+    # uniform cdf -> y = x
+
+    normalisedTimes.sort()
+
+    cumulativeIntegral = 0
+
+    numInstances = len(normalisedTimes)
+    interval = 1 / numInstances
+    areas = []
+
+    # print(normalisedTimes)
+
+    # calculate first triangle
+    areas.append(normalisedTimes[0] * normalisedTimes[0])
+    
+    # calculate final triangle
+    areas.append(math.pow((1-normalisedTimes[-1]), 2))
+
+    # for each step in between, calculate the integral which is split into two triangles above and below the constant cdf line
+    for i in range(0, numInstances - 1):
+
+        intersection = (i+1) / numInstances # calculate the height (y) of this step
+
+        # case where intersection is between the range, forms to triangles above and below
+        if normalisedTimes[i] < intersection < normalisedTimes[i+1]:
+            firstTriangleBnH = intersection - normalisedTimes[i]
+
+            secondTriangleBnH = normalisedTimes[i+1] - intersection
+
+            areas.append(firstTriangleBnH * firstTriangleBnH)
+            areas.append(secondTriangleBnH * secondTriangleBnH)
+        # case where intersection is the edge of a range, forms one triangle
+        elif (normalisedTimes[i] == intersection) or (normalisedTimes[i+1] == intersection):
+            areas.append(math.pow(normalisedTimes[i+1] - normalisedTimes[i], 2))
+        else: # case for trapezoid where no intersection happens
+            height = abs(normalisedTimes[i+1] - normalisedTimes[i])
+            base1 = abs(intersection - normalisedTimes[i])
+            base2 = abs(intersection - normalisedTimes[i+1])
+            areas.append(height * ((base1 + base2)))
+        
+
+    # print("areas", areas)
+    # divide by half for area
+    return sum(areas) * 0.5
+
+def get_log_scaled_wasserstein_score(normalisedTimes):
+    normalisedWDist = get_wasserstein_distance_area(normalisedTimes) * 2 # normalise to [0,1], equivalent to divide by 0.5 as Wmax is 0.5
+
+    logScale = math.log(1 + len(normalisedTimes))
+
+    return logScale * (1 - normalisedWDist) # subtract from one so larger score the better 
+
+def get_log_scaled_wasserstein_score_linear(normalisedTimes):
+    normalisedWDist = get_wasserstein_distance_linear(normalisedTimes) * 2 # normalise to [0,1], equivalent to divide by 0.5 as Wmax is 0.5
+
+    logScale = math.log(1 + len(normalisedTimes))
+
+    return logScale * (1 - normalisedWDist) # subtract from one so larger score the better 
+
+
+def get_wasserstein_distance_linear(normalisedTimes):
+    normalisedTimes.sort()
+
+    distSum = 0
+    numInstances = len(normalisedTimes)
+    ideal = []
+    for i in range(0, numInstances):
+        distSum += abs(normalisedTimes[i] - (((2*(i+1)) - 1) / (2*numInstances)))
+        ideal.append(((2*(i+1)) - 1) / (2*numInstances))
+    # print("ideal: ", ideal)
+    return distSum / numInstances
+
 
 def get_normalised_entropy(binCounts):
     nm = sum(binCounts) # total number of instances
@@ -19,7 +102,7 @@ def get_normalised_entropy(binCounts):
     
     # divide by log(# of buckets) for normalised entropy value
     Hnorm = - entropy / np.log(len(binCounts)) 
-    return Hnorm
+    return Hnorm.item()
 
 def get_normalised_entropy_score(binCounts):
     nm = sum(binCounts) # total number of instances
@@ -29,7 +112,7 @@ def get_normalised_entropy_score(binCounts):
     # multiply by log(1+total) to reward the number of instances generated
     score = Hnorm * np.log(1+nm)
 
-    return score
+    return score.item()
 
 # get the diminishing returns coverage score, 
 # prioritises coverage but allows for repeated coverage (with diminishing return score rho) to overcome missing bins
