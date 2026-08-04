@@ -8,25 +8,25 @@ import numpy as np
 import math
 
 
-def print_wasserstein_info(x):
-    print("area raw: ", get_wasserstein_distance_area(x))
-    print("linear raw: ", get_wasserstein_distance_linear(x))
-    print("area score: ", get_log_scaled_wasserstein_score(x))
-    print("linear score: ", get_log_scaled_wasserstein_score_linear(x))
-
-
+# Calculate the integral distance between a uniform CDF and some other distribution
+# Assumes other dataset is normalised between [0, 1]
 def get_wasserstein_distance_area(normalisedTimes):
-    # uniform cdf -> y = x
+    """
+    Calculate the Wasserstein distance between the uniform cumulative distribution function and a list of normalised solving times as a CDF.
 
+    normalisedTimes -- A list of points between [0,1] that represents the solving times of the instance set, with each point carrying equal probability weight
+
+    Returns the Wasserstein distance as the area between the two CDFs in a single float
+    """
+    # uniform cdf -> y = x
     normalisedTimes.sort()
 
-    cumulativeIntegral = 0
-
+    # calculate the probability mass to assign to each point
+    # Each point represents the same probability mass
     numInstances = len(normalisedTimes)
     interval = 1 / numInstances
-    areas = []
 
-    # print(normalisedTimes)
+    areas = []
 
     # calculate first triangle
     areas.append(normalisedTimes[0] * normalisedTimes[0])
@@ -34,7 +34,7 @@ def get_wasserstein_distance_area(normalisedTimes):
     # calculate final triangle
     areas.append(math.pow((1-normalisedTimes[-1]), 2))
 
-    # for each step in between, calculate the integral which is split into two triangles above and below the constant cdf line
+    # for each step in between, calculate the integral
     for i in range(0, numInstances - 1):
 
         intersection = (i+1) / numInstances # calculate the height (y) of this step
@@ -57,39 +57,19 @@ def get_wasserstein_distance_area(normalisedTimes):
             areas.append(height * ((base1 + base2)))
         
 
-    # print("areas", areas)
     # divide by half for area
     return sum(areas) * 0.5
 
-def get_log_scaled_wasserstein_score(normalisedTimes):
-    normalisedWDist = get_wasserstein_distance_area(normalisedTimes) * 2 # normalise to [0,1], equivalent to divide by 0.5 as Wmax is 0.5
-
-    logScale = math.log(1 + len(normalisedTimes))
-
-    return logScale * (1 - normalisedWDist) # subtract from one so larger score the better 
-
-def get_log_scaled_wasserstein_score_linear(normalisedTimes):
-    normalisedWDist = get_wasserstein_distance_linear(normalisedTimes) * 2 # normalise to [0,1], equivalent to divide by 0.5 as Wmax is 0.5
-
-    logScale = math.log(1 + len(normalisedTimes))
-
-    return logScale * (1 - normalisedWDist) # subtract from one so larger score the better 
-
-
-def get_wasserstein_distance_linear(normalisedTimes):
-    normalisedTimes.sort()
-
-    distSum = 0
-    numInstances = len(normalisedTimes)
-    ideal = []
-    for i in range(0, numInstances):
-        distSum += abs(normalisedTimes[i] - (((2*(i+1)) - 1) / (2*numInstances)))
-        ideal.append(((2*(i+1)) - 1) / (2*numInstances))
-    # print("ideal: ", ideal)
-    return distSum / numInstances
 
 
 def get_normalised_entropy(binCounts):
+    """
+    Return the normalised Shannon entropy given the frequency count in each bin.
+
+    binCounts -- A list of frequencies in each bin including the empty bins.
+
+    Returns the normalised Shannon entropy as a float
+    """
     nm = sum(binCounts) # total number of instances
     
     p = []
@@ -103,33 +83,6 @@ def get_normalised_entropy(binCounts):
     # divide by log(# of buckets) for normalised entropy value
     Hnorm = - entropy / np.log(len(binCounts)) 
     return Hnorm.item()
-
-def get_normalised_entropy_score(binCounts):
-    nm = sum(binCounts) # total number of instances
-    
-    Hnorm = get_normalised_entropy(binCounts)
-    
-    # multiply by log(1+total) to reward the number of instances generated
-    score = Hnorm * np.log(1+nm)
-
-    return score.item()
-
-# get the diminishing returns coverage score, 
-# prioritises coverage but allows for repeated coverage (with diminishing return score rho) to overcome missing bins
-def get_frequency_coverage_score(binCounts, rho):
-    
-    numBuckets = len(binCounts)
-    rawScore = 0
-    maxCount = max(binCounts)
-    
-    for k in range(1, maxCount + 1):
-        frequencyCount = sum(1 for count in binCounts if count >= k)
-        rawScore += pow(base=rho, exp=(k-1)) * frequencyCount
-    
-    normScore = rawScore / numBuckets
-    
-    return normScore
-    
 
 def log(logMessage):
     print(
@@ -158,20 +111,6 @@ def search_string(s, lsStrs):
 def run_cmd(cmd, printOutput=False, outFile=None):
     lsCmds = shlex.split(cmd)
     p = subprocess.run(lsCmds, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = p.stdout.decode("utf-8")
-    if outFile is not None:
-        with open(outFile, "wt") as f:
-            f.write(output)
-    if printOutput:
-        print(output)
-    return output, p.returncode
-
-def run_cmd_with_timeout(cmd, printOutput=False, outFile=None, timeout=60):
-    lsCmds = shlex.split(cmd)
-    try:
-        p = subprocess.run(lsCmds, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
-    except subprocess.TimeoutExpired:
-        return "timeout", -1
     output = p.stdout.decode("utf-8")
     if outFile is not None:
         with open(outFile, "wt") as f:

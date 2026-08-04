@@ -2,7 +2,7 @@ import json
 from math import sqrt
 import sys
 import os
-from utils import run_cmd, run_cmd_with_timeout, log, delete_file
+from utils import run_cmd, log, delete_file
 import pandas as pd
 
 # Define constants for outputs

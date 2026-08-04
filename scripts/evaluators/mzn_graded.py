@@ -10,7 +10,7 @@ from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_
 import conf
 from wrapper_helpers import read_setting
 
-from utils import get_normalised_entropy_score, get_normalised_entropy, get_wasserstein_distance_area
+from utils import get_normalised_entropy, get_wasserstein_distance_area
 
 from filelock import FileLock
 
@@ -183,7 +183,7 @@ def evaluate_mzn_instance_graded(
 
     # if the instance is unsolvable by the main solver, there's no need to run the oracle
     # For satisfiable problems we can allow for incomplete searchers, but for optimising problems we must have complete searches
-    if medianRun["status"] not in (["S", "C"] if problemType == "SAT" else ["C"]):
+    if (medianRun["status"] not in (["S", "C"] if problemType == "SAT" else ["C"])) and (medianRun["time"] > timeLimit):
         print("Instance too difficult. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
