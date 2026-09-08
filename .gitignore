@@ -1,2 +1,27 @@
 # Ignore __pycache__ directories
 __pycache__/
+bin/conjure/
+bin/irace/
+bin/minion/
+bin/minizinc/
+bin/picat/
+bin/R6/
+bin/savilerow/
+bin/yuck/
+experiments/
+.gitignore
+bin/runsolver-3.4.1.tar.bz2
+experiment/
+data/models/mapf/temp
+scripts/detailed-output
+scripts/makeSeabornPlotMapf.py
+scripts/makeSeabornPlotMapf.py
+bin/runsolver
+scripts/extractInstances.py
+scripts/makeParallelCoordPlot.py
+bin/MAPF-encodings
+bin/MAPF-ICBS
+bin/data.table
+bin/digest
+bin/matrixStats
+bin/spacefillr

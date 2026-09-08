@@ -1,0 +1,34 @@
+2025-11-05 14:36:43: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/wrapper.py 7 1 799324880 dummy -g_n_cars_plus 116 -g_n_classes 162 -g_n_options 187
+{'runDir': '/cs/home/tw74/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew', 'problemModel': '/home/tw74/Documents/PhD/AutoIG-main/data/models/car-sequencing/problem.essence', 'generatorModel': '/home/tw74/Documents/PhD/AutoIG-main/data/models/car-sequencing/generatorNew.essence', 'seed': 42, 'maxEvaluations': 500, 'nCores': 1, 'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '60', 'genSolverFlags': '-varorder domoverwdeg -valorder random', 'instanceSetting': 'graded', 'instanceValidTypes': 'all', 'minSolverTime': 5, 'maxSolverTime': 300, 'SRTimeLimit': 0, 'nRunsPerInstance': 1, 'solver': 'chuffed', 'solverFlags': '-f'}
+{'generalSettings': {'experimentType': 'graded', 'modelFile': '/home/tw74/Documents/PhD/AutoIG-main/data/models/car-sequencing/problem.essence', 'generatorFile': '/home/tw74/Documents/PhD/AutoIG-main/data/models/car-sequencing/generatorNew.essence', 'runDir': '/cs/home/tw74/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew'}, 'generatorSettings': {'genSRTimeLimit': 300, 'genSRFlags': '-S0 -no-bound-vars', 'genSolver': 'minion', 'genSolverTimeLimit': '60', 'genSolverFlags': '-varorder domoverwdeg -valorder random'}, 'evaluationSettings': {'nEvaluations': 1, 'gradedTypes': 'all', 'solver': 'chuffed', 'solverType': 'complete', 'minTime': 5, 'solverFlags': '-f', 'SRTimeLimit': 0, 'totalTimeLimit': 300}}
+
+
+2025-11-05 14:36:43: Creating generator instance: ./detailed-output/gen-inst-7.param
+2025-11-05 14:36:43: minion ./detailed-output/gen-inst-7.minion -solsout ./detailed-output/gen-inst-7.solution -randomseed 799324880 -timelimit 60 -varorder domoverwdeg -valorder random
+Minion command output: # Minion Version 2
+# Git version: "<unknown>"
+#  Run at: UTC Wed Nov  5 14:36:43 2025
+
+# Input filename: ./detailed-output/gen-inst-7.minion
+# Command line: minion ./detailed-output/gen-inst-7.minion -solsout ./detailed-output/gen-inst-7.solution -randomseed 799324880 -timelimit 60 -varorder domoverwdeg -valorder random 
+Using seed: 799324880
+Parsing Time: 0.114361
+
+Traceback (most recent call last):
+  File "/cs/home/tw74/Documents/PhD/AutoIG-main/scripts/wrapper.py", line 248, in <module>
+    main()
+  File "/cs/home/tw74/Documents/PhD/AutoIG-main/scripts/wrapper.py", line 81, in main
+    ) = solve_generator(
+  File "/cs/home/tw74/Documents/PhD/AutoIG-main/scripts/generator.py", line 79, in solve_generator
+    genStatus, genSolverTime = run_minion(
+  File "/cs/home/tw74/Documents/PhD/AutoIG-main/scripts/essence_pipeline_utils.py", line 241, in run_minion
+    raise Exception(cmdOutput)
+Exception: # Minion Version 2
+# Git version: "<unknown>"
+#  Run at: UTC Wed Nov  5 14:36:43 2025
+
+# Input filename: ./detailed-output/gen-inst-7.minion
+# Command line: minion ./detailed-output/gen-inst-7.minion -solsout ./detailed-output/gen-inst-7.solution -randomseed 799324880 -timelimit 60 -varorder domoverwdeg -valorder random 
+Using seed: 799324880
+Parsing Time: 0.114361
+

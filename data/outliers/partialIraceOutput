@@ -1,0 +1,40 @@
+|x|          1|         27|          1|    0.000000000|         27|00:54:49|   NA|  NA|    NA|                                                                                                                                                                
+# 2025-11-05 11:57:20 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 1 1 799324880 dummy   -g_n_cars_plus 36 -g_n_classes 104 -g_n_options 163
+# 2025-11-05 11:58:30 GMT: DONE (1) Elapsed wall-clock seconds: 70.47
+2 70.28
+# 2025-11-05 11:58:30 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 2 1 799324880 dummy   -g_n_cars_plus 24 -g_n_classes 179 -g_n_options 116
+# 2025-11-05 11:59:49 GMT: DONE (2) Elapsed wall-clock seconds: 78.80
+2 78.62
+# 2025-11-05 11:59:49 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 3 1 799324880 dummy   -g_n_cars_plus 30 -g_n_classes 181 -g_n_options 51
+# 2025-11-05 12:00:52 GMT: DONE (3) Elapsed wall-clock seconds: 62.49
+2 62.27
+# 2025-11-05 12:00:52 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 4 1 799324880 dummy   -g_n_cars_plus 31 -g_n_classes 154 -g_n_options 47
+# 2025-11-05 12:01:53 GMT: DONE (4) Elapsed wall-clock seconds: 61.16
+2 60.97
+# 2025-11-05 12:01:53 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 5 1 799324880 dummy   -g_n_cars_plus 62 -g_n_classes 104 -g_n_options 67
+# 2025-11-05 12:02:53 GMT: DONE (5) Elapsed wall-clock seconds: 60.64
+2 60.46
+# 2025-11-05 12:02:53 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 6 1 799324880 dummy   -g_n_cars_plus 31 -g_n_classes 54 -g_n_options 71
+# 2025-11-05 12:03:54 GMT: DONE (6) Elapsed wall-clock seconds: 60.96
+2 60.77
+# 2025-11-05 12:03:54 GMT: /cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 7 1 799324880 dummy   -g_n_cars_plus 116 -g_n_classes 162 -g_n_options 187
+# 2025-11-05 12:05:44 GMT: DONE (7) Elapsed wall-clock seconds: 109.19
+Error! 
+Error: == irace == The cost returned by targetRunner is not numeric!
+== irace == The call to targetRunner was:
+/cs/home/tw74/Documents/PhD/AutoIG-main/scripts/target-runner 7 1 799324880 dummy   -g_n_cars_plus 116 -g_n_classes 162 -g_n_options 187
+== irace == The output was:
+Error! 
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/cs/home/tw74/Documents/PhD/AutoIG-main/exp
+eriments/codeCarSequencingNew' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+~/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew/detailed-output ~/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew
+~/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew
+
+
+Total #runs: 33
+Total #instances generated: 27
+
+#too difficult instances: 27 (/27 runs)
+
+Info of graded instances is saved to /cs/home/tw74/Documents/PhD/AutoIG-main/experiments/codeCarSequencingNew/graded-instances-info.csv
+

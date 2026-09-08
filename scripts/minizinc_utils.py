@@ -192,9 +192,9 @@ def minizinc_solve(
 
     # make minizinc command
     if isOptimisation:
-        cmd = f"minizinc --time-limit {timeLimit * 1000} --solver {solver} -i {seedStr} {flags} {modelFile} {instFile} --output-mode dzn --output-objective -s"
+        cmd = f"minizinc --time-limit {timeLimit * 1000} --solver {solver} -i {seedStr} {flags} {modelFile} {instFile} --output-mode dzn --output-objective -s -p 1"
     else:
-        cmd = f"minizinc --time-limit {timeLimit * 1000} --solver {solver} {seedStr} {flags} {modelFile} {instFile} --output-mode dzn -s"
+        cmd = f"minizinc --time-limit {timeLimit * 1000} --solver {solver} {seedStr} {flags} {modelFile} {instFile} --output-mode dzn -s -p 1"
 
     # now prepend the call to runsolver if available
     if use_runsolver:
@@ -259,6 +259,8 @@ def minizinc_solve(
             ):  # recover solution
                 lhs, rhs = line.split(" = ")
                 lastSol[lhs] = rhs
+            elif "std::bad_alloc" in line or "out of memory" in line:
+                status = "ERR"
             sys.stdout.flush()
     totalTime = time.time() - startTime
 
@@ -294,6 +296,7 @@ def minizinc_solve(
             ("OutOfMemoryError" in output)
             or ("std::bad_alloc" in output)
             or ("MiniZinc: internal error: out of memory" in output)
+            or ("Child ended because it received signal 6 (SIGABRT)" in output)
         ):
             status = "ERR"
         else:
@@ -335,7 +338,7 @@ def minizinc_solve(
                 print("Status is unknown, so we can't check the solution, sorry.")
 
     # remove tmp runsolver file
-    delete_file(runsolver_tmp_file)
+    # delete_file(runsolver_tmp_file)
 
     if verbose:
         print(status, totalTime, extra)

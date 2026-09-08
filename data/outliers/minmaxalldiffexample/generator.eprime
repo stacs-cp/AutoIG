@@ -1,0 +1,876 @@
+language ESSENCE' 1.0
+
+given g_n_cars_plus: int(1..200)
+given g_n_classes: int(1..200)
+given g_n_options: int(1..200)
+find n_cars: int(1..200)
+find n_classes: int(1..200)
+find n_options: int(1..200)
+letting g_n_cars be min([200, g_n_classes + g_n_cars_plus; int(1..2)])
+letting let1 be g_n_cars_plus + 1
+find quantity_Function1D: matrix indexed by [int(1..g_n_classes)] of int(1..let1)
+given g_maxcars_center: int(1..10)
+given g_maxcars_delta: int(0..9)
+letting g_maxcars_min be max([1, g_maxcars_center - g_maxcars_delta; int(1..2)])
+letting g_maxcars_max be min([10, g_maxcars_center + g_maxcars_delta; int(1..2)])
+find maxcars_Function1D: matrix indexed by [int(1..g_n_options)] of int(1..10)
+given g_blksize_center: int(1..10)
+given g_blksize_delta: int(0..9)
+letting g_blksize_min be max([1, g_blksize_center - g_blksize_delta; int(1..2)])
+letting g_blksize_max be min([10, g_blksize_center + g_blksize_delta; int(1..2)])
+find blksize_delta_Function1D: matrix indexed by [int(1..g_n_options)] of int(1..10)
+given g_usage_center: int(1..1000)
+given g_usage_delta: int(0..200)
+letting g_usage_min be max([1, g_usage_center - g_usage_delta; int(1..2)])
+letting g_usage_max be min([1000, g_usage_center + g_usage_delta; int(1..2)])
+letting let2 be g_n_classes * g_n_options + 1
+find usage_RelationAsMatrix: matrix indexed by [int(1..g_n_classes), int(1..g_n_options)] of bool
+where g_usage_min >= g_n_options
+branching on
+    [n_cars, n_classes, n_options, quantity_Function1D, maxcars_Function1D, blksize_delta_Function1D,
+     usage_RelationAsMatrix]
+such that
+    allDiff([200, g_n_classes + g_n_cars_plus; int(1..2)]),
+    n_cars = g_n_cars,
+    n_classes = g_n_classes,
+    n_options = g_n_options,
+    sum([quantity_Function1D[class] | class : int(1..g_n_classes)]) = g_n_cars,
+    allDiff([1, g_maxcars_center - g_maxcars_delta; int(1..2)]),
+    allDiff([10, g_maxcars_center + g_maxcars_delta; int(1..2)]),
+    and([maxcars_Function1D[q16] >= g_maxcars_min /\ maxcars_Function1D[q16] <= g_maxcars_max
+             | q16 : int(1..g_n_options)]),
+    allDiff([1, g_blksize_center - g_blksize_delta; int(1..2)]),
+    allDiff([10, g_blksize_center + g_blksize_delta; int(1..2)]),
+    and([blksize_delta_Function1D[q17] >= g_blksize_min /\ blksize_delta_Function1D[q17] <= g_blksize_max
+             | q17 : int(1..g_n_options)]),
+    and([maxcars_Function1D[option] + blksize_delta_Function1D[option] <= g_n_cars | option : int(1..g_n_options)]),
+    allDiff([1, g_usage_center - g_usage_delta; int(1..2)]),
+    allDiff([1000, g_usage_center + g_usage_delta; int(1..2)]),
+    sum([toInt(usage_RelationAsMatrix[q13_1, q13_2]) | q13_1 : int(1..g_n_classes), q13_2 : int(1..g_n_options)]) >=
+    g_usage_min,
+    sum([toInt(usage_RelationAsMatrix[q15_1, q15_2]) | q15_1 : int(1..g_n_classes), q15_2 : int(1..g_n_options)]) <=
+    g_usage_max,
+    and([sum([toInt(usage_RelationAsMatrix[q8_1, q8_2])
+                  | q8_1 : int(1..g_n_classes), q8_2 : int(1..g_n_options), q8_2 = option])
+         >= 1
+             | option : int(1..g_n_options)]),
+    and([sum([toInt(usage_RelationAsMatrix[q11_1, q11_2])
+                  | q11_1 : int(1..g_n_classes), q11_2 : int(1..g_n_options), q11_1 = class])
+         >= 1
+             | class : int(1..g_n_classes)]),
+    1 <= sum([sum([toInt(usage_RelationAsMatrix[q4, q5]) | q5 : int(1..g_n_options)]) | q4 : int(1..g_n_classes)]),
+    sum([sum([toInt(usage_RelationAsMatrix[q4, q5]) | q5 : int(1..g_n_options)]) | q4 : int(1..g_n_classes)]) <= let2
+
+$ Conjure's
+$ {"finds":
+$      [{"Name": "n_cars"}, {"Name": "n_classes"}, {"Name": "n_options"}, {"Name": "quantity"}, {"Name": "maxcars"},
+$       {"Name": "blksize_delta"}, {"Name": "usage"}],
+$  "givens":
+$      [{"Name": "g_n_cars_plus"}, {"Name": "g_n_classes"}, {"Name": "g_n_options"}, {"Name": "g_maxcars_center"},
+$       {"Name": "g_maxcars_delta"}, {"Name": "g_blksize_center"}, {"Name": "g_blksize_delta"},
+$       {"Name": "g_usage_center"}, {"Name": "g_usage_delta"}],
+$  "enumGivens": [], "enumLettings": [],
+$  "lettings":
+$      [[{"Name": "MaxCars"},
+$        {"Domain":
+$             {"DomainInt":
+$                  [{"TagInt": []},
+$                   [{"RangeBounded":
+$                         [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                          {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}}],
+$       [{"Name": "g_n_cars"},
+$        {"Op":
+$             {"MkOpMin":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 200]}},
+$                             {"Op":
+$                                  {"MkOpSum":
+$                                       {"AbstractLiteral":
+$                                            {"AbsLitMatrix":
+$                                                 [{"DomainInt":
+$                                                       [{"TagInt": []},
+$                                                        [{"RangeBounded":
+$                                                              [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                               {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                  [{"Reference":
+$                                                        [{"Name": "g_n_classes"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_n_classes"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 200]}}]}]]},
+$                                                               {"NoRegion": []}]}]},
+$                                                   {"Reference":
+$                                                        [{"Name": "g_n_cars_plus"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_n_cars_plus"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 200]}}]}]]},
+$                                                               {"NoRegion": []}]}]}]]}}}}]}}}}],
+$       [{"MachineName": ["let", 1, []]},
+$        {"Op":
+$             {"MkOpSum":
+$                  {"AbstractLiteral":
+$                       {"AbsLitMatrix":
+$                            [{"DomainInt":
+$                                  [{"TagInt": []},
+$                                   [{"RangeBounded":
+$                                         [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                          {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                             [{"Reference":
+$                                   [{"Name": "g_n_cars_plus"},
+$                                    {"DeclNoRepr":
+$                                         ["Given", {"Name": "g_n_cars_plus"},
+$                                          {"DomainInt":
+$                                               [{"TagInt": []},
+$                                                [{"RangeBounded":
+$                                                      [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                       {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$                                          {"NoRegion": []}]}]},
+$                              {"Constant": {"ConstantInt": [{"TagInt": []}, 1]}}]]}}}}],
+$       [{"Name": "g_maxcars_min"},
+$        {"Op":
+$             {"MkOpMax":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                             {"Op":
+$                                  {"MkOpMinus":
+$                                       [{"Reference":
+$                                             [{"Name": "g_maxcars_center"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_maxcars_center"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                 {"Constant":
+$                                                                      {"ConstantInt": [{"TagInt": []}, 10]}}]}]]},
+$                                                    {"NoRegion": []}]}]},
+$                                        {"Reference":
+$                                             [{"Name": "g_maxcars_delta"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_maxcars_delta"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                 {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]},
+$                                                    {"NoRegion": []}]}]}]}}]}}}}],
+$       [{"Name": "g_maxcars_max"},
+$        {"Op":
+$             {"MkOpMin":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 10]}},
+$                             {"Op":
+$                                  {"MkOpSum":
+$                                       {"AbstractLiteral":
+$                                            {"AbsLitMatrix":
+$                                                 [{"DomainInt":
+$                                                       [{"TagInt": []},
+$                                                        [{"RangeBounded":
+$                                                              [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                               {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                  [{"Reference":
+$                                                        [{"Name": "g_maxcars_center"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_maxcars_center"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 10]}}]}]]},
+$                                                               {"NoRegion": []}]}]},
+$                                                   {"Reference":
+$                                                        [{"Name": "g_maxcars_delta"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_maxcars_delta"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 9]}}]}]]},
+$                                                               {"NoRegion": []}]}]}]]}}}}]}}}}],
+$       [{"Name": "g_blksize_min"},
+$        {"Op":
+$             {"MkOpMax":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                             {"Op":
+$                                  {"MkOpMinus":
+$                                       [{"Reference":
+$                                             [{"Name": "g_blksize_center"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_blksize_center"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                 {"Constant":
+$                                                                      {"ConstantInt": [{"TagInt": []}, 10]}}]}]]},
+$                                                    {"NoRegion": []}]}]},
+$                                        {"Reference":
+$                                             [{"Name": "g_blksize_delta"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_blksize_delta"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                 {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]},
+$                                                    {"NoRegion": []}]}]}]}}]}}}}],
+$       [{"Name": "g_blksize_max"},
+$        {"Op":
+$             {"MkOpMin":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 10]}},
+$                             {"Op":
+$                                  {"MkOpSum":
+$                                       {"AbstractLiteral":
+$                                            {"AbsLitMatrix":
+$                                                 [{"DomainInt":
+$                                                       [{"TagInt": []},
+$                                                        [{"RangeBounded":
+$                                                              [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                               {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                  [{"Reference":
+$                                                        [{"Name": "g_blksize_center"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_blksize_center"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 10]}}]}]]},
+$                                                               {"NoRegion": []}]}]},
+$                                                   {"Reference":
+$                                                        [{"Name": "g_blksize_delta"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_blksize_delta"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 9]}}]}]]},
+$                                                               {"NoRegion": []}]}]}]]}}}}]}}}}],
+$       [{"Name": "g_usage_min"},
+$        {"Op":
+$             {"MkOpMax":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                             {"Op":
+$                                  {"MkOpMinus":
+$                                       [{"Reference":
+$                                             [{"Name": "g_usage_center"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_usage_center"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                 {"Constant":
+$                                                                      {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]},
+$                                                    {"NoRegion": []}]}]},
+$                                        {"Reference":
+$                                             [{"Name": "g_usage_delta"},
+$                                              {"DeclNoRepr":
+$                                                   ["Given", {"Name": "g_usage_delta"},
+$                                                    {"DomainInt":
+$                                                         [{"TagInt": []},
+$                                                          [{"RangeBounded":
+$                                                                [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                 {"Constant":
+$                                                                      {"ConstantInt": [{"TagInt": []}, 200]}}]}]]},
+$                                                    {"NoRegion": []}]}]}]}}]}}}}],
+$       [{"Name": "g_usage_max"},
+$        {"Op":
+$             {"MkOpMin":
+$                  {"AbstractLiteral":
+$                       {"AbsLitSet":
+$                            [{"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}},
+$                             {"Op":
+$                                  {"MkOpSum":
+$                                       {"AbstractLiteral":
+$                                            {"AbsLitMatrix":
+$                                                 [{"DomainInt":
+$                                                       [{"TagInt": []},
+$                                                        [{"RangeBounded":
+$                                                              [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                               {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                  [{"Reference":
+$                                                        [{"Name": "g_usage_center"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_usage_center"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 1000]}}]}]]},
+$                                                               {"NoRegion": []}]}]},
+$                                                   {"Reference":
+$                                                        [{"Name": "g_usage_delta"},
+$                                                         {"DeclNoRepr":
+$                                                              ["Given", {"Name": "g_usage_delta"},
+$                                                               {"DomainInt":
+$                                                                    [{"TagInt": []},
+$                                                                     [{"RangeBounded":
+$                                                                           [{"Constant":
+$                                                                                 {"ConstantInt": [{"TagInt": []}, 0]}},
+$                                                                            {"Constant":
+$                                                                                 {"ConstantInt":
+$                                                                                      [{"TagInt": []}, 200]}}]}]]},
+$                                                               {"NoRegion": []}]}]}]]}}}}]}}}}],
+$       [{"MachineName": ["let", 2, []]},
+$        {"Op":
+$             {"MkOpSum":
+$                  {"AbstractLiteral":
+$                       {"AbsLitMatrix":
+$                            [{"DomainInt":
+$                                  [{"TagInt": []},
+$                                   [{"RangeBounded":
+$                                         [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                          {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                             [{"Op":
+$                                   {"MkOpProduct":
+$                                        {"AbstractLiteral":
+$                                             {"AbsLitMatrix":
+$                                                  [{"DomainInt":
+$                                                        [{"TagInt": []},
+$                                                         [{"RangeBounded":
+$                                                               [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                {"Constant": {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                   [{"Reference":
+$                                                         [{"Name": "g_n_classes"},
+$                                                          {"DeclNoRepr":
+$                                                               ["Given", {"Name": "g_n_classes"},
+$                                                                {"DomainInt":
+$                                                                     [{"TagInt": []},
+$                                                                      [{"RangeBounded":
+$                                                                            [{"Constant":
+$                                                                                  {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                             {"Constant":
+$                                                                                  {"ConstantInt":
+$                                                                                       [{"TagInt": []}, 200]}}]}]]},
+$                                                                {"NoRegion": []}]}]},
+$                                                    {"Reference":
+$                                                         [{"Name": "g_n_options"},
+$                                                          {"DeclNoRepr":
+$                                                               ["Given", {"Name": "g_n_options"},
+$                                                                {"DomainInt":
+$                                                                     [{"TagInt": []},
+$                                                                      [{"RangeBounded":
+$                                                                            [{"Constant":
+$                                                                                  {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                             {"Constant":
+$                                                                                  {"ConstantInt":
+$                                                                                       [{"TagInt": []}, 200]}}]}]]},
+$                                                                {"NoRegion": []}]}]}]]}}}},
+$                              {"Constant": {"ConstantInt": [{"TagInt": []}, 1]}}]]}}}}]],
+$  "unnameds": [], "strategyQ": {"PickFirst": []}, "strategyA": {"Compact": []},
+$  "trailCompact":
+$      [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1],
+$       [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+$  "nameGenState": [["let", 3], ["q", 18]], "nbExtraGivens": 0,
+$  "representations":
+$      [[{"Name": "g_n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "g_n_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_cars"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "g_n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity"},
+$        {"DomainFunction":
+$             [{"Function_1D": []}, [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference":
+$                                [{"Name": "g_n_classes"},
+$                                 {"DeclHasRepr":
+$                                      ["Given", {"Name": "g_n_classes"},
+$                                       {"DomainInt":
+$                                            [{"TagInt": []},
+$                                             [{"RangeBounded":
+$                                                   [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                    {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference":
+$                                [{"MachineName": ["let", 1, []]},
+$                                 {"Alias":
+$                                      {"Op":
+$                                           {"MkOpSum":
+$                                                {"AbstractLiteral":
+$                                                     {"AbsLitMatrix":
+$                                                          [{"DomainInt":
+$                                                                [{"TagInt": []},
+$                                                                 [{"RangeBounded":
+$                                                                       [{"Constant":
+$                                                                             {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                        {"Constant":
+$                                                                             {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                           [{"Reference":
+$                                                                 [{"Name": "g_n_cars_plus"},
+$                                                                  {"DeclHasRepr":
+$                                                                       ["Given", {"Name": "g_n_cars_plus"},
+$                                                                        {"DomainInt":
+$                                                                             [{"TagInt": []},
+$                                                                              [{"RangeBounded":
+$                                                                                    [{"Constant":
+$                                                                                          {"ConstantInt":
+$                                                                                               [{"TagInt": []}, 1]}},
+$                                                                                     {"Constant":
+$                                                                                          {"ConstantInt":
+$                                                                                               [{"TagInt": []},
+$                                                                                                200]}}]}]]}]}]},
+$                                                            {"Constant":
+$                                                                 {"ConstantInt": [{"TagInt": []}, 1]}}]]}}}}}]}]}]]}]}],
+$       [{"Name": "g_maxcars_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "g_maxcars_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars"},
+$        {"DomainFunction":
+$             [{"Function_1D": []}, [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference":
+$                                [{"Name": "g_n_options"},
+$                                 {"DeclHasRepr":
+$                                      ["Given", {"Name": "g_n_options"},
+$                                       {"DomainInt":
+$                                            [{"TagInt": []},
+$                                             [{"RangeBounded":
+$                                                   [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                    {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "g_blksize_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "g_blksize_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta"},
+$        {"DomainFunction":
+$             [{"Function_1D": []}, [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference":
+$                                [{"Name": "g_n_options"},
+$                                 {"DeclHasRepr":
+$                                      ["Given", {"Name": "g_n_options"},
+$                                       {"DomainInt":
+$                                            [{"TagInt": []},
+$                                             [{"RangeBounded":
+$                                                   [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                    {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "g_usage_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "g_usage_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "usage"},
+$        {"DomainRelation":
+$             [{"Relation_AsMatrix": []},
+$              [{"SizeAttr_MinMaxSize":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Reference":
+$                          [{"MachineName": ["let", 2, []]},
+$                           {"Alias":
+$                                {"Op":
+$                                     {"MkOpSum":
+$                                          {"AbstractLiteral":
+$                                               {"AbsLitMatrix":
+$                                                    [{"DomainInt":
+$                                                          [{"TagInt": []},
+$                                                           [{"RangeBounded":
+$                                                                 [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                                  {"Constant":
+$                                                                       {"ConstantInt": [{"TagInt": []}, 2]}}]}]]},
+$                                                     [{"Op":
+$                                                           {"MkOpProduct":
+$                                                                {"AbstractLiteral":
+$                                                                     {"AbsLitMatrix":
+$                                                                          [{"DomainInt":
+$                                                                                [{"TagInt": []},
+$                                                                                 [{"RangeBounded":
+$                                                                                       [{"Constant":
+$                                                                                             {"ConstantInt":
+$                                                                                                  [{"TagInt": []}, 1]}},
+$                                                                                        {"Constant":
+$                                                                                             {"ConstantInt":
+$                                                                                                  [{"TagInt": []},
+$                                                                                                   2]}}]}]]},
+$                                                                           [{"Reference":
+$                                                                                 [{"Name": "g_n_classes"},
+$                                                                                  {"DeclHasRepr":
+$                                                                                       ["Given", {"Name": "g_n_classes"},
+$                                                                                        {"DomainInt":
+$                                                                                             [{"TagInt": []},
+$                                                                                              [{"RangeBounded":
+$                                                                                                    [{"Constant":
+$                                                                                                          {"ConstantInt":
+$                                                                                                               [{"TagInt":
+$                                                                                                                     []},
+$                                                                                                                1]}},
+$                                                                                                     {"Constant":
+$                                                                                                          {"ConstantInt":
+$                                                                                                               [{"TagInt":
+$                                                                                                                     []},
+$                                                                                                                200]}}]}]]}]}]},
+$                                                                            {"Reference":
+$                                                                                 [{"Name": "g_n_options"},
+$                                                                                  {"DeclHasRepr":
+$                                                                                       ["Given", {"Name": "g_n_options"},
+$                                                                                        {"DomainInt":
+$                                                                                             [{"TagInt": []},
+$                                                                                              [{"RangeBounded":
+$                                                                                                    [{"Constant":
+$                                                                                                          {"ConstantInt":
+$                                                                                                               [{"TagInt":
+$                                                                                                                     []},
+$                                                                                                                1]}},
+$                                                                                                     {"Constant":
+$                                                                                                          {"ConstantInt":
+$                                                                                                               [{"TagInt":
+$                                                                                                                     []},
+$                                                                                                                200]}}]}]]}]}]}]]}}}},
+$                                                      {"Constant": {"ConstantInt": [{"TagInt": []}, 1]}}]]}}}}}]}]},
+$               []],
+$              [{"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Reference":
+$                                 [{"Name": "g_n_classes"},
+$                                  {"DeclHasRepr":
+$                                       ["Given", {"Name": "g_n_classes"},
+$                                        {"DomainInt":
+$                                             [{"TagInt": []},
+$                                              [{"RangeBounded":
+$                                                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}]}]}]]},
+$               {"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Reference":
+$                                 [{"Name": "g_n_options"},
+$                                  {"DeclHasRepr":
+$                                       ["Given", {"Name": "g_n_options"},
+$                                        {"DomainInt":
+$                                             [{"TagInt": []},
+$                                              [{"RangeBounded":
+$                                                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                                                     {"Constant":
+$                                                          {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}]}]}]}]]}]]}]],
+$  "representationsTree":
+$      [[{"Name": "blksize_delta"},
+$        [{"rootLabel": {"Function_1D": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "g_blksize_center"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_blksize_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_maxcars_center"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_maxcars_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_n_cars_plus"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_n_classes"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_n_options"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_usage_center"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "g_usage_delta"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "maxcars"},
+$        [{"rootLabel": {"Function_1D": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "n_cars"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "n_classes"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "n_options"}, [{"rootLabel": null, "subForest": []}]],
+$       [{"Name": "quantity"},
+$        [{"rootLabel": {"Function_1D": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]],
+$       [{"Name": "usage"},
+$        [{"rootLabel": {"Relation_AsMatrix": []},
+$          "subForest": [{"rootLabel": null, "subForest": []}, {"rootLabel": null, "subForest": []}]}]]],
+$  "originalDomains":
+$      [[{"Name": "g_n_cars_plus"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "g_n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "g_n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_cars"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_classes"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "n_options"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "quantity"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference": [{"Name": "g_n_classes"}, null]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference": [{"MachineName": ["let", 1, []]}, null]}]}]]}]}],
+$       [{"Name": "g_maxcars_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "g_maxcars_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "maxcars"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference": [{"Name": "g_n_options"}, null]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "g_blksize_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}],
+$       [{"Name": "g_blksize_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 9]}}]}]]}],
+$       [{"Name": "blksize_delta"},
+$        {"DomainFunction":
+$             [[], [{"SizeAttr_None": []}, "PartialityAttr_Total", "JectivityAttr_None"],
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Reference": [{"Name": "g_n_options"}, null]}]}]]},
+$              {"DomainInt":
+$                   [{"TagInt": []},
+$                    [{"RangeBounded":
+$                          [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                           {"Constant": {"ConstantInt": [{"TagInt": []}, 10]}}]}]]}]}],
+$       [{"Name": "g_usage_center"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 1000]}}]}]]}],
+$       [{"Name": "g_usage_delta"},
+$        {"DomainInt":
+$             [{"TagInt": []},
+$              [{"RangeBounded":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 0]}},
+$                     {"Constant": {"ConstantInt": [{"TagInt": []}, 200]}}]}]]}],
+$       [{"Name": "usage"},
+$        {"DomainRelation":
+$             [[],
+$              [{"SizeAttr_MinMaxSize":
+$                    [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                     {"Reference": [{"MachineName": ["let", 2, []]}, null]}]},
+$               []],
+$              [{"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Reference": [{"Name": "g_n_classes"}, null]}]}]]},
+$               {"DomainInt":
+$                    [{"TagInt": []},
+$                     [{"RangeBounded":
+$                           [{"Constant": {"ConstantInt": [{"TagInt": []}, 1]}},
+$                            {"Reference": [{"Name": "g_n_options"}, null]}]}]]}]]}]],
+$  "trailGeneralised":
+$      [[3837877851492474722, -6354267418515998120], [3092166136490317881, -7305413347773208024],
+$       [-1611763189442057624, -5884760694493887680], [5246498068530040307, -3945455943683752784],
+$       [-7586852039599128454, -557758812350798144], [889303225222030428, -3149923747247038968],
+$       [-8979827672650525523, -1042921005488183179], [4618677842629831943, -1042921005488183179],
+$       [-1840271947840461770, -3396821001839197473], [8670688487917021726, -8305506567459853324],
+$       [308968749537936886, -7513852666198423949], [3137958535874203656, -7513852666198423949],
+$       [-1915352366969643996, -6661864210871046875], [-7967684527738976286, 881047627779079501],
+$       [-5227928662151308073, 4816372326684682227], [8947846592375707858, -4928360317511099597],
+$       [-7003829672438888909, -7920743479848888826], [7557493940277722863, 2364219915625225034],
+$       [-2203414492398489423, 317306474707355168], [-3383516136217483671, -6878271665161425780],
+$       [8632384390623377553, 3746945942811506308], [-6173902321446160329, -529065349300756042],
+$       [-581031123582754446, 8950371529953030368], [494902298671955221, -8438055240862190397],
+$       [757878477312946914, 3118082429888392447], [-4090178674395094180, -9077212519217690926],
+$       [-8718052629049903585, -8781432208109850713], [-3993061843184970305, 2381471595164114132],
+$       [-2734211041033626478, -3836801741910182442], [6497502425762337514, -5406154174232913190],
+$       [1116506322489753694, -1569426911514525348], [-5421972156318715568, -5671657707234326208],
+$       [7682129838712586203, -8438055240862190397], [4932342357703978364, -5578671568958952417],
+$       [6779374831858361738, 2359685784599230186], [-8505030852215833563, -7854869925899749433],
+$       [7396226023244248529, 7370378618916195346], [3036640081520207430, -3699940480172980850],
+$       [1170270562266541858, -1956331666826785572], [7689011005580242942, -1569426911514525348],
+$       [-89952484909152803, 3827034788081151700], [7102450238792710052, 7118938142712196409],
+$       [-478244751954848529, 7018193489082581209], [2279662025740914940, 5579843763701997481],
+$       [3197424260034326311, 6277531667824228377], [-5772947463793902584, -7839978054811093383],
+$       [4897507201734774879, 4197443353915814361], [8012362019128350584, -8193697567987092279],
+$       [-7648811923038332969, -3422416454568616006], [8694181272595291544, -767648539672948004],
+$       [-8260534789224479639, -3422416454568616006], [2419880033084957432, -767648539672948004],
+$       [5507296133349568527, -4519879771684430808], [-6312987770951111318, -8438055240862190397],
+$       [-3152070141109827643, 1108771878936169425], [-3540497242268906982, 6644598499465268375],
+$       [-1543885781473024842, -892023877164138575], [6559446331648565131, 8592547859480962682],
+$       [-3092403846194141416, 6644598499465268375], [-697969448726178556, 3732431596699817490],
+$       [-9001278951156271495, -7599902076164106268], [-4194353514786039192, -6416137319387259356],
+$       [3335201166997281102, 5725408290496176175], [2448758688894289612, 8325397114298045678],
+$       [435126939391445253, -7364314391015914808], [8269119065611152004, -8438055240862190397],
+$       [2678787845095891261, 4879370879664395369], [-7979178086898434953, 8742158940409459478],
+$       [-8517331323805583947, -8743269712938164201], [-3428569467369308996, 8742158940409459478],
+$       [4389618867718590133, -6437986112009523173], [-5983038083624629332, 2802126979695324231],
+$       [-8184049105485862793, -3707765294154914316], [2380272169576374197, 432269459109993199],
+$       [-4898709343628948660, 8725958877509827766], [-1409459019060990254, 8627954545276860436],
+$       [-8202409567721862107, -5129238060274776880], [2492477682815962651, 5901208338301812644],
+$       [-7418382623407237036, 3680632809665488846], [2406792525467929790, -1202274634185989267],
+$       [1957076698630532977, -8447446320426454235], [5210038690115331428, 2927809786409061297],
+$       [-4298598834669884723, -5372130775394867815], [3187449149451139973, -660671687795573452],
+$       [-3346068422697049543, -739373657244004178], [-8726395582964377711, 7223647431340403717],
+$       [5373739698331576414, -3463980935222626476], [-3221101466812114718, 1486484534641599786],
+$       [-1062542919547314495, 7453969293278178437], [8227064179416976407, -5764245603665769714],
+$       [881725295179912398, 7213679180959755188], [3437654371439937419, 3938682016136523628],
+$       [-2195321602795108490, 1793719266840345592], [7245207322168276900, 1332770519790274018],
+$       [9096896527307781956, 5771068063546567816], [5804167261419531497, 7388737755556079840]],
+$  "trailVerbose": [], "trailRewrites": []}

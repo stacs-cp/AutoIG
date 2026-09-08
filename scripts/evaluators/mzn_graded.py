@@ -1,10 +1,18 @@
 from functools import cmp_to_key
+import subprocess
+import math
+import random
 
 # Import minizinc pipeline functions 
 from minizinc_utils import minizinc_solve, run_comparator, get_minizinc_problem_type, has_better_objective
 
 # Import configurations file for using constants
 import conf
+from wrapper_helpers import read_setting
+
+from utils import get_normalised_entropy, get_wasserstein_distance_area
+
+from filelock import FileLock
 
 def evaluate_mzn_instance_graded(
     modelFile: str,
@@ -26,6 +34,18 @@ def evaluate_mzn_instance_graded(
     Evaluate a mzn instance under the gradedness criteria
     """
     
+    # measure of granularity, how many buckets to divide the acceptable (graded) time range into
+    numBuckets = 20
+
+    def getBucket(solverTime):
+        normTime = (solverTime - minTime) / (timeLimit - minTime) # normalise
+        bucketID = math.floor(normTime / (1 / numBuckets)) # divide into buckets
+        if bucketID < numBuckets:
+            return bucketID
+        elif bucketID >= numBuckets:
+            return numBuckets - 1
+        
+        # return math.floor(normTime / (1 / numBuckets)) # divide into buckets
 
     # check validity of input
     if len(unwantedTypes) > 0:
@@ -154,14 +174,16 @@ def evaluate_mzn_instance_graded(
     # pprint.pprint(results['main']['runs'])
 
     # if the instance is too easy by the main solver, there's no need to run the oracle
-    if (medianRun["status"] == "C") and (medianRun["time"] < minTime):
+    # For satisfiable problems we can accept incomplete search status "S", for optimisation problems results must be complete or "C"
+    if (medianRun["status"] in (["C", "S"] if problemType == "SAT" else ["C"])) and (medianRun["time"] < minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
         status = "tooEasy"
         return score, get_results()
 
     # if the instance is unsolvable by the main solver, there's no need to run the oracle
-    if medianRun["status"] not in ["S", "C"]:
+    # For satisfiable problems we can allow for incomplete searchers, but for optimising problems we must have complete searches
+    if (medianRun["status"] not in (["S", "C"] if problemType == "SAT" else ["C"])) and (medianRun["time"] > timeLimit):
         print("Instance too difficult. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
@@ -245,7 +267,270 @@ def evaluate_mzn_instance_graded(
                     status = "tooEasy"
                     return score, get_results()
 
+    settings = read_setting("./config.json")
+    metric = settings["generalSettings"]["diversityMetric"]
+
+    if (metric == "max_closest_dist" or metric == "maxAvgDist"):
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        
+        def normalise(maxVal, minVal, val):
+            return ((val - minVal) / (maxVal - minVal))
+
+
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{medianRun["time"]}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # filter out any instances that have the same seed (same run)
+        filteredData = list(filter(filterFunc, data))
+
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+
+        differences = []
+
+        # Get the absolute differences between the current item and all remaining times
+        for entry in filteredData:
+            entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+            differences.append(round(abs(entryTime - medianRun["time"]), 2))
+        
+        if metric == "max_closest_dist":
+            # flatten to 0-1 by dividing the range of difference, then obtain the decimal bucket the difference is in
+            # currently only to the granularity of 10 buckets so working in decimal
+            diffNormal = list(map(lambda x : int(math.floor((x / (timeLimit - minTime))* 10)), differences))
+            
+            # zero pad the number in case array size smaller than 10
+            if len(diffNormal) < 10:
+                padLen = 10 - len(diffNormal)
+                diffNormal = diffNormal + [0] * padLen
+            
+            # sort from smallest to largest to get closest neigbours
+            diffNormal.sort(reverse=False)
+            diffNormal = diffNormal[:10]
+            # get the negative integer result of concatenating all the inidividual buckets
+            result = - int("".join(str(val) for val in diffNormal))
+            # averageDiff = sum(differences) / len(differences)
+
+            score = result
+        elif metric == "maxAvgDist":
+            # normalise differences to range between 0-1
+            diffNormal = list(map(lambda x: (x / (timeLimit - minTime)), differences))
+            
+            # get the average distance between the current time and all previous times
+            avgDist = sum(diffNormal) / len(diffNormal)
+            score = -avgDist
+
+    elif (metric == "none"):
+        score = -1
+    elif (metric == "random"):
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        random.seed(seed)
+        score = random.randint(-100, -1)
+    
+    elif (metric == "wassersteinDelta" or metric == "wassersteinDeltaReverse"):
+
+        def normalise(maxVal, minVal, val):
+            return ((val - minVal) / (maxVal - minVal))
+
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        # genInstID = instance.split("-")[-2]
+        currentNormTime = normalise(maxVal=timeLimit, minVal=minTime, val=medianRun["time"])
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{currentNormTime}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # filter out any instances that have the same seed (same run)
+        filteredData = list(filter(filterFunc, data))
+
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+
+        filteredData = list(map(lambda x: float(x.split(",")[-1]), filteredData)) # extract the normalised solver times
+
+        preDist = get_wasserstein_distance_area(filteredData)
+        filteredData.append(currentNormTime)
+        postDist = get_wasserstein_distance_area(filteredData)
+        
+        # smaller distance is better, so if post - pre > 0 is not desired, need to penalise
+        distDelta = postDist - preDist
+        if metric == "wassersteinDelta":
+            # Set -1.5 as center, Wmax is 0.5 so worst case an instance is scored same as no information/just graded score
+            score = (-1.5) + distDelta # addition because positive deltas are worse so penalise
+        elif metric == "wassersteinDeltaReverse":
+            score = (-1.5) - distDelta
+
+    elif (metric == "individualAvgBuckets" or metric == "individualNormEntropy" or metric == "individualBuckets"):
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        genInstID = instance.split("-")[-2]
+        
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{medianRun["time"]}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return (genInstID == x.split("-")[-2]) # isolate the generator instance ID
+        
+        # keep any data from the same generator instance
+        filteredData = list(filter(filterFunc, data))
+
+        buckets = [0] * numBuckets # create an array representing buckets
+
+        if (metric == "individualAvgBuckets"):
+
+            if len(filteredData) == 0: # if there is no data, first time this generator found an instance
+                score = -0.5 # set to .5 so that prioritise generators that have found over 50% instances in different buckets, but otherwise priorities novelty
+                status="ok"
+                return score, get_results()
+            
+            buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
+
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] = 1
+
+            # score is the number of buckets over the number of instances seen
+            score = - (sum(buckets) / (len(filteredData) + 1)) # normalise over number of instances seen, +1 for current
+        
+        elif (metric == "individualNormEntropy"):
+
+            temp = getBucket(medianRun["time"])
+            print("bucket number: ", temp)
+
+
+            buckets[getBucket(medianRun["time"])] += 1 # add one to the current bucket
+            
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] += 1
+            
+            score = (- get_normalised_entropy(buckets)) - 1 # make negative for minimise and also shift by -1 for gradedness
+        elif (metric == "individualBuckets"):
+            
+            buckets[getBucket(medianRun["time"])] = 1 # set bucket that current time sits in to be true
+
+            for entry in filteredData:
+                entryTime = float(entry.split(",")[-1]) #extract runtime from entry
+                buckets[getBucket(entryTime)] = 1 # set bucket to true
+
+            # score is the number of buckets total
+            score = - (sum(buckets))
+
+    elif (metric == "normalisedEntropyDelta" or metric == "normalisedEntropyDeltaReverse"):
+        numBuckets = 120 # dividing time into about 10 s buckets
+        # hashing config file to get file lock name unique to this run
+        hashProcess = subprocess.run("sha256sum config.json | awk '{print $1}'", shell=True, stdout=subprocess.PIPE)
+        hash = hashProcess.stdout.decode('utf-8').strip()
+
+        # define file lock
+        lock = FileLock(f"{hash}.lock")
+        
+        data = []
+        instance = instFile.replace(".dzn", "")
+        seed = instance.split("-")[-1]
+        genInstID = instance.split("-")[-2]
+        
+        currentBucket = getBucket(medianRun["time"])
+        
+        # request lock
+        with lock:
+            with open("diversity.txt", "r+") as f:
+                data = f.read().strip().split("\n") # read the data and split into separate file data
+                f.write(f"{instance},{currentBucket}\n")
+        
+        # release lock once read data and written current time
+        
+        def filterFunc(x):
+            if(x == ''):
+                return False
+            return not (seed == x.split("-")[-1].split(",")[0]) # isolate the seed
+        
+        # keep any data from the same generator instance
+        filteredData = list(filter(filterFunc, data))
+        
+        buckets = [0] * numBuckets # create an array representing buckets
+        
+        if len(filteredData) == 0: # if there is no data, then no information can be gained so -1 to still have distinction btwn graded but unranked and non-graded
+            score = -1
+            status="ok"
+            return score, get_results()
+        
+        for entry in filteredData:
+            bucketN = int(entry.split(",")[-1]) # get bucket number
+            buckets[bucketN] += 1 # increment bucket count
+        
+        entropyOld = get_normalised_entropy(buckets)
+        
+        buckets[currentBucket] += 1
+        
+        entropyNew = get_normalised_entropy(buckets)
+        
+        entropyDelta = entropyNew - entropyOld # positive difference = better, means the new score is higher (more uniform)
+        
+        if metric == "normalisedEntropyDelta":
+            # set -2 as the center, if the new instance is the worst for diversity (a difference of -1), will return the score to -1 which is a base graded score.
+            score = (-2) - entropyDelta
+        elif metric == "normalisedEntropyDeltaReverse":
+            score = (-2) + entropyDelta
+        
     status = "ok"
-    score = conf.SCORE_GRADED
     return score, get_results()
 

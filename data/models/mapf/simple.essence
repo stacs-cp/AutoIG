@@ -1,0 +1,92 @@
+given g_n_bots: int(1..200)
+
+letting g_shelf_col_size be 2
+letting g_shelf_row_size be 1
+
+letting g_corridor_size be 1
+letting world_border be 2
+
+given g_n_shelves_col: int(1..60)
+given g_n_shelves_row: int(1..60)
+
+letting col_l be (g_n_shelves_col * (g_shelf_col_size + g_corridor_size) + (world_border * 2)) $ contains one extra "corridor" space
+letting row_l be (g_n_shelves_row * (g_shelf_row_size + g_corridor_size) + (world_border * 2))  $ contains one extra "corridor" space
+
+letting map_size be col_l * row_l
+
+$ will require repair
+where g_n_bots <= map_size - (g_shelf_col_size * g_shelf_row_size) * (g_n_shelves_col * g_n_shelves_row)
+
+letting row_id be map_size / col_l
+letting column_id be map_size % col_l
+
+find bots: int(1..200)
+
+find n_shelves_col: int(1..60)
+find n_shelves_row: int(1..60)
+
+find bot_start: matrix indexed by [int(1..g_n_bots)] of int(0..map_size-1) $ index starting from 0
+find bot_end: matrix indexed by [int(1..g_n_bots)] of int(0..map_size-1) $ index starting from 0
+
+$ aux variables
+find shelf_col_size: int(1..10)
+find shelf_row_size: int(1..10)
+find buffer_col: int(1..10)
+find buffer_row: int(1..10)
+find corridor_size: int(1..10)
+
+
+such that
+    bots=g_n_bots,
+    n_shelves_col=g_n_shelves_col, n_shelves_row=g_n_shelves_row,
+    corridor_size=g_corridor_size,
+    allDiff(bot_start),
+    allDiff(bot_end),
+    
+	shelf_col_size=g_shelf_col_size,
+	shelf_row_size=g_shelf_row_size,
+	buffer_col=world_border,
+	buffer_row=world_border,
+    
+    $ We want all bots to not be in shelves.
+    $ So check first if they are in a shelf then negate.
+        
+    forAll bot : int(1..g_n_bots) .
+    !(
+    	(
+		    $ The start location not being in world edges
+				$ Not in upper or lower bound 
+			world_border <= (bot_start[bot] / col_l) /\
+			(bot_start[bot] / col_l) < row_l - world_border /\
+				$ Not in left or right bound
+			world_border <= (bot_start[bot] % col_l) /\
+			(bot_start[bot] % col_l) < col_l - world_border
+
+		) /\
+		(
+			$ check if bot start is not in shelf
+			((bot_start[bot] / col_l) - buffer_row) % (shelf_row_size + corridor_size) < shelf_row_size /\ $ index needs to be within the shelf unit, shelf_w+g_corridor_size = block size in y
+			((bot_start[bot] % col_l)- buffer_col) % (shelf_col_size + corridor_size) < shelf_col_size $ index needs to be within the shelf unit, shelf_l+g_corridor_size = block size in x
+		)
+	),
+	
+	forAll bot : int(1..g_n_bots) .
+	    !(
+	    	(
+				$ Target location not in world edges
+					$ Not in upper or lower bound 
+			    world_border <= (bot_end[bot] / col_l) /\
+				(bot_end[bot] / col_l) < row_l - world_border /\
+					$ Not in left or right bound
+				world_border <= (bot_end[bot] % col_l) /\
+				(bot_end[bot] % col_l) < col_l - world_border
+			) /\
+			(
+				  $  check if bot end is not in shelf
+			    ((bot_end[bot] / col_l) - buffer_row) % (shelf_row_size + corridor_size) < shelf_row_size /\
+				((bot_end[bot] % col_l) - buffer_col) % (shelf_col_size + corridor_size) < shelf_col_size 
+			)
+		)
+	
+	
+	

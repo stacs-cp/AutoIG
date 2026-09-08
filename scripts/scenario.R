@@ -1,7 +1,7 @@
 trainInstancesDir <- ''
-repairConfiguration <- function(id, allConfigurations, parameters, digits, nConfsPreviousRaces=0){
+library(digest)
+repairConfiguration <- function(configuration, parameters){
     outputDir <- './detailed-output/'
-    configuration <- allConfigurations[id-nConfsPreviousRaces,]
 
     # if there is no repairing model, just return the current configuration
     repairModel <- paste(outputDir,'/repair.eprime',sep='')
@@ -13,8 +13,12 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     start_time <- Sys.time()
     originalConfiguration <- configuration
     
+    # TODO get hashsum of the current configuration and use that as id for the baseFileName
+    # Getting unique hash of the configuration
+    fileHash <- digest(paste(configuration, collapse=" "))
+
     # prefix name for all generated files
-    baseFileName <- id
+    baseFileName <- fileHash
 
     # check if repairing results are already available
     outFile <- paste(outputDir,'/repairout-',baseFileName,sep='')
@@ -32,7 +36,7 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
         } else if (endsWith(param,'Min')){
             maxParam <- paste(substr(param,1,nchar(param)-3),'Max',sep='')
         }
-        if (!is.na(maxParam)){
+        if (maxParam %in% names(configuration)){
             minVal <- min(configuration[[param]],configuration[[maxParam]])
             maxVal <- max(configuration[[param]],configuration[[maxParam]])
             configuration[[param]] <- minVal
@@ -53,7 +57,10 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
     close(con)
 
     # solve 
-    seed <- as.integer(id)
+    # TODO convert hash to number for seed
+    # getting shorter hash to turn into integer seed
+    shortHash <- substr(fileHash, 1, 7)
+    seed <- strtoi(shortHash, base=16)
     cmd <- paste('conjure solve repair.essence ', 
                 paramFile, 
                 ' -o ', outputDir, 
@@ -95,13 +102,13 @@ repairConfiguration <- function(id, allConfigurations, parameters, digits, nConf
 
     
     #DEBUG
-    cat("\nBefore repair: \n")
-    print(originalConfiguration)
-    cat("After repair: \n")
-    print(configuration)
-    cat("\n")
-    end_time <- Sys.time()
-    cat("\nRepairing time: ", round(end_time-start_time,2), " seconds\n")
+    # cat("\nBefore repair: \n")
+    # print(originalConfiguration)
+    # cat("After repair: \n")
+    # print(configuration)
+    # cat("\n")
+    # end_time <- Sys.time()
+    # cat("\nRepairing time: ", round(end_time-start_time,2), " seconds\n")
 
     # save results in case the tuning is resumed
     write.csv(configuration,file=outFile,row.names=FALSE)

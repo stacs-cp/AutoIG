@@ -82,6 +82,7 @@ def solve_generator(configurationId, paramDict, setting, seed, detailedOutputDir
             seed,
             setting["genSolverTimeLimit"],
             setting["genSolverFlags"],
+            setting["genSolverVMemLimit"],
         )
         if genStatus == "sat":
             minionSolString = parse_minion_solution(minionSolFile)

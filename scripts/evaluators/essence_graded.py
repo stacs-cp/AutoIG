@@ -4,7 +4,7 @@ from essence_pipeline_utils import call_conjure_solve, get_essence_problem_type
 
 import conf # External file for holding static configurations, no need to redeclare here
 
-
+# TODO: Modify to take non-Conjure solvers
 def evaluate_essence_instance_graded(    
     modelFile: str, # Path to the Essence model file
     instFile: str, # Path to the instance parameter file
@@ -32,7 +32,7 @@ def evaluate_essence_instance_graded(
     """
     # same implementation used as in the existing Essence pipeline
     # using the new parameters passed in:
-    essenceModelFile = "./" + modelFile # Model file has sting "problem.essence" passed in
+    essenceModelFile = "./" + modelFile # Model file has string "problem.essence" passed in
     eprimeModelFile = conf.detailedOutputDir + "/problem.eprime"
     instance = os.path.basename(instFile).replace(".param", "")
 
@@ -137,20 +137,26 @@ def evaluate_essence_instance_graded(
     nRuns = len(results["main"]["runs"])
     medianRun = results["main"]["runs"][int(nRuns / 2)]
 
+    print("\nMedian run:")
+    print(medianRun)
 
     # if the instance is too easy by the main solver, can just return now, no need to run the oracle
-    if (medianRun["status"] == "sat") and (medianRun["solverTime"] < minTime):
+    # basically need to check for status = complete
+    if (medianRun["solverTime"] <= minTime):
         print("Instance too easy. Quitting...")
         score = conf.SCORE_TOO_EASY
         status = "tooEasy"  
         return score, get_results()
     
-        # if the instance is unsolvable by the main solver, there's no need to run the oracle
-    if medianRun["status"] not in ["sat"]:
-        print("Instance not satisfiable or timeout occurred. Quitting...")
+    if (medianRun["solverTime"] >= timeLimit):
+        print("Solver timeout occurred. Quitting...")
         score = conf.SCORE_TOO_DIFFICULT
         status = "tooDifficult"
         return score, get_results()
+    
+        # if the instance is unsolvable by the main solver, there's no need to run the oracle
+    # if medianRun["status"] not in ["sat"]:
+        
 
     status = "ok"
     score = conf.SCORE_GRADED

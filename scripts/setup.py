@@ -9,6 +9,7 @@ import json
 import subprocess
 import shlex
 from collections import OrderedDict
+import pathlib
 
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(scriptDir)
@@ -16,6 +17,7 @@ sys.path.append(scriptDir)
 import utils
 from utils import log
 
+from conf import solverInfo
 
 def read_config(args):
     config = OrderedDict()
@@ -27,6 +29,8 @@ def read_config(args):
         "seed",
         "maxEvaluations",
         "nCores",
+        "elite",
+        "diversityMetric",
     ]
     genSettings = [
         "genMaxInt",
@@ -36,6 +40,7 @@ def read_config(args):
         "genSolverTimeLimit",
         "genSolverFlags",
         "repairModel",
+        "genSolverVMemLimit",
 
     ]
     instSettings = [
@@ -45,6 +50,7 @@ def read_config(args):
         "maxSolverTime",
         "SRTimeLimit",
         "nRunsPerInstance",
+        "maxSolverVMem"
     ]
 
     # read common settings for both graded/discriminating experiments
@@ -61,6 +67,10 @@ def read_config(args):
         if name in config:
             config[name] = os.path.abspath(config[name])
 
+    assert(
+        config["elite"] in ["0", "1"]
+    ), f"ERROR: elite must be 0 or 1"
+
     # read graded-specific settings
     if config["instanceSetting"] == "graded":
         for name in ["solver", "solverFlags"]:
@@ -68,6 +78,12 @@ def read_config(args):
                 getattr(args, name) is not None
             ), f"ERROR: --{name} is required for graded instance generation experiments."
             config[name] = getattr(args, name)
+        if config["solver"] not in solverInfo:
+            for name in ["translateScriptPath", "callSolverFunctionName"]:
+                assert (
+                    getattr(args, name) is not None
+                ), f"ERROR: --{name} is required for non-Conjure solvers in graded instance generation experiments."
+                config[name] = getattr(args, name)
 
     # read discriminating-specific settings
     else:
@@ -81,11 +97,18 @@ def read_config(args):
                 getattr(args, name) is not None
             ), f"ERROR: --{name} is required for discriminating instance generation experiments."
             config[name] = getattr(args, name)
-
+        for solver in ["favouredSolver", "baseSolver"]:
+            if config[solver] not in solverInfo:
+                for name in [f"{solver}TranslateScriptPath", f"{solver}CallSolverFunctionName"]:
+                    assert (
+                        getattr(args, name) is not None
+                    ), f"ERROR: --{name} is required for non-Conjure solvers in discriminating instance generation experiments."
+                    config[name] = getattr(args, name)
     return config
 
 
 def setup(config):
+    # TODO: Need to implement copying over the translation scripts so they are accessible within the package
     log("Setting up the tuning: BEGIN")
 
     # create runDir
@@ -248,6 +271,7 @@ def setup(config):
         "maxExperiments": config["maxEvaluations"],
         "targetRunner": f"{scriptDir}/target-runner",
         "scenario": f"{scriptDir}/scenario.R",
+        "elite": config["elite"],
     }
     with open(iraceFile, "rt") as f:
         lsLines = f.readlines()
@@ -255,6 +279,19 @@ def setup(config):
         lsLines = [s.replace("<" + field + ">", str(value)) for s in lsLines]
     with open(iraceFile, "wt") as f:
         f.writelines(lsLines)
+
+    # Create file for tracking intermediate diversity values
+    open(os.path.join(config["runDir"], "diversity.txt"), "w")
+
+    # copying over external scripts if necessary
+    if config["instanceSetting"] == "graded":
+        if config["solver"] not in solverInfo:
+            copy(config["translateScriptPath"], config["runDir"])
+        
+    else:
+        for solver in ["favouredSolver", "baseSolver"]:
+            if config[solver] not in solverInfo:
+                copy(config[f"{solver}TranslateScriptPath"], config["runDir"])
 
     log(f"All settings are saved in {configFile}")
     log("Setting up the tuning: COMPLETED\n\n")
@@ -312,13 +349,13 @@ def main():
     )
     parser.add_argument(
         "--genSRFlags",
-        default="-S0 -no-bound-vars",
-        help="Savile Row extra flags for solving a generator instance",
+        default="-S0 -no-bound-vars -minion-boundvar-threshold 16",
+        help="Savile Row extra flags for solving a generator instance, default: \"-S0 -no-bound-vars -minion-boundvar-threshold 16\"",
     )
     parser.add_argument(
         "--genSolver",
         default="minion",
-        choices=["minion"],
+        choices=["minion", "chuffed"],
         help="solver used for solving each generator instance (only minion is supported at the moment)",
     )
     parser.add_argument(
@@ -330,6 +367,13 @@ def main():
         "--genSolverFlags",
         default="-varorder domoverwdeg -valorder random",
         help="extra flags for the generator solver",
+    )
+
+    parser.add_argument(
+        "--genSolverVMemLimit",
+        default=15360,
+        type=int,
+        help="maximum virtual memory allowed for generator solver"
     )
 
     # instance settings (for both graded and discriminating)
@@ -358,7 +402,12 @@ def main():
         help="time limit when solving an instance (in seconds)",
     )
 
-
+    parser.add_argument(
+        "--maxSolverVMem",
+        type=int,
+        default=10240,
+        help="virtual memory limit for target solvers, for both discriminating and graded experiments"
+    )
     parser.add_argument(
         "--SRTimeLimit",
         default=0,
@@ -390,6 +439,16 @@ def main():
         default="",
         help="(graded instance generation only) extra flags for solver",
     )
+    parser.add_argument(
+        "--translateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--callSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    )
 
     # instance setting (for discriminating experiment only)
     parser.add_argument(
@@ -404,6 +463,16 @@ def main():
         help="(discriminating instance generation only) extra flags for the favoured solver.",
     )
     parser.add_argument(
+        "--favouredSolverTranslateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--favouredSolverCallSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    )
+    parser.add_argument(
         "--baseSolver",
         type=str,
         help="(discriminating instance generation only) the base solver. We want to generate instances that are difficult for this solver.",
@@ -414,9 +483,46 @@ def main():
         default="",
         help="(discriminating instance generation only) extra flags for the base solver.",
     )
+    parser.add_argument(
+        "--baseSolverTranslateScriptPath",
+        type=str,
+        help="(non-Conjure based solver only) script implementing the function that translates instance param files to solver input",
+    )
+    parser.add_argument(
+        "--baseSolverCallSolverFunctionName",
+        type=str,
+        help="(non-Conjure based solver only) name of the function to call when solving the instance"
+    ) # TODO add in function description here
+    parser.add_argument(
+        "--elite",
+        type=str,
+        help="whether elite mode should be on. Accepts 0 or 1",
+        default="1", 
+    )
+    parser.add_argument(
+        "--diversityMetric",
+        type=str,
+        help="Diversity metric to use, current available options [\"none\", \"max_closest_dist\", \"random\", \"maxAvgDist\", \"individualAvgBuckets\", \"individualNormEntropy\", \"normalisedEntropyDelta\", \"individualBuckets\",\"wassersteinDelta\", \"wassersteinDeltaReverse\", \"normalisedEntropyDeltaReverse\"]",
+        default="none",
+        choices=["none", "max_closest_dist", "random", "maxAvgDist", "individualAvgBuckets", "individualNormEntropy", "normalisedEntropyDelta", "individualBuckets", "wassersteinDelta", "wassersteinDeltaReverse", "normalisedEntropyDeltaReverse"],
+    ) # TODO add choices and set boundarys (i.e. maybe one only works for graded etc.)
+    
 
     # read all settings into one variable and check setting validity
     args = parser.parse_args()
+    
+    # if args.instanceSetting == "graded":
+    #     if args.solver not in solverInfo and (args.translateScriptPath is None or args.callSolverFunctionName is None):
+    #         parser.error("Translation script file name (--translateScriptPath) and call solver function name (--callSolverFunctionName) required for non-Conjure solvers!")
+    # else:
+    #     if args.favouredSolver not in solverInfo and (args.favouredSolverTranslateScriptPath is None or args.favouredSolverCallSolverFunctionName is None):
+    #         parser.error("Translation script file name (--favouredSolverTranslateScriptPath) and call solver function name (--favouredSolverCallSolverFunctionName) required for non-Conjure solvers!")
+            
+    #     if args.baseSolver not in solverInfo and (args.baseSolverTranslateScriptPath is None or args.baseSolverCallSolverFunctionName is None):
+    #         parser.error("Translation script file name (--baseSolverTranslateScriptPath) and call solver function name (--baseSolverCallSolverFunctionName) required for non-Conjure solvers!")
+
+            
+    
     config = read_config(args)
 
     # set up tuning directory

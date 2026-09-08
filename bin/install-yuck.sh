@@ -1,6 +1,6 @@
 #!/bin/bash
 name="yuck"
-version="20210501"
+version="20251106"
 
 echo ""
 echo "============= INSTALLING $name ==================="
@@ -15,8 +15,7 @@ if [ ! -d "$BIN_DIR/minizinc/share/minizinc" ]; then
 fi
 
 pushd $BIN_DIR
-
-url="https://github.com/informarte/yuck/releases/download/20210501/yuck-${version}.zip"
+url="https://github.com/informarte/yuck/releases/download/${version}/yuck-${version}.zip"
 
 mkdir -p $name
 
