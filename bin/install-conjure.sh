@@ -11,7 +11,7 @@ BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 pushd $BIN_DIR
 
-mkdir -p $name 
+# mkdir -p $name 
 
 wget $url
 unzip conjure-v2.6.1-linux-with-solvers.zip
